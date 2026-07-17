@@ -57,6 +57,12 @@ const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital
 
 const WA = "https://wa.me/5541987837610?text=Ol%C3%A1%20Dra.%20Cristiana%2C%20gostaria%20de%20agendar%20minha%20avalia%C3%A7%C3%A3o.";
 const LOGO = logo.url;
+const IMG_DRA = draCristiana.url;
+const IMG_SUAPELE = suaPele.url;
+const IMG_MULHER = mulherImg.url;
+const IMG_HOMEM = homemImg.url;
+const IMG_FACE = faceImg.url;
+const IMG_MITOS = mitosImg.url;
 
 const BODY = `
 <div class="cine"><div class="l l1"></div><div class="l l2"></div></div>
