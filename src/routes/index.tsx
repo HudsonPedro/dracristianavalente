@@ -64,6 +64,7 @@ const IMG_MULHER = mulherImg.url;
 const IMG_HOMEM = homemImg.url;
 const IMG_FACE = faceImg.url;
 const IMG_MITOS = mitosImg.url;
+const IMG_AMBIENTE = ambienteImg.url;
 
 const BODY = `
 <div class="cine"><div class="l l1"></div><div class="l l2"></div></div>
