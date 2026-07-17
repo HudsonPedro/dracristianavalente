@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
+import logo from "../assets/logo.png.asset.json";
+
 const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Jost:wght@400;500;600;700&display=swap');
 
-  :root{--bg:#fbf3f1;--bg2:#f6e7e4;--ink:#3a2330;--muted:#8a6c79;--rose:#c8607e;--rose2:#9c4865;--gold:#c9a36b;--line:#efdcd9}
+  :root{--bg:#faf7f3;--bg2:#f2ece4;--ink:#141414;--muted:#7a6f66;--rose:#c9a36b;--rose2:#8a6a3b;--gold:#c9a36b;--nude:#e6d5c2;--line:#ece4d8}
   *{box-sizing:border-box}html{scroll-behavior:smooth}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:"Jost",sans-serif;overflow-x:hidden}
   .serif{font-family:"Fraunces",serif}
@@ -10,219 +12,300 @@ const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital
   .container{max-width:1180px;margin:0 auto;padding-left:26px;padding-right:26px}
   .cine{position:fixed;inset:0;z-index:0;overflow:hidden;background:var(--bg);transform:translateZ(0)}
   .cine .l{position:absolute;inset:-25%;filter:blur(72px);opacity:.55;will-change:transform}
-  .l1{background:radial-gradient(38% 38% at 22% 20%,rgba(200,96,126,.22),transparent 70%);animation:d1 26s ease-in-out infinite}
-  .l2{background:radial-gradient(42% 42% at 80% 30%,rgba(201,163,107,.2),transparent 70%);animation:d2 30s ease-in-out infinite}
+  .l1{background:radial-gradient(38% 38% at 22% 20%,rgba(201,163,107,.22),transparent 70%);animation:d1 26s ease-in-out infinite}
+  .l2{background:radial-gradient(42% 42% at 80% 30%,rgba(138,106,59,.18),transparent 70%);animation:d2 30s ease-in-out infinite}
   @keyframes d1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(6%,5%) scale(1.12)}}
   @keyframes d2{0%,100%{transform:translate(0,0) scale(1.1)}50%{transform:translate(-7%,4%) scale(1)}}
   .wrap{position:relative;z-index:2}
-  .rosetext{color:var(--rose)}
-  .kicker{display:inline-flex;align-items:center;gap:9px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose2);border:1px solid rgba(200,96,126,.3);background:rgba(200,96,126,.07);padding:8px 15px;border-radius:999px}
+  .rosetext{color:var(--rose2)}
+  .kicker{display:inline-flex;align-items:center;gap:9px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose2);border:1px solid rgba(138,106,59,.35);background:rgba(201,163,107,.09);padding:8px 15px;border-radius:999px}
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-weight:600;border-radius:13px;padding:16px 28px;text-decoration:none;transition:transform .25s,box-shadow .25s;font-size:15px}
   .btn-wa{background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;box-shadow:0 16px 40px rgba(37,211,102,.3)}
   .btn-wa:hover{transform:translateY(-2px)}
-  .btn-rose{background:linear-gradient(180deg,var(--rose),var(--rose2));color:#fff;box-shadow:0 16px 40px rgba(200,96,126,.3)}
+  .btn-rose{background:linear-gradient(180deg,var(--ink),#000);color:#fff;box-shadow:0 16px 40px rgba(0,0,0,.28)}
   .btn-rose:hover{transform:translateY(-2px)}
-  .btn-ghost{border:1px solid rgba(58,35,48,.18);color:var(--ink)}.btn-ghost:hover{background:rgba(58,35,48,.04)}
+  .btn-ghost{border:1px solid rgba(20,20,20,.2);color:var(--ink)}.btn-ghost:hover{background:rgba(20,20,20,.04)}
   .reveal{opacity:1}.reveal.in{animation:rin .7s cubic-bezier(.16,1,.3,1) both}@keyframes rin{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
-  .card{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 34px rgba(58,35,48,.05)}
-  .hair{height:1px;background:linear-gradient(90deg,transparent,rgba(200,96,126,.4),transparent)}
-  .frame{border-radius:22px;overflow:hidden;position:relative;box-shadow:0 40px 90px rgba(120,60,80,.2)}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 34px rgba(20,20,20,.05)}
+  .hair{height:1px;background:linear-gradient(90deg,transparent,rgba(201,163,107,.5),transparent)}
+  .frame{border-radius:22px;overflow:hidden;position:relative;box-shadow:0 40px 90px rgba(20,20,20,.18)}
   .navwrap{position:fixed;top:14px;left:0;right:0;z-index:40;transition:.3s}
   .navwrap.s{top:9px}
-  .navwrap>div{background:color-mix(in srgb,var(--bg) 62%,transparent);-webkit-backdrop-filter:saturate(1.6) blur(18px);backdrop-filter:saturate(1.6) blur(18px);border:1px solid color-mix(in srgb,var(--ink) 11%,transparent);border-radius:18px;box-shadow:0 10px 30px rgba(120,60,80,.08),inset 0 1px 0 rgba(255,255,255,.6);transition:.3s}
-  .navwrap.s>div{background:color-mix(in srgb,var(--bg) 84%,transparent)}
-  .mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--rose),var(--rose2));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-family:"Fraunces",serif}
+  .navwrap>div{background:color-mix(in srgb,var(--bg) 62%,transparent);-webkit-backdrop-filter:saturate(1.6) blur(18px);backdrop-filter:saturate(1.6) blur(18px);border:1px solid color-mix(in srgb,var(--ink) 11%,transparent);border-radius:18px;box-shadow:0 10px 30px rgba(20,20,20,.08),inset 0 1px 0 rgba(255,255,255,.6);transition:.3s}
+  .navwrap.s>div{background:color-mix(in srgb,var(--bg) 88%,transparent)}
+  .mark{height:40px;width:auto;display:block}
   details.faq{border-bottom:1px solid var(--line)}
   details.faq summary{list-style:none;cursor:pointer;padding:20px 4px;display:flex;justify-content:space-between;gap:16px;align-items:center;font-weight:600;font-size:17px}
   details.faq summary::-webkit-details-marker{display:none}
-  details.faq[open] .pl{transform:rotate(45deg)} .pl{transition:.3s;color:var(--rose);font-size:24px;font-weight:400;font-family:"Fraunces",serif}
-  .field{width:100%;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;color:var(--ink);outline:none;font-size:15px}.field:focus{border-color:var(--rose)}
+  details.faq[open] .pl{transform:rotate(45deg)} .pl{transition:.3s;color:var(--rose2);font-size:24px;font-weight:400;font-family:"Fraunces",serif}
+  .field{width:100%;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;color:var(--ink);outline:none;font-size:15px}.field:focus{border-color:var(--rose2)}
   .wa{position:fixed;right:20px;bottom:20px;z-index:45;display:flex;align-items:center;gap:10px;padding:13px 18px 13px 14px;border-radius:999px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;font-weight:700;font-size:14px;text-decoration:none;box-shadow:0 16px 40px rgba(37,211,102,.45)}
   .wa .ic{width:24px;height:24px;display:flex;align-items:center;justify-content:center}
   .wa::before{content:"";position:absolute;left:14px;top:50%;transform:translateY(-50%);width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.5);animation:pr 2s infinite}
   @keyframes pr{0%{transform:translateY(-50%) scale(.6);opacity:.7}70%,100%{transform:translateY(-50%) scale(1.8);opacity:0}}
+  .protocol h3{font-family:"Fraunces",serif;font-size:1.35rem;color:var(--ink)}
+  .protocol li{color:var(--muted);font-size:.92rem;padding:4px 0}
+  .protocol .tag{display:inline-block;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--rose2);margin-bottom:10px}
   @media (prefers-reduced-motion:reduce){.l1,.l2,.wa::before{animation:none}.reveal.in{animation:none}}
 `;
+
+const WA = "https://wa.me/5541987837610?text=Ol%C3%A1%20Dra.%20Cristiana%2C%20gostaria%20de%20agendar%20minha%20avalia%C3%A7%C3%A3o.";
+const LOGO = logo.url;
+
 const BODY = `
-<!--
-  ╔══════════════════════════════════════════════════════════════╗
-  ║  CONFIG — EDITE AQUI. [colchetes], fotos, WhatsApp, cores      ║
-  ║  no :root (--rose, --bg). Nicho: CLÍNICA DE ESTÉTICA.         ║
-  ╚══════════════════════════════════════════════════════════════╝
--->
 <div class="cine"><div class="l l1"></div><div class="l l2"></div></div>
 
 <div class="wrap">
   <nav class="navwrap" id="nav"><div class="container flex items-center justify-between h-[64px] px-5">
-    <a href="#topo" class="flex items-center gap-3"><span class="mark">E</span><span class="serif text-xl">[Seu Espaço]</span></a>
+    <a href="#topo" class="flex items-center gap-3"><img src="${LOGO}" alt="CV Estética" class="mark"><span class="serif text-lg hidden sm:inline">Dra. Cristiana Valente</span></a>
     <div class="hidden md:flex items-center gap-7 text-sm text-[color:var(--muted)]">
-      <a href="#procedimentos" class="hover:text-[color:var(--ink)] transition">Procedimentos</a>
+      <a href="#protocolos" class="hover:text-[color:var(--ink)] transition">Protocolos</a>
       <a href="#sobre" class="hover:text-[color:var(--ink)] transition">Sobre</a>
-      <a href="#resultados" class="hover:text-[color:var(--ink)] transition">Resultados</a>
-      <a href="#avaliacoes" class="hover:text-[color:var(--ink)] transition">Avaliações</a>
+      <a href="#exclusivos" class="hover:text-[color:var(--ink)] transition">Exclusivos CV</a>
+      <a href="#avaliacoes" class="hover:text-[color:var(--ink)] transition">Depoimentos</a>
       <a href="#faq" class="hover:text-[color:var(--ink)] transition">FAQ</a>
     </div>
-    <a href="https://wa.me/5511900000000" class="btn btn-wa !py-2.5 !px-5 !text-sm">Agendar avaliação</a>
+    <a href="${WA}" class="btn btn-wa !py-2.5 !px-5 !text-sm">Agendar avaliação</a>
   </div></nav>
 
   <header id="topo" class="container pt-36 pb-20 md:pt-44 md:pb-28 grid lg:grid-cols-[1.05fr_.95fr] gap-14 items-center">
     <div>
-      <div class="reveal kicker">★ Avaliação personalizada · resultados naturais</div>
-      <h1 class="reveal display text-6xl md:text-7xl mt-7">Realce a sua<br>beleza <span class="rosetext italic">natural</span>.</h1>
-      <p class="reveal text-lg md:text-xl text-[color:var(--muted)] max-w-xl mt-7 leading-relaxed">[Diga o que seu espaço oferece e pra quem.] Protocolos de estética facial e corporal pensados pra valorizar quem você é — com segurança, sofisticação e um resultado que parece (e é) seu.</p>
-      <div class="reveal flex flex-col sm:flex-row gap-4 mt-10"><a href="https://wa.me/5511900000000" class="btn btn-wa">Agendar minha avaliação →</a><a href="#procedimentos" class="btn btn-ghost">Ver procedimentos</a></div>
+      <div class="reveal kicker">★ Estética facial, corporal e capilar · resultados naturais</div>
+      <h1 class="reveal display text-6xl md:text-7xl mt-7">Sua beleza merece um<br>tratamento <span class="rosetext italic">exclusivo</span>.</h1>
+      <p class="reveal text-lg md:text-xl text-[color:var(--muted)] max-w-xl mt-7 leading-relaxed">Recupere sua autoestima com protocolos faciais e capilares personalizados, tecnologia avançada e o cuidado humano que só a Dra. Cristiana Valente oferece — para resultados naturais que valorizam quem você é.</p>
+      <div class="reveal flex flex-col sm:flex-row gap-4 mt-10"><a href="${WA}" class="btn btn-wa">Agendar minha avaliação →</a><a href="#protocolos" class="btn btn-ghost">Ver protocolos</a></div>
       <div class="reveal flex items-center gap-4 mt-10">
         <div class="flex -space-x-3">
           <img src="https://i.pravatar.cc/80?img=44" class="w-10 h-10 rounded-full border-2 object-cover" style="border-color:var(--bg)">
           <img src="https://i.pravatar.cc/80?img=25" class="w-10 h-10 rounded-full border-2 object-cover" style="border-color:var(--bg)">
           <img src="https://i.pravatar.cc/80?img=20" class="w-10 h-10 rounded-full border-2 object-cover" style="border-color:var(--bg)">
         </div>
-        <div><div class="text-[color:var(--gold)] text-sm">★★★★★</div><div class="text-xs text-[color:var(--muted)]">+2.000 clientes · nota 4,9 no Google</div></div>
+        <div><div class="text-[color:var(--gold)] text-sm">★★★★★</div><div class="text-xs text-[color:var(--muted)]">Centenas de pacientes atendidas com excelência</div></div>
       </div>
     </div>
-    <div class="reveal frame"><img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=900&q=80" alt="" class="w-full h-[540px] object-cover"></div>
+    <div class="reveal frame"><img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=1000&q=80" alt="Tratamento estético facial na CV Estética" class="w-full h-[540px] object-cover"></div>
   </header>
 
   <section class="border-y border-[color:var(--line)]" style="background:#fff"><div class="container py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center text-sm">
-    <div class="reveal"><div class="display rosetext text-4xl">+2 mil</div><div class="text-[color:var(--muted)] mt-1">clientes atendidas</div></div>
-    <div class="reveal"><div class="display rosetext text-4xl">4,9 ⭐</div><div class="text-[color:var(--muted)] mt-1">no Google</div></div>
-    <div class="reveal"><div class="display rosetext text-4xl">98%</div><div class="text-[color:var(--muted)] mt-1">recomendam</div></div>
-    <div class="reveal"><div class="display rosetext text-4xl">12x</div><div class="text-[color:var(--muted)] mt-1">sem juros</div></div>
+    <div class="reveal"><div class="display rosetext text-4xl">100%</div><div class="text-[color:var(--muted)] mt-1">personalizado</div></div>
+    <div class="reveal"><div class="display rosetext text-4xl">+12</div><div class="text-[color:var(--muted)] mt-1">protocolos exclusivos</div></div>
+    <div class="reveal"><div class="display rosetext text-4xl">Facial · Corporal · Capilar</div><div class="text-[color:var(--muted)] mt-1">todas as frentes</div></div>
+    <div class="reveal"><div class="display rosetext text-4xl">Ciência + Arte</div><div class="text-[color:var(--muted)] mt-1">resultados naturais</div></div>
   </div></section>
 
   <section class="container py-24">
-    <div class="reveal max-w-2xl"><div class="kicker mb-6">A gente entende</div><h2 class="display text-5xl md:text-6xl">Quer cuidar de você sem exagero.</h2></div>
+    <div class="reveal max-w-2xl"><div class="kicker mb-6">A gente entende</div><h2 class="display text-5xl md:text-6xl">Você quer se cuidar — sem abrir mão do natural.</h2></div>
     <div class="grid md:grid-cols-3 gap-5 mt-14">
-      <div class="reveal card p-8"><div class="text-3xl mb-3">😟</div><h3 class="text-xl font-bold serif">Medo de ficar artificial</h3><p class="text-[color:var(--muted)] mt-3 leading-relaxed">Aqui o foco é o natural. A gente valoriza seus traços, sem exagero.</p></div>
-      <div class="reveal card p-8"><div class="text-3xl mb-3">🤷</div><h3 class="text-xl font-bold serif">Não sabe por onde começar</h3><p class="text-[color:var(--muted)] mt-3 leading-relaxed">Na avaliação a gente monta um plano sob medida pra sua pele e seu objetivo.</p></div>
-      <div class="reveal card p-8"><div class="text-3xl mb-3">😕</div><h3 class="text-xl font-bold serif">Já se decepcionou antes</h3><p class="text-[color:var(--muted)] mt-3 leading-relaxed">Profissionais qualificados, produtos de marca e ambiente seguro e acolhedor.</p></div>
+      <div class="reveal card p-8"><div class="text-3xl mb-3">🪞</div><h3 class="text-xl font-bold serif">Medo de ficar artificial</h3><p class="text-[color:var(--muted)] mt-3 leading-relaxed">Nossos protocolos são pensados para realçar seus traços, nunca mascará-los. Resultado que parece você — só que renovada.</p></div>
+      <div class="reveal card p-8"><div class="text-3xl mb-3">🤍</div><h3 class="text-xl font-bold serif">Receio de dor ou desconforto</h3><p class="text-[color:var(--muted)] mt-3 leading-relaxed">Procedimentos seguros, técnicas modernas e um cuidado humanizado do primeiro contato até o acompanhamento pós-tratamento.</p></div>
+      <div class="reveal card p-8"><div class="text-3xl mb-3">✨</div><h3 class="text-xl font-bold serif">Insegurança com o resultado</h3><p class="text-[color:var(--muted)] mt-3 leading-relaxed">Antes de qualquer protocolo, avaliação individual completa. Você entende cada etapa, cada indicação, cada expectativa.</p></div>
     </div>
   </section>
 
-  <section id="procedimentos" class="container py-24">
-    <div class="reveal max-w-2xl"><div class="kicker mb-6">O que oferecemos</div><h2 class="display text-5xl md:text-6xl">Protocolos pra pele e corpo.</h2></div>
-    <div class="grid md:grid-cols-3 gap-5 mt-14">
-      <div class="reveal card p-8"><h3 class="serif text-2xl">Harmonização facial</h3><p class="text-[color:var(--muted)] mt-3 leading-relaxed">Botox, preenchimento e bioestimuladores pra um rosto equilibrado e natural.</p></div>
-      <div class="reveal card p-8"><h3 class="serif text-2xl">Limpeza de pele</h3><p class="text-[color:var(--muted)] mt-3 leading-relaxed">Pele limpa, viçosa e renovada com protocolos profundos e suaves.</p></div>
-      <div class="reveal card p-8"><h3 class="serif text-2xl">Skinbooster & peeling</h3><p class="text-[color:var(--muted)] mt-3 leading-relaxed">Hidratação profunda e renovação celular pra um glow de dentro pra fora.</p></div>
-      <div class="reveal card p-8"><h3 class="serif text-2xl">Estética corporal</h3><p class="text-[color:var(--muted)] mt-3 leading-relaxed">Tratamentos pra gordura localizada, flacidez e celulite com tecnologia.</p></div>
-      <div class="reveal card p-8"><h3 class="serif text-2xl">Massagens</h3><p class="text-[color:var(--muted)] mt-3 leading-relaxed">Drenagem e relaxamento pra cuidar do corpo e da mente.</p></div>
-      <div class="reveal card p-8"><h3 class="serif text-2xl">Protocolos personalizados</h3><p class="text-[color:var(--muted)] mt-3 leading-relaxed">Combinamos os tratamentos certos pro seu objetivo e sua pele.</p></div>
+  <section id="protocolos" class="container py-24">
+    <div class="reveal max-w-2xl"><div class="kicker mb-6">Protocolos em destaque</div><h2 class="display text-5xl md:text-6xl">Ciência, tecnologia e sensibilidade estética.</h2><p class="text-[color:var(--muted)] mt-6 text-lg leading-relaxed">Cada tratamento é indicado somente após avaliação profissional. Abaixo, os protocolos mais procurados na CV Estética.</p></div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-14">
+
+      <div class="reveal card p-8 protocol"><span class="tag">Capilar</span><h3>Terapia Capilar — Regenera Hair</h3><ul class="mt-3 list-none p-0">
+        <li>· Regenera Hair</li><li>· PRP Capilar</li><li>· Regenera Hair + PRP</li><li>· Alopecia androgenética</li><li>· Alopecia areata</li><li>· Eflúvio telógeno</li><li>· Fortalecimento pós-transplante</li>
+      </ul></div>
+
+      <div class="reveal card p-8 protocol"><span class="tag">Facial</span><h3>Microagulhamento Facial</h3><ul class="mt-3 list-none p-0">
+        <li>· Rejuvenescimento</li><li>· Cicatrizes de acne</li><li>· Linhas finas</li><li>· Poros dilatados</li><li>· Melasma (quando indicado)</li><li>· Drug Delivery</li>
+      </ul></div>
+
+      <div class="reveal card p-8 protocol"><span class="tag">Facial</span><h3>Limpeza de Pele Premium</h3><ul class="mt-3 list-none p-0">
+        <li>· Higienização e esfoliação</li><li>· Vapor de Ozônio</li><li>· Extração cuidadosa</li><li>· Alta Frequência</li><li>· Máscara calmante</li><li>· LED terapêutico</li>
+      </ul></div>
+
+      <div class="reveal card p-8 protocol"><span class="tag">Facial</span><h3>Dermaplaning</h3><ul class="mt-3 list-none p-0">
+        <li>· Esfoliação com bisturi</li><li>· Remoção de pelos finos</li><li>· Uniformização da pele</li><li>· Luminosidade imediata</li>
+      </ul></div>
+
+      <div class="reveal card p-8 protocol"><span class="tag">Facial</span><h3>PRP Facial</h3><ul class="mt-3 list-none p-0">
+        <li>· Bioestimulação de colágeno</li><li>· Rejuvenescimento natural</li><li>· Melhora da textura</li><li>· Qualidade da pele</li>
+      </ul></div>
+
+      <div class="reveal card p-8 protocol"><span class="tag">Facial</span><h3>Toxina Botulínica</h3><ul class="mt-3 list-none p-0">
+        <li>· Terço superior</li><li>· Testa · Glabela</li><li>· Pés de galinha · Bunny lines</li><li>· Sorriso gengival (quando indicado)</li><li>· Mento (quando indicado)</li>
+      </ul></div>
+
+      <div class="reveal card p-8 protocol"><span class="tag">Facial · Corporal</span><h3>Skinbooster</h3><ul class="mt-3 list-none p-0">
+        <li>· Hidratação profunda</li><li>· Linhas finas · Luminosidade</li><li>· Face · Pescoço</li><li>· Colo · Mãos</li>
+      </ul></div>
+
+      <div class="reveal card p-8 protocol"><span class="tag">Facial · Corporal</span><h3>Bioestimulador de Colágeno</h3><ul class="mt-3 list-none p-0">
+        <li>· Face · Pescoço · Colo · Mãos</li><li>· Flacidez facial</li><li>· Contorno facial</li>
+      </ul></div>
+
+      <div class="reveal card p-8 protocol"><span class="tag">Capilar</span><h3>Mesoterapia Capilar</h3><ul class="mt-3 list-none p-0">
+        <li>· Vitaminas</li><li>· Fatores de crescimento</li><li>· Intradermoterapia</li><li>· Associação com microagulhamento</li>
+      </ul></div>
+
+      <div class="reveal card p-8 protocol"><span class="tag">Facial</span><h3>Jato de Plasma</h3><ul class="mt-3 list-none p-0">
+        <li>· Rugas finas</li><li>· Rejuvenescimento da pele</li><li>· Estímulo de colágeno</li>
+      </ul></div>
+
+      <div class="reveal card p-8 protocol"><span class="tag">Avaliação</span><h3>Avaliação Estética Facial e Capilar</h3><ul class="mt-3 list-none p-0">
+        <li>· Anamnese completa</li><li>· Tricoscopia</li><li>· Planejamento individualizado</li><li>· Acompanhamento fotográfico</li>
+      </ul></div>
+
+      <div class="reveal card p-8 protocol" style="background:#141414;color:#fff;border-color:#141414"><span class="tag" style="color:var(--gold)">Exclusivos CV</span><h3 style="color:#fff">Protocolos autorais</h3><ul class="mt-3 list-none p-0" style="color:#c9c2b8">
+        <li>· Recuperação Pós-Mounjaro</li><li>· Recuperação Pós-Transplante Capilar</li><li>· Programa Anual de Recuperação Capilar</li><li>· Regenera Barba</li>
+      </ul></div>
+
+    </div>
+  </section>
+
+  <section id="exclusivos" class="container py-24">
+    <div class="reveal card p-10 md:p-14" style="background:linear-gradient(135deg,#141414,#2a2320);color:#fff;border-color:#141414">
+      <div class="grid lg:grid-cols-[1.1fr_.9fr] gap-12 items-center">
+        <div>
+          <div class="kicker mb-6" style="color:var(--gold);border-color:rgba(201,163,107,.4);background:rgba(201,163,107,.08)">🖤 Protocolos exclusivos CV Estética</div>
+          <h2 class="display text-4xl md:text-5xl" style="color:#fff">Tratamentos que só existem aqui.</h2>
+          <p class="mt-6 leading-relaxed" style="color:#c9c2b8">Desenvolvidos pela Dra. Cristiana Valente para necessidades específicas dos nossos pacientes — combinando ciência, tecnologia de ponta e um olhar apurado para o que cada corpo, pele e cabelo pede.</p>
+          <div class="grid sm:grid-cols-2 gap-4 mt-8">
+            <div class="p-5 rounded-xl" style="background:rgba(201,163,107,.08);border:1px solid rgba(201,163,107,.25)"><div class="serif text-xl" style="color:var(--gold)">Pós-Mounjaro</div><p class="text-sm mt-2" style="color:#c9c2b8">Recuperação da firmeza, viço e densidade da pele após perda de peso.</p></div>
+            <div class="p-5 rounded-xl" style="background:rgba(201,163,107,.08);border:1px solid rgba(201,163,107,.25)"><div class="serif text-xl" style="color:var(--gold)">Pós-Transplante Capilar</div><p class="text-sm mt-2" style="color:#c9c2b8">Fortalecimento e cuidado dos fios recém-implantados para máximo resultado.</p></div>
+            <div class="p-5 rounded-xl" style="background:rgba(201,163,107,.08);border:1px solid rgba(201,163,107,.25)"><div class="serif text-xl" style="color:var(--gold)">Programa Anual Capilar</div><p class="text-sm mt-2" style="color:#c9c2b8">Acompanhamento contínuo com evolução mensurada em tricoscopia.</p></div>
+            <div class="p-5 rounded-xl" style="background:rgba(201,163,107,.08);border:1px solid rgba(201,163,107,.25)"><div class="serif text-xl" style="color:var(--gold)">Regenera Barba</div><p class="text-sm mt-2" style="color:#c9c2b8">Estímulo do crescimento e preenchimento de falhas na barba masculina.</p></div>
+          </div>
+          <a href="${WA}" class="btn btn-wa mt-10">Quero saber se sou indicada(o) →</a>
+        </div>
+        <div class="frame"><img src="https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=900&q=80" alt="Protocolo exclusivo CV Estética" class="w-full h-[520px] object-cover"></div>
+      </div>
     </div>
   </section>
 
   <section id="resultados" class="container py-24">
-    <div class="reveal max-w-2xl"><div class="kicker mb-6">Resultados reais</div><h2 class="display text-5xl md:text-6xl">Beleza que se nota.</h2></div>
+    <div class="reveal max-w-2xl"><div class="kicker mb-6">Ambiente e cuidado</div><h2 class="display text-5xl md:text-6xl">Cada detalhe pensado para você.</h2></div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14">
-      <div class="reveal frame"><img src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=500&q=80" class="w-full h-56 object-cover" alt=""></div>
-      <div class="reveal frame"><img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=500&q=80" class="w-full h-56 object-cover" alt=""></div>
-      <div class="reveal frame"><img src="https://images.unsplash.com/photo-1498842812179-c81beecf902c?w=500&q=80" class="w-full h-56 object-cover" alt=""></div>
-      <div class="reveal frame"><img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=500&q=80" class="w-full h-56 object-cover" alt=""></div>
+      <div class="reveal frame"><img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=80" class="w-full h-56 object-cover" alt="Sala de tratamento"></div>
+      <div class="reveal frame"><img src="https://images.unsplash.com/photo-1552693673-1bf958298935?w=600&q=80" class="w-full h-56 object-cover" alt="Tratamento facial"></div>
+      <div class="reveal frame"><img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&q=80" class="w-full h-56 object-cover" alt="Cuidado com a pele"></div>
+      <div class="reveal frame"><img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=600&q=80" class="w-full h-56 object-cover" alt="Terapia capilar"></div>
     </div>
   </section>
 
   <section id="sobre" class="container py-24 grid lg:grid-cols-2 gap-16 items-center">
-    <div class="reveal frame"><img src="https://images.unsplash.com/photo-1559599101-f09722fb4948?w=800&q=80" alt="" class="w-full h-[520px] object-cover"></div>
+    <div class="reveal frame"><img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=900&q=80" alt="Dra. Cristiana Valente" class="w-full h-[560px] object-cover"></div>
     <div class="reveal">
-      <div class="kicker mb-6">Quem cuida de você</div>
-      <h2 class="display text-5xl md:text-6xl">Mãos experientes,<br>olhar pro natural.</h2>
-      <p class="text-[color:var(--muted)] text-lg mt-6 leading-relaxed">[Apresente o(a) profissional: formação, especializações e filosofia de trabalho.] Cada protocolo é seguro, com produtos de marca e foco em realçar — nunca mascarar — a sua beleza.</p>
+      <div class="kicker mb-6">Dra. Cristiana Valente</div>
+      <h2 class="display text-5xl md:text-6xl">Enfermeira Esteta com<br>olhar para o <span class="italic rosetext">natural</span>.</h2>
+      <p class="text-[color:var(--muted)] text-lg mt-6 leading-relaxed">Especialista em Saúde Pública e Estética Avançada, Terapeuta Capilar e Tricoscopista. Une conhecimento científico, tecnologia e um cuidado profundamente humano para transformar não só a aparência — mas a relação de cada paciente com o próprio espelho.</p>
+      <p class="text-[color:var(--muted)] text-lg mt-4 leading-relaxed italic">"Cuidar de você é transformar vidas."</p>
       <div class="hair my-8"></div>
-      <div class="grid grid-cols-3 gap-6">
-        <div><div class="display rosetext text-4xl">+10</div><div class="text-xs text-[color:var(--muted)] mt-1">anos de experiência</div></div>
-        <div><div class="display rosetext text-4xl">+2 mil</div><div class="text-xs text-[color:var(--muted)] mt-1">clientes felizes</div></div>
-        <div><div class="display rosetext text-4xl">100%</div><div class="text-xs text-[color:var(--muted)] mt-1">higienização</div></div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+        <div><div class="display rosetext text-2xl">Saúde</div><div class="text-xs text-[color:var(--muted)] mt-1">integral</div></div>
+        <div><div class="display rosetext text-2xl">Autoestima</div><div class="text-xs text-[color:var(--muted)] mt-1">e confiança</div></div>
+        <div><div class="display rosetext text-2xl">Tratamentos</div><div class="text-xs text-[color:var(--muted)] mt-1">personalizados</div></div>
+        <div><div class="display rosetext text-2xl">Avaliação</div><div class="text-xs text-[color:var(--muted)] mt-1">detalhada</div></div>
       </div>
     </div>
   </section>
 
   <section class="container py-24">
-    <div class="reveal max-w-2xl mx-auto text-center"><div class="kicker mb-6 mx-auto">Fácil assim</div><h2 class="display text-5xl md:text-6xl">Seu cuidado em 3 passos.</h2></div>
+    <div class="reveal max-w-2xl mx-auto text-center"><div class="kicker mb-6 mx-auto">Como funciona</div><h2 class="display text-5xl md:text-6xl">Seu tratamento em 3 passos.</h2></div>
     <div class="grid md:grid-cols-3 gap-5 mt-14">
-      <div class="reveal card p-8"><div class="serif rosetext text-5xl">01</div><h3 class="serif text-2xl mt-3">Avaliação</h3><p class="text-[color:var(--muted)] mt-2 leading-relaxed">Conversamos sobre seus objetivos e avaliamos sua pele, sem compromisso.</p></div>
-      <div class="reveal card p-8"><div class="serif rosetext text-5xl">02</div><h3 class="serif text-2xl mt-3">Plano sob medida</h3><p class="text-[color:var(--muted)] mt-2 leading-relaxed">Montamos o protocolo ideal, com etapas e valores claros.</p></div>
-      <div class="reveal card p-8"><div class="serif rosetext text-5xl">03</div><h3 class="serif text-2xl mt-3">Resultado natural</h3><p class="text-[color:var(--muted)] mt-2 leading-relaxed">Acompanhamos cada sessão até você se ver no espelho e sorrir.</p></div>
+      <div class="reveal card p-8"><div class="serif rosetext text-5xl">01</div><h3 class="serif text-2xl mt-3">Avaliação personalizada</h3><p class="text-[color:var(--muted)] mt-2 leading-relaxed">Anamnese completa, tricoscopia quando indicado, e escuta atenta dos seus objetivos.</p></div>
+      <div class="reveal card p-8"><div class="serif rosetext text-5xl">02</div><h3 class="serif text-2xl mt-3">Protocolo sob medida</h3><p class="text-[color:var(--muted)] mt-2 leading-relaxed">Plano de tratamento elaborado exclusivamente para você, com etapas e expectativas claras.</p></div>
+      <div class="reveal card p-8"><div class="serif rosetext text-5xl">03</div><h3 class="serif text-2xl mt-3">Acompanhamento contínuo</h3><p class="text-[color:var(--muted)] mt-2 leading-relaxed">Registro fotográfico e ajustes ao longo de toda a jornada — resultados que evoluem com você.</p></div>
     </div>
   </section>
 
   <section id="avaliacoes" class="container py-24">
-    <div class="reveal max-w-2xl"><div class="kicker mb-6">Quem já se cuidou aqui</div><h2 class="display text-5xl md:text-6xl">Clientes que voltam sempre.</h2></div>
+    <div class="reveal max-w-2xl"><div class="kicker mb-6">Quem já se cuidou aqui</div><h2 class="display text-5xl md:text-6xl">Autoestima que volta a brilhar.</h2></div>
     <div class="grid md:grid-cols-3 gap-5 mt-14">
-      <div class="reveal card p-7"><div class="text-[color:var(--gold)] text-sm mb-3">★★★★★</div><p class="leading-relaxed">"Fiz harmonização com medo de ficar artificial e ficou perfeito, super natural. Todo mundo elogia."</p><div class="flex items-center gap-3 mt-6"><img src="https://i.pravatar.cc/80?img=31" class="w-11 h-11 rounded-full object-cover"><div><div class="font-semibold">Camila R.</div><div class="text-xs text-[color:var(--muted)]">Cliente · Google ✓</div></div></div></div>
-      <div class="reveal card p-7"><div class="text-[color:var(--gold)] text-sm mb-3">★★★★★</div><p class="leading-relaxed">"Ambiente lindo, atendimento impecável e minha pele nunca esteve tão boa. Recomendo demais."</p><div class="flex items-center gap-3 mt-6"><img src="https://i.pravatar.cc/80?img=23" class="w-11 h-11 rounded-full object-cover"><div><div class="font-semibold">Aline S.</div><div class="text-xs text-[color:var(--muted)]">Cliente · Google ✓</div></div></div></div>
-      <div class="reveal card p-7"><div class="text-[color:var(--gold)] text-sm mb-3">★★★★★</div><p class="leading-relaxed">"Profissional super atenciosa, explicou tudo e respeitou meu tempo. Saí renovada e confiante."</p><div class="flex items-center gap-3 mt-6"><img src="https://i.pravatar.cc/80?img=45" class="w-11 h-11 rounded-full object-cover"><div><div class="font-semibold">Beatriz M.</div><div class="text-xs text-[color:var(--muted)]">Cliente · Google ✓</div></div></div></div>
+      <div class="reveal card p-7"><div class="text-[color:var(--gold)] text-sm mb-3">★★★★★</div><p class="leading-relaxed">"A Dra. Cristiana entendeu exatamente o que eu queria. Meu rosto ficou renovado, mas continuo sendo eu. Nada de exageros."</p><div class="flex items-center gap-3 mt-6"><img src="https://i.pravatar.cc/80?img=31" class="w-11 h-11 rounded-full object-cover"><div><div class="font-semibold">Paciente CV</div><div class="text-xs text-[color:var(--muted)]">Protocolo facial · depoimento real</div></div></div></div>
+      <div class="reveal card p-7"><div class="text-[color:var(--gold)] text-sm mb-3">★★★★★</div><p class="leading-relaxed">"Fiz o Regenera Hair depois de meses angustiada com a queda. O acompanhamento com tricoscopia me deu segurança do primeiro dia."</p><div class="flex items-center gap-3 mt-6"><img src="https://i.pravatar.cc/80?img=23" class="w-11 h-11 rounded-full object-cover"><div><div class="font-semibold">Paciente CV</div><div class="text-xs text-[color:var(--muted)]">Terapia capilar · depoimento real</div></div></div></div>
+      <div class="reveal card p-7"><div class="text-[color:var(--gold)] text-sm mb-3">★★★★★</div><p class="leading-relaxed">"Ambiente sofisticado, atendimento humano de verdade. Voltei a me olhar no espelho com o sorriso que eu tinha perdido."</p><div class="flex items-center gap-3 mt-6"><img src="https://i.pravatar.cc/80?img=45" class="w-11 h-11 rounded-full object-cover"><div><div class="font-semibold">Paciente CV</div><div class="text-xs text-[color:var(--muted)]">Protocolo combinado · depoimento real</div></div></div></div>
     </div>
   </section>
 
   <section class="container py-24">
-    <div class="reveal card p-10 md:p-16 max-w-3xl mx-auto text-center relative overflow-hidden">
-      <div class="kicker mb-6 mx-auto">Condição especial</div>
-      <h2 class="display text-4xl md:text-5xl">Avaliação de pele <span class="rosetext">gratuita</span>.</h2>
-      <p class="text-[color:var(--muted)] mt-5 max-w-md mx-auto">Agende esta semana e ganhe uma avaliação completa + plano personalizado, sem compromisso.</p>
-      <a href="https://wa.me/5511900000000" class="btn btn-wa mt-8 text-lg">Quero minha avaliação grátis →</a>
+    <div class="reveal card p-10 md:p-16 max-w-3xl mx-auto text-center relative overflow-hidden" style="background:linear-gradient(180deg,#fff,#faf5ee)">
+      <div class="kicker mb-6 mx-auto">Vagas limitadas</div>
+      <h2 class="display text-4xl md:text-5xl">Sua <span class="rosetext">avaliação personalizada</span> começa aqui.</h2>
+      <p class="text-[color:var(--muted)] mt-5 max-w-md mx-auto">Anamnese completa, tricoscopia (quando indicado) e um plano de tratamento único para o seu caso — com toda a segurança e ética que você merece.</p>
+      <a href="${WA}" class="btn btn-wa mt-8 text-lg">Agendar minha avaliação →</a>
     </div>
   </section>
 
-  <section class="container py-12"><div class="reveal card p-8 flex flex-col sm:flex-row items-center gap-6 max-w-3xl mx-auto" style="border:1px dashed var(--rose)">
-    <div class="w-16 h-16 rounded-full flex items-center justify-center shrink-0 text-3xl" style="background:rgba(200,96,126,.12)">🌸</div>
-    <div><h3 class="serif text-2xl">Seu bem-estar em primeiro lugar</h3><p class="text-[color:var(--muted)] mt-1 leading-relaxed">Trabalhamos só com produtos e técnicas seguras, e respeitamos o seu tempo e o seu limite. Aqui você se cuida do seu jeito.</p></div>
+  <section class="container py-12"><div class="reveal card p-8 flex flex-col sm:flex-row items-center gap-6 max-w-3xl mx-auto" style="border:1px solid var(--nude);background:#fff">
+    <div class="w-16 h-16 rounded-full flex items-center justify-center shrink-0 text-3xl" style="background:rgba(201,163,107,.14);color:var(--rose2)">🤍</div>
+    <div><h3 class="serif text-2xl">Cada tratamento só após avaliação profissional</h3><p class="text-[color:var(--muted)] mt-1 leading-relaxed">Somos éticos e transparentes: nenhum protocolo é iniciado sem uma análise individual criteriosa. Sua segurança e o seu resultado vêm em primeiro lugar.</p></div>
   </div></section>
 
   <section id="faq" class="container py-24 max-w-3xl">
     <h2 class="reveal display text-5xl md:text-6xl mb-10 text-center">Perguntas frequentes</h2>
     <div class="reveal">
-      <details class="faq"><summary>A avaliação é gratuita? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Sim, a primeira avaliação é gratuita e sem compromisso. Você decide depois de conhecer o plano.</p></details>
-      <details class="faq"><summary>Os resultados são naturais? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Nosso foco é realçar sua beleza com naturalidade. Nada de exageros — respeitamos seus traços.</p></details>
-      <details class="faq"><summary>Dá pra parcelar? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Sim, parcelamos em até 12x no cartão, além de Pix e dinheiro com condição especial.</p></details>
-      <details class="faq"><summary>É seguro? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Sim. Profissionais qualificados, produtos de marca registrados e ambiente totalmente higienizado.</p></details>
-      <details class="faq"><summary>Quantas sessões preciso? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Depende do protocolo e do seu objetivo — explicamos tudo na avaliação.</p></details>
-      <details class="faq"><summary>Onde fica o espaço? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">[Endereço e bairro.] Ambiente acolhedor e de fácil acesso.</p></details>
+      <details class="faq"><summary>Como funciona a avaliação? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">A avaliação é personalizada e mediante agendamento. Inclui anamnese completa, exame da pele e/ou tricoscopia capilar, e o planejamento do protocolo ideal para o seu caso.</p></details>
+      <details class="faq"><summary>Os resultados são naturais? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Sim. Nosso compromisso é realçar sua beleza, nunca modificá-la. Os protocolos são calibrados para entregar resultados harmônicos e sutis.</p></details>
+      <details class="faq"><summary>Os procedimentos doem? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Utilizamos técnicas modernas e recursos de conforto (anestésicos tópicos, protocolos suaves) para que cada sessão seja tranquila. Sensações variam conforme o tratamento e são sempre discutidas antes.</p></details>
+      <details class="faq"><summary>Como são elaborados os planos e valores? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Cada plano é elaborado após a avaliação, conforme a necessidade individual. Oferecemos condições especiais para tratamentos combinados.</p></details>
+      <details class="faq"><summary>Existe garantia de resultado? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Não prometemos resultados absolutos — seria antiético. Garantimos protocolos seguros, personalizados, acompanhamento durante toda a jornada e total transparência em cada etapa.</p></details>
+      <details class="faq"><summary>Atendem homens? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Sim. Atendemos homens e mulheres a partir dos 25 anos, com protocolos específicos como Regenera Barba, saúde capilar masculina e rejuvenescimento facial.</p></details>
+      <details class="faq"><summary>Onde fica a clínica? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Atendimento mediante agendamento. O endereço completo é enviado após a confirmação da sua avaliação pelo WhatsApp.</p></details>
     </div>
   </section>
 
   <section class="container py-20">
-    <div class="reveal max-w-xl mx-auto text-center"><div class="kicker mb-6 mx-auto">Agende sua avaliação</div><h2 class="display text-5xl md:text-6xl">Cuide-se hoje.</h2><p class="text-[color:var(--muted)] mt-5">Preencha abaixo ou chame no WhatsApp. A gente retorna pra marcar seu melhor horário.</p></div>
+    <div class="reveal max-w-xl mx-auto text-center"><div class="kicker mb-6 mx-auto">Agende sua avaliação</div><h2 class="display text-5xl md:text-6xl">Comece agora.</h2><p class="text-[color:var(--muted)] mt-5">Preencha abaixo ou fale direto no WhatsApp — retornamos para marcar o melhor horário para você.</p></div>
     <form class="reveal card p-7 md:p-9 max-w-xl mx-auto mt-10 space-y-4" onsubmit="return false">
       <input class="field" placeholder="Seu nome">
       <input class="field" placeholder="WhatsApp (com DDD)">
-      <textarea class="field" rows="3" placeholder="O que você gostaria de tratar?"></textarea>
-      <a href="https://wa.me/5511900000000" class="btn btn-wa w-full text-lg">Agendar pelo WhatsApp →</a>
+      <textarea class="field" rows="3" placeholder="Conte-nos o que você gostaria de tratar (facial, corporal ou capilar)"></textarea>
+      <a href="${WA}" class="btn btn-wa w-full text-lg">Agendar pelo WhatsApp →</a>
     </form>
   </section>
 
   <footer class="border-t border-[color:var(--line)]" style="background:#fff">
     <div class="container py-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
       <div class="lg:col-span-2">
-        <div class="flex items-center gap-3"><span class="mark">E</span><span class="serif text-xl">[Seu Espaço]</span></div>
-        <p class="text-sm text-[color:var(--muted)] mt-4 max-w-sm leading-relaxed">Estética facial e corporal com foco no natural, em [sua cidade]. Cuidado, segurança e sofisticação.</p>
+        <div class="flex items-center gap-3"><img src="${LOGO}" alt="CV Estética" class="mark"><span class="serif text-lg">Dra. Cristiana Valente</span></div>
+        <p class="text-sm text-[color:var(--muted)] mt-4 max-w-sm leading-relaxed">Estética facial, corporal e capilar com protocolos personalizados, tecnologia avançada e foco em resultados naturais. Saúde e autoestima começam pelo cuidado.</p>
       </div>
       <div>
         <p class="text-xs font-bold uppercase tracking-wider mb-4">Navegação</p>
         <ul class="space-y-2 text-sm text-[color:var(--muted)]">
-          <li><a href="#procedimentos" class="hover:text-[color:var(--ink)]">Procedimentos</a></li>
-          <li><a href="#resultados" class="hover:text-[color:var(--ink)]">Resultados</a></li>
-          <li><a href="#avaliacoes" class="hover:text-[color:var(--ink)]">Avaliações</a></li>
+          <li><a href="#protocolos" class="hover:text-[color:var(--ink)]">Protocolos</a></li>
+          <li><a href="#exclusivos" class="hover:text-[color:var(--ink)]">Exclusivos CV</a></li>
+          <li><a href="#sobre" class="hover:text-[color:var(--ink)]">Sobre a Dra.</a></li>
+          <li><a href="#avaliacoes" class="hover:text-[color:var(--ink)]">Depoimentos</a></li>
           <li><a href="#faq" class="hover:text-[color:var(--ink)]">FAQ</a></li>
         </ul>
       </div>
       <div>
         <p class="text-xs font-bold uppercase tracking-wider mb-4">Contato</p>
         <ul class="space-y-2 text-sm text-[color:var(--muted)]">
-          <li>📍 [Endereço, bairro — cidade]</li>
-          <li>📱 (11) 90000-0000</li>
-          <li>📷 @seuespaco</li>
+          <li>📱 <a href="${WA}" class="hover:text-[color:var(--ink)]">(41) 98783-7610</a></li>
+          <li>📧 <a href="mailto:contato@dracristianavalente.com.br" class="hover:text-[color:var(--ink)]">contato@dracristianavalente.com.br</a></li>
+          <li>📷 <a href="https://instagram.com/cristianavalente.estetica" target="_blank" rel="noreferrer" class="hover:text-[color:var(--ink)]">@cristianavalente.estetica</a></li>
+          <li>🌐 <a href="https://www.cristianavalente.com.br" target="_blank" rel="noreferrer" class="hover:text-[color:var(--ink)]">cristianavalente.com.br</a></li>
         </ul>
       </div>
     </div>
-    <div class="container pb-8"><div class="hair mb-6"></div><div class="flex flex-col sm:flex-row justify-between gap-3 text-xs text-[color:var(--muted)]"><span>© 2026 [Seu Espaço]. Todos os direitos reservados.</span><span>Política de Privacidade · Termos</span></div></div>
+    <div class="container pb-8"><div class="hair mb-6"></div><div class="flex flex-col sm:flex-row justify-between gap-3 text-xs text-[color:var(--muted)]"><span>© 2026 Dra. Cristiana Valente Estética. Todos os direitos reservados.</span><span>Política de Privacidade · Termos</span></div></div>
   </footer>
 </div>
 
-<a href="https://wa.me/5511900000000" class="wa" target="_blank" rel="noreferrer"><span class="ic">●</span><span>Falar no WhatsApp</span></a>
-
-
+<a href="${WA}" class="wa" target="_blank" rel="noreferrer"><span class="ic">●</span><span>Falar no WhatsApp</span></a>
 `;
-export const Route = createFileRoute("/")({ head: () => ({ meta: [ { title: "[Seu Espaço] — Estética que realça sua beleza" } ] }), component: Index });
+
+export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Dra. Cristiana Valente Estética — Saúde, beleza e autoestima" },
+      { name: "description", content: "Estética facial, corporal e capilar com protocolos personalizados, tecnologia avançada e resultados naturais. Agende sua avaliação com a Dra. Cristiana Valente." },
+      { property: "og:title", content: "Dra. Cristiana Valente Estética" },
+      { property: "og:description", content: "Protocolos faciais, corporais e capilares personalizados. Sofisticação, ciência e resultados naturais." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: Index,
+});
+
 function Index(){
   useEffect(() => {
     const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}}),{threshold:0.12});
