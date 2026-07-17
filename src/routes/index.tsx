@@ -298,7 +298,7 @@ const BODY = `
           <li>📱 <a href="${WA}" class="hover:text-[color:var(--ink)]">(41) 98783-7610</a></li>
           <li>📧 <a href="mailto:contato@dracristianavalente.com.br" class="hover:text-[color:var(--ink)]">contato@dracristianavalente.com.br</a></li>
           <li>📷 <a href="https://instagram.com/cristianavalente.estetica" target="_blank" rel="noreferrer" class="hover:text-[color:var(--ink)]">@cristianavalente.estetica</a></li>
-          <li>🌐 <a href="https://www.cristianavalente.com.br" target="_blank" rel="noreferrer" class="hover:text-[color:var(--ink)]">cristianavalente.com.br</a></li>
+          <li>🌐 <a href="https://www.dracristianavalente.com.br" target="_blank" rel="noreferrer" class="hover:text-[color:var(--ink)]">dracristianavalente.com.br</a></li>
         </ul>
       </div>
     </div>
