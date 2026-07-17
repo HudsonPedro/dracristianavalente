@@ -7,6 +7,7 @@ import mulherImg from "../assets/mulher.jpeg.asset.json";
 import homemImg from "../assets/homem.jpeg.asset.json";
 import faceImg from "../assets/face.jpeg.asset.json";
 import mitosImg from "../assets/mitos.jpeg.asset.json";
+import ambienteImg from "../assets/ambiente.png.asset.json";
 
 const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Jost:wght@400;500;600;700&display=swap');
 
