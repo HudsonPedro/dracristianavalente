@@ -1,6 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 import logo from "../assets/logo.png.asset.json";
+import draCristiana from "../assets/DraCristianaValente.jpeg.asset.json";
+import suaPele from "../assets/SuaPele.jpeg.asset.json";
+import mulherImg from "../assets/mulher.jpeg.asset.json";
+import homemImg from "../assets/homem.jpeg.asset.json";
+import faceImg from "../assets/face.jpeg.asset.json";
+import mitosImg from "../assets/mitos.jpeg.asset.json";
 
 const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Jost:wght@400;500;600;700&display=swap');
 
@@ -51,6 +57,12 @@ const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital
 
 const WA = "https://wa.me/5541987837610?text=Ol%C3%A1%20Dra.%20Cristiana%2C%20gostaria%20de%20agendar%20minha%20avalia%C3%A7%C3%A3o.";
 const LOGO = logo.url;
+const IMG_DRA = draCristiana.url;
+const IMG_SUAPELE = suaPele.url;
+const IMG_MULHER = mulherImg.url;
+const IMG_HOMEM = homemImg.url;
+const IMG_FACE = faceImg.url;
+const IMG_MITOS = mitosImg.url;
 
 const BODY = `
 <div class="cine"><div class="l l1"></div><div class="l l2"></div></div>
@@ -83,7 +95,7 @@ const BODY = `
         <div><div class="text-[color:var(--gold)] text-sm">★★★★★</div><div class="text-xs text-[color:var(--muted)]">Centenas de pacientes atendidas com excelência</div></div>
       </div>
     </div>
-    <div class="reveal frame"><img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=1000&q=80" alt="Tratamento estético facial na CV Estética" class="w-full h-[540px] object-cover"></div>
+    <div class="reveal frame"><img src="${IMG_SUAPELE}" alt="Tratamento estético facial na CV Estética" class="w-full h-[540px] object-cover"></div>
   </header>
 
   <section class="border-y border-[color:var(--line)]" style="background:#fff"><div class="container py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center text-sm">
@@ -180,15 +192,15 @@ const BODY = `
   <section id="resultados" class="container py-24">
     <div class="reveal max-w-2xl"><div class="kicker mb-6">Ambiente e cuidado</div><h2 class="display text-5xl md:text-6xl">Cada detalhe pensado para você.</h2></div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14">
-      <div class="reveal frame"><img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=80" class="w-full h-56 object-cover" alt="Sala de tratamento"></div>
-      <div class="reveal frame"><img src="https://images.unsplash.com/photo-1552693673-1bf958298935?w=600&q=80" class="w-full h-56 object-cover" alt="Tratamento facial"></div>
-      <div class="reveal frame"><img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&q=80" class="w-full h-56 object-cover" alt="Cuidado com a pele"></div>
-      <div class="reveal frame"><img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=600&q=80" class="w-full h-56 object-cover" alt="Terapia capilar"></div>
+      <div class="reveal frame"><img src="${IMG_MULHER}" class="w-full h-56 object-cover" alt="Sala de tratamento"></div>
+      <div class="reveal frame"><img src="${IMG_HOMEM}" class="w-full h-56 object-cover" alt="Tratamento facial"></div>
+      <div class="reveal frame"><img src="${IMG_FACE}" class="w-full h-56 object-cover" alt="Cuidado com a pele"></div>
+      <div class="reveal frame"><img src="${IMG_MITOS}" class="w-full h-56 object-cover" alt="Terapia capilar"></div>
     </div>
   </section>
 
   <section id="sobre" class="container py-24 grid lg:grid-cols-2 gap-16 items-center">
-    <div class="reveal frame"><img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=900&q=80" alt="Dra. Cristiana Valente" class="w-full h-[560px] object-cover"></div>
+    <div class="reveal frame"><img src="${IMG_DRA}" alt="Dra. Cristiana Valente" class="w-full h-[560px] object-cover"></div>
     <div class="reveal">
       <div class="kicker mb-6">Dra. Cristiana Valente</div>
       <h2 class="display text-5xl md:text-6xl">Enfermeira Esteta com<br>olhar para o <span class="italic rosetext">natural</span>.</h2>
@@ -245,7 +257,8 @@ const BODY = `
       <details class="faq"><summary>Como são elaborados os planos e valores? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Cada plano é elaborado após a avaliação, conforme a necessidade individual. Oferecemos condições especiais para tratamentos combinados.</p></details>
       <details class="faq"><summary>Existe garantia de resultado? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Não prometemos resultados absolutos — seria antiético. Garantimos protocolos seguros, personalizados, acompanhamento durante toda a jornada e total transparência em cada etapa.</p></details>
       <details class="faq"><summary>Atendem homens? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Sim. Atendemos homens e mulheres a partir dos 25 anos, com protocolos específicos como Regenera Barba, saúde capilar masculina e rejuvenescimento facial.</p></details>
-      <details class="faq"><summary>Onde fica a clínica? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Atendimento mediante agendamento. O endereço completo é enviado após a confirmação da sua avaliação pelo WhatsApp.</p></details>
+      <details class="faq"><summary>Onde fica a clínica? <span class="pl">+</span></summary><div class="pb-5 text-[color:var(--muted)] leading-relaxed space-y-3"><p>Atendimento <strong>mediante agendamento</strong> em duas unidades em Curitiba – Paraná:</p><p><strong>LA BEAUTÉ</strong> — Avenida Sete de Setembro, 4476, 14º andar, Salas 1405/1406, Ed. Business Tower — Batel.</p><p><strong>MAGMA CONSULTÓRIOS</strong> — Av. Cândido de Abreu, 427, 7º andar (ao lado do Bradesco) — Centro Cívico.</p><p>O endereço da sua avaliação é confirmado após o agendamento pelo WhatsApp.</p></div></details>
+      <details class="faq"><summary>Qual é o horário de atendimento? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Atendimento <strong>mediante agendamento prévio</strong>. Fale conosco pelo WhatsApp e reservamos o melhor horário para você, com toda a atenção que sua avaliação merece.</p></details>
     </div>
   </section>
 
@@ -264,6 +277,8 @@ const BODY = `
       <div class="lg:col-span-2">
         <div class="flex items-center gap-3"><img src="${LOGO}" alt="CV Estética" class="mark"><span class="serif text-lg">Dra. Cristiana Valente</span></div>
         <p class="text-sm text-[color:var(--muted)] mt-4 max-w-sm leading-relaxed">Estética facial, corporal e capilar com protocolos personalizados, tecnologia avançada e foco em resultados naturais. Saúde e autoestima começam pelo cuidado.</p>
+        <p class="text-xs text-[color:var(--muted)] mt-4"><strong class="text-[color:var(--ink)]">COREN-PR 451.408</strong> · Enfermeira Esteta · Especialista em Saúde Pública e Estética Avançada</p>
+        <p class="text-xs text-[color:var(--muted)] mt-2"><strong class="text-[color:var(--ink)]">Atendimento:</strong> mediante agendamento — Curitiba/PR (Batel · Centro Cívico)</p>
       </div>
       <div>
         <p class="text-xs font-bold uppercase tracking-wider mb-4">Navegação</p>
