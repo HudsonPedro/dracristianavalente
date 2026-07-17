@@ -95,7 +95,7 @@ const BODY = `
         <div><div class="text-[color:var(--gold)] text-sm">★★★★★</div><div class="text-xs text-[color:var(--muted)]">Centenas de pacientes atendidas com excelência</div></div>
       </div>
     </div>
-    <div class="reveal frame"><img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=1000&q=80" alt="Tratamento estético facial na CV Estética" class="w-full h-[540px] object-cover"></div>
+    <div class="reveal frame"><img src="${IMG_SUAPELE}" alt="Tratamento estético facial na CV Estética" class="w-full h-[540px] object-cover"></div>
   </header>
 
   <section class="border-y border-[color:var(--line)]" style="background:#fff"><div class="container py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center text-sm">
@@ -192,15 +192,15 @@ const BODY = `
   <section id="resultados" class="container py-24">
     <div class="reveal max-w-2xl"><div class="kicker mb-6">Ambiente e cuidado</div><h2 class="display text-5xl md:text-6xl">Cada detalhe pensado para você.</h2></div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14">
-      <div class="reveal frame"><img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=80" class="w-full h-56 object-cover" alt="Sala de tratamento"></div>
-      <div class="reveal frame"><img src="https://images.unsplash.com/photo-1552693673-1bf958298935?w=600&q=80" class="w-full h-56 object-cover" alt="Tratamento facial"></div>
-      <div class="reveal frame"><img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&q=80" class="w-full h-56 object-cover" alt="Cuidado com a pele"></div>
-      <div class="reveal frame"><img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=600&q=80" class="w-full h-56 object-cover" alt="Terapia capilar"></div>
+      <div class="reveal frame"><img src="${IMG_MULHER}" class="w-full h-56 object-cover" alt="Sala de tratamento"></div>
+      <div class="reveal frame"><img src="${IMG_HOMEM}" class="w-full h-56 object-cover" alt="Tratamento facial"></div>
+      <div class="reveal frame"><img src="${IMG_FACE}" class="w-full h-56 object-cover" alt="Cuidado com a pele"></div>
+      <div class="reveal frame"><img src="${IMG_MITOS}" class="w-full h-56 object-cover" alt="Terapia capilar"></div>
     </div>
   </section>
 
   <section id="sobre" class="container py-24 grid lg:grid-cols-2 gap-16 items-center">
-    <div class="reveal frame"><img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=900&q=80" alt="Dra. Cristiana Valente" class="w-full h-[560px] object-cover"></div>
+    <div class="reveal frame"><img src="${IMG_DRA}" alt="Dra. Cristiana Valente" class="w-full h-[560px] object-cover"></div>
     <div class="reveal">
       <div class="kicker mb-6">Dra. Cristiana Valente</div>
       <h2 class="display text-5xl md:text-6xl">Enfermeira Esteta com<br>olhar para o <span class="italic rosetext">natural</span>.</h2>
