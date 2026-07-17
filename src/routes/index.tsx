@@ -302,7 +302,7 @@ const BODY = `
         </ul>
       </div>
     </div>
-    <div class="container pb-8"><div class="hair mb-6"></div><div class="flex flex-col sm:flex-row justify-between gap-3 text-xs text-[color:var(--muted)]"><span>© 2026 Dra. Cristiana Valente Estética. Todos os direitos reservados.</span><span>Política de Privacidade · Termos</span></div></div>
+    <div class="container pb-8"><div class="hair mb-6"></div><div class="flex flex-col sm:flex-row justify-between gap-3 text-xs text-[color:var(--muted)]"><span>© 2026 Dra. Cristiana Valente Estética. Todos os direitos reservados.</span><span><a href="/politica-de-privacidade" class="hover:text-[color:var(--ink)]">Política de Privacidade</a> · <a href="/termos" class="hover:text-[color:var(--ink)]">Termos</a></span></div></div>
   </footer>
 </div>
 
