@@ -194,10 +194,10 @@ const BODY = `
   <section id="resultados" class="container py-24">
     <div class="reveal max-w-2xl"><div class="kicker mb-6">Ambiente e cuidado</div><h2 class="display text-5xl md:text-6xl">Cada detalhe pensado para você.</h2></div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14">
-      <div class="reveal frame relative"><img src="${IMG_MULHER}" class="w-full h-56 object-cover" alt="Tratamento capilar feminino"><div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-4"><span class="text-white text-sm font-semibold serif">LA BEAUTÉ · Batel</span></div></div>
-      <div class="reveal frame relative"><img src="${IMG_HOMEM}" class="w-full h-56 object-cover" alt="Tratamento capilar masculino"><div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-4"><span class="text-white text-sm font-semibold serif">MAGMA CONSULTÓRIOS · Centro Cívico</span></div></div>
-      <div class="reveal frame relative"><img src="${IMG_FACE}" class="w-full h-56 object-cover" alt="Cuidado com a pele"><div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-4"><span class="text-white text-sm font-semibold serif">LA BEAUTÉ · Batel</span></div></div>
-      <div class="reveal frame relative"><img src="${IMG_MITOS}" class="w-full h-56 object-cover" alt="Terapia capilar"><div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-4"><span class="text-white text-sm font-semibold serif">MAGMA CONSULTÓRIOS · Centro Cívico</span></div></div>
+      <div class="reveal frame"><img src="${IMG_MULHER}" class="w-full h-56 object-cover" alt="Tratamento capilar feminino"></div>
+      <div class="reveal frame"><img src="${IMG_HOMEM}" class="w-full h-56 object-cover" alt="Tratamento capilar masculino"></div>
+      <div class="reveal frame"><img src="${IMG_FACE}" class="w-full h-56 object-cover" alt="Cuidado com a pele"></div>
+      <div class="reveal frame"><img src="${IMG_MITOS}" class="w-full h-56 object-cover" alt="Terapia capilar"></div>
     </div>
   </section>
 
