@@ -7,6 +7,7 @@ import mulherImg from "../assets/mulher.jpeg.asset.json";
 import homemImg from "../assets/homem.jpeg.asset.json";
 import faceImg from "../assets/face.jpeg.asset.json";
 import mitosImg from "../assets/mitos.jpeg.asset.json";
+import ambienteImg from "../assets/ambiente.png.asset.json";
 
 const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Jost:wght@400;500;600;700&display=swap');
 
@@ -63,6 +64,7 @@ const IMG_MULHER = mulherImg.url;
 const IMG_HOMEM = homemImg.url;
 const IMG_FACE = faceImg.url;
 const IMG_MITOS = mitosImg.url;
+const IMG_AMBIENTE = ambienteImg.url;
 
 const BODY = `
 <div class="cine"><div class="l l1"></div><div class="l l2"></div></div>
@@ -184,7 +186,7 @@ const BODY = `
           </div>
           <a href="${WA}" class="btn btn-wa mt-10">Quero saber se sou indicada(o) →</a>
         </div>
-        <div class="frame"><img src="https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=900&q=80" alt="Protocolo exclusivo CV Estética" class="w-full h-[520px] object-cover"></div>
+        <div class="frame"><img src="${IMG_AMBIENTE}" alt="Dra. Cristiana Valente no ambiente da clínica CV Estética" class="w-full h-[520px] object-cover"></div>
       </div>
     </div>
   </section>
@@ -192,10 +194,10 @@ const BODY = `
   <section id="resultados" class="container py-24">
     <div class="reveal max-w-2xl"><div class="kicker mb-6">Ambiente e cuidado</div><h2 class="display text-5xl md:text-6xl">Cada detalhe pensado para você.</h2></div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14">
-      <div class="reveal frame"><img src="${IMG_MULHER}" class="w-full h-56 object-cover" alt="Sala de tratamento"></div>
-      <div class="reveal frame"><img src="${IMG_HOMEM}" class="w-full h-56 object-cover" alt="Tratamento facial"></div>
-      <div class="reveal frame"><img src="${IMG_FACE}" class="w-full h-56 object-cover" alt="Cuidado com a pele"></div>
-      <div class="reveal frame"><img src="${IMG_MITOS}" class="w-full h-56 object-cover" alt="Terapia capilar"></div>
+      <div class="reveal frame relative"><img src="${IMG_MULHER}" class="w-full h-56 object-cover" alt="Tratamento capilar feminino"><div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-4"><span class="text-white text-sm font-semibold serif">LA BEAUTÉ · Batel</span></div></div>
+      <div class="reveal frame relative"><img src="${IMG_HOMEM}" class="w-full h-56 object-cover" alt="Tratamento capilar masculino"><div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-4"><span class="text-white text-sm font-semibold serif">MAGMA CONSULTÓRIOS · Centro Cívico</span></div></div>
+      <div class="reveal frame relative"><img src="${IMG_FACE}" class="w-full h-56 object-cover" alt="Cuidado com a pele"><div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-4"><span class="text-white text-sm font-semibold serif">LA BEAUTÉ · Batel</span></div></div>
+      <div class="reveal frame relative"><img src="${IMG_MITOS}" class="w-full h-56 object-cover" alt="Terapia capilar"><div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-4"><span class="text-white text-sm font-semibold serif">MAGMA CONSULTÓRIOS · Centro Cívico</span></div></div>
     </div>
   </section>
 
@@ -257,7 +259,7 @@ const BODY = `
       <details class="faq"><summary>Como são elaborados os planos e valores? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Cada plano é elaborado após a avaliação, conforme a necessidade individual. Oferecemos condições especiais para tratamentos combinados.</p></details>
       <details class="faq"><summary>Existe garantia de resultado? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Não prometemos resultados absolutos — seria antiético. Garantimos protocolos seguros, personalizados, acompanhamento durante toda a jornada e total transparência em cada etapa.</p></details>
       <details class="faq"><summary>Atendem homens? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Sim. Atendemos homens e mulheres a partir dos 25 anos, com protocolos específicos como Regenera Barba, saúde capilar masculina e rejuvenescimento facial.</p></details>
-      <details class="faq"><summary>Onde fica a clínica? <span class="pl">+</span></summary><div class="pb-5 text-[color:var(--muted)] leading-relaxed space-y-3"><p>Atendimento <strong>mediante agendamento</strong> em duas unidades em Curitiba – Paraná:</p><p><strong>LA BEAUTÉ</strong> — Avenida Sete de Setembro, 4476, 14º andar, Salas 1405/1406, Ed. Business Tower — Batel.</p><p><strong>MAGMA CONSULTÓRIOS</strong> — Av. Cândido de Abreu, 427, 7º andar (ao lado do Bradesco) — Centro Cívico.</p><p>O endereço da sua avaliação é confirmado após o agendamento pelo WhatsApp.</p></div></details>
+      <details class="faq"><summary>Onde fica a clínica? <span class="pl">+</span></summary><div class="pb-5 text-[color:var(--muted)] leading-relaxed space-y-3"><p>Atendimento <strong>mediante agendamento</strong> em duas unidades em Curitiba – Paraná:</p><p><strong>LA BEAUTÉ</strong> — Avenida Sete de Setembro, 4476, 14º Andar, Salas 1405/1406, Ed. Business Tower, Batel, Curitiba – Paraná.</p><p><strong>MAGMA CONSULTÓRIOS</strong> — Av. Cândido de Abreu, 427, 7º Andar, ao lado do Bradesco, Centro Cívico, Curitiba – Paraná.</p><p>O endereço da sua avaliação é confirmado após o agendamento pelo WhatsApp.</p></div></details>
       <details class="faq"><summary>Qual é o horário de atendimento? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Atendimento <strong>mediante agendamento prévio</strong>. Fale conosco pelo WhatsApp e reservamos o melhor horário para você, com toda a atenção que sua avaliação merece.</p></details>
     </div>
   </section>
@@ -296,7 +298,7 @@ const BODY = `
           <li>📱 <a href="${WA}" class="hover:text-[color:var(--ink)]">(41) 98783-7610</a></li>
           <li>📧 <a href="mailto:contato@dracristianavalente.com.br" class="hover:text-[color:var(--ink)]">contato@dracristianavalente.com.br</a></li>
           <li>📷 <a href="https://instagram.com/cristianavalente.estetica" target="_blank" rel="noreferrer" class="hover:text-[color:var(--ink)]">@cristianavalente.estetica</a></li>
-          <li>🌐 <a href="https://www.cristianavalente.com.br" target="_blank" rel="noreferrer" class="hover:text-[color:var(--ink)]">cristianavalente.com.br</a></li>
+          <li>🌐 <a href="https://www.dracristianavalente.com.br" target="_blank" rel="noreferrer" class="hover:text-[color:var(--ink)]">dracristianavalente.com.br</a></li>
         </ul>
       </div>
     </div>
