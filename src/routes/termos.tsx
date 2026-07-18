@@ -30,7 +30,7 @@ const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital
   @media (max-width:640px){.legal h1{font-size:2.1rem}.legal{padding:40px 0 60px}}
 `;
 
-const WA = "https://wa.me/5541987837610?text=Ol%C3%A1%20Dra.%20Cristiana%2C%20gostaria%20de%20agendar%20minha%20avalia%C3%A7%C3%A3o.";
+const WA = "https://wa.me/5541991599558?text=Ol%C3%A1%20Dra.%20Cristiana%2C%20gostaria%20de%20agendar%20minha%20avalia%C3%A7%C3%A3o.";
 
 const CONTENT = `
 <main class="wrap">
