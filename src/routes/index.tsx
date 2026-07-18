@@ -351,22 +351,24 @@ function Index() {
     };
     addEventListener("scroll", onScroll, { passive: true });
 
-    // Mágica para capturar o clique nas imagens do grid do BODY injetado
-    const handleImageClick = (e: Event) => {
+    return () => {
+      io.disconnect();
+      removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
+  // Escuta global de cliques corrigida: funciona sempre, independente de atualizações de estado
+  useEffect(() => {
+    const handleGlobalClick = (e: MouseEvent) => {
       const target = e.target as HTMLImageElement;
+      // Verifica se é uma imagem clicada especificamente dentro da seção de fotos
       if (target && target.tagName === "IMG" && target.closest("#resultados")) {
         setActiveImage(target.src);
       }
     };
 
-    const section = document.getElementById("resultados");
-    if (section) section.addEventListener("click", handleImageClick);
-
-    return () => {
-      io.disconnect();
-      removeEventListener("scroll", onScroll);
-      if (section) section.removeEventListener("click", handleImageClick);
-    };
+    document.addEventListener("click", handleGlobalClick);
+    return () => document.removeEventListener("click", handleGlobalClick);
   }, []);
 
   return (
@@ -374,24 +376,27 @@ function Index() {
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div dangerouslySetInnerHTML={{ __html: BODY }} />
 
-      {/* Estrutura do Popup Inteligente em Tailwind CSS */}
+      {/* Estrutura do Popup Inteligente e Fluido */}
       {activeImage && (
         <div 
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 transition-opacity duration-300 animate-fade-in"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 transition-opacity duration-300"
           onClick={() => setActiveImage(null)}
+          style={{ cursor: "zoom-out" }}
         >
-          <div className="relative max-w-4xl max-h-[90vh] bg-transparent rounded-xl overflow-hidden shadow-2xl">
+          <div className="relative max-w-4xl max-h-[90vh] bg-transparent rounded-xl overflow-hidden shadow-2xl flex items-center justify-center">
             <button 
-              className="absolute top-4 right-4 z-[101] bg-black/60 text-white rounded-full w-10 h-10 flex items-center justify-center text-2xl font-bold hover:bg-black/90 transition shadow-md"
+              className="fixed top-6 right-6 z-[110] bg-black/60 text-white rounded-full w-12 h-12 flex items-center justify-center text-3xl font-light hover:bg-black/95 transition shadow-lg border border-white/10"
               onClick={() => setActiveImage(null)}
+              style={{ cursor: "pointer" }}
             >
               ×
             </button>
             <img 
               src={activeImage} 
               alt="Visualização expandida" 
-              className="w-auto h-auto max-w-full max-h-[85vh] object-contain rounded-lg border border-white/10"
-              onClick={(e) => e.stopPropagation()} // impede fechar ao clicar na imagem
+              className="w-auto h-auto max-w-full max-h-[85vh] object-contain rounded-lg border border-white/10 shadow-2xl animate-in zoom-in-95 duration-200"
+              onClick={(e) => e.stopPropagation()} // impede fechar ao clicar no meio da imagem
+              style={{ cursor: "default" }}
             />
           </div>
         </div>
@@ -399,4 +404,5 @@ function Index() {
     </>
   );
 }
+
 
