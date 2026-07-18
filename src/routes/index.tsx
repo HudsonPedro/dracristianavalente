@@ -56,7 +56,7 @@ const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital
   @media (prefers-reduced-motion:reduce){.l1,.l2,.wa::before{animation:none}.reveal.in{animation:none}}
 `;
 
-const WA = "https://wa.me/5541987837610?text=Ol%C3%A1%20Dra.%20Cristiana%2C%20gostaria%20de%20agendar%20minha%20avalia%C3%A7%C3%A3o.";
+const WA = "https://wa.me/5541991599558?text=Ol%C3%A1%20Dra.%20Cristiana%2C%20gostaria%20de%20agendar%20minha%20avalia%C3%A7%C3%A3o.";
 const LOGO = logo;
 const IMG_DRA = draCristiana;
 const IMG_SUAPELE = suaPele;
@@ -295,7 +295,7 @@ const BODY = `
       <div>
         <p class="text-xs font-bold uppercase tracking-wider mb-4">Contato</p>
         <ul class="space-y-2 text-sm text-[color:var(--muted)]">
-          <li>📱 <a href="${WA}" class="hover:text-[color:var(--ink)]">(41) 98783-7610</a></li>
+          <li>📱 <a href="${WA}" class="hover:text-[color:var(--ink)]">(41) 99159-9558</a></li>
           <li>📧 <a href="mailto:contato@dracristianavalente.com.br" class="hover:text-[color:var(--ink)]">contato@dracristianavalente.com.br</a></li>
           <li>📷 <a href="https://instagram.com/cristianavalente.estetica" target="_blank" rel="noreferrer" class="hover:text-[color:var(--ink)]">@cristianavalente.estetica</a></li>
           <li>🌐 <a href="https://www.dracristianavalente.com.br" target="_blank" rel="noreferrer" class="hover:text-[color:var(--ink)]">dracristianavalente.com.br</a></li>
