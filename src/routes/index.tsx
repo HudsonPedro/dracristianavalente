@@ -1,13 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
-import logo from "../assets/logo.png.asset.json";
-import draCristiana from "../assets/DraCristianaValente.jpeg.asset.json";
-import suaPele from "../assets/SuaPele.jpeg.asset.json";
-import mulherImg from "../assets/mulher.jpeg.asset.json";
-import homemImg from "../assets/homem.jpeg.asset.json";
-import faceImg from "../assets/face.jpeg.asset.json";
-import mitosImg from "../assets/mitos.jpeg.asset.json";
-import ambienteImg from "../assets/ambiente.png.asset.json";
+import logo from "../assets/logo.png";
+import draCristiana from "../assets/DraCristianaValente.jpeg";
+import suaPele from "../assets/SuaPele.jpeg";
+import mulherImg from "../assets/mulher.jpeg";
+import homemImg from "../assets/homem.jpeg";
+import faceImg from "../assets/face.jpeg";
+import mitosImg from "../assets/mitos.jpeg";
+import ambienteImg from "../assets/ambiente.png";
 
 const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Jost:wght@400;500;600;700&display=swap');
 
