@@ -318,6 +318,9 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: "Estética facial, corporal e capilar com protocolos personalizados, tecnologia avançada e resultados naturais. Agende sua avaliação com a Dra. Cristiana Valente." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { tag: "link", rel: "icon", type: "image/png", href: "/assets/logo.png" },
+    ],
+
     ],
   }),
   component: Index,
