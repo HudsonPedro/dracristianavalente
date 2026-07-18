@@ -30,7 +30,7 @@ const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital
   @media (max-width:640px){.legal h1{font-size:2.1rem}.legal{padding:40px 0 60px}}
 `;
 
-const WA = "https://wa.me/5541987837610?text=Ol%C3%A1%20Dra.%20Cristiana%2C%20gostaria%20de%20agendar%20minha%20avalia%C3%A7%C3%A3o.";
+const WA = "https://wa.me/5541991599558?text=Ol%C3%A1%20Dra.%20Cristiana%2C%20gostaria%20de%20agendar%20minha%20avalia%C3%A7%C3%A3o.";
 
 const CONTENT = `
 <main class="wrap">
@@ -97,7 +97,7 @@ const CONTENT = `
         <li>Solicitar portabilidade dos dados.</li>
         <li>Ser informado sobre o compartilhamento de dados.</li>
       </ul>
-      <p>Para exercer seus direitos, entre em contato pelo e-mail <a href="mailto:contato@dracristianavalente.com.br">contato@dracristianavalente.com.br</a> ou pelo WhatsApp <a href="${WA}" target="_blank" rel="noreferrer">(41) 98783-7610</a>.</p>
+      <p>Para exercer seus direitos, entre em contato pelo e-mail <a href="mailto:contato@dracristianavalente.com.br">contato@dracristianavalente.com.br</a> ou pelo WhatsApp <a href="${WA}" target="_blank" rel="noreferrer">(41) 99159-9558</a>.</p>
 
       <h2>8. Retenção e eliminação</h2>
       <p>Mantemos seus dados pelo tempo necessário para atender às finalidades descritas e cumprir obrigações legais (prontuários médicos, por exemplo). Após esse período, os dados são excluídos ou anonimizados de forma segura.</p>
@@ -108,7 +108,7 @@ const CONTENT = `
       <h2>10. Contato</h2>
       <p>Dra. Cristiana Valente Estética<br>
       E-mail: <a href="mailto:contato@dracristianavalente.com.br">contato@dracristianavalente.com.br</a><br>
-      WhatsApp: <a href="${WA}" target="_blank" rel="noreferrer">(41) 98783-7610</a><br>
+      WhatsApp: <a href="${WA}" target="_blank" rel="noreferrer">(41) 99159-9558</a><br>
       COREN-PR 451.408</p>
     </article>
   </div>
