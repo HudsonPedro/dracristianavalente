@@ -56,6 +56,8 @@ const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital
   @media (prefers-reduced-motion:reduce){.l1,.l2,.wa::before{animation:none}.reveal.in{animation:none}}
   #resultados img { cursor: pointer; transition: transform 0.2s; }
   #resultados img:hover { transform: scale(1.02); filter: brightness(0.95); }
+  #exclusivos img { cursor: pointer; transition: transform 0.2s; }
+  #exclusivos img:hover { transform: scale(1.02); filter: brightness(0.95); }
 `;
 
 const WA = "https://wa.me/5541991599558?text=Ol%C3%A1%20Dra.%20Cristiana%2C%20gostaria%20de%20agendar%20minha%20avalia%C3%A7%C3%A3o.";
