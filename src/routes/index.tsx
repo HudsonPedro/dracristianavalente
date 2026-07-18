@@ -188,7 +188,7 @@ const BODY = `
           </div>
           <a href="${WA}" class="btn btn-wa mt-10">Quero saber se sou indicada(o) →</a>
         </div>
-        <div class="reveal frame"><img src="${IMG_AMBIENTE}" alt="Dra. Cristiana Valente no ambiente da clínica CV Estética" class="w-full h-[520px] object-cover"></div>
+        <div class="reveal frame"><img src="${IMG_AMBIENTE}" class="w-full h-[520px] object-cover" alt="Dra. Cristiana Valente no ambiente da clínica CV Estética"></div>
       </div>
     </div>
   </section>
