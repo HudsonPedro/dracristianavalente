@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import logo from "../assets/logo.png";
 import draCristiana from "../assets/DraCristianaValente.jpeg";
 import suaPele from "../assets/SuaPele.jpeg";
@@ -54,6 +54,8 @@ const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital
   .protocol li{color:var(--muted);font-size:.92rem;padding:4px 0}
   .protocol .tag{display:inline-block;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--rose2);margin-bottom:10px}
   @media (prefers-reduced-motion:reduce){.l1,.l2,.wa::before{animation:none}.reveal.in{animation:none}}
+  #resultados img { cursor: pointer; transition: transform 0.2s; }
+  #resultados img:hover { transform: scale(1.02); filter: brightness(0.95); }
 `;
 
 const WA = "https://wa.me/5541991599558?text=Ol%C3%A1%20Dra.%20Cristiana%2C%20gostaria%20de%20agendar%20minha%20avalia%C3%A7%C3%A3o.";
@@ -327,13 +329,74 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-function Index(){
+function Index() {
+  const [activeImage, setActiveImage] = useState<string | null>(null);
+
   useEffect(() => {
-    const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}}),{threshold:0.12});
-    document.querySelectorAll(".reveal").forEach((el)=>io.observe(el));
-    const onScroll=()=>{const n=document.getElementById("nav"); if(n) n.classList.toggle("s", window.scrollY>20);};
-    addEventListener("scroll", onScroll, {passive:true});
-    return () => { io.disconnect(); removeEventListener("scroll", onScroll); };
+    const io = new IntersectionObserver(
+      (es) =>
+        es.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            io.unobserve(e.target);
+          }
+        }),
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+    
+    const onScroll = () => {
+      const n = document.getElementById("nav");
+      if (n) n.classList.toggle("s", window.scrollY > 20);
+    };
+    addEventListener("scroll", onScroll, { passive: true });
+
+    // Mágica para capturar o clique nas imagens do grid do BODY injetado
+    const handleImageClick = (e: Event) => {
+      const target = e.target as HTMLImageElement;
+      if (target && target.tagName === "IMG" && target.closest("#resultados")) {
+        setActiveImage(target.src);
+      }
+    };
+
+    const section = document.getElementById("resultados");
+    if (section) section.addEventListener("click", handleImageClick);
+
+    return () => {
+      io.disconnect();
+      removeEventListener("scroll", onScroll);
+      if (section) section.removeEventListener("click", handleImageClick);
+    };
   }, []);
-  return (<><style dangerouslySetInnerHTML={{ __html: CSS }} /><div dangerouslySetInnerHTML={{ __html: BODY }} /></>);
+
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
+      <div dangerouslySetInnerHTML={{ __html: BODY }} />
+
+      {/* Estrutura do Popup Inteligente em Tailwind CSS */}
+      {activeImage && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 transition-opacity duration-300 animate-fade-in"
+          onClick={() => setActiveImage(null)}
+        >
+          <div className="relative max-w-4xl max-h-[90vh] bg-transparent rounded-xl overflow-hidden shadow-2xl">
+            <button 
+              className="absolute top-4 right-4 z-[101] bg-black/60 text-white rounded-full w-10 h-10 flex items-center justify-center text-2xl font-bold hover:bg-black/90 transition shadow-md"
+              onClick={() => setActiveImage(null)}
+            >
+              ×
+            </button>
+            <img 
+              src={activeImage} 
+              alt="Visualização expandida" 
+              className="w-auto h-auto max-w-full max-h-[85vh] object-contain rounded-lg border border-white/10"
+              onClick={(e) => e.stopPropagation()} // impede fechar ao clicar na imagem
+            />
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
+
