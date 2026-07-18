@@ -321,7 +321,7 @@ export const Route = createFileRoute("/")({
       { name: "msapplication-TileImage", content: "/assets/logo.png" }
     ],
     links: [
-      { rel: "icon", type: "image/png", href: "/assets/logo.png" }
+      { rel: "icon", type: "image/png", href: "/logo.png" }
     ],
   }),
   component: Index,
