@@ -273,6 +273,9 @@ const BODY = `
     <form class="reveal card p-7 md:p-9 max-w-xl mx-auto mt-10 space-y-4" onsubmit="return false">
       <input class="field" placeholder="Seu nome">
       <input class="field" placeholder="WhatsApp (com DDD)">
+      <input class="field" placeholder="E-mail"> 
+      <input class="field" placeholder="Origem: Ex. Instagran, Facebok, Site, Google, Indicação...">
+      <input class="field" placeholder="Nome da indicação (condicional)">
       <textarea class="field" rows="3" placeholder="Conte-nos o que você gostaria de tratar (facial, corporal ou capilar)"></textarea>
       <a href="${WA}" class="btn btn-wa w-full text-lg">Agendar pelo WhatsApp →</a>
     </form>
