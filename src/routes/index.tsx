@@ -266,11 +266,11 @@ const BODY = `
       <details class="faq"><summary>Onde fica a clínica? <span class="pl">+</span></summary><div class="pb-5 text-[color:var(--muted)] leading-relaxed space-y-3"><p>Atendimento <strong>mediante agendamento</strong> em duas unidades em Curitiba – Paraná:</p><p><strong>LA BEAUTÉ</strong> — Avenida Sete de Setembro, 4476, 14º Andar, Salas 1405/1406, Ed. Business Tower, Batel, Curitiba – Paraná.</p><p><strong>MAGMA CONSULTÓRIOS</strong> — Av. Cândido de Abreu, 427, 7º Andar, ao lado do Bradesco, Centro Cívico, Curitiba – Paraná.</p><p>O endereço da sua avaliação é confirmado após o agendamento pelo WhatsApp.</p></div></details>
       <details class="faq"><summary>Qual é o horário de atendimento? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Atendimento <strong>mediante agendamento prévio</strong>. Fale conosco pelo WhatsApp e reservamos o melhor horário para você, com toda a atenção que sua avaliação merece.</p></details>
     </div>
-  </section>
 
+  </section>
   <section class="container py-20">
     <div class="reveal max-w-xl mx-auto text-center"><div class="kicker mb-6 mx-auto">Agende sua avaliação</div><h2 class="display text-5xl md:text-6xl">Comece agora.</h2><p class="text-[color:var(--muted)] mt-5">Preencha abaixo ou fale direto no WhatsApp — retornamos para marcar o melhor horário para você.</p></div>
-    <form class="reveal card p-7 md:p-9 max-w-xl mx-auto mt-10 space-y-4" onsubmit="return false">
+<!-- <form class="reveal card p-7 md:p-9 max-w-xl mx-auto mt-10 space-y-4" onsubmit="return false">
       <input class="field" placeholder="Seu nome">
       <input class="field" placeholder="WhatsApp (com DDD)">
       <input class="field" placeholder="E-mail"> 
@@ -278,7 +278,8 @@ const BODY = `
       <input class="field" placeholder="Nome da indicação (condicional)">
       <textarea class="field" rows="3" placeholder="Conte-nos o que você gostaria de tratar (facial, corporal ou capilar)"></textarea>
       <a href="${WA}" class="btn btn-wa w-full text-lg">Agendar pelo WhatsApp →</a>
-    </form>
+    </form> -->
+    <div id="react-form"></div>  <!-- NOVO CHAT -->
   </section>
 
   <footer class="border-t border-[color:var(--line)]" style="background:#fff">
@@ -335,8 +336,57 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const [nome, setNome] = useState(""); //NOVO CHAT-------------------
+  const [whatsapp, setWhatsapp] = useState("");
+  const [email, setEmail] = useState("");
+  const [origem, setOrigem] = useState("");
+  const [indicacao, setIndicacao] = useState("");
+  const [interesse, setInteresse] = useState("");  //NOVO CHAT-------------------
   const [activeImage, setActiveImage] = useState<string | null>(null);
 
+  async function enviarLead(e: React.FormEvent) { //NOVO CHAT -------------------------------------------------------------------
+  e.preventDefault();
+
+  const dados = {
+    nome,
+    telefone: whatsapp,
+    whatsapp,
+    email,
+    origem_lead: origem,
+    interesse,
+    historico_conversas:
+      origem === "Indicação"
+        ? `Indicado por: ${indicacao}`
+        : ""
+  };
+
+  try {
+    const response = await fetch(
+      "https://clinica-estetica-api-6hg7.onrender.com/leads/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dados),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Erro ao salvar o lead.");
+    }
+
+    const mensagem = `Olá! Meu nome é ${nome}. Tenho interesse em ${interesse}.`;
+
+    window.location.href =
+      `https://wa.me/5541991599558?text=${encodeURIComponent(mensagem)}`;
+
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao salvar o lead.");
+  }
+} //NOVO CHAT -------------------------------------------------------------------
+  
   useEffect(() => {
     const io = new IntersectionObserver(
       (es) =>
@@ -378,9 +428,21 @@ function Index() {
 
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: CSS }} />
-      <div dangerouslySetInnerHTML={{ __html: BODY }} />
-
+      {/*<style dangerouslySetInnerHTML={{ __html: CSS }} />
+      <div dangerouslySetInnerHTML={{ __html: BODY }} />*/}
+      
+      <style dangerouslySetInnerHTML={{ __html: CSS }} /> {/*NOVO CHAT*/}
+      <div
+        dangerouslySetInnerHTML={{
+          __html: BODY.replace(
+            '<div id="react-form"></div>',
+            `
+            <div id="formulario-leads"></div>
+            `
+          ),
+        }}
+      />
+      
       {/* Estrutura do Popup Inteligente e Fluido */}
       {activeImage && (
         <div 
