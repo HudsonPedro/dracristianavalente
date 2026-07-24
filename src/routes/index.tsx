@@ -270,7 +270,7 @@ const BODY = `
   </section>
   <section class="container py-20">
     <div class="reveal max-w-xl mx-auto text-center"><div class="kicker mb-6 mx-auto">Agende sua avaliação</div><h2 class="display text-5xl md:text-6xl">Comece agora.</h2><p class="text-[color:var(--muted)] mt-5">Preencha abaixo ou fale direto no WhatsApp — retornamos para marcar o melhor horário para você.</p></div>
-<!-- <form class="reveal card p-7 md:p-9 max-w-xl mx-auto mt-10 space-y-4" onsubmit="return false">
+    <form class="reveal card p-7 md:p-9 max-w-xl mx-auto mt-10 space-y-4" onsubmit="return false">
       <input class="field" placeholder="Seu nome">
       <input class="field" placeholder="WhatsApp (com DDD)">
       <input class="field" placeholder="E-mail"> 
@@ -278,8 +278,7 @@ const BODY = `
       <input class="field" placeholder="Nome da indicação (condicional)">
       <textarea class="field" rows="3" placeholder="Conte-nos o que você gostaria de tratar (facial, corporal ou capilar)"></textarea>
       <a href="${WA}" class="btn btn-wa w-full text-lg">Agendar pelo WhatsApp →</a>
-    </form> -->
-    <div id="react-form"></div>  <!-- NOVO CHAT -->
+    </form>
   </section>
 
   <footer class="border-t border-[color:var(--line)]" style="background:#fff">
@@ -428,21 +427,9 @@ function Index() {
 
   return (
     <>
-      {/*<style dangerouslySetInnerHTML={{ __html: CSS }} />
-      <div dangerouslySetInnerHTML={{ __html: BODY }} />*/}
-      
-      <style dangerouslySetInnerHTML={{ __html: CSS }} /> {/*NOVO CHAT*/}
-      <div
-        dangerouslySetInnerHTML={{
-          __html: BODY.replace(
-            '<div id="react-form"></div>',
-            `
-            <div id="formulario-leads"></div>
-            `
-          ),
-        }}
-      />
-      
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
+      <div dangerouslySetInnerHTML={{ __html: BODY }} />
+            
       {/* Estrutura do Popup Inteligente e Fluido */}
       {activeImage && (
         <div 
