@@ -319,9 +319,9 @@ const BODY = `
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Dra. Cristiana Valente Estética - Saúde, beleza e autoestima" },
+      { title: "Dra. Cristiana Valente Estética - Capilar e Facial" },
       { name: "description", content: "Estética facial, corporal e capilar com protocolos personalizados, tecnologia avançada e resultados naturais. Agende sua avaliação com a Dra. Cristiana Valente." },
-      { property: "og:title", content: "Dra. Cristiana Valente Estética - Saúde, beleza e autoestima" },
+      { property: "og:title", content: "Dra. Cristiana Valente Estética - Capilar e Facial" },
       { property: "og:description", content: "Estética facial, corporal e capilar com protocolos personalizados, tecnologia avançada e resultados naturais. Agende sua avaliação com a Dra. Cristiana Valente." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
