@@ -89,8 +89,8 @@ const BODY = `
   <header id="topo" class="container pt-36 pb-20 md:pt-44 md:pb-28 grid lg:grid-cols-[1.05fr_.95fr] gap-14 items-center">
     <div>
       <div class="reveal kicker">★ Estética facial, corporal e capilar · resultados naturais</div>
-      <h1 class="reveal display text-6xl md:text-7xl mt-7">Sua beleza merece um<br>tratamento <span class="rosetext italic">exclusivo</span>.</h1>
-      <p class="reveal text-lg md:text-xl text-[color:var(--muted)] max-w-xl mt-7 leading-relaxed">Recupere sua autoestima com protocolos faciais e capilares personalizados, tecnologia avançada e o cuidado humano que só a Dra. Cristiana Valente oferece — para resultados naturais que valorizam quem você é.</p>
+      <h1 class="reveal display text-6xl md:text-7xl mt-7">Tratamento Capilar<br>e Facial <span class="rosetext italic">exclusivo</span>.</h1>
+      <p class="reveal text-lg md:text-xl text-[color:var(--muted)] max-w-xl mt-7 leading-relaxed">Recupere sua autoestima com protocolos faciais e capilares personalizados, tecnologia avançada e o cuidado humano que só a Dra. Cristiana Valente oferece - para resultados naturais que valorizam quem você é.</p>
       <div class="reveal flex flex-col sm:flex-row gap-4 mt-10"><a href="${WA}" class="btn btn-wa">Agendar minha avaliação →</a><a href="#protocolos" class="btn btn-ghost">Ver protocolos</a></div>
       <div class="reveal flex items-center gap-4 mt-10">
         <div class="flex -space-x-3">
@@ -112,9 +112,9 @@ const BODY = `
   </div></section>
 
   <section class="container py-24">
-    <div class="reveal max-w-2xl"><div class="kicker mb-6">A gente entende</div><h2 class="display text-5xl md:text-6xl">Você quer se cuidar — sem abrir mão do natural.</h2></div>
+    <div class="reveal max-w-2xl"><div class="kicker mb-6">A gente entende</div><h2 class="display text-5xl md:text-6xl">Você quer se cuidar - sem abrir mão do natural.</h2></div>
     <div class="grid md:grid-cols-3 gap-5 mt-14">
-      <div class="reveal card p-8"><div class="text-3xl mb-3">🪞</div><h3 class="text-xl font-bold serif">Medo de ficar artificial</h3><p class="text-[color:var(--muted)] mt-3 leading-relaxed">Nossos protocolos são pensados para realçar seus traços, nunca mascará-los. Resultado que parece você — só que renovada.</p></div>
+      <div class="reveal card p-8"><div class="text-3xl mb-3">🪞</div><h3 class="text-xl font-bold serif">Medo de ficar artificial</h3><p class="text-[color:var(--muted)] mt-3 leading-relaxed">Nossos protocolos são pensados para realçar seus traços, nunca mascará-los. Resultado que parece você - só que renovada.</p></div>
       <div class="reveal card p-8"><div class="text-3xl mb-3">🤍</div><h3 class="text-xl font-bold serif">Receio de dor ou desconforto</h3><p class="text-[color:var(--muted)] mt-3 leading-relaxed">Procedimentos seguros, técnicas modernas e um cuidado humanizado do primeiro contato até o acompanhamento pós-tratamento.</p></div>
       <div class="reveal card p-8"><div class="text-3xl mb-3">✨</div><h3 class="text-xl font-bold serif">Insegurança com o resultado</h3><p class="text-[color:var(--muted)] mt-3 leading-relaxed">Antes de qualquer protocolo, avaliação individual completa. Você entende cada etapa, cada indicação, cada expectativa.</p></div>
     </div>
@@ -124,7 +124,7 @@ const BODY = `
     <div class="reveal max-w-2xl"><div class="kicker mb-6">Protocolos em destaque</div><h2 class="display text-5xl md:text-6xl">Ciência, tecnologia e sensibilidade estética.</h2><p class="text-[color:var(--muted)] mt-6 text-lg leading-relaxed">Cada tratamento é indicado somente após avaliação profissional. Abaixo, os protocolos mais procurados na CV Estética.</p></div>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-14">
 
-      <div class="reveal card p-8 protocol"><span class="tag">Capilar</span><h3>Terapia Capilar — Regenera Hair</h3><ul class="mt-3 list-none p-0">
+      <div class="reveal card p-8 protocol"><span class="tag">Capilar</span><h3>Terapia Capilar - Regenera Hair</h3><ul class="mt-3 list-none p-0">
         <li>· Regenera Hair</li><li>· PRP Capilar</li><li>· Regenera Hair + PRP</li><li>· Alopecia androgenética</li><li>· Alopecia areata</li><li>· Eflúvio telógeno</li><li>· Fortalecimento pós-transplante</li>
       </ul></div>
 
@@ -181,7 +181,7 @@ const BODY = `
         <div>
           <div class="kicker mb-6" style="color:var(--gold);border-color:rgba(201,163,107,.4);background:rgba(201,163,107,.08)">🖤 Protocolos exclusivos CV Estética</div>
           <h2 class="display text-4xl md:text-5xl" style="color:#fff">Tratamentos que só existem aqui.</h2>
-          <p class="mt-6 leading-relaxed" style="color:#c9c2b8">Desenvolvidos pela Dra. Cristiana Valente para necessidades específicas dos nossos pacientes — combinando ciência, tecnologia de ponta e um olhar apurado para o que cada corpo, pele e cabelo pede.</p>
+          <p class="mt-6 leading-relaxed" style="color:#c9c2b8">Desenvolvidos pela Dra. Cristiana Valente para necessidades específicas dos nossos pacientes - combinando ciência, tecnologia de ponta e um olhar apurado para o que cada corpo, pele e cabelo pede.</p>
           <div class="grid sm:grid-cols-2 gap-4 mt-8">
             <div class="p-5 rounded-xl" style="background:rgba(201,163,107,.08);border:1px solid rgba(201,163,107,.25)"><div class="serif text-xl" style="color:var(--gold)">Pós-Mounjaro</div><p class="text-sm mt-2" style="color:#c9c2b8">Recuperação da firmeza, viço e densidade da pele após perda de peso.</p></div>
             <div class="p-5 rounded-xl" style="background:rgba(201,163,107,.08);border:1px solid rgba(201,163,107,.25)"><div class="serif text-xl" style="color:var(--gold)">Pós-Transplante Capilar</div><p class="text-sm mt-2" style="color:#c9c2b8">Fortalecimento e cuidado dos fios recém-implantados para máximo resultado.</p></div>
@@ -210,7 +210,7 @@ const BODY = `
     <div class="reveal">
       <div class="kicker mb-6">Dra. Cristiana Valente</div>
       <h2 class="display text-5xl md:text-6xl">Enfermeira Esteta com<br>olhar para o <span class="italic rosetext">natural</span>.</h2>
-      <p class="text-[color:var(--muted)] text-lg mt-6 leading-relaxed">Especialista em Saúde Pública e Estética Avançada, Terapeuta Capilar e Tricoscopista. Une conhecimento científico, tecnologia e um cuidado profundamente humano para transformar não só a aparência — mas a relação de cada paciente com o próprio espelho.</p>
+      <p class="text-[color:var(--muted)] text-lg mt-6 leading-relaxed">Especialista em Saúde Pública e Estética Avançada, Terapeuta Capilar e Tricoscopista. Une conhecimento científico, tecnologia e um cuidado profundamente humano para transformar não só a aparência - mas a relação de cada paciente com o próprio espelho.</p>
       <p class="text-[color:var(--muted)] text-lg mt-4 leading-relaxed italic">"Cuidar de você é transformar vidas."</p>
       <div class="hair my-8"></div>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
@@ -227,7 +227,7 @@ const BODY = `
     <div class="grid md:grid-cols-3 gap-5 mt-14">
       <div class="reveal card p-8"><div class="serif rosetext text-5xl">01</div><h3 class="serif text-2xl mt-3">Avaliação personalizada</h3><p class="text-[color:var(--muted)] mt-2 leading-relaxed">Anamnese completa, tricoscopia quando indicado, e escuta atenta dos seus objetivos.</p></div>
       <div class="reveal card p-8"><div class="serif rosetext text-5xl">02</div><h3 class="serif text-2xl mt-3">Protocolo sob medida</h3><p class="text-[color:var(--muted)] mt-2 leading-relaxed">Plano de tratamento elaborado exclusivamente para você, com etapas e expectativas claras.</p></div>
-      <div class="reveal card p-8"><div class="serif rosetext text-5xl">03</div><h3 class="serif text-2xl mt-3">Acompanhamento contínuo</h3><p class="text-[color:var(--muted)] mt-2 leading-relaxed">Registro fotográfico e ajustes ao longo de toda a jornada — resultados que evoluem com você.</p></div>
+      <div class="reveal card p-8"><div class="serif rosetext text-5xl">03</div><h3 class="serif text-2xl mt-3">Acompanhamento contínuo</h3><p class="text-[color:var(--muted)] mt-2 leading-relaxed">Registro fotográfico e ajustes ao longo de toda a jornada - resultados que evoluem com você.</p></div>
     </div>
   </section>
 
@@ -244,7 +244,7 @@ const BODY = `
     <div class="reveal card p-10 md:p-16 max-w-3xl mx-auto text-center relative overflow-hidden" style="background:linear-gradient(180deg,#fff,#faf5ee)">
       <div class="kicker mb-6 mx-auto">Vagas limitadas</div>
       <h2 class="display text-4xl md:text-5xl">Sua <span class="rosetext">avaliação personalizada</span> começa aqui.</h2>
-      <p class="text-[color:var(--muted)] mt-5 max-w-md mx-auto">Anamnese completa, tricoscopia (quando indicado) e um plano de tratamento único para o seu caso — com toda a segurança e ética que você merece.</p>
+      <p class="text-[color:var(--muted)] mt-5 max-w-md mx-auto">Anamnese completa, tricoscopia (quando indicado) e um plano de tratamento único para o seu caso - com toda a segurança e ética que você merece.</p>
       <a href="${WA}" class="btn btn-wa mt-8 text-lg">Agendar minha avaliação →</a>
     </div>
   </section>
@@ -261,15 +261,15 @@ const BODY = `
       <details class="faq"><summary>Os resultados são naturais? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Sim. Nosso compromisso é realçar sua beleza, nunca modificá-la. Os protocolos são calibrados para entregar resultados harmônicos e sutis.</p></details>
       <details class="faq"><summary>Os procedimentos doem? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Utilizamos técnicas modernas e recursos de conforto (anestésicos tópicos, protocolos suaves) para que cada sessão seja tranquila. Sensações variam conforme o tratamento e são sempre discutidas antes.</p></details>
       <details class="faq"><summary>Como são elaborados os planos e valores? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Cada plano é elaborado após a avaliação, conforme a necessidade individual. Oferecemos condições especiais para tratamentos combinados.</p></details>
-      <details class="faq"><summary>Existe garantia de resultado? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Não prometemos resultados absolutos — seria antiético. Garantimos protocolos seguros, personalizados, acompanhamento durante toda a jornada e total transparência em cada etapa.</p></details>
+      <details class="faq"><summary>Existe garantia de resultado? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Não prometemos resultados absolutos - seria antiético. Garantimos protocolos seguros, personalizados, acompanhamento durante toda a jornada e total transparência em cada etapa.</p></details>
       <details class="faq"><summary>Atendem homens? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Sim. Atendemos homens e mulheres a partir dos 25 anos, com protocolos específicos como Regenera Barba, saúde capilar masculina e rejuvenescimento facial.</p></details>
-      <details class="faq"><summary>Onde fica a clínica? <span class="pl">+</span></summary><div class="pb-5 text-[color:var(--muted)] leading-relaxed space-y-3"><p>Atendimento <strong>mediante agendamento</strong> em duas unidades em Curitiba – Paraná:</p><p><strong>LA BEAUTÉ</strong> — Avenida Sete de Setembro, 4476, 14º Andar, Salas 1405/1406, Ed. Business Tower, Batel, Curitiba – Paraná.</p><p><strong>MAGMA CONSULTÓRIOS</strong> — Av. Cândido de Abreu, 427, 7º Andar, ao lado do Bradesco, Centro Cívico, Curitiba – Paraná.</p><p>O endereço da sua avaliação é confirmado após o agendamento pelo WhatsApp.</p></div></details>
+      <details class="faq"><summary>Onde fica a clínica? <span class="pl">+</span></summary><div class="pb-5 text-[color:var(--muted)] leading-relaxed space-y-3"><p>Atendimento <strong>mediante agendamento</strong> em duas unidades em Curitiba – Paraná:</p><p><strong>LA BEAUTÉ</strong> - Avenida Sete de Setembro, 4476, 14º Andar, Salas 1405/1406, Ed. Business Tower, Batel, Curitiba – Paraná.</p><p><strong>MAGMA CONSULTÓRIOS</strong> - Av. Cândido de Abreu, 427, 7º Andar, ao lado do Bradesco, Centro Cívico, Curitiba – Paraná.</p><p>O endereço da sua avaliação é confirmado após o agendamento pelo WhatsApp.</p></div></details>
       <details class="faq"><summary>Qual é o horário de atendimento? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Atendimento <strong>mediante agendamento prévio</strong>. Fale conosco pelo WhatsApp e reservamos o melhor horário para você, com toda a atenção que sua avaliação merece.</p></details>
     </div>
 
   </section>
   <section class="container py-20">
-    <div class="reveal max-w-xl mx-auto text-center"><div class="kicker mb-6 mx-auto">Agende sua avaliação</div><h2 class="display text-5xl md:text-6xl">Comece agora.</h2><p class="text-[color:var(--muted)] mt-5">Preencha abaixo ou fale direto no WhatsApp — retornamos para marcar o melhor horário para você.</p></div>
+    <div class="reveal max-w-xl mx-auto text-center"><div class="kicker mb-6 mx-auto">Agende sua avaliação</div><h2 class="display text-5xl md:text-6xl">Comece agora.</h2><p class="text-[color:var(--muted)] mt-5">Preencha abaixo ou fale direto no WhatsApp - retornamos para marcar o melhor horário para você.</p></div>
     <form class="reveal card p-7 md:p-9 max-w-xl mx-auto mt-10 space-y-4" onsubmit="return false">
       <input class="field" placeholder="Seu nome">
       <input class="field" placeholder="WhatsApp (com DDD)">
@@ -287,7 +287,7 @@ const BODY = `
         <div class="flex items-center gap-3"><img src="${LOGO}" alt="CV Estética" class="mark"><span class="serif text-lg">Dra. Cristiana Valente</span></div>
         <p class="text-sm text-[color:var(--muted)] mt-4 max-w-sm leading-relaxed">Estética facial, corporal e capilar com protocolos personalizados, tecnologia avançada e foco em resultados naturais. Saúde e autoestima começam pelo cuidado.</p>
         <p class="text-xs text-[color:var(--muted)] mt-4"><strong class="text-[color:var(--ink)]">COREN-PR 451.408</strong> · Enfermeira Esteta · Especialista em Saúde Pública e Estética Avançada</p>
-        <p class="text-xs text-[color:var(--muted)] mt-2"><strong class="text-[color:var(--ink)]">Atendimento:</strong> mediante agendamento — Curitiba/PR (Batel · Centro Cívico)</p>
+        <p class="text-xs text-[color:var(--muted)] mt-2"><strong class="text-[color:var(--ink)]">Atendimento:</strong> mediante agendamento - Curitiba/PR (Batel · Centro Cívico)</p>
       </div>
       <div>
         <p class="text-xs font-bold uppercase tracking-wider mb-4">Navegação</p>
@@ -309,7 +309,7 @@ const BODY = `
         </ul>
       </div>
     </div>
-    <div class="container pb-8"><div class="hair mb-6"></div><div class="flex flex-col sm:flex-row justify-between gap-3 text-xs text-[color:var(--muted)]"><span>© 2026 Powered by ✠ HPtech PlatForme. Todos os direitos reservados.</span><span><a href="/politica-de-privacidade" class="hover:text-[color:var(--ink)]">Política de Privacidade</a> · <a href="/termos" class="hover:text-[color:var(--ink)]">Termos</a></span></div></div>
+    <div class="container pb-8"><div class="hair mb-6"></div><div class="flex flex-col sm:flex-row justify-between gap-3 text-xs text-[color:var(--muted)]"><span>© 2026 Powered by ✠ HPtech PlatForm. Todos os direitos reservados.</span><span><a href="/politica-de-privacidade" class="hover:text-[color:var(--ink)]">Política de Privacidade</a> · <a href="/termos" class="hover:text-[color:var(--ink)]">Termos</a></span></div></div>
   </footer>
 </div>
 
@@ -319,9 +319,9 @@ const BODY = `
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Dra. Cristiana Valente Estética — Saúde, beleza e autoestima" },
+      { title: "Dra. Cristiana Valente Estética - Saúde, beleza e autoestima" },
       { name: "description", content: "Estética facial, corporal e capilar com protocolos personalizados, tecnologia avançada e resultados naturais. Agende sua avaliação com a Dra. Cristiana Valente." },
-      { property: "og:title", content: "Dra. Cristiana Valente Estética — Saúde, beleza e autoestima" },
+      { property: "og:title", content: "Dra. Cristiana Valente Estética - Saúde, beleza e autoestima" },
       { property: "og:description", content: "Estética facial, corporal e capilar com protocolos personalizados, tecnologia avançada e resultados naturais. Agende sua avaliação com a Dra. Cristiana Valente." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
