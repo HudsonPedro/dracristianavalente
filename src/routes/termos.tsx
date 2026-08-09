@@ -71,7 +71,7 @@ const CONTENT = `
       <p>Alguns procedimentos possuem contraindicações (gravidez, amamentação, certas patologias, medicamentos específicos, entre outros). A realização de qualquer protocolo depende da aprovação durante a avaliação presencial e da análise criteriosa do histórico clínico.</p>
 
       <h2>5. Propriedade intelectual</h2>
-      <p>Todo o conteúdo deste site — textos, imagens, logo, vídeos, design, marca e nome comercial — é de propriedade exclusiva da Dra. Cristiana Valente Estética ou de seus licenciadores. É proibida a reprodução, distribuição ou uso comercial sem autorização prévia por escrito.</p>
+      <p>Todo o conteúdo deste site - textos, imagens, logo, vídeos, design, marca e nome comercial - é de propriedade exclusiva da Dra. Cristiana Valente Estética ou de seus licenciadores. É proibida a reprodução, distribuição ou uso comercial sem autorização prévia por escrito.</p>
 
       <h2>6. Limitação de responsabilidade</h2>
       <p>A clínica se esforça para manter as informações do site precisas e atualizadas, mas não se responsabiliza por:</p>
@@ -111,9 +111,9 @@ const CONTENT = `
 export const Route = createFileRoute("/termos")({
   head: () => ({
     meta: [
-      { title: "Termos de Uso — Dra. Cristiana Valente Estética" },
+      { title: "Termos de Uso - Dra. Cristiana Valente Estética" },
       { name: "description", content: "Termos de Uso da Dra. Cristiana Valente Estética. Conheça as regras para uso do site, agendamento e prestação dos serviços." },
-      { property: "og:title", content: "Termos de Uso — Dra. Cristiana Valente Estética" },
+      { property: "og:title", content: "Termos de Uso - Dra. Cristiana Valente Estética" },
       { property: "og:description", content: "Conheça as regras para uso do site, agendamento e prestação dos serviços." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
