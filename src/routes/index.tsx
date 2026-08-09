@@ -89,7 +89,7 @@ const BODY = `
   <header id="topo" class="container pt-36 pb-20 md:pt-44 md:pb-28 grid lg:grid-cols-[1.05fr_.95fr] gap-14 items-center">
     <div>
       <div class="reveal kicker">★ Estética facial, corporal e capilar · resultados naturais</div>
-      <h1 class="reveal display text-6xl md:text-7xl mt-7">Tratamento Capilar<br>e Facial <span class="rosetext italic">exclusivo</span>.</h1>
+      <h1 class="reveal display text-6xl md:text-7xl mt-7">Tratamento<br>Capilar e Facial<span class="rosetext italic"><br>exclusivo</span>.</h1>
       <p class="reveal text-lg md:text-xl text-[color:var(--muted)] max-w-xl mt-7 leading-relaxed">Recupere sua autoestima com protocolos faciais e capilares personalizados, tecnologia avançada e o cuidado humano que só a Dra. Cristiana Valente oferece - para resultados naturais que valorizam quem você é.</p>
       <div class="reveal flex flex-col sm:flex-row gap-4 mt-10"><a href="${WA}" class="btn btn-wa">Agendar minha avaliação →</a><a href="#protocolos" class="btn btn-ghost">Ver protocolos</a></div>
       <div class="reveal flex items-center gap-4 mt-10">
