@@ -385,6 +385,32 @@ function Index() {
     alert("Erro ao salvar o lead.");
   }
 } //NOVO CHAT -------------------------------------------------------------------
+  useEffect(() => {
+    const handleWhatsAppClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const link = target.closest('a[href*="wa.me"]') as HTMLAnchorElement | null;
+
+      if (!link) return;
+
+      const gtag = (
+        window as Window & {
+          gtag?: (...args: unknown[]) => void;
+        }
+      ).gtag;
+
+      if (typeof gtag === "function") {
+        gtag("event", "whatsapp_agendamento", {
+          event_category: "lead",
+          event_label: link.textContent?.trim() || "WhatsApp",
+        });
+      }
+
+    document.addEventListener("click", handleWhatsAppClick);
+
+    return () => {
+      document.removeEventListener("click", handleWhatsAppClick);
+    };
+  }, []);
   
   useEffect(() => {
     const io = new IntersectionObserver(
