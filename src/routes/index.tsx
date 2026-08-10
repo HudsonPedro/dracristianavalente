@@ -26,7 +26,7 @@ const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital
   .wrap{position:relative;z-index:2}
   .rosetext{color:var(--rose2)}
   .kicker{display:inline-flex;align-items:center;gap:9px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose2);border:1px solid rgba(138,106,59,.35);background:rgba(201,163,107,.09);padding:8px 15px;border-radius:999px}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-weight:600;border-radius:13px;padding:16px 28px;text-decoration:none;transition:transform .25s,box-shadow .25s;font-size:15px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-weight:600;border-radius:13px;padding:16px 28px;text-decoration:none;transition:transform .25s,box-shadow .25s;font-size:15px;border:0;cursor:pointer}
   .btn-wa{background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;box-shadow:0 16px 40px rgba(37,211,102,.3)}
   .btn-wa:hover{transform:translateY(-2px)}
   .btn-rose{background:linear-gradient(180deg,var(--ink),#000);color:#fff;box-shadow:0 16px 40px rgba(0,0,0,.28)}
@@ -270,14 +270,75 @@ const BODY = `
   </section>
   <section class="container py-20">
     <div class="reveal max-w-xl mx-auto text-center"><div class="kicker mb-6 mx-auto">Agende sua avaliação</div><h2 class="display text-5xl md:text-6xl">Comece agora.</h2><p class="text-[color:var(--muted)] mt-5">Preencha abaixo ou fale direto no WhatsApp - retornamos para marcar o melhor horário para você.</p></div>
-    <form class="reveal card p-7 md:p-9 max-w-xl mx-auto mt-10 space-y-4" onsubmit="return false">
-      <input class="field" placeholder="Seu nome">
-      <input class="field" placeholder="WhatsApp (com DDD)">
-      <input class="field" placeholder="E-mail"> 
-      <input class="field" placeholder="Origem: Ex. Instagran, Facebok, Site, Google, Indicação...">
-      <input class="field" placeholder="Nome da indicação (condicional)">
-      <textarea class="field" rows="3" placeholder="Conte-nos o que você gostaria de tratar (facial, corporal ou capilar)"></textarea>
-      <a href="${WA}" class="btn btn-wa w-full text-lg">Agendar pelo WhatsApp →</a>
+    <form
+      id="lead-form"
+      class="reveal card p-7 md:p-9 max-w-xl mx-auto mt-10 space-y-4"
+    >
+      <input
+        id="lead-nome"
+        name="nome"
+        class="field"
+        type="text"
+        placeholder="Seu nome"
+        required
+      >
+    
+      <input
+        id="lead-whatsapp"
+        name="whatsapp"
+        class="field"
+        type="tel"
+        placeholder="WhatsApp (com DDD)"
+        required
+      >
+    
+      <input
+        id="lead-email"
+        name="email"
+        class="field"
+        type="email"
+        placeholder="E-mail"
+      >
+    
+      <select
+        id="lead-origem"
+        name="origem"
+        class="field"
+        required
+      >
+        <option value="">Como você conheceu a Dra. Cristiana?</option>
+        <option value="Google">Google</option>
+        <option value="Instagram">Instagram</option>
+        <option value="Facebook">Facebook</option>
+        <option value="Indicação">Indicação</option>
+        <option value="Site">Site</option>
+        <option value="Outros">Outros</option>
+      </select>
+    
+      <input
+        id="lead-indicacao"
+        name="indicacao"
+        class="field"
+        type="text"
+        placeholder="Nome de quem indicou (se houver)"
+      >
+    
+      <textarea
+        id="lead-interesse"
+        name="interesse"
+        class="field"
+        rows="3"
+        placeholder="Conte-nos o que você gostaria de tratar (facial, corporal ou capilar)"
+        required
+      ></textarea>
+    
+      <button
+        id="lead-submit"
+        type="submit"
+        class="btn btn-wa w-full text-lg"
+      >
+        Agendar pelo WhatsApp →
+      </button>
     </form>
   </section>
 
@@ -335,56 +396,9 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const [nome, setNome] = useState(""); //NOVO CHAT-------------------
-  const [whatsapp, setWhatsapp] = useState("");
-  const [email, setEmail] = useState("");
-  const [origem, setOrigem] = useState("");
-  const [indicacao, setIndicacao] = useState("");
-  const [interesse, setInteresse] = useState("");  //NOVO CHAT-------------------
   const [activeImage, setActiveImage] = useState<string | null>(null);
 
-  async function enviarLead(e: React.FormEvent) { //NOVO CHAT -------------------------------------------------------------------
-  e.preventDefault();
 
-  const dados = {
-    nome,
-    telefone: whatsapp,
-    whatsapp,
-    email,
-    origem_lead: origem,
-    interesse,
-    historico_conversas:
-      origem === "Indicação"
-        ? `Indicado por: ${indicacao}`
-        : ""
-  };
-
-  try {
-    const response = await fetch(
-      "https://clinica-estetica-api-6hg7.onrender.com/leads/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dados),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Erro ao salvar o lead.");
-    }
-
-    const mensagem = `Olá! Meu nome é ${nome}. Tenho interesse em ${interesse}.`;
-
-    window.location.href =
-      `https://wa.me/5541991599558?text=${encodeURIComponent(mensagem)}`;
-
-  } catch (error) {
-    console.error(error);
-    alert("Erro ao salvar o lead.");
-  }
-} //NOVO CHAT -------------------------------------------------------------------
     useEffect(() => {
     const handleWhatsAppClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -408,6 +422,144 @@ function Index() {
 
     return () => {
       document.removeEventListener("click", handleWhatsAppClick);
+    };
+  }, []);
+
+
+  // Integração do formulário: site -> API Render -> Neon/CRM -> GA4 -> WhatsApp
+  useEffect(() => {
+    const form = document.getElementById("lead-form") as HTMLFormElement | null;
+    const nomeInput = document.getElementById("lead-nome") as HTMLInputElement | null;
+    const whatsappInput = document.getElementById("lead-whatsapp") as HTMLInputElement | null;
+    const emailInput = document.getElementById("lead-email") as HTMLInputElement | null;
+    const origemInput = document.getElementById("lead-origem") as HTMLSelectElement | null;
+    const indicacaoInput = document.getElementById("lead-indicacao") as HTMLInputElement | null;
+    const interesseInput = document.getElementById("lead-interesse") as HTMLTextAreaElement | null;
+    const submitButton = document.getElementById("lead-submit") as HTMLButtonElement | null;
+
+    if (
+      !form ||
+      !nomeInput ||
+      !whatsappInput ||
+      !origemInput ||
+      !interesseInput ||
+      !submitButton
+    ) {
+      return;
+    }
+
+    const handleSubmit = async (event: Event) => {
+      event.preventDefault();
+
+      const nome = nomeInput.value.trim();
+      const whatsapp = whatsappInput.value.replace(/\D/g, "");
+      const email = emailInput?.value.trim() || "";
+      const origem = origemInput.value;
+      const indicacao = indicacaoInput?.value.trim() || "";
+      const interesse = interesseInput.value.trim();
+
+      if (!nome || !whatsapp || !origem || !interesse) {
+        alert("Preencha todos os campos obrigatórios.");
+        return;
+      }
+
+      if (whatsapp.length < 10 || whatsapp.length > 13) {
+        alert("Informe um WhatsApp válido com DDD.");
+        whatsappInput.focus();
+        return;
+      }
+
+      if (origem === "Indicação" && !indicacao) {
+        alert("Informe o nome de quem fez a indicação.");
+        indicacaoInput?.focus();
+        return;
+      }
+
+      const textoOriginal =
+        submitButton.textContent || "Agendar pelo WhatsApp →";
+
+      submitButton.disabled = true;
+      submitButton.textContent = "Salvando seus dados...";
+
+      const dados = {
+        nome,
+        telefone: whatsapp,
+        whatsapp,
+        email: email || null,
+        origem_lead: origem,
+        interesse,
+        observacoes:
+          origem === "Indicação"
+            ? `Lead enviado pelo formulário do site. Indicado por: ${indicacao}`
+            : "Lead enviado pelo formulário do site.",
+        status_funil: "Novo Lead",
+      };
+
+      try {
+        const response = await fetch(
+          "https://clinica-estetica-api-6hg7.onrender.com/leads/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(dados),
+          }
+        );
+
+        if (!response.ok) {
+          const detalhe = await response.text();
+          console.error(
+            "Erro da API ao criar lead:",
+            response.status,
+            detalhe
+          );
+          throw new Error(`Erro HTTP ${response.status}`);
+        }
+
+        const leadCriado = await response.json();
+        console.log("Lead criado no CRM:", leadCriado);
+
+        const gtag = (window as any).gtag;
+
+        if (typeof gtag === "function") {
+          gtag("event", "lead_form_submit", {
+            event_category: "lead",
+            event_label: origem,
+          });
+
+          // O envio do formulário abre o WhatsApp via JavaScript, não por <a>.
+          // Por isso registramos aqui o mesmo evento que já está funcionando
+          // nos demais botões de WhatsApp do site.
+          gtag("event", "whatsapp_agendamento", {
+            event_category: "lead",
+            event_label: "formulario_site",
+          });
+        }
+
+        const mensagem =
+          `Olá Dra. Cristiana, meu nome é ${nome}. ` +
+          `Gostaria de agendar uma avaliação. ` +
+          `Tenho interesse em: ${interesse}.`;
+
+        window.location.href =
+          `https://wa.me/5541991599558?text=${encodeURIComponent(mensagem)}`;
+      } catch (error) {
+        console.error("Erro ao enviar lead:", error);
+        alert(
+          "Não foi possível salvar seus dados neste momento. " +
+          "Tente novamente em alguns instantes."
+        );
+
+        submitButton.disabled = false;
+        submitButton.textContent = textoOriginal;
+      }
+    };
+
+    form.addEventListener("submit", handleSubmit);
+
+    return () => {
+      form.removeEventListener("submit", handleSubmit);
     };
   }, []);
   
@@ -483,5 +635,3 @@ function Index() {
     </>
   );
 }
-
-
