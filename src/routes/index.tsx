@@ -75,11 +75,11 @@ const BODY = `
 
 <div class="wrap">
   <nav class="navwrap" id="nav"><div class="container flex items-center justify-between h-[64px] px-5">
-    <a href="#topo" class="flex items-center gap-3"><img src="${LOGO}" alt="CV Estética" class="mark"><span class="serif text-lg hidden sm:inline">Dra. Cristiana Valente</span></a>
+    <a href="#topo" class="flex items-center gap-3"><img src="${LOGO}" alt="Dra. Cristiana Valente Estética" class="mark"><span class="serif text-lg hidden sm:inline">Dra. Cristiana Valente</span></a>
     <div class="hidden md:flex items-center gap-7 text-sm text-[color:var(--muted)]">
       <a href="#protocolos" class="hover:text-[color:var(--ink)] transition">Protocolos</a>
       <a href="#sobre" class="hover:text-[color:var(--ink)] transition">Sobre</a>
-      <a href="#exclusivos" class="hover:text-[color:var(--ink)] transition">Exclusivos CV</a>
+      <a href="#exclusivos" class="hover:text-[color:var(--ink)] transition">Exclusivos Dra. Cristiana Valente</a>
       <a href="#avaliacoes" class="hover:text-[color:var(--ink)] transition">Depoimentos</a>
       <a href="#faq" class="hover:text-[color:var(--ink)] transition">FAQ</a>
     </div>
@@ -101,7 +101,7 @@ const BODY = `
         <div><div class="text-[color:var(--gold)] text-sm">★★★★★</div><div class="text-xs text-[color:var(--muted)]">Centenas de pacientes atendidas com excelência</div></div>
       </div>
     </div>
-    <div class="reveal frame"><img src="${IMG_SUAPELE}" alt="Tratamento estético facial na CV Estética" class="w-full h-[540px] object-cover"></div>
+    <div class="reveal frame"><img src="${IMG_SUAPELE}" alt="Tratamento estético facial na Dra. Cristiana Valente Estética" class="w-full h-[540px] object-cover"></div>
   </header>
 
   <section class="border-y border-[color:var(--line)]" style="background:#fff"><div class="container py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center text-sm">
@@ -121,7 +121,7 @@ const BODY = `
   </section>
 
   <section id="protocolos" class="container py-24">
-    <div class="reveal max-w-2xl"><div class="kicker mb-6">Protocolos em destaque</div><h2 class="display text-5xl md:text-6xl">Ciência, tecnologia e sensibilidade estética.</h2><p class="text-[color:var(--muted)] mt-6 text-lg leading-relaxed">Cada tratamento é indicado somente após avaliação profissional. Abaixo, os protocolos mais procurados na CV Estética.</p></div>
+    <div class="reveal max-w-2xl"><div class="kicker mb-6">Protocolos em destaque</div><h2 class="display text-5xl md:text-6xl">Ciência, tecnologia e sensibilidade estética.</h2><p class="text-[color:var(--muted)] mt-6 text-lg leading-relaxed">Cada tratamento é indicado somente após avaliação profissional. Abaixo, os protocolos mais procurados na Dra. Cristiana Valente Estética.</p></div>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-14">
 
       <div class="reveal card p-8 protocol"><span class="tag">Capilar</span><h3>Terapia Capilar - Regenera Hair</h3><ul class="mt-3 list-none p-0">
@@ -168,7 +168,7 @@ const BODY = `
         <li>· Anamnese completa</li><li>· Tricoscopia</li><li>· Planejamento individualizado</li><li>· Acompanhamento fotográfico</li>
       </ul></div>
 
-      <div class="reveal card p-8 protocol" style="background:#141414;color:#fff;border-color:#141414"><span class="tag" style="color:var(--gold)">Exclusivos CV</span><h3 style="color:#fff">Protocolos autorais</h3><ul class="mt-3 list-none p-0" style="color:#c9c2b8">
+      <div class="reveal card p-8 protocol" style="background:#141414;color:#fff;border-color:#141414"><span class="tag" style="color:var(--gold)">Exclusivos Dra. Cristiana Valente</span><h3 style="color:#fff">Protocolos autorais</h3><ul class="mt-3 list-none p-0" style="color:#c9c2b8">
         <li>· Recuperação Pós-Mounjaro</li><li>· Recuperação Pós-Transplante Capilar</li><li>· Programa Anual de Recuperação Capilar</li><li>· Regenera Barba</li>
       </ul></div>
 
@@ -179,7 +179,7 @@ const BODY = `
     <div class="reveal card p-10 md:p-14" style="background:linear-gradient(135deg,#141414,#2a2320);color:#fff;border-color:#141414">
       <div class="grid lg:grid-cols-[1.1fr_.9fr] gap-12 items-center">
         <div>
-          <div class="kicker mb-6" style="color:var(--gold);border-color:rgba(201,163,107,.4);background:rgba(201,163,107,.08)">🖤 Protocolos exclusivos CV Estética</div>
+          <div class="kicker mb-6" style="color:var(--gold);border-color:rgba(201,163,107,.4);background:rgba(201,163,107,.08)">🖤 Protocolos exclusivos Dra. Cristiana Valente Estética</div>
           <h2 class="display text-4xl md:text-5xl" style="color:#fff">Tratamentos que só existem aqui.</h2>
           <p class="mt-6 leading-relaxed" style="color:#c9c2b8">Desenvolvidos pela Dra. Cristiana Valente para necessidades específicas dos nossos pacientes - combinando ciência, tecnologia de ponta e um olhar apurado para o que cada corpo, pele e cabelo pede.</p>
           <div class="grid sm:grid-cols-2 gap-4 mt-8">
@@ -190,7 +190,7 @@ const BODY = `
           </div>
           <a href="${WA}" class="btn btn-wa mt-10">Quero saber se sou indicada(o) →</a>
         </div>
-        <div class="reveal frame"><img src="${IMG_AMBIENTE}" class="w-full h-[520px] object-cover" alt="Dra. Cristiana Valente no ambiente da clínica CV Estética"></div>
+        <div class="reveal frame"><img src="${IMG_AMBIENTE}" class="w-full h-[520px] object-cover" alt="Dra. Cristiana Valente no ambiente da clínica Dra. Cristiana Valente Estética"></div>
       </div>
     </div>
   </section>
@@ -234,9 +234,9 @@ const BODY = `
   <section id="avaliacoes" class="container py-24">
     <div class="reveal max-w-2xl"><div class="kicker mb-6">Quem já se cuidou aqui</div><h2 class="display text-5xl md:text-6xl">Autoestima que volta a brilhar.</h2></div>
     <div class="grid md:grid-cols-3 gap-5 mt-14">
-      <div class="reveal card p-7"><div class="text-[color:var(--gold)] text-sm mb-3">★★★★★</div><p class="leading-relaxed">"A Dra. Cristiana entendeu exatamente o que eu queria. Meu rosto ficou renovado, mas continuo sendo eu. Nada de exageros."</p><div class="flex items-center gap-3 mt-6"><img src="https://i.pravatar.cc/80?img=31" class="w-11 h-11 rounded-full object-cover"><div><div class="font-semibold">Paciente CV</div><div class="text-xs text-[color:var(--muted)]">Protocolo facial · depoimento real</div></div></div></div>
-      <div class="reveal card p-7"><div class="text-[color:var(--gold)] text-sm mb-3">★★★★★</div><p class="leading-relaxed">"Fiz o Regenera Hair depois de meses angustiada com a queda. O acompanhamento com tricoscopia me deu segurança do primeiro dia."</p><div class="flex items-center gap-3 mt-6"><img src="https://i.pravatar.cc/80?img=23" class="w-11 h-11 rounded-full object-cover"><div><div class="font-semibold">Paciente CV</div><div class="text-xs text-[color:var(--muted)]">Terapia capilar · depoimento real</div></div></div></div>
-      <div class="reveal card p-7"><div class="text-[color:var(--gold)] text-sm mb-3">★★★★★</div><p class="leading-relaxed">"Ambiente sofisticado, atendimento humano de verdade. Voltei a me olhar no espelho com o sorriso que eu tinha perdido."</p><div class="flex items-center gap-3 mt-6"><img src="https://i.pravatar.cc/80?img=45" class="w-11 h-11 rounded-full object-cover"><div><div class="font-semibold">Paciente CV</div><div class="text-xs text-[color:var(--muted)]">Protocolo combinado · depoimento real</div></div></div></div>
+      <div class="reveal card p-7"><div class="text-[color:var(--gold)] text-sm mb-3">★★★★★</div><p class="leading-relaxed">"A Dra. Cristiana entendeu exatamente o que eu queria. Meu rosto ficou renovado, mas continuo sendo eu. Nada de exageros."</p><div class="flex items-center gap-3 mt-6"><img src="https://i.pravatar.cc/80?img=31" class="w-11 h-11 rounded-full object-cover"><div><div class="font-semibold">Paciente Dra. Cristiana Valente</div><div class="text-xs text-[color:var(--muted)]">Protocolo facial · depoimento real</div></div></div></div>
+      <div class="reveal card p-7"><div class="text-[color:var(--gold)] text-sm mb-3">★★★★★</div><p class="leading-relaxed">"Fiz o Regenera Hair depois de meses angustiada com a queda. O acompanhamento com tricoscopia me deu segurança do primeiro dia."</p><div class="flex items-center gap-3 mt-6"><img src="https://i.pravatar.cc/80?img=23" class="w-11 h-11 rounded-full object-cover"><div><div class="font-semibold">Paciente Dra. Cristiana Valente</div><div class="text-xs text-[color:var(--muted)]">Terapia capilar · depoimento real</div></div></div></div>
+      <div class="reveal card p-7"><div class="text-[color:var(--gold)] text-sm mb-3">★★★★★</div><p class="leading-relaxed">"Ambiente sofisticado, atendimento humano de verdade. Voltei a me olhar no espelho com o sorriso que eu tinha perdido."</p><div class="flex items-center gap-3 mt-6"><img src="https://i.pravatar.cc/80?img=45" class="w-11 h-11 rounded-full object-cover"><div><div class="font-semibold">Paciente Dra. Cristiana Valente</div><div class="text-xs text-[color:var(--muted)]">Protocolo combinado · depoimento real</div></div></div></div>
     </div>
   </section>
 
@@ -345,7 +345,7 @@ const BODY = `
   <footer class="border-t border-[color:var(--line)]" style="background:#fff">
     <div class="container py-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
       <div class="lg:col-span-2">
-        <div class="flex items-center gap-3"><img src="${LOGO}" alt="CV Estética" class="mark"><span class="serif text-lg">Dra. Cristiana Valente</span></div>
+        <div class="flex items-center gap-3"><img src="${LOGO}" alt="Dra. Cristiana Valente Estética" class="mark"><span class="serif text-lg">Dra. Cristiana Valente</span></div>
         <p class="text-sm text-[color:var(--muted)] mt-4 max-w-sm leading-relaxed">Estética facial, corporal e capilar com protocolos personalizados, tecnologia avançada e foco em resultados naturais. Saúde e autoestima começam pelo cuidado.</p>
         <p class="text-xs text-[color:var(--muted)] mt-4"><strong class="text-[color:var(--ink)]">COREN-PR 451.408</strong> · Enfermeira Esteta · Especialista em Saúde Pública e Estética Avançada</p>
         <p class="text-xs text-[color:var(--muted)] mt-2"><strong class="text-[color:var(--ink)]">Atendimento:</strong> mediante agendamento - Curitiba/PR (Batel · Centro Cívico)</p>
@@ -354,7 +354,7 @@ const BODY = `
         <p class="text-xs font-bold uppercase tracking-wider mb-4">Navegação</p>
         <ul class="space-y-2 text-sm text-[color:var(--muted)]">
           <li><a href="#protocolos" class="hover:text-[color:var(--ink)]">Protocolos</a></li>
-          <li><a href="#exclusivos" class="hover:text-[color:var(--ink)]">Exclusivos CV</a></li>
+          <li><a href="#exclusivos" class="hover:text-[color:var(--ink)]">Exclusivos Dra. Cristiana Valente</a></li>
           <li><a href="#sobre" class="hover:text-[color:var(--ink)]">Sobre a Dra.</a></li>
           <li><a href="#avaliacoes" class="hover:text-[color:var(--ink)]">Depoimentos</a></li>
           <li><a href="#faq" class="hover:text-[color:var(--ink)]">FAQ</a></li>
