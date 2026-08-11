@@ -114,17 +114,45 @@ function RootShell({ children }: { children: ReactNode }) {
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-XW6KJ22X76"
         />
-
+        
         <script
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
+        
+              function gtag(){
+                dataLayer.push(arguments);
+              }
+        
               gtag('js', new Date());
-              gtag('config', 'G-XW6KJ22X76');
+        
+              const params = new URLSearchParams(window.location.search);
+        
+              const utmSource = params.get('utm_source');
+              const utmMedium = params.get('utm_medium');
+              const utmCampaign = params.get('utm_campaign');
+        
+              const gaConfig = {
+                page_location: window.location.href
+              };
+        
+              if (utmSource) {
+                gaConfig.campaign_source = utmSource;
+              }
+        
+              if (utmMedium) {
+                gaConfig.campaign_medium = utmMedium;
+              }
+        
+              if (utmCampaign) {
+                gaConfig.campaign_name = utmCampaign;
+              }
+        
+              gtag('config', 'G-XW6KJ22X76', gaConfig);
             `,
           }}
         />
+        
       </head>
 
       <body>
