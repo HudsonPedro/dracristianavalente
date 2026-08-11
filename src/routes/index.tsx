@@ -90,7 +90,7 @@ const BODY = `
     <div>
       <div class="reveal kicker">★ Estética facial, corporal e capilar · resultados naturais</div>
       <h1 class="reveal display text-6xl md:text-7xl mt-7">Tratamento <br>Capilar e Facial<span class="rosetext italic"><br>exclusivo</span>.</h1>
-      <p class="reveal text-lg md:text-xl text-[color:var(--muted)] max-w-xl mt-7 leading-relaxed">Recupere sua autoestima com protocolos faciais e capilares personalizados, tecnologia avançada e o cuidado humano que só a Dra. Cristiana Valente oferece - para resultados naturais que valorizam quem você é.</p>
+      <p class="reveal text-lg md:text-xl text-[color:var(--muted)] max-w-xl mt-7 leading-relaxed">Recupere sua autoestima com protocolos capilares e faciais personalizados, tecnologia avançada e o cuidado humano que só a Dra. Cristiana Valente oferece - para resultados naturais que valorizam quem você é.</p>
       <div class="reveal flex flex-col sm:flex-row gap-4 mt-10"><a href="${WA}" class="btn btn-wa">Agendar minha avaliação →</a><a href="#protocolos" class="btn btn-ghost">Ver protocolos</a></div>
       <div class="reveal flex items-center gap-4 mt-10">
         <div class="flex -space-x-3">
@@ -213,12 +213,20 @@ const BODY = `
       <p class="text-[color:var(--muted)] text-lg mt-6 leading-relaxed">Especialista em Saúde Pública e Estética Avançada, Terapeuta Capilar e Tricoscopista. Une conhecimento científico, tecnologia e um cuidado profundamente humano para transformar não só a aparência - mas a relação de cada paciente com o próprio espelho.</p>
       <p class="text-[color:var(--muted)] text-lg mt-4 leading-relaxed italic">"Cuidar de você é transformar vidas."</p>
       <div class="hair my-8"></div>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+      
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-6"> 
+        <div><div class="display rosetext text-xl sm:text-2xl">Saúde</div><div class="text-xs text-[color:var(--muted)] mt-1">integral</div></div> 
+        <div><div class="display rosetext text-xl sm:text-2xl">Autoestima</div><div class="text-xs text-[color:var(--muted)] mt-1">e confiança</div></div> 
+        <div><div class="display rosetext text-xl sm:text-2xl">Tratamentos</div><div class="text-xs text-[color:var(--muted)] mt-1">personalizados</div></div> 
+        <div><div class="display rosetext text-xl sm:text-2xl">Avaliação</div><div class="text-xs text-[color:var(--muted)] mt-1">detalhada</div></div> 
+      </div>
+
+     <!-- <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
         <div><div class="display rosetext text-2xl">Saúde</div><div class="text-xs text-[color:var(--muted)] mt-1">integral</div></div>
         <div><div class="display rosetext text-2xl">Autoestima</div><div class="text-xs text-[color:var(--muted)] mt-1">e confiança</div></div>
         <div><div class="display rosetext text-2xl">Tratamentos</div><div class="text-xs text-[color:var(--muted)] mt-1">personalizados</div></div>
         <div><div class="display rosetext text-2xl">Avaliação</div><div class="text-xs text-[color:var(--muted)] mt-1">detalhada</div></div>
-      </div>
+      </div> -->
     </div>
   </section>
 
