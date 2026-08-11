@@ -213,20 +213,12 @@ const BODY = `
       <p class="text-[color:var(--muted)] text-lg mt-6 leading-relaxed">Especialista em Saúde Pública e Estética Avançada, Terapeuta Capilar e Tricoscopista. Une conhecimento científico, tecnologia e um cuidado profundamente humano para transformar não só a aparência - mas a relação de cada paciente com o próprio espelho.</p>
       <p class="text-[color:var(--muted)] text-lg mt-4 leading-relaxed italic">"Cuidar de você é transformar vidas."</p>
       <div class="hair my-8"></div>
-      
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-6"> 
-        <div><div class="display rosetext text-xl sm:text-2xl">Saúde</div><div class="text-xs text-[color:var(--muted)] mt-1">integral</div></div> 
-        <div><div class="display rosetext text-xl sm:text-2xl">Autoestima</div><div class="text-xs text-[color:var(--muted)] mt-1">e confiança</div></div> 
-        <div><div class="display rosetext text-xl sm:text-2xl">Tratamentos</div><div class="text-xs text-[color:var(--muted)] mt-1">personalizados</div></div> 
-        <div><div class="display rosetext text-xl sm:text-2xl">Avaliação</div><div class="text-xs text-[color:var(--muted)] mt-1">detalhada</div></div> 
-      </div>
-
-     <!-- <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-6">
         <div><div class="display rosetext text-2xl">Saúde</div><div class="text-xs text-[color:var(--muted)] mt-1">integral</div></div>
         <div><div class="display rosetext text-2xl">Autoestima</div><div class="text-xs text-[color:var(--muted)] mt-1">e confiança</div></div>
         <div><div class="display rosetext text-2xl">Tratamentos</div><div class="text-xs text-[color:var(--muted)] mt-1">personalizados</div></div>
         <div><div class="display rosetext text-2xl">Avaliação</div><div class="text-xs text-[color:var(--muted)] mt-1">detalhada</div></div>
-      </div> -->
+      </div>
     </div>
   </section>
 
