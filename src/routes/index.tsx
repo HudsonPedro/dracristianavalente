@@ -89,8 +89,14 @@ const BODY = `
   <header id="topo" class="container pt-36 pb-20 md:pt-44 md:pb-28 grid lg:grid-cols-[1.05fr_.95fr] gap-14 items-center">
     <div>
       <div class="reveal kicker">★ Estética facial, corporal e capilar · resultados naturais</div>
-      <h1 class="reveal display text-6xl md:text-7xl mt-7">Tratamento <br>Capilar e Facial<span class="rosetext italic"><br>exclusivo</span>.</h1>
-      <p class="reveal text-lg md:text-xl text-[color:var(--muted)] max-w-xl mt-7 leading-relaxed">Recupere sua autoestima com protocolos capilares e faciais personalizados, tecnologia avançada e o cuidado humano que só a Dra. Cristiana Valente oferece - para resultados naturais que valorizam quem você é.</p>
+      <h1 class="reveal display text-6xl md:text-7xl mt-7">
+        Dra. Cristiana Valente <br />
+        Tratamento Capilar
+        <span class="rosetext italic"><br />em Curitiba</span>.
+      </h1>
+      <p class="reveal text-lg md:text-xl text-[color:var(--muted)] max-w-xl mt-7 leading-relaxed">
+        Tratamento para queda de cabelo, calvície e saúde do couro cabeludo em Curitiba, com avaliação individualizada e protocolos capilares personalizados pela Dra. Cristiana Valente.
+      </p>
       <div class="reveal flex flex-col sm:flex-row gap-4 mt-10"><a href="${WA}" class="btn btn-wa">Agendar minha avaliação →</a><a href="#protocolos" class="btn btn-ghost">Ver protocolos</a></div>
       <div class="reveal flex items-center gap-4 mt-10">
         <div class="flex -space-x-3">
@@ -121,10 +127,10 @@ const BODY = `
   </section>
 
   <section id="protocolos" class="container py-24">
-    <div class="reveal max-w-2xl"><div class="kicker mb-6">Protocolos em destaque</div><h2 class="display text-5xl md:text-6xl">Ciência, tecnologia e sensibilidade estética.</h2><p class="text-[color:var(--muted)] mt-6 text-lg leading-relaxed">Cada tratamento é indicado somente após avaliação profissional. Abaixo, os protocolos mais procurados na Dra. Cristiana Valente Estética.</p></div>
+    <div class="reveal max-w-2xl"><div class="kicker mb-6">Protocolos em destaque</div><h2 class="display text-5xl md:text-6xl">Tratamentos para Queda de Cabelo, Alopecia e Saúde Capilar</h2><p class="text-[color:var(--muted)] mt-6 text-lg leading-relaxed">Os tratamentos capilares são indicados após avaliação individualizada, considerando queda de cabelo, alopecia, calvície e alterações do couro cabeludo. Conheça os principais protocolos realizados pela Dra. Cristiana Valente em Curitiba.</p></div>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-14">
 
-      <div class="reveal card p-8 protocol"><span class="tag">Capilar</span><h3>Terapia Capilar - Regenera Hair</h3><ul class="mt-3 list-none p-0">
+      <div class="reveal card p-8 protocol"><span class="tag">Capilar</span><h3>Tratamento Capilar para Queda de Cabelo e Alopecia</h3><ul class="mt-3 list-none p-0">
         <li>· Regenera Hair</li><li>· PRP Capilar</li><li>· Regenera Hair + PRP</li><li>· Alopecia androgenética</li><li>· Alopecia areata</li><li>· Eflúvio telógeno</li><li>· Fortalecimento pós-transplante</li>
       </ul></div>
 
@@ -255,19 +261,65 @@ const BODY = `
   </div></section>
 
   <section id="faq" class="container py-24 max-w-3xl">
-    <h2 class="reveal display text-5xl md:text-6xl mb-10 text-center">Perguntas frequentes</h2>
+    <h2 class="reveal display text-5xl md:text-6xl mb-10 text-center">
+      Dúvidas sobre Tratamento Capilar
+    </h2>
+  
     <div class="reveal">
-      <details class="faq"><summary>Como funciona a avaliação? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">A avaliação é personalizada e mediante agendamento. Inclui anamnese completa, exame da pele e/ou tricoscopia capilar, e o planejamento do protocolo ideal para o seu caso.</p></details>
-      <details class="faq"><summary>Os resultados são naturais? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Sim. Nosso compromisso é realçar sua beleza, nunca modificá-la. Os protocolos são calibrados para entregar resultados harmônicos e sutis.</p></details>
-      <details class="faq"><summary>Os procedimentos doem? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Utilizamos técnicas modernas e recursos de conforto (anestésicos tópicos, protocolos suaves) para que cada sessão seja tranquila. Sensações variam conforme o tratamento e são sempre discutidas antes.</p></details>
-      <details class="faq"><summary>Como são elaborados os planos e valores? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Cada plano é elaborado após a avaliação, conforme a necessidade individual. Oferecemos condições especiais para tratamentos combinados.</p></details>
-      <details class="faq"><summary>Existe garantia de resultado? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Não prometemos resultados absolutos - seria antiético. Garantimos protocolos seguros, personalizados, acompanhamento durante toda a jornada e total transparência em cada etapa.</p></details>
-      <details class="faq"><summary>Atendem homens? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Sim. Atendemos homens e mulheres a partir dos 25 anos, com protocolos específicos como Regenera Barba, saúde capilar masculina e rejuvenescimento facial.</p></details>
-      <details class="faq"><summary>Onde fica a clínica? <span class="pl">+</span></summary><div class="pb-5 text-[color:var(--muted)] leading-relaxed space-y-3"><p>Atendimento <strong>mediante agendamento</strong> em duas unidades em Curitiba – Paraná:</p><p><strong>LA BEAUTÉ</strong> - Avenida Sete de Setembro, 4476, 14º Andar, Salas 1405/1406, Ed. Business Tower, Batel, Curitiba – Paraná.</p><p><strong>MAGMA CONSULTÓRIOS</strong> - Av. Cândido de Abreu, 427, 7º Andar, ao lado do Bradesco, Centro Cívico, Curitiba – Paraná.</p><p>O endereço da sua avaliação é confirmado após o agendamento pelo WhatsApp.</p></div></details>
-      <details class="faq"><summary>Qual é o horário de atendimento? <span class="pl">+</span></summary><p class="pb-5 text-[color:var(--muted)] leading-relaxed">Atendimento <strong>mediante agendamento prévio</strong>. Fale conosco pelo WhatsApp e reservamos o melhor horário para você, com toda a atenção que sua avaliação merece.</p></details>
+  
+      <details class="faq">
+        <summary>
+          Qual é o melhor tratamento para queda de cabelo?
+          <span class="pl">+</span>
+        </summary>
+        <p class="pb-5 text-[color:var(--muted)] leading-relaxed">
+          O tratamento depende da causa e das características da queda. Por isso, a Dra. Cristiana Valente realiza uma avaliação individualizada antes de indicar o protocolo capilar mais adequado.
+        </p>
+      </details>
+  
+      <details class="faq">
+        <summary>
+          Quando devo procurar tratamento para queda de cabelo?
+          <span class="pl">+</span>
+        </summary>
+        <p class="pb-5 text-[color:var(--muted)] leading-relaxed">
+          Quando a queda se torna persistente, aumenta de intensidade, surgem falhas, redução de volume ou alterações no couro cabeludo, é importante realizar uma avaliação profissional.
+        </p>
+      </details>
+  
+      <details class="faq">
+        <summary>
+          Alopecia e calvície têm tratamento?
+          <span class="pl">+</span>
+        </summary>
+        <p class="pb-5 text-[color:var(--muted)] leading-relaxed">
+          Existem diferentes possibilidades de tratamento para alopecia e calvície. A indicação depende do tipo de perda capilar, do histórico e da avaliação individual de cada paciente.
+        </p>
+      </details>
+  
+      <details class="faq">
+        <summary>
+          Como funciona uma avaliação capilar?
+          <span class="pl">+</span>
+        </summary>
+        <p class="pb-5 text-[color:var(--muted)] leading-relaxed">
+          A avaliação inclui análise do histórico, características da queda, fios e couro cabeludo, podendo incluir tricoscopia capilar para auxiliar na definição do tratamento.
+        </p>
+      </details>
+  
+      <details class="faq">
+        <summary>
+          Onde fazer tratamento capilar em Curitiba?
+          <span class="pl">+</span>
+        </summary>
+        <p class="pb-5 text-[color:var(--muted)] leading-relaxed">
+          A Dra. Cristiana Valente realiza avaliações e tratamentos capilares em Curitiba, com atendimento personalizado para queda de cabelo, alopecia, calvície e saúde do couro cabeludo.
+        </p>
+      </details>
+  
     </div>
-
   </section>
+  
   <section class="container py-20">
     <div class="reveal max-w-xl mx-auto text-center"><div class="kicker mb-6 mx-auto">Agende sua avaliação</div><h2 class="display text-5xl md:text-6xl">Comece agora.</h2><p class="text-[color:var(--muted)] mt-5">Preencha abaixo ou fale direto no WhatsApp - retornamos para marcar o melhor horário para você.</p></div>
     <form
@@ -380,8 +432,13 @@ const BODY = `
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Dra. Cristiana Valente Estética - Capilar e Facial" },
-      { name: "description", content: "Estética facial, corporal e capilar com protocolos personalizados, tecnologia avançada e resultados naturais. Agende sua avaliação com a Dra. Cristiana Valente." },
+      { title: "Tratamento Capilar em Curitiba | Dra. Cristiana Valente" },
+
+      {
+        name: "description",
+        content: "Tratamento capilar em Curitiba para queda de cabelo, calvície e saúde do couro cabeludo. Conheça a Dra. Cristiana Valente e agende sua avaliação."
+      },
+      
       { property: "og:title", content: "Dra. Cristiana Valente Estética - Capilar e Facial" },
       { property: "og:description", content: "Estética facial, corporal e capilar com protocolos personalizados, tecnologia avançada e resultados naturais. Agende sua avaliação com a Dra. Cristiana Valente." },
       { property: "og:type", content: "website" },
@@ -629,6 +686,58 @@ function Index() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "Qual é o melhor tratamento para queda de cabelo?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "O tratamento depende da causa e das características da queda. Por isso, a Dra. Cristiana Valente realiza uma avaliação individualizada antes de indicar o protocolo capilar mais adequado."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Quando devo procurar tratamento para queda de cabelo?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Quando a queda se torna persistente, aumenta de intensidade, surgem falhas, redução de volume ou alterações no couro cabeludo, é importante realizar uma avaliação profissional."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Alopecia e calvície têm tratamento?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Existem diferentes possibilidades de tratamento para alopecia e calvície. A indicação depende do tipo de perda capilar, do histórico e da avaliação individual de cada paciente."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Como funciona uma avaliação capilar?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "A avaliação inclui análise do histórico, características da queda, fios e couro cabeludo, podendo incluir tricoscopia capilar para auxiliar na definição do tratamento."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Onde fazer tratamento capilar em Curitiba?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "A Dra. Cristiana Valente realiza avaliações e tratamentos capilares em Curitiba, com atendimento personalizado para queda de cabelo, alopecia, calvície e saúde do couro cabeludo."
+                }
+              }
+            ]
+          })
+        }}
+      />
+
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div dangerouslySetInnerHTML={{ __html: BODY }} />
             
