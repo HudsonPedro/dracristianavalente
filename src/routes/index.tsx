@@ -301,7 +301,7 @@ const BODY = `
       </div>
   
   
-      {/* ELIZANGELA */}
+      <!--ELIZANGELA-->
       <div class="reveal card p-7 flex flex-col">
         <div class="flex items-center justify-between mb-4">
           <div class="text-[color:var(--gold)] text-base tracking-wide">
@@ -335,7 +335,7 @@ const BODY = `
       </div>
   
   
-      {/* MARINA */}
+      <!--MARINA-->
       <div class="reveal card p-7 flex flex-col">
         <div class="flex items-center justify-between mb-4">
           <div class="text-[color:var(--gold)] text-base tracking-wide">
@@ -372,7 +372,7 @@ const BODY = `
       </div>
   
   
-      {/* FABRICIO */}
+      <!--FABRICIO-->
       <div class="reveal card p-7 flex flex-col">
         <div class="flex items-center justify-between mb-4">
           <div class="text-[color:var(--gold)] text-base tracking-wide">
@@ -406,7 +406,7 @@ const BODY = `
       </div>
   
   
-      {/* MARCELLA */}
+      <!--MARCELLA-->
       <div class="reveal card p-7 flex flex-col">
         <div class="flex items-center justify-between mb-4">
           <div class="text-[color:var(--gold)] text-base tracking-wide">
@@ -443,7 +443,7 @@ const BODY = `
       </div>
   
   
-      {/* NEUSA */}
+      <!--NEUSA-->
       <div class="reveal card p-7 flex flex-col">
         <div class="flex items-center justify-between mb-4">
           <div class="text-[color:var(--gold)] text-base tracking-wide">
@@ -478,7 +478,7 @@ const BODY = `
       </div>
   
   
-      {/* AMAZON NATUS */}
+      <!--AMAZON NATUS-->
       <div class="reveal card p-7 flex flex-col">
         <div class="flex items-center justify-between mb-4">
           <div class="text-[color:var(--gold)] text-base tracking-wide">
@@ -515,7 +515,7 @@ const BODY = `
       </div>
   
   
-      {/* WAGNER */}
+      <!--WAGNER-->
       <div class="reveal card p-7 flex flex-col">
         <div class="flex items-center justify-between mb-4">
           <div class="text-[color:var(--gold)] text-base tracking-wide">
