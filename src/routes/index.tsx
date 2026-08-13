@@ -252,11 +252,309 @@ const BODY = `
   </section>
 
   <section id="avaliacoes" class="container py-24">
-    <div class="reveal max-w-2xl"><div class="kicker mb-6">Quem já se cuidou aqui</div><h2 class="display text-5xl md:text-6xl">Autoestima que volta a brilhar.</h2></div>
-    <div class="grid md:grid-cols-3 gap-5 mt-14">
-      <div class="reveal card p-7"><div class="text-[color:var(--gold)] text-sm mb-3">★★★★★</div><p class="leading-relaxed">"A Dra. Cristiana entendeu exatamente o que eu queria. Meu rosto ficou renovado, mas continuo sendo eu. Nada de exageros."</p><div class="flex items-center gap-3 mt-6"><img src="https://i.pravatar.cc/80?img=31" class="w-11 h-11 rounded-full object-cover"><div><div class="font-semibold">Paciente Dra. Cristiana Valente</div><div class="text-xs text-[color:var(--muted)]">Protocolo facial · depoimento real</div></div></div></div>
-      <div class="reveal card p-7"><div class="text-[color:var(--gold)] text-sm mb-3">★★★★★</div><p class="leading-relaxed">"Fiz o Regenera Hair depois de meses angustiada com a queda. O acompanhamento com tricoscopia me deu segurança do primeiro dia."</p><div class="flex items-center gap-3 mt-6"><img src="https://i.pravatar.cc/80?img=23" class="w-11 h-11 rounded-full object-cover"><div><div class="font-semibold">Paciente Dra. Cristiana Valente</div><div class="text-xs text-[color:var(--muted)]">Terapia capilar · depoimento real</div></div></div></div>
-      <div class="reveal card p-7"><div class="text-[color:var(--gold)] text-sm mb-3">★★★★★</div><p class="leading-relaxed">"Ambiente sofisticado, atendimento humano de verdade. Voltei a me olhar no espelho com o sorriso que eu tinha perdido."</p><div class="flex items-center gap-3 mt-6"><img src="https://i.pravatar.cc/80?img=45" class="w-11 h-11 rounded-full object-cover"><div><div class="font-semibold">Paciente Dra. Cristiana Valente</div><div class="text-xs text-[color:var(--muted)]">Protocolo combinado · depoimento real</div></div></div></div>
+    <div class="reveal max-w-2xl">
+      <div class="kicker mb-6">Avaliações reais no Google</div>
+  
+      <h2 class="display text-5xl md:text-6xl">
+        Quem conhece, recomenda.
+      </h2>
+  
+      <p class="text-[color:var(--muted)] mt-5 text-lg leading-relaxed">
+        Experiências compartilhadas por pacientes que avaliaram o atendimento
+        da Dra. Cristiana Valente no Google.
+      </p>
+    </div>
+  
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-14">
+  
+      {/* FABIANA */}
+      <div class="reveal card p-7 flex flex-col">
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-[color:var(--gold)] text-base tracking-wide">
+            ★★★★★
+          </div>
+  
+          <div class="text-xs font-semibold text-[color:var(--muted)]">
+            Google
+          </div>
+        </div>
+  
+        <p class="leading-relaxed flex-1">
+          "Excelente profissional, atenciosa e qualificada."
+        </p>
+  
+        <div class="flex items-center gap-3 mt-6">
+          <div
+            class="w-11 h-11 rounded-full flex items-center justify-center font-bold text-white shrink-0"
+            style="background:#4285F4"
+          >
+            F
+          </div>
+  
+          <div>
+            <div class="font-semibold">Fabiana De Sousa Braga</div>
+            <div class="text-xs text-[color:var(--muted)]">
+              ★★★★★ · Avaliação no Google
+            </div>
+          </div>
+        </div>
+      </div>
+  
+  
+      {/* ELIZANGELA */}
+      <div class="reveal card p-7 flex flex-col">
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-[color:var(--gold)] text-base tracking-wide">
+            ★★★★★
+          </div>
+  
+          <div class="text-xs font-semibold text-[color:var(--muted)]">
+            Google
+          </div>
+        </div>
+  
+        <p class="leading-relaxed flex-1">
+          "Maravilhosa! 💗"
+        </p>
+  
+        <div class="flex items-center gap-3 mt-6">
+          <div
+            class="w-11 h-11 rounded-full flex items-center justify-center font-bold text-white shrink-0"
+            style="background:#DB4437"
+          >
+            E
+          </div>
+  
+          <div>
+            <div class="font-semibold">Elizangela Costa</div>
+            <div class="text-xs text-[color:var(--muted)]">
+              ★★★★★ · Avaliação no Google
+            </div>
+          </div>
+        </div>
+      </div>
+  
+  
+      {/* MARINA */}
+      <div class="reveal card p-7 flex flex-col">
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-[color:var(--gold)] text-base tracking-wide">
+            ★★★★★
+          </div>
+  
+          <div class="text-xs font-semibold text-[color:var(--muted)]">
+            Google
+          </div>
+        </div>
+  
+        <p class="leading-relaxed flex-1">
+          "Adorei o atendimento da Cris! Ela é muito atenciosa, explica cada
+          detalhe do procedimento com paciência e usa produtos de excelente
+          qualidade. Recomendo muito o trabalho dela para quem busca cuidado
+          e profissionalismo."
+        </p>
+  
+        <div class="flex items-center gap-3 mt-6">
+          <div
+            class="w-11 h-11 rounded-full flex items-center justify-center font-bold text-white shrink-0"
+            style="background:#0F9D58"
+          >
+            M
+          </div>
+  
+          <div>
+            <div class="font-semibold">Marina Pellanda</div>
+            <div class="text-xs text-[color:var(--muted)]">
+              ★★★★★ · Avaliação no Google
+            </div>
+          </div>
+        </div>
+      </div>
+  
+  
+      {/* FABRICIO */}
+      <div class="reveal card p-7 flex flex-col">
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-[color:var(--gold)] text-base tracking-wide">
+            ★★★★★
+          </div>
+  
+          <div class="text-xs font-semibold text-[color:var(--muted)]">
+            Google
+          </div>
+        </div>
+  
+        <p class="leading-relaxed flex-1">
+          "Excelente atendimento. Profissionalismo e Competência."
+        </p>
+  
+        <div class="flex items-center gap-3 mt-6">
+          <div
+            class="w-11 h-11 rounded-full flex items-center justify-center font-bold text-white shrink-0"
+            style="background:#E94265"
+          >
+            F
+          </div>
+  
+          <div>
+            <div class="font-semibold">Fabricio Ramires Pinto</div>
+            <div class="text-xs text-[color:var(--muted)]">
+              ★★★★★ · Avaliação no Google
+            </div>
+          </div>
+        </div>
+      </div>
+  
+  
+      {/* MARCELLA */}
+      <div class="reveal card p-7 flex flex-col">
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-[color:var(--gold)] text-base tracking-wide">
+            ★★★★★
+          </div>
+  
+          <div class="text-xs font-semibold text-[color:var(--muted)]">
+            Google
+          </div>
+        </div>
+  
+        <p class="leading-relaxed flex-1">
+          "Ótima profissional! Muito atenciosa, cuidadosa e competente.
+          Durante todo o procedimento, explicou tudo direitinho e me passou
+          muita segurança. Dá pra perceber o carinho e o profissionalismo em
+          cada detalhe. Amei o resultado e com certeza vou voltar! 💗"
+        </p>
+  
+        <div class="flex items-center gap-3 mt-6">
+          <div
+            class="w-11 h-11 rounded-full flex items-center justify-center font-bold text-white shrink-0"
+            style="background:#5F6368"
+          >
+            M
+          </div>
+  
+          <div>
+            <div class="font-semibold">Marcella Cardoso</div>
+            <div class="text-xs text-[color:var(--muted)]">
+              ★★★★★ · Avaliação no Google
+            </div>
+          </div>
+        </div>
+      </div>
+  
+  
+      {/* NEUSA */}
+      <div class="reveal card p-7 flex flex-col">
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-[color:var(--gold)] text-base tracking-wide">
+            ★★★★★
+          </div>
+  
+          <div class="text-xs font-semibold text-[color:var(--muted)]">
+            Google
+          </div>
+        </div>
+  
+        <p class="leading-relaxed flex-1">
+          "Uma querida, tratamento maravilhoso, já sinto a diferença com
+          3 sessões."
+        </p>
+  
+        <div class="flex items-center gap-3 mt-6">
+          <div
+            class="w-11 h-11 rounded-full flex items-center justify-center font-bold text-white shrink-0"
+            style="background:#F4511E"
+          >
+            N
+          </div>
+  
+          <div>
+            <div class="font-semibold">Neusa Rendaki</div>
+            <div class="text-xs text-[color:var(--muted)]">
+              ★★★★★ · Avaliação no Google
+            </div>
+          </div>
+        </div>
+      </div>
+  
+  
+      {/* AMAZON NATUS */}
+      <div class="reveal card p-7 flex flex-col">
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-[color:var(--gold)] text-base tracking-wide">
+            ★★★★★
+          </div>
+  
+          <div class="text-xs font-semibold text-[color:var(--muted)]">
+            Google
+          </div>
+        </div>
+  
+        <p class="leading-relaxed flex-1">
+          "Totalmente satisfeito com a avaliação individual com tricoscopia
+          para análise do meu couro cabeludo e o protocolo personalizado que
+          a Dra. Cristiana Valente definiu para o meu tratamento, estou na
+          terceira sessão e já estou vendo resultados. Eu indico! 😍"
+        </p>
+  
+        <div class="flex items-center gap-3 mt-6">
+          <div
+            class="w-11 h-11 rounded-full flex items-center justify-center font-bold text-white shrink-0"
+            style="background:#F4511E"
+          >
+            A
+          </div>
+  
+          <div>
+            <div class="font-semibold">Amazon Natus</div>
+            <div class="text-xs text-[color:var(--muted)]">
+              ★★★★★ · Avaliação no Google
+            </div>
+          </div>
+        </div>
+      </div>
+  
+  
+      {/* WAGNER */}
+      <div class="reveal card p-7 flex flex-col">
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-[color:var(--gold)] text-base tracking-wide">
+            ★★★★★
+          </div>
+  
+          <div class="text-xs font-semibold text-[color:var(--muted)]">
+            Google
+          </div>
+        </div>
+  
+        <p class="leading-relaxed flex-1">
+          "★★★★★"
+        </p>
+  
+        <div class="flex items-center gap-3 mt-6">
+          <div
+            class="w-11 h-11 rounded-full flex items-center justify-center font-bold text-white shrink-0"
+            style="background:#5F6368"
+          >
+            W
+          </div>
+  
+          <div>
+            <div class="font-semibold">Wagner Leucz</div>
+            <div class="text-xs text-[color:var(--muted)]">
+              ★★★★★ · Avaliação no Google
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  
+    <div class="reveal mt-10 text-center">
+      <div class="inline-flex items-center gap-3 text-sm text-[color:var(--muted)]">
+        <span style="font-weight:700;color:#4285F4">G</span>
+        Avaliações publicadas por clientes no Google
+      </div>
     </div>
   </section>
 
