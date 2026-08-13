@@ -267,7 +267,7 @@ const BODY = `
   
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-14">
   
-      {/* FABIANA */}
+      <!-- FABIANA -->
       <div class="reveal card p-7 flex flex-col">
         <div class="flex items-center justify-between mb-4">
           <div class="text-[color:var(--gold)] text-base tracking-wide">
