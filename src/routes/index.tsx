@@ -132,7 +132,14 @@ const BODY = `
 
       <div class="reveal card p-8 protocol"><span class="tag">Capilar</span><h3>Tratamento Capilar para Queda de Cabelo e Alopecia</h3><ul class="mt-3 list-none p-0">
         <li>· Regenera Hair</li><li>· PRP Capilar</li><li>· Regenera Hair + PRP</li><li>· Alopecia androgenética</li><li>· Alopecia areata</li><li>· Eflúvio telógeno</li><li>· Fortalecimento pós-transplante</li>
-      </ul></div>
+      </ul>
+      <a
+        href="/tratamento-queda-de-cabelo-curitiba"
+        class="inline-flex mt-5 text-sm font-semibold underline underline-offset-4"
+      >
+        Saiba mais sobre tratamento para queda de cabelo em Curitiba
+      </a>
+      </div>
 
       <div class="reveal card p-8 protocol"><span class="tag">Facial</span><h3>Microagulhamento Facial</h3><ul class="mt-3 list-none p-0">
         <li>· Rejuvenescimento</li><li>· Cicatrizes de acne</li><li>· Linhas finas</li><li>· Poros dilatados</li><li>· Melasma (quando indicado)</li><li>· Drug Delivery</li>
