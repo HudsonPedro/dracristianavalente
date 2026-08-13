@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { CSS } from "./index";
 
 export const Route = createFileRoute(
   "/tratamento-queda-de-cabelo-curitiba"
@@ -122,6 +123,7 @@ function TratamentoQuedaCabeloCuritiba() {
 
   return (
     <>
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
