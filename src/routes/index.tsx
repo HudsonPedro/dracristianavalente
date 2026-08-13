@@ -143,7 +143,7 @@ const BODY = `
 
       <div class="reveal card p-8 protocol"><span class="tag">Capilar</span><h3>Mesoterapia Capilar</h3><ul class="mt-3 list-none p-0">
         <li>· Avaliação e Planejamento</li><li>· Higienização e Preparo do Couro Cabeludo</li><li>· Preparo da Mescla de Ativos</li><li>· Vitaminas</li><li>· Fatores de crescimento</li><li>· Intradermoterapia</li><li>· Associação com microagulhamento</li><li>· Cuidados Pós-Procedimento</li>
-      </ul>
+      </ul><br>
       <a
         href="/tratamento-capilar-curitiba"
         class="inline-flex text-sm font-semibold underline underline-offset-4"
