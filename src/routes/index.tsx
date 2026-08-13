@@ -284,12 +284,12 @@ const BODY = `
         </p>
   
         <div class="flex items-center gap-3 mt-6">
-          <div
-            class="w-11 h-11 rounded-full flex items-center justify-center font-bold text-white shrink-0"
-            style="background:#4285F4"
-          >
-            F
-          </div>
+          <img
+            src="/avaliacoes/fabiana.webp"
+            alt="Fabiana De Sousa Braga - avaliação no Google"
+            class="w-11 h-11 rounded-full object-cover shrink-0"
+            loading="lazy"
+          />
   
           <div>
             <div class="font-semibold">Fabiana De Sousa Braga</div>
@@ -318,12 +318,12 @@ const BODY = `
         </p>
   
         <div class="flex items-center gap-3 mt-6">
-          <div
-            class="w-11 h-11 rounded-full flex items-center justify-center font-bold text-white shrink-0"
-            style="background:#DB4437"
-          >
-            E
-          </div>
+          <img
+            src="/avaliacoes/elizangela.webp"
+            alt="Elizangela Costa - avaliação no Google"
+            class="w-11 h-11 rounded-full object-cover shrink-0"
+            loading="lazy"
+          />
   
           <div>
             <div class="font-semibold">Elizangela Costa</div>
@@ -355,12 +355,12 @@ const BODY = `
         </p>
   
         <div class="flex items-center gap-3 mt-6">
-          <div
-            class="w-11 h-11 rounded-full flex items-center justify-center font-bold text-white shrink-0"
-            style="background:#0F9D58"
-          >
-            M
-          </div>
+          <img
+            src="/avaliacoes/marina.webp"
+            alt="Marina Pellanda - avaliação no Google"
+            class="w-11 h-11 rounded-full object-cover shrink-0"
+            loading="lazy"
+          />
   
           <div>
             <div class="font-semibold">Marina Pellanda</div>
@@ -426,12 +426,12 @@ const BODY = `
         </p>
   
         <div class="flex items-center gap-3 mt-6">
-          <div
-            class="w-11 h-11 rounded-full flex items-center justify-center font-bold text-white shrink-0"
-            style="background:#5F6368"
-          >
-            M
-          </div>
+          <img
+            src="/avaliacoes/marcella.webp"
+            alt="Marcella Cardoso - avaliação no Google"
+            class="w-11 h-11 rounded-full object-cover shrink-0"
+            loading="lazy"
+          />
   
           <div>
             <div class="font-semibold">Marcella Cardoso</div>
@@ -532,12 +532,12 @@ const BODY = `
         </p>
   
         <div class="flex items-center gap-3 mt-6">
-          <div
-            class="w-11 h-11 rounded-full flex items-center justify-center font-bold text-white shrink-0"
-            style="background:#5F6368"
-          >
-            W
-          </div>
+          <img
+            src="/avaliacoes/wagner.webp"
+            alt="Wagner Leucz - avaliação no Google"
+            class="w-11 h-11 rounded-full object-cover shrink-0"
+            loading="lazy"
+          />
   
           <div>
             <div class="font-semibold">Wagner Leucz</div>
