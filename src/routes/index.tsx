@@ -166,8 +166,8 @@ const BODY = `
         <li>· Vitaminas</li><li>· Fatores de crescimento</li><li>· Intradermoterapia</li><li>· Associação com microagulhamento</li>
       </ul></div>
 
-      <div class="reveal card p-8 protocol"><span class="tag">Facial</span><h3>Jato de Plasma</h3><ul class="mt-3 list-none p-0">
-        <li>· Rugas finas</li><li>· Rejuvenescimento da pele</li><li>· Estímulo de colágeno</li>
+      <div class="reveal card p-8 protocol"><span class="tag">Facial</span><h3>Reconstrução e Revitalização das Sobrancelhas</h3><ul class="mt-3 list-none p-0">
+        <li>· PRP + Ativos</li><li>· Fatores de Crescimento</li><li>· Intradermoterapia</li><li>· Fortalecimento</li>
       </ul></div>
 
       <div class="reveal card p-8 protocol"><span class="tag">Avaliação</span><h3>Avaliação Estética Facial e Capilar</h3><ul class="mt-3 list-none p-0">
@@ -175,7 +175,7 @@ const BODY = `
       </ul></div>
 
       <div class="reveal card p-8 protocol" style="background:#141414;color:#fff;border-color:#141414"><span class="tag" style="color:var(--gold)">Exclusivos Dra. Cristiana Valente</span><h3 style="color:#fff">Protocolos autorais</h3><ul class="mt-3 list-none p-0" style="color:#c9c2b8">
-        <li>· Recuperação Pós-Mounjaro</li><li>· Recuperação Pós-Transplante Capilar</li><li>· Programa Anual de Recuperação Capilar</li><li>· Regenera Barba</li>
+        <li>· Recuperação Pós-Mounjaro</li><li>· Recuperação Pós-Transplante Capilar</li><li>· Programa Anual de Recuperação Capilar</li><li>· Regenera Barba</li><li>· Regenera Sobrancelhas</li>
       </ul></div>
 
     </div>
@@ -192,7 +192,7 @@ const BODY = `
             <div class="p-5 rounded-xl" style="background:rgba(201,163,107,.08);border:1px solid rgba(201,163,107,.25)"><div class="serif text-xl" style="color:var(--gold)">Pós-Mounjaro</div><p class="text-sm mt-2" style="color:#c9c2b8">Recuperação da firmeza, viço e densidade da pele após perda de peso.</p></div>
             <div class="p-5 rounded-xl" style="background:rgba(201,163,107,.08);border:1px solid rgba(201,163,107,.25)"><div class="serif text-xl" style="color:var(--gold)">Pós-Transplante Capilar</div><p class="text-sm mt-2" style="color:#c9c2b8">Fortalecimento e cuidado dos fios recém-implantados para máximo resultado.</p></div>
             <div class="p-5 rounded-xl" style="background:rgba(201,163,107,.08);border:1px solid rgba(201,163,107,.25)"><div class="serif text-xl" style="color:var(--gold)">Programa Anual Capilar</div><p class="text-sm mt-2" style="color:#c9c2b8">Acompanhamento contínuo com evolução mensurada em tricoscopia.</p></div>
-            <div class="p-5 rounded-xl" style="background:rgba(201,163,107,.08);border:1px solid rgba(201,163,107,.25)"><div class="serif text-xl" style="color:var(--gold)">Regenera Barba</div><p class="text-sm mt-2" style="color:#c9c2b8">Estímulo do crescimento e preenchimento de falhas na barba masculina.</p></div>
+            <div class="p-5 rounded-xl" style="background:rgba(201,163,107,.08);border:1px solid rgba(201,163,107,.25)"><div class="serif text-xl" style="color:var(--gold)">Regenera Barba e Sobeancelhas</div><p class="text-sm mt-2" style="color:#c9c2b8">Estímulo do crescimento e preenchimento de falhas na barba masculina e Sobrancelhas.</p></div>
           </div>
           <a href="${WA}" class="btn btn-wa mt-10">Quero saber se sou indicada(o) →</a>
         </div>
