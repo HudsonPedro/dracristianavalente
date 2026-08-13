@@ -141,10 +141,17 @@ const BODY = `
       </a>
       </div>
 
-      <div class="reveal card p-8 protocol"><span class="tag">Facial</span><h3>Microagulhamento Facial</h3><ul class="mt-3 list-none p-0">
-        <li>· Rejuvenescimento</li><li>· Cicatrizes de acne</li><li>· Linhas finas</li><li>· Poros dilatados</li><li>· Melasma (quando indicado)</li><li>· Drug Delivery</li>
-      </ul></div>
-
+      <div class="reveal card p-8 protocol"><span class="tag">Capilar</span><h3>Mesoterapia Capilar</h3><ul class="mt-3 list-none p-0">
+        <li>· Vitaminas</li><li>· Fatores de crescimento</li><li>· Intradermoterapia</li><li>· Associação com microagulhamento</li>
+      </ul>
+      <a
+        href="/tratamento-capilar-curitiba"
+        class="inline-flex text-sm font-semibold underline underline-offset-4"
+      >
+        Conheça o tratamento capilar em Curitiba
+      </a>
+      </div>
+      
       <div class="reveal card p-8 protocol"><span class="tag">Facial</span><h3>Limpeza de Pele Premium</h3><ul class="mt-3 list-none p-0">
         <li>· Higienização e esfoliação</li><li>· Vapor de Ozônio</li><li>· Extração cuidadosa</li><li>· Alta Frequência</li><li>· Máscara calmante</li><li>· LED terapêutico</li>
       </ul></div>
@@ -168,9 +175,9 @@ const BODY = `
       <div class="reveal card p-8 protocol"><span class="tag">Facial · Corporal</span><h3>Bioestimulador de Colágeno</h3><ul class="mt-3 list-none p-0">
         <li>· Face · Pescoço · Colo · Mãos</li><li>· Flacidez facial</li><li>· Contorno facial</li>
       </ul></div>
-
-      <div class="reveal card p-8 protocol"><span class="tag">Capilar</span><h3>Mesoterapia Capilar</h3><ul class="mt-3 list-none p-0">
-        <li>· Vitaminas</li><li>· Fatores de crescimento</li><li>· Intradermoterapia</li><li>· Associação com microagulhamento</li>
+      
+      <div class="reveal card p-8 protocol"><span class="tag">Facial</span><h3>Microagulhamento Facial</h3><ul class="mt-3 list-none p-0">
+        <li>· Rejuvenescimento</li><li>· Cicatrizes de acne</li><li>· Linhas finas</li><li>· Poros dilatados</li><li>· Melasma (quando indicado)</li><li>· Drug Delivery</li>
       </ul></div>
 
       <div class="reveal card p-8 protocol"><span class="tag">Facial</span><h3>Reconstrução e Revitalização das Sobrancelhas</h3><ul class="mt-3 list-none p-0">
