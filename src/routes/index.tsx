@@ -142,7 +142,7 @@ const BODY = `
       </div>
 
       <div class="reveal card p-8 protocol"><span class="tag">Capilar</span><h3>Mesoterapia Capilar</h3><ul class="mt-3 list-none p-0">
-        <li>· Vitaminas</li><li>· Fatores de crescimento</li><li>· Intradermoterapia</li><li>· Associação com microagulhamento</li>
+        <li>· Avaliação e Planejamento</li><li>· Higienização e Preparo do Couro Cabeludo</li><li>· Preparo da Mescla de Ativos</li><li>· Vitaminas</li><li>· Fatores de crescimento</li><li>· Intradermoterapia</li><li>· Associação com microagulhamento</li><li>· Cuidados Pós-Procedimento</li>
       </ul>
       <a
         href="/tratamento-capilar-curitiba"
@@ -152,8 +152,8 @@ const BODY = `
       </a>
       </div>
       
-      <div class="reveal card p-8 protocol"><span class="tag">Facial</span><h3>Limpeza de Pele Premium</h3><ul class="mt-3 list-none p-0">
-        <li>· Higienização e esfoliação</li><li>· Vapor de Ozônio</li><li>· Extração cuidadosa</li><li>· Alta Frequência</li><li>· Máscara calmante</li><li>· LED terapêutico</li>
+      <div class="reveal card p-8 protocol"><span class="tag">Avaliação Capilar</span><h3>Avaliação Capilar Personalizada</h3><ul class="mt-3 list-none p-0">
+        <li>· Anamnese completa</li><li>· Tricoscopia</li><li>· Planejamento individualizado</li><li>· Acompanhamento fotográfico</li><li>· Diagnóstico clínico</li><li>· Protocolo sob medida</li><li>· Cronograma de manutenção</li>
       </ul></div>
 
       <div class="reveal card p-8 protocol"><span class="tag">Facial</span><h3>Dermaplaning</h3><ul class="mt-3 list-none p-0">
@@ -184,10 +184,10 @@ const BODY = `
         <li>· PRP + Ativos</li><li>· Fatores de Crescimento</li><li>· Intradermoterapia</li><li>· Fortalecimento</li>
       </ul></div>
 
-      <div class="reveal card p-8 protocol"><span class="tag">Avaliação</span><h3>Avaliação Estética Facial e Capilar</h3><ul class="mt-3 list-none p-0">
-        <li>· Anamnese completa</li><li>· Tricoscopia</li><li>· Planejamento individualizado</li><li>· Acompanhamento fotográfico</li>
+      <div class="reveal card p-8 protocol"><span class="tag">Facial</span><h3>Limpeza de Pele Premium</h3><ul class="mt-3 list-none p-0">
+        <li>· Higienização e esfoliação</li><li>· Vapor de Ozônio</li><li>· Extração cuidadosa</li><li>· Alta Frequência</li><li>· Máscara calmante</li><li>· LED terapêutico</li>
       </ul></div>
-
+      
       <div class="reveal card p-8 protocol" style="background:#141414;color:#fff;border-color:#141414"><span class="tag" style="color:var(--gold)">Exclusivos Dra. Cristiana Valente</span><h3 style="color:#fff">Protocolos autorais</h3><ul class="mt-3 list-none p-0" style="color:#c9c2b8">
         <li>· Recuperação Pós-Mounjaro</li><li>· Recuperação Pós-Transplante Capilar</li><li>· Programa Anual de Recuperação Capilar</li><li>· Regenera Barba</li><li>· Regenera Sobrancelhas</li>
       </ul></div>
