@@ -528,7 +528,7 @@ const BODY = `
         </div>
   
         <p class="leading-relaxed flex-1">
-          "★★★★★"
+          "Avaliação de 5 estrelas no Google."
         </p>
   
         <div class="flex items-center gap-3 mt-6">
