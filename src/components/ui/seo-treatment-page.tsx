@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { CSS } from "../routes/index";
+import { CSS } from "../../routes/index";
 
 type SeoCard = {
   tag?: string;
