@@ -551,11 +551,17 @@ const BODY = `
     </div>
   
     <div class="reveal mt-10 text-center">
-      <div class="inline-flex items-center gap-3 text-sm text-[color:var(--muted)]">
-        <span style="font-weight:700;color:#4285F4">G</span>
-        Avaliações publicadas por clientes no Google
-      </div>
-    </div>
+    <a
+      href="https://www.google.com/search?q=Dra.+Cristiana+Valente+Tratamento+Capilar+Curitiba+avaliações"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-3 text-sm text-[color:var(--muted)] hover:text-[color:var(--ink)] transition underline underline-offset-4"
+      aria-label="Ver avaliações da Dra. Cristiana Valente no Google"
+    >
+      <span style="font-weight:700;color:#4285F4">G</span>
+      Ver todas as avaliações no Google →
+    </a>
+  </div>
   </section>
 
   <section class="container py-24">
