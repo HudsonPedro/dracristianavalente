@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
 import { CSS } from "./index";
 
 export const Route = createFileRoute("/tratamento-capilar-curitiba")({
@@ -98,62 +97,6 @@ const faqSchema = {
 };
 
 function TratamentoCapilarCuritiba() {
-  useEffect(() => {
-    const revealElements = Array.from(
-      document.querySelectorAll<HTMLElement>(".reveal")
-    );
-
-    revealElements.forEach((el) => el.classList.add("fx-ready"));
-
-    const io = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("in");
-            io.unobserve(entry.target);
-          }
-        }),
-      {
-        threshold: 0.12,
-        rootMargin: "0px 0px -7% 0px",
-      }
-    );
-
-    revealElements.forEach((el) => io.observe(el));
-
-    const onScroll = () => {
-      document.documentElement.style.setProperty(
-        "--sy",
-        `${Math.min(window.scrollY, 900)}px`
-      );
-    };
-
-    const onPointerMove = (event: PointerEvent) => {
-      document.documentElement.style.setProperty("--mx", `${event.clientX}px`);
-      document.documentElement.style.setProperty("--my", `${event.clientY}px`);
-
-      const card = (event.target as HTMLElement).closest(
-        ".card"
-      ) as HTMLElement | null;
-
-      if (card) {
-        const rect = card.getBoundingClientRect();
-        card.style.setProperty("--cx", `${event.clientX - rect.left}px`);
-        card.style.setProperty("--cy", `${event.clientY - rect.top}px`);
-      }
-    };
-
-    onScroll();
-
-    addEventListener("scroll", onScroll, { passive: true });
-    addEventListener("pointermove", onPointerMove, { passive: true });
-
-    return () => {
-      io.disconnect();
-      removeEventListener("scroll", onScroll);
-      removeEventListener("pointermove", onPointerMove);
-    };
-  }, []);
 
   return (
     <>
@@ -166,35 +109,30 @@ function TratamentoCapilarCuritiba() {
         }}
       />
 
-      <div className="cine">
-        <div className="l l1" />
-        <div className="l l2" />
-      </div>
-
-      <main className="wrap">
+      <main>
         <header
           id="topo"
           className="container pt-28 pb-20 md:pt-40 md:pb-28"
         >
           <div className="max-w-4xl">
-            <div className="reveal kicker">
+            <div className="kicker">
               Tratamento Capilar em Curitiba
             </div>
 
-            <h1 className="reveal display text-5xl md:text-7xl mt-7">
+            <h1 className="display text-5xl md:text-7xl mt-7">
               Tratamento Capilar
               <br />
               <span className="rosetext italic">em Curitiba</span>
             </h1>
 
-            <p className="reveal text-lg md:text-xl text-[color:var(--muted)] max-w-3xl mt-7 leading-relaxed">
+            <p className="text-lg md:text-xl text-[color:var(--muted)] max-w-3xl mt-7 leading-relaxed">
               A Dra. Cristiana Valente realiza avaliação capilar
               individualizada para compreender a queda de cabelo, o
               afinamento dos fios e as condições do couro cabeludo,
               definindo protocolos personalizados para cada necessidade.
             </p>
 
-            <div className="reveal flex flex-col sm:flex-row gap-4 mt-10">
+            <div className="flex flex-col sm:flex-row gap-4 mt-10">
               <a
                 href={WA}
                 target="_blank"
@@ -213,15 +151,15 @@ function TratamentoCapilarCuritiba() {
 
         <section className="container py-20">
           <div className="max-w-4xl mx-auto">
-            <div className="reveal kicker mb-6">
+            <div className="kicker mb-6">
               Saúde dos fios e couro cabeludo
             </div>
 
-            <h2 className="reveal display text-4xl md:text-5xl">
+            <h2 className="display text-4xl md:text-5xl">
               Quando procurar um tratamento capilar?
             </h2>
 
-            <div className="reveal mt-7 space-y-5 text-[color:var(--muted)] leading-relaxed text-lg">
+            <div className="mt-7 space-y-5 text-[color:var(--muted)] leading-relaxed text-lg">
               <p>
                 Alterações como queda persistente, afinamento dos fios,
                 diminuição do volume, enfraquecimento ou mudanças no couro
@@ -239,7 +177,7 @@ function TratamentoCapilarCuritiba() {
         </section>
 
         <section className="container py-20">
-          <div className="reveal max-w-3xl">
+          <div className="max-w-3xl">
             <div className="kicker mb-6">Avaliação capilar</div>
 
             <h2 className="display text-4xl md:text-5xl">
@@ -285,7 +223,7 @@ function TratamentoCapilarCuritiba() {
                 "Avaliação de mudanças percebidas na densidade e no volume capilar para direcionar os cuidados.",
               ],
             ].map(([tag, title, description]) => (
-              <div key={title} className="reveal card p-8 protocol">
+              <div key={title} className="card p-8 protocol">
                 <span className="tag">{tag}</span>
                 <h3>{title}</h3>
                 <p className="text-[color:var(--muted)] mt-4 leading-relaxed">
@@ -298,16 +236,16 @@ function TratamentoCapilarCuritiba() {
 
         <section className="container py-20">
           <div className="max-w-4xl mx-auto">
-            <div className="reveal kicker mb-6">
+            <div className="kicker mb-6">
               Atendimento personalizado
             </div>
 
-            <h2 className="reveal display text-4xl md:text-5xl">
+            <h2 className="display text-4xl md:text-5xl">
               Como funciona o tratamento capilar?
             </h2>
 
             <div className="grid md:grid-cols-3 gap-5 mt-12">
-              <div className="reveal card p-8">
+              <div className="card p-8">
                 <span className="serif rosetext text-5xl">01</span>
                 <h3 className="serif text-2xl mt-3">Avaliação</h3>
                 <p className="text-[color:var(--muted)] mt-3 leading-relaxed">
@@ -316,7 +254,7 @@ function TratamentoCapilarCuritiba() {
                 </p>
               </div>
 
-              <div className="reveal card p-8">
+              <div className="card p-8">
                 <span className="serif rosetext text-5xl">02</span>
                 <h3 className="serif text-2xl mt-3">Estratégia</h3>
                 <p className="text-[color:var(--muted)] mt-3 leading-relaxed">
@@ -325,7 +263,7 @@ function TratamentoCapilarCuritiba() {
                 </p>
               </div>
 
-              <div className="reveal card p-8">
+              <div className="card p-8">
                 <span className="serif rosetext text-5xl">03</span>
                 <h3 className="serif text-2xl mt-3">Acompanhamento</h3>
                 <p className="text-[color:var(--muted)] mt-3 leading-relaxed">
@@ -338,7 +276,7 @@ function TratamentoCapilarCuritiba() {
         </section>
 
         <section className="container py-16">
-          <div className="reveal card p-8 md:p-10 max-w-4xl mx-auto">
+          <div className="card p-8 md:p-10 max-w-4xl mx-auto">
             <span className="tag">Queda capilar</span>
 
             <h2 className="display text-3xl md:text-4xl mt-5">
@@ -361,15 +299,15 @@ function TratamentoCapilarCuritiba() {
 
         <section id="faq" className="container py-20">
           <div className="max-w-4xl mx-auto">
-            <div className="reveal kicker mb-6">Dúvidas frequentes</div>
+            <div className="kicker mb-6">Dúvidas frequentes</div>
 
-            <h2 className="reveal display text-4xl md:text-5xl">
+            <h2 className="display text-4xl md:text-5xl">
               Tratamento Capilar em Curitiba: perguntas frequentes
             </h2>
 
             <div className="mt-10">
               {faqItems.map((item) => (
-                <details key={item.question} className="reveal faq">
+                <details key={item.question} className="faq">
                   <summary>
                     {item.question}
                     <span className="pl">+</span>
@@ -385,7 +323,7 @@ function TratamentoCapilarCuritiba() {
         </section>
 
         <section className="container py-20">
-          <div className="reveal card p-8 md:p-12 max-w-4xl mx-auto text-center">
+          <div className="card p-8 md:p-12 max-w-4xl mx-auto text-center">
             <div className="kicker mb-6 mx-auto">
               Avaliação capilar em Curitiba
             </div>
