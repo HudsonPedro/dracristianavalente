@@ -389,12 +389,12 @@ const BODY = `
         </p>
   
         <div class="flex items-center gap-3 mt-6">
-          <div
-            class="w-11 h-11 rounded-full flex items-center justify-center font-bold text-white shrink-0"
-            style="background:#E94265"
-          >
-            F
-          </div>
+          <img
+            src="/avaliacoes/fabricio.webp"
+            alt="Fabeicio Ramires Pinto - avaliação no Google"
+            class="w-11 h-11 rounded-full object-cover shrink-0"
+            loading="lazy"
+          />
   
           <div>
             <div class="font-semibold">Fabricio Ramires Pinto</div>
