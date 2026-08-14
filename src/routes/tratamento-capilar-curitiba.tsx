@@ -1,12 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { CSS } from "./index";
 
 export const Route = createFileRoute("/tratamento-capilar-curitiba")({
   head: () => ({
     meta: [
-      {
-        charSet: "utf-8",
-      },
+      { charSet: "utf-8" },
       {
         name: "viewport",
         content: "width=device-width, initial-scale=1",
@@ -51,7 +50,6 @@ export const Route = createFileRoute("/tratamento-capilar-curitiba")({
       },
     ],
   }),
-
   component: TratamentoCapilarCuritiba,
 });
 
@@ -100,6 +98,63 @@ const faqSchema = {
 };
 
 function TratamentoCapilarCuritiba() {
+  useEffect(() => {
+    const revealElements = Array.from(
+      document.querySelectorAll<HTMLElement>(".reveal")
+    );
+
+    revealElements.forEach((el) => el.classList.add("fx-ready"));
+
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in");
+            io.unobserve(entry.target);
+          }
+        }),
+      {
+        threshold: 0.12,
+        rootMargin: "0px 0px -7% 0px",
+      }
+    );
+
+    revealElements.forEach((el) => io.observe(el));
+
+    const onScroll = () => {
+      document.documentElement.style.setProperty(
+        "--sy",
+        `${Math.min(window.scrollY, 900)}px`
+      );
+    };
+
+    const onPointerMove = (event: PointerEvent) => {
+      document.documentElement.style.setProperty("--mx", `${event.clientX}px`);
+      document.documentElement.style.setProperty("--my", `${event.clientY}px`);
+
+      const card = (event.target as HTMLElement).closest(
+        ".card"
+      ) as HTMLElement | null;
+
+      if (card) {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty("--cx", `${event.clientX - rect.left}px`);
+        card.style.setProperty("--cy", `${event.clientY - rect.top}px`);
+      }
+    };
+
+    onScroll();
+
+    addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("pointermove", onPointerMove, { passive: true });
+
+    return () => {
+      io.disconnect();
+      removeEventListener("scroll", onScroll);
+      removeEventListener("pointermove", onPointerMove);
+    };
+  }, []);
+
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
@@ -111,11 +166,15 @@ function TratamentoCapilarCuritiba() {
         }}
       />
 
+      <div className="cine">
+        <div className="l l1" />
+        <div className="l l2" />
+      </div>
+
       <main className="wrap">
-        {/* HERO */}
         <header
           id="topo"
-          className="container pt-36 pb-20 md:pt-44 md:pb-28"
+          className="container pt-28 pb-20 md:pt-40 md:pb-28"
         >
           <div className="max-w-4xl">
             <div className="reveal kicker">
@@ -125,7 +184,7 @@ function TratamentoCapilarCuritiba() {
             <h1 className="reveal display text-5xl md:text-7xl mt-7">
               Tratamento Capilar
               <br />
-              em Curitiba
+              <span className="rosetext italic">em Curitiba</span>
             </h1>
 
             <p className="reveal text-lg md:text-xl text-[color:var(--muted)] max-w-3xl mt-7 leading-relaxed">
@@ -142,20 +201,16 @@ function TratamentoCapilarCuritiba() {
                 rel="noopener noreferrer"
                 className="btn btn-wa"
               >
-                Agendar avaliação
+                Agendar avaliação →
               </a>
 
-              <a
-                href="/#protocolos"
-                className="btn btn-ghost"
-              >
+              <a href="/#protocolos" className="btn btn-ghost">
                 Conhecer tratamentos
               </a>
             </div>
           </div>
         </header>
 
-        {/* INTRODUÇÃO */}
         <section className="container py-20">
           <div className="max-w-4xl mx-auto">
             <div className="reveal kicker mb-6">
@@ -170,33 +225,22 @@ function TratamentoCapilarCuritiba() {
               <p>
                 Alterações como queda persistente, afinamento dos fios,
                 diminuição do volume, enfraquecimento ou mudanças no couro
-                cabeludo podem indicar a necessidade de uma avaliação
-                capilar mais detalhada.
+                cabeludo podem indicar a necessidade de uma avaliação capilar
+                mais detalhada.
               </p>
 
               <p>
                 Cada pessoa apresenta características diferentes. Por isso,
                 o tratamento capilar deve começar pela compreensão do quadro
-                e das necessidades individuais, evitando protocolos
-                genéricos.
-              </p>
-
-              <p>
-                Em Curitiba, a Dra. Cristiana Valente realiza atendimento
-                individualizado com foco na saúde capilar, buscando
-                compreender as características dos fios e do couro cabeludo
-                antes da definição do protocolo.
+                e das necessidades individuais, evitando protocolos genéricos.
               </p>
             </div>
           </div>
         </section>
 
-        {/* PRINCIPAIS QUEIXAS */}
         <section className="container py-20">
           <div className="reveal max-w-3xl">
-            <div className="kicker mb-6">
-              Avaliação capilar
-            </div>
+            <div className="kicker mb-6">Avaliação capilar</div>
 
             <h2 className="display text-4xl md:text-5xl">
               Principais alterações avaliadas
@@ -209,76 +253,49 @@ function TratamentoCapilarCuritiba() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-12">
-            <div className="reveal card p-8 protocol">
-              <span className="tag">Capilar</span>
-              <h3 className="text-2xl mt-4">
-                Queda de cabelo
-              </h3>
-              <p className="text-[color:var(--muted)] mt-4 leading-relaxed">
-                Avaliação das características da queda capilar para
-                compreender intensidade, duração e alterações percebidas
-                pelo paciente.
-              </p>
-            </div>
-
-            <div className="reveal card p-8 protocol">
-              <span className="tag">Fios</span>
-              <h3 className="text-2xl mt-4">
-                Afinamento capilar
-              </h3>
-              <p className="text-[color:var(--muted)] mt-4 leading-relaxed">
-                Investigação do afinamento e da redução de volume dos fios
-                para orientar um protocolo individualizado.
-              </p>
-            </div>
-
-            <div className="reveal card p-8 protocol">
-              <span className="tag">Couro cabeludo</span>
-              <h3 className="text-2xl mt-4">
-                Saúde do couro cabeludo
-              </h3>
-              <p className="text-[color:var(--muted)] mt-4 leading-relaxed">
-                Avaliação das condições do couro cabeludo como parte
-                importante do cuidado e da saúde capilar.
-              </p>
-            </div>
-
-            <div className="reveal card p-8 protocol">
-              <span className="tag">Capilar</span>
-              <h3 className="text-2xl mt-4">
-                Alopecia
-              </h3>
-              <p className="text-[color:var(--muted)] mt-4 leading-relaxed">
-                Avaliação individualizada de alterações compatíveis com
-                diferentes padrões de perda capilar.
-              </p>
-            </div>
-
-            <div className="reveal card p-8 protocol">
-              <span className="tag">Fortalecimento</span>
-              <h3 className="text-2xl mt-4">
-                Fios enfraquecidos
-              </h3>
-              <p className="text-[color:var(--muted)] mt-4 leading-relaxed">
-                Protocolos definidos conforme as características de fios
-                fragilizados e as necessidades observadas na avaliação.
-              </p>
-            </div>
-
-            <div className="reveal card p-8 protocol">
-              <span className="tag">Crescimento</span>
-              <h3 className="text-2xl mt-4">
-                Redução de volume
-              </h3>
-              <p className="text-[color:var(--muted)] mt-4 leading-relaxed">
-                Avaliação de mudanças percebidas na densidade e no volume
-                capilar para direcionar os cuidados.
-              </p>
-            </div>
+            {[
+              [
+                "Capilar",
+                "Queda de cabelo",
+                "Avaliação das características da queda capilar para compreender intensidade, duração e alterações percebidas pelo paciente.",
+              ],
+              [
+                "Fios",
+                "Afinamento capilar",
+                "Investigação do afinamento e da redução de volume dos fios para orientar um protocolo individualizado.",
+              ],
+              [
+                "Couro cabeludo",
+                "Saúde do couro cabeludo",
+                "Avaliação das condições do couro cabeludo como parte importante do cuidado e da saúde capilar.",
+              ],
+              [
+                "Capilar",
+                "Alopecia",
+                "Avaliação individualizada de alterações compatíveis com diferentes padrões de perda capilar.",
+              ],
+              [
+                "Fortalecimento",
+                "Fios enfraquecidos",
+                "Protocolos definidos conforme as características de fios fragilizados e as necessidades observadas na avaliação.",
+              ],
+              [
+                "Crescimento",
+                "Redução de volume",
+                "Avaliação de mudanças percebidas na densidade e no volume capilar para direcionar os cuidados.",
+              ],
+            ].map(([tag, title, description]) => (
+              <div key={title} className="reveal card p-8 protocol">
+                <span className="tag">{tag}</span>
+                <h3>{title}</h3>
+                <p className="text-[color:var(--muted)] mt-4 leading-relaxed">
+                  {description}
+                </p>
+              </div>
+            ))}
           </div>
         </section>
 
-        {/* COMO FUNCIONA */}
         <section className="container py-20">
           <div className="max-w-4xl mx-auto">
             <div className="reveal kicker mb-6">
@@ -291,42 +308,35 @@ function TratamentoCapilarCuritiba() {
 
             <div className="grid md:grid-cols-3 gap-5 mt-12">
               <div className="reveal card p-8">
-                <span className="tag">01</span>
-                <h3 className="text-xl mt-4">
-                  Avaliação
-                </h3>
-                <p className="text-[color:var(--muted)] mt-4 leading-relaxed">
+                <span className="serif rosetext text-5xl">01</span>
+                <h3 className="serif text-2xl mt-3">Avaliação</h3>
+                <p className="text-[color:var(--muted)] mt-3 leading-relaxed">
                   Análise individualizada das queixas, características dos
                   fios e condições do couro cabeludo.
                 </p>
               </div>
 
               <div className="reveal card p-8">
-                <span className="tag">02</span>
-                <h3 className="text-xl mt-4">
-                  Estratégia
-                </h3>
-                <p className="text-[color:var(--muted)] mt-4 leading-relaxed">
-                  Definição do protocolo capilar de acordo com as
-                  necessidades identificadas durante a avaliação.
+                <span className="serif rosetext text-5xl">02</span>
+                <h3 className="serif text-2xl mt-3">Estratégia</h3>
+                <p className="text-[color:var(--muted)] mt-3 leading-relaxed">
+                  Definição do protocolo capilar de acordo com as necessidades
+                  identificadas durante a avaliação.
                 </p>
               </div>
 
               <div className="reveal card p-8">
-                <span className="tag">03</span>
-                <h3 className="text-xl mt-4">
-                  Acompanhamento
-                </h3>
-                <p className="text-[color:var(--muted)] mt-4 leading-relaxed">
-                  Acompanhamento da evolução para orientar a continuidade
-                  dos cuidados capilares.
+                <span className="serif rosetext text-5xl">03</span>
+                <h3 className="serif text-2xl mt-3">Acompanhamento</h3>
+                <p className="text-[color:var(--muted)] mt-3 leading-relaxed">
+                  Acompanhamento da evolução para orientar a continuidade dos
+                  cuidados capilares.
                 </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* LINK SEO PARA PÁGINA DE QUEDA */}
         <section className="container py-16">
           <div className="reveal card p-8 md:p-10 max-w-4xl mx-auto">
             <span className="tag">Queda capilar</span>
@@ -336,9 +346,8 @@ function TratamentoCapilarCuritiba() {
             </h2>
 
             <p className="text-[color:var(--muted)] mt-5 leading-relaxed">
-              A queda persistente pode apresentar diferentes
-              características. Conheça também nossa página específica sobre
-              avaliação e tratamento para queda de cabelo em Curitiba.
+              Conheça também nossa página específica sobre avaliação e
+              tratamento para queda de cabelo em Curitiba.
             </p>
 
             <a
@@ -350,28 +359,23 @@ function TratamentoCapilarCuritiba() {
           </div>
         </section>
 
-        {/* FAQ */}
         <section id="faq" className="container py-20">
           <div className="max-w-4xl mx-auto">
-            <div className="reveal kicker mb-6">
-              Dúvidas frequentes
-            </div>
+            <div className="reveal kicker mb-6">Dúvidas frequentes</div>
 
             <h2 className="reveal display text-4xl md:text-5xl">
               Tratamento Capilar em Curitiba: perguntas frequentes
             </h2>
 
-            <div className="mt-10 space-y-4">
+            <div className="mt-10">
               {faqItems.map((item) => (
-                <details
-                  key={item.question}
-                  className="reveal card p-6"
-                >
-                  <summary className="font-semibold cursor-pointer">
+                <details key={item.question} className="reveal faq">
+                  <summary>
                     {item.question}
+                    <span className="pl">+</span>
                   </summary>
 
-                  <p className="text-[color:var(--muted)] mt-4 leading-relaxed">
+                  <p className="pb-5 text-[color:var(--muted)] leading-relaxed">
                     {item.answer}
                   </p>
                 </details>
@@ -380,7 +384,6 @@ function TratamentoCapilarCuritiba() {
           </div>
         </section>
 
-        {/* CTA FINAL */}
         <section className="container py-20">
           <div className="reveal card p-8 md:p-12 max-w-4xl mx-auto text-center">
             <div className="kicker mb-6 mx-auto">
@@ -393,8 +396,7 @@ function TratamentoCapilarCuritiba() {
 
             <p className="text-[color:var(--muted)] mt-6 max-w-2xl mx-auto leading-relaxed text-lg">
               Agende uma avaliação com a Dra. Cristiana Valente para
-              compreender as necessidades dos seus fios e do couro cabeludo
-              e conhecer as possibilidades de tratamento capilar.
+              compreender as necessidades dos seus fios e do couro cabeludo.
             </p>
 
             <a
@@ -403,7 +405,7 @@ function TratamentoCapilarCuritiba() {
               rel="noopener noreferrer"
               className="btn btn-wa mt-8"
             >
-              Agendar avaliação
+              Agendar avaliação →
             </a>
           </div>
         </section>
