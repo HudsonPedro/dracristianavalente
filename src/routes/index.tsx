@@ -100,11 +100,42 @@ const BODY = `
       <div class="reveal flex flex-col sm:flex-row gap-4 mt-10"><a href="${WA}" class="btn btn-wa">Agendar minha avaliação →</a><a href="#protocolos" class="btn btn-ghost">Ver protocolos</a></div>
       <div class="reveal flex items-center gap-4 mt-10">
         <div class="flex -space-x-3">
-          <img src="https://i.pravatar.cc/80?img=44" class="w-10 h-10 rounded-full border-2 object-cover" style="border-color:var(--bg)">
-          <img src="https://i.pravatar.cc/80?img=25" class="w-10 h-10 rounded-full border-2 object-cover" style="border-color:var(--bg)">
-          <img src="https://i.pravatar.cc/80?img=20" class="w-10 h-10 rounded-full border-2 object-cover" style="border-color:var(--bg)">
+          <img
+            src="/avaliacoes/fabiana.webp"
+            alt="Fabiana - avaliação no Google"
+            class="w-10 h-10 rounded-full border-2 object-cover"
+            style="border-color:var(--bg)"
+          >
+      
+          <img
+            src="/avaliacoes/elizangela.webp"
+            alt="Elizangela - avaliação no Google"
+            class="w-10 h-10 rounded-full border-2 object-cover"
+            style="border-color:var(--bg)"
+          >
+      
+          <img
+            src="/avaliacoes/marina.webp"
+            alt="Marina - avaliação no Google"
+            class="w-10 h-10 rounded-full border-2 object-cover"
+            style="border-color:var(--bg)"
+          >
         </div>
-        <div><div class="text-[color:var(--gold)] text-sm">★★★★★</div><div class="text-xs text-[color:var(--muted)]">Centenas de pacientes atendidas com excelência</div></div>
+      
+        <div>
+          <div class="text-[color:var(--gold)] text-sm">
+            ★★★★★
+          </div>
+      
+          <a
+            href="https://www.google.com/search?q=Dra.+Cristiana+Valente+Tratamento+Capilar+Curitiba+avaliações"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-xs text-[color:var(--muted)] hover:text-[color:var(--ink)] transition"
+          >
+            5,0 no Google · 8 avaliações →
+          </a>
+        </div>
       </div>
     </div>
     <div class="reveal frame"><img src="${IMG_SUAPELE}" alt="Tratamento estético facial na Dra. Cristiana Valente Estética" class="w-full h-[540px] object-cover"></div>
