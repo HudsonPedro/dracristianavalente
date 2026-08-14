@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { SeoTreatmentPage } from "../components/SeoTreatmentPage";
+import { SeoTreatmentPage } from "../components/ui/seo-treatment-page";
 
 export const Route = createFileRoute("/tratamento-capilar-curitiba")({
   head: () => ({
