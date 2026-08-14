@@ -709,7 +709,14 @@ const BODY = `
       
       <div class="reveal card p-8 protocol"><span class="tag">Avaliação Capilar</span><h3>Avaliação Capilar Personalizada</h3><ul class="mt-3 list-none p-0">
         <li>· Anamnese completa</li><li>· Tricoscopia</li><li>· Planejamento individualizado</li><li>· Acompanhamento fotográfico</li><li>· Diagnóstico clínico</li><li>· Protocolo sob medida</li><li>· Cronograma de manutenção</li>
-      </ul></div>
+      </ul>
+      <a
+        href="/avaliacao-capilar-curitiba"
+        class="inline-flex mt-5 text-sm font-semibold underline underline-offset-4"
+      >
+        Saiba mais sobre avaliação capilar em Curitiba
+      </a>
+      </div>
 
       <div class="reveal card p-8 protocol"><span class="tag">Facial</span><h3>Dermaplaning</h3><ul class="mt-3 list-none p-0">
         <li>· Esfoliação com bisturi</li><li>· Remoção de pelos finos</li><li>· Uniformização da pele</li><li>· Luminosidade imediata</li>
