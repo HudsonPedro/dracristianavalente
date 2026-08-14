@@ -1,17 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CSS } from "./index";
+import { SeoTreatmentPage } from "../components/SeoTreatmentPage";
 
 export const Route = createFileRoute("/tratamento-capilar-curitiba")({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
-      },
-      {
-        title: "Tratamento Capilar em Curitiba | Dra. Cristiana Valente",
-      },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { title: "Tratamento Capilar em Curitiba | Dra. Cristiana Valente" },
       {
         name: "description",
         content:
@@ -19,27 +14,20 @@ export const Route = createFileRoute("/tratamento-capilar-curitiba")({
       },
       {
         property: "og:title",
-        content:
-          "Tratamento Capilar em Curitiba | Dra. Cristiana Valente",
+        content: "Tratamento Capilar em Curitiba | Dra. Cristiana Valente",
       },
       {
         property: "og:description",
         content:
           "Avaliação e tratamento capilar personalizado para queda de cabelo, afinamento dos fios e saúde do couro cabeludo em Curitiba.",
       },
-      {
-        property: "og:type",
-        content: "website",
-      },
+      { property: "og:type", content: "website" },
       {
         property: "og:url",
         content:
           "https://www.dracristianavalente.com.br/tratamento-capilar-curitiba",
       },
-      {
-        name: "twitter:card",
-        content: "summary_large_image",
-      },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       {
@@ -51,9 +39,6 @@ export const Route = createFileRoute("/tratamento-capilar-curitiba")({
   }),
   component: TratamentoCapilarCuritiba,
 });
-
-const WA =
-  "https://wa.me/5541991599558?text=Ol%C3%A1%20Dra.%20Cristiana%2C%20gostaria%20de%20agendar%20uma%20avalia%C3%A7%C3%A3o%20capilar.";
 
 const faqItems = [
   {
@@ -97,257 +82,106 @@ const faqSchema = {
 };
 
 function TratamentoCapilarCuritiba() {
-
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: CSS }} />
-
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(faqSchema),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <main>
-        <header
-          id="topo"
-          className="container pt-28 pb-20 md:pt-40 md:pb-28"
-        >
-          <div className="max-w-4xl">
-            <div className="kicker">
-              Tratamento Capilar em Curitiba
-            </div>
-
-            <h1 className="display text-5xl md:text-7xl mt-7">
-              Tratamento Capilar
-              <br />
-              <span className="rosetext italic">em Curitiba</span>
-            </h1>
-
-            <p className="text-lg md:text-xl text-[color:var(--muted)] max-w-3xl mt-7 leading-relaxed">
-              A Dra. Cristiana Valente realiza avaliação capilar
-              individualizada para compreender a queda de cabelo, o
-              afinamento dos fios e as condições do couro cabeludo,
-              definindo protocolos personalizados para cada necessidade.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 mt-10">
-              <a
-                href={WA}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-wa"
-              >
-                Agendar avaliação →
-              </a>
-
-              <a href="/#protocolos" className="btn btn-ghost">
-                Conhecer tratamentos
-              </a>
-            </div>
-          </div>
-        </header>
-
-        <section className="container py-20">
-          <div className="max-w-4xl mx-auto">
-            <div className="kicker mb-6">
-              Saúde dos fios e couro cabeludo
-            </div>
-
-            <h2 className="display text-4xl md:text-5xl">
-              Quando procurar um tratamento capilar?
-            </h2>
-
-            <div className="mt-7 space-y-5 text-[color:var(--muted)] leading-relaxed text-lg">
-              <p>
-                Alterações como queda persistente, afinamento dos fios,
-                diminuição do volume, enfraquecimento ou mudanças no couro
-                cabeludo podem indicar a necessidade de uma avaliação capilar
-                mais detalhada.
-              </p>
-
-              <p>
-                Cada pessoa apresenta características diferentes. Por isso,
-                o tratamento capilar deve começar pela compreensão do quadro
-                e das necessidades individuais, evitando protocolos genéricos.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="container py-20">
-          <div className="max-w-3xl">
-            <div className="kicker mb-6">Avaliação capilar</div>
-
-            <h2 className="display text-4xl md:text-5xl">
-              Principais alterações avaliadas
-            </h2>
-
-            <p className="text-[color:var(--muted)] mt-6 text-lg leading-relaxed">
-              A avaliação capilar permite observar diferentes alterações
-              relacionadas aos fios e ao couro cabeludo.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-12">
-            {[
-              [
-                "Capilar",
-                "Queda de cabelo",
-                "Avaliação das características da queda capilar para compreender intensidade, duração e alterações percebidas pelo paciente.",
-              ],
-              [
-                "Fios",
-                "Afinamento capilar",
-                "Investigação do afinamento e da redução de volume dos fios para orientar um protocolo individualizado.",
-              ],
-              [
-                "Couro cabeludo",
-                "Saúde do couro cabeludo",
-                "Avaliação das condições do couro cabeludo como parte importante do cuidado e da saúde capilar.",
-              ],
-              [
-                "Capilar",
-                "Alopecia",
-                "Avaliação individualizada de alterações compatíveis com diferentes padrões de perda capilar.",
-              ],
-              [
-                "Fortalecimento",
-                "Fios enfraquecidos",
-                "Protocolos definidos conforme as características de fios fragilizados e as necessidades observadas na avaliação.",
-              ],
-              [
-                "Crescimento",
-                "Redução de volume",
-                "Avaliação de mudanças percebidas na densidade e no volume capilar para direcionar os cuidados.",
-              ],
-            ].map(([tag, title, description]) => (
-              <div key={title} className="card p-8 protocol">
-                <span className="tag">{tag}</span>
-                <h3>{title}</h3>
-                <p className="text-[color:var(--muted)] mt-4 leading-relaxed">
-                  {description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="container py-20">
-          <div className="max-w-4xl mx-auto">
-            <div className="kicker mb-6">
-              Atendimento personalizado
-            </div>
-
-            <h2 className="display text-4xl md:text-5xl">
-              Como funciona o tratamento capilar?
-            </h2>
-
-            <div className="grid md:grid-cols-3 gap-5 mt-12">
-              <div className="card p-8">
-                <span className="serif rosetext text-5xl">01</span>
-                <h3 className="serif text-2xl mt-3">Avaliação</h3>
-                <p className="text-[color:var(--muted)] mt-3 leading-relaxed">
-                  Análise individualizada das queixas, características dos
-                  fios e condições do couro cabeludo.
-                </p>
-              </div>
-
-              <div className="card p-8">
-                <span className="serif rosetext text-5xl">02</span>
-                <h3 className="serif text-2xl mt-3">Estratégia</h3>
-                <p className="text-[color:var(--muted)] mt-3 leading-relaxed">
-                  Definição do protocolo capilar de acordo com as necessidades
-                  identificadas durante a avaliação.
-                </p>
-              </div>
-
-              <div className="card p-8">
-                <span className="serif rosetext text-5xl">03</span>
-                <h3 className="serif text-2xl mt-3">Acompanhamento</h3>
-                <p className="text-[color:var(--muted)] mt-3 leading-relaxed">
-                  Acompanhamento da evolução para orientar a continuidade dos
-                  cuidados capilares.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="container py-16">
-          <div className="card p-8 md:p-10 max-w-4xl mx-auto">
-            <span className="tag">Queda capilar</span>
-
-            <h2 className="display text-3xl md:text-4xl mt-5">
-              Está enfrentando queda de cabelo?
-            </h2>
-
-            <p className="text-[color:var(--muted)] mt-5 leading-relaxed">
-              Conheça também nossa página específica sobre avaliação e
-              tratamento para queda de cabelo em Curitiba.
-            </p>
-
-            <a
-              href="/tratamento-queda-de-cabelo-curitiba"
-              className="inline-flex mt-6 text-sm font-semibold underline underline-offset-4"
-            >
-              Saiba mais sobre tratamento para queda de cabelo em Curitiba
-            </a>
-          </div>
-        </section>
-
-        <section id="faq" className="container py-20">
-          <div className="max-w-4xl mx-auto">
-            <div className="kicker mb-6">Dúvidas frequentes</div>
-
-            <h2 className="display text-4xl md:text-5xl">
-              Tratamento Capilar em Curitiba: perguntas frequentes
-            </h2>
-
-            <div className="mt-10">
-              {faqItems.map((item) => (
-                <details key={item.question} className="faq">
-                  <summary>
-                    {item.question}
-                    <span className="pl">+</span>
-                  </summary>
-
-                  <p className="pb-5 text-[color:var(--muted)] leading-relaxed">
-                    {item.answer}
-                  </p>
-                </details>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="container py-20">
-          <div className="card p-8 md:p-12 max-w-4xl mx-auto text-center">
-            <div className="kicker mb-6 mx-auto">
-              Avaliação capilar em Curitiba
-            </div>
-
-            <h2 className="display text-4xl md:text-5xl">
-              Cuide da saúde dos seus cabelos
-            </h2>
-
-            <p className="text-[color:var(--muted)] mt-6 max-w-2xl mx-auto leading-relaxed text-lg">
-              Agende uma avaliação com a Dra. Cristiana Valente para
-              compreender as necessidades dos seus fios e do couro cabeludo.
-            </p>
-
-            <a
-              href={WA}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-wa mt-8"
-            >
-              Agendar avaliação →
-            </a>
-          </div>
-        </section>
-      </main>
+      <SeoTreatmentPage
+        eyebrow="Tratamento capilar em Curitiba"
+        title="Tratamento Capilar em Curitiba"
+        intro="A Dra. Cristiana Valente realiza avaliação capilar individualizada para compreender a queda de cabelo, o afinamento dos fios e as condições do couro cabeludo, definindo protocolos personalizados para cada necessidade."
+        primaryHref="/#lead-form"
+        secondaryHref="/#protocolos"
+        introTitle="Quando procurar um tratamento capilar?"
+        introParagraphs={[
+          "Alterações como queda persistente, afinamento dos fios, diminuição do volume, enfraquecimento ou mudanças no couro cabeludo podem indicar a necessidade de uma avaliação capilar mais detalhada.",
+          "Cada pessoa apresenta características diferentes. Por isso, o tratamento capilar deve começar pela compreensão do quadro e das necessidades individuais, evitando protocolos genéricos.",
+        ]}
+        cardsTitle="Principais alterações avaliadas"
+        cardsIntro="A avaliação capilar permite observar diferentes alterações relacionadas aos fios e ao couro cabeludo."
+        cards={[
+          {
+            tag: "Capilar",
+            title: "Queda de cabelo",
+            description:
+              "Avaliação das características da queda capilar para compreender intensidade, duração e alterações percebidas pelo paciente.",
+          },
+          {
+            tag: "Fios",
+            title: "Afinamento capilar",
+            description:
+              "Investigação do afinamento e da redução de volume dos fios para orientar um protocolo individualizado.",
+          },
+          {
+            tag: "Couro cabeludo",
+            title: "Saúde do couro cabeludo",
+            description:
+              "Avaliação das condições do couro cabeludo como parte importante do cuidado e da saúde capilar.",
+          },
+          {
+            tag: "Capilar",
+            title: "Alopecia",
+            description:
+              "Avaliação individualizada de alterações compatíveis com diferentes padrões de perda capilar.",
+          },
+          {
+            tag: "Fortalecimento",
+            title: "Fios enfraquecidos",
+            description:
+              "Protocolos definidos conforme as características de fios fragilizados e as necessidades observadas na avaliação.",
+          },
+          {
+            tag: "Crescimento",
+            title: "Redução de volume",
+            description:
+              "Avaliação de mudanças percebidas na densidade e no volume capilar para direcionar os cuidados.",
+          },
+        ]}
+        evaluationEyebrow="Avaliação capilar"
+        evaluationTitle="O primeiro passo é compreender o seu quadro"
+        evaluationParagraphs={[
+          "A avaliação considera histórico, padrão de queda, características dos fios e condições do couro cabeludo.",
+          "Conforme a necessidade, a tricoscopia pode auxiliar na análise e no planejamento do cuidado capilar.",
+        ]}
+        stepsTitle="Como funciona o tratamento capilar?"
+        steps={[
+          {
+            number: "01",
+            title: "Avaliação",
+            description:
+              "Análise individualizada das queixas, características dos fios e condições do couro cabeludo.",
+          },
+          {
+            number: "02",
+            title: "Estratégia",
+            description:
+              "Definição do protocolo capilar de acordo com as necessidades identificadas durante a avaliação.",
+          },
+          {
+            number: "03",
+            title: "Acompanhamento",
+            description:
+              "Acompanhamento da evolução para orientar a continuidade dos cuidados capilares.",
+          },
+        ]}
+        localEyebrow="Atendimento em Curitiba"
+        localTitle="Tratamento capilar com a Dra. Cristiana Valente em Curitiba"
+        localParagraphs={[
+          "Atendimento individualizado para queda de cabelo, afinamento dos fios, alopecia e saúde do couro cabeludo.",
+          "O protocolo é definido somente após avaliação das necessidades de cada paciente.",
+        ]}
+        faqTitle="Dúvidas sobre Tratamento Capilar"
+        faqItems={faqItems}
+        finalEyebrow="Avaliação capilar em Curitiba"
+        finalTitle="Cuide da saúde dos seus cabelos"
+        finalText="Agende uma avaliação com a Dra. Cristiana Valente para compreender as necessidades dos seus fios e do couro cabeludo."
+        finalHref="/#lead-form"
+        relatedHref="/tratamento-queda-de-cabelo-curitiba"
+        relatedLabel="Saiba mais sobre tratamento para queda de cabelo em Curitiba"
+      />
     </>
   );
 }
