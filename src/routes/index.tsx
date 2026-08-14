@@ -32,7 +32,7 @@ export const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunc
   .btn-rose{background:linear-gradient(180deg,var(--ink),#000);color:#fff;box-shadow:0 16px 40px rgba(0,0,0,.28)}
   .btn-rose:hover{transform:translateY(-2px)}
   .btn-ghost{border:1px solid rgba(20,20,20,.2);color:var(--ink)}.btn-ghost:hover{background:rgba(20,20,20,.04)}
-  .reveal{opacity:1}.reveal.in{animation:rin .7s cubic-bezier(.16,1,.3,1) both}@keyframes rin{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+  
   .card{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 34px rgba(20,20,20,.05)}
   .hair{height:1px;background:linear-gradient(90deg,transparent,rgba(201,163,107,.5),transparent)}
   .frame{border-radius:22px;overflow:hidden;position:relative;box-shadow:0 40px 90px rgba(20,20,20,.18)}
@@ -53,11 +53,246 @@ export const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunc
   .protocol h3{font-family:"Fraunces",serif;font-size:1.35rem;color:var(--ink)}
   .protocol li{color:var(--muted);font-size:.92rem;padding:4px 0}
   .protocol .tag{display:inline-block;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--rose2);margin-bottom:10px}
-  @media (prefers-reduced-motion:reduce){.l1,.l2,.wa::before{animation:none}.reveal.in{animation:none}}
-  #resultados img { cursor: pointer; transition: transform 0.2s; }
-  #resultados img:hover { transform: scale(1.02); filter: brightness(0.95); }
-  #exclusivos img { cursor: pointer; transition: transform 0.2s; }
-  #exclusivos img:hover { transform: scale(1.02); filter: brightness(0.95); }
+    /* =========================================================
+     ANIMAÇÕES PREMIUM — DRA. CRISTIANA
+     ========================================================= */
+
+  /* SCROLL REVEAL */
+  .reveal{
+    opacity:0;
+    transform:translateY(34px) scale(.985);
+    filter:blur(3px);
+    transition:
+      opacity .85s cubic-bezier(.16,1,.3,1),
+      transform .85s cubic-bezier(.16,1,.3,1),
+      filter .85s cubic-bezier(.16,1,.3,1);
+    will-change:opacity,transform,filter;
+  }
+
+  .reveal.in{
+    opacity:1;
+    transform:translateY(0) scale(1);
+    filter:blur(0);
+  }
+
+  /* CASCATA DOS CARDS */
+  .grid > .reveal:nth-child(1){transition-delay:.03s}
+  .grid > .reveal:nth-child(2){transition-delay:.09s}
+  .grid > .reveal:nth-child(3){transition-delay:.15s}
+  .grid > .reveal:nth-child(4){transition-delay:.21s}
+  .grid > .reveal:nth-child(5){transition-delay:.27s}
+  .grid > .reveal:nth-child(6){transition-delay:.33s}
+  .grid > .reveal:nth-child(7){transition-delay:.39s}
+  .grid > .reveal:nth-child(8){transition-delay:.45s}
+  .grid > .reveal:nth-child(9){transition-delay:.51s}
+  .grid > .reveal:nth-child(10){transition-delay:.57s}
+  .grid > .reveal:nth-child(11){transition-delay:.63s}
+  .grid > .reveal:nth-child(12){transition-delay:.69s}
+
+  /* CARDS — ELEVAÇÃO E BRILHO */
+  .card{
+    position:relative;
+    overflow:hidden;
+    transition:
+      transform .45s cubic-bezier(.16,1,.3,1),
+      box-shadow .45s cubic-bezier(.16,1,.3,1),
+      border-color .45s ease;
+  }
+
+  .card::before{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    top:-90px;
+    left:-90px;
+    border-radius:50%;
+    background:radial-gradient(
+      circle,
+      rgba(201,163,107,.14) 0%,
+      rgba(201,163,107,.04) 45%,
+      transparent 72%
+    );
+    opacity:0;
+    transform:scale(.7);
+    transition:
+      opacity .45s ease,
+      transform .65s cubic-bezier(.16,1,.3,1);
+    pointer-events:none;
+  }
+
+  .card:hover{
+    transform:translateY(-8px);
+    box-shadow:
+      0 24px 60px rgba(20,20,20,.10),
+      0 6px 18px rgba(20,20,20,.05);
+    border-color:rgba(201,163,107,.42);
+  }
+
+  .card:hover::before{
+    opacity:1;
+    transform:scale(1.35);
+  }
+
+  /* IMAGENS — ZOOM CINEMATOGRÁFICO */
+  .frame{
+    transform:translateZ(0);
+    transition:
+      transform .55s cubic-bezier(.16,1,.3,1),
+      box-shadow .55s cubic-bezier(.16,1,.3,1);
+  }
+
+  .frame img{
+    transition:
+      transform 1s cubic-bezier(.16,1,.3,1),
+      filter .65s ease;
+    will-change:transform;
+  }
+
+  .frame:hover{
+    transform:translateY(-5px);
+    box-shadow:0 44px 95px rgba(20,20,20,.22);
+  }
+
+  .frame:hover img{
+    transform:scale(1.045);
+    filter:brightness(1.025);
+  }
+
+  #resultados img,
+  #exclusivos img{
+    cursor:pointer;
+    transition:
+      transform .8s cubic-bezier(.16,1,.3,1),
+      filter .45s ease;
+  }
+
+  #resultados img:hover,
+  #exclusivos img:hover{
+    transform:scale(1.055);
+    filter:brightness(.97);
+  }
+
+  /* BOTÕES — MICROINTERAÇÃO */
+  .btn{
+    position:relative;
+    overflow:hidden;
+    isolation:isolate;
+  }
+
+  .btn::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+      110deg,
+      transparent 20%,
+      rgba(255,255,255,.22) 45%,
+      transparent 70%
+    );
+    transform:translateX(-140%);
+    transition:transform .7s cubic-bezier(.16,1,.3,1);
+    pointer-events:none;
+  }
+
+  .btn:hover::after{
+    transform:translateX(140%);
+  }
+
+  .btn:hover{
+    transform:translateY(-3px);
+  }
+
+  .btn:active{
+    transform:translateY(-1px) scale(.985);
+  }
+
+  /* LINKS */
+  nav a,
+  footer a{
+    transition:
+      color .3s ease,
+      transform .3s cubic-bezier(.16,1,.3,1);
+  }
+
+  nav a:hover,
+  footer a:hover{
+    transform:translateY(-1px);
+  }
+
+  /* KICKER */
+  .kicker{
+    transition:
+      transform .35s cubic-bezier(.16,1,.3,1),
+      box-shadow .35s ease,
+      background .35s ease;
+  }
+
+  .kicker:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 22px rgba(138,106,59,.08);
+    background:rgba(201,163,107,.13);
+  }
+
+  /* WHATSAPP FLUTUANTE */
+  .wa{
+    transition:
+      transform .35s cubic-bezier(.16,1,.3,1),
+      box-shadow .35s ease;
+  }
+
+  .wa:hover{
+    transform:translateY(-4px) scale(1.025);
+    box-shadow:0 20px 48px rgba(37,211,102,.52);
+  }
+
+  /* ACESSIBILIDADE */
+  @media (prefers-reduced-motion:reduce){
+    .l1,
+    .l2,
+    .wa::before{
+      animation:none !important;
+    }
+
+    .reveal,
+    .reveal.in{
+      opacity:1 !important;
+      transform:none !important;
+      filter:none !important;
+      transition:none !important;
+    }
+
+    .card,
+    .frame,
+    .frame img,
+    .btn,
+    .btn::after,
+    .kicker,
+    .wa{
+      transition:none !important;
+    }
+  }
+
+  /* MOBILE — EFEITOS MAIS LEVES */
+  @media (max-width:768px){
+    .reveal{
+      transform:translateY(22px);
+      filter:blur(1.5px);
+    }
+
+    .card:hover,
+    .frame:hover{
+      transform:none;
+    }
+
+    .frame:hover img{
+      transform:none;
+    }
+
+    .grid > .reveal{
+      transition-delay:.03s;
+    }
+  }
 `;
 
 const WA = "https://wa.me/5541991599558?text=Ol%C3%A1%20Dra.%20Cristiana%2C%20gostaria%20de%20agendar%20minha%20avalia%C3%A7%C3%A3o.";
