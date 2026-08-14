@@ -128,7 +128,7 @@ const BODY = `
           </div>
       
           <a
-            href="https://www.google.com/search?q=Dra.+Cristiana+Valente+Tratamento+Capilar+Curitiba+avaliações"
+            href="https://www.google.com/search?q=Dra.+Cristiana+Valente+Tratamento+Capilar+Curitiba"
             target="_blank"
             rel="noopener noreferrer"
             class="text-xs text-[color:var(--muted)] hover:text-[color:var(--ink)] transition"
