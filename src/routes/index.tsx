@@ -8,7 +8,6 @@ import homemImg from "../assets/homem.jpeg";
 import faceImg from "../assets/face.jpeg";
 import mitosImg from "../assets/mitos.jpeg";
 import ambienteImg from "../assets/ambiente.png";
-import { ProtocoloPreview } from "../components/ui/protocolo-preview";
 
 export const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Jost:wght@400;500;600;700&display=swap');
 
@@ -515,6 +514,129 @@ export const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunc
   .protocol li{color:var(--muted);font-size:.92rem;padding:4px 0}
   .protocol .tag{display:inline-block;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--rose2);margin-bottom:10px}
 
+
+  /* =========================================================
+     PREVIEW INTERATIVO DOS 3 PROTOCOLOS CAPILARES
+     ========================================================= */
+  .protocol-preview{
+    position:relative;
+    min-width:0;
+    height:100%;
+    z-index:1;
+  }
+
+  .protocol-preview:hover,
+  .protocol-preview.preview-pinned{
+    z-index:30;
+  }
+
+  .protocol-preview > .protocol{
+    height:100%;
+    cursor:pointer;
+  }
+
+  .protocol-preview-panel{
+    position:absolute;
+    left:14px;
+    right:14px;
+    bottom:14px;
+    z-index:40;
+    overflow:hidden;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,.24);
+    background:rgba(20,18,16,.96);
+    color:#fff;
+    box-shadow:0 30px 85px rgba(20,20,20,.28);
+    backdrop-filter:blur(18px);
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transform:translateY(18px) scale(.965);
+    transform-origin:bottom center;
+    transition:opacity .34s ease,visibility .34s ease,transform .42s cubic-bezier(.16,1,.3,1);
+  }
+
+  .protocol-preview:hover .protocol-preview-panel,
+  .protocol-preview.preview-pinned .protocol-preview-panel{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transform:translateY(0) scale(1);
+  }
+
+  .protocol-preview-media{
+    position:relative;
+    height:185px;
+    overflow:hidden;
+    background:#1b1815;
+  }
+
+  .protocol-preview-media img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    transform:scale(1.02);
+    transition:transform 1.1s cubic-bezier(.16,1,.3,1);
+  }
+
+  .protocol-preview:hover .protocol-preview-media img,
+  .protocol-preview.preview-pinned .protocol-preview-media img{
+    transform:scale(1.09);
+  }
+
+  .protocol-preview-media::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg,rgba(20,18,16,.02) 25%,rgba(20,18,16,.92) 100%);
+    pointer-events:none;
+  }
+
+  .protocol-preview-pin{
+    position:absolute;
+    top:12px;
+    right:12px;
+    z-index:2;
+    display:none;
+    border:1px solid rgba(255,255,255,.25);
+    background:rgba(0,0,0,.42);
+    color:#fff;
+    border-radius:999px;
+    padding:6px 10px;
+    font-size:9px;
+    font-weight:700;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    backdrop-filter:blur(8px);
+  }
+
+  .protocol-preview.preview-pinned .protocol-preview-pin{display:block}
+
+  .protocol-preview-content{padding:20px 22px 22px}
+  .protocol-preview-eyebrow{color:#d8b57c;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}
+  .protocol-preview-title{margin-top:8px;color:#fff;font-family:"Fraunces",serif;font-size:1.42rem;line-height:1.08}
+  .protocol-preview-text{margin-top:10px;color:rgba(255,255,255,.72);font-size:.82rem;line-height:1.55}
+  .protocol-preview-link{display:inline-flex;align-items:center;gap:8px;margin-top:15px;color:#e2bf86;font-size:.78rem;font-weight:700;text-decoration:none;transition:gap .25s ease,color .25s ease}
+  .protocol-preview-link:hover{gap:12px;color:#fff}
+  .protocol-preview-hint{margin-top:15px;padding-top:12px;border-top:1px solid rgba(255,255,255,.10);color:rgba(255,255,255,.42);font-size:.68rem;line-height:1.4}
+  .protocol-preview.preview-pinned .protocol-preview-hint::after{content:" · Clique fora para fechar"}
+
+  @media (hover:none){
+    .protocol-preview:hover .protocol-preview-panel{
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+      transform:translateY(18px) scale(.965);
+    }
+    .protocol-preview.preview-pinned .protocol-preview-panel{
+      opacity:1;
+      visibility:visible;
+      pointer-events:auto;
+      transform:translateY(0) scale(1);
+    }
+  }
+
   /* =========================================================
      MOBILE
      ========================================================= */
@@ -686,61 +808,86 @@ const BODY = `
     <div class="reveal max-w-2xl"><div class="kicker mb-6">Protocolos em destaque</div><h2 class="display text-5xl md:text-6xl">Tratamentos para Queda de Cabelo, Alopecia e Saúde Capilar</h2><p class="text-[color:var(--muted)] mt-6 text-lg leading-relaxed">Os tratamentos capilares são indicados após avaliação individualizada, considerando queda de cabelo, alopecia, calvície e alterações do couro cabeludo. Conheça os principais protocolos realizados pela Dra. Cristiana Valente em Curitiba.</p></div>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-14">
 
-      <ProtocoloPreview
-        imagem="/protocolos/queda-cabelo.webp"
-        titulo="Tratamento para Queda de Cabelo e Alopecia"
-        texto="Avaliação individualizada para compreender a queda capilar, alopecia, afinamento dos fios e condições do couro cabeludo."
-        link="/tratamento-queda-de-cabelo-curitiba"
-        textoLink="Conhecer tratamento"
-      >
-        <div className="reveal card p-8 protocol cursor-pointer">
-          <span className="tag">Capilar</span>
-      
+      <!-- 1. QUEDA DE CABELO -->
+      <div class="reveal protocol-preview" data-protocol-preview>
+        <div class="card p-8 protocol">
+          <span class="tag">Capilar</span>
           <h3>Tratamento Capilar para Queda de Cabelo e Alopecia</h3>
-      
-          <ul className="mt-3 list-none p-0">
-            <li>· Regenera Hair</li>
-            <li>· PRP Capilar</li>
-            <li>· Regenera Hair + PRP</li>
-            <li>· Alopecia androgenética</li>
-            <li>· Alopecia areata</li>
-            <li>· Eflúvio telógeno</li>
-            <li>· Fortalecimento pós-transplante</li>
+          <ul class="mt-3 list-none p-0">
+            <li>· Regenera Hair</li><li>· PRP Capilar</li><li>· Regenera Hair + PRP</li>
+            <li>· Alopecia androgenética</li><li>· Alopecia areata</li>
+            <li>· Eflúvio telógeno</li><li>· Fortalecimento pós-transplante</li>
           </ul>
-      
-          <div className="mt-5 text-sm font-semibold underline underline-offset-4">
-            Passe o mouse para conhecer
+          <div class="mt-5 text-sm font-semibold underline underline-offset-4">Passe o mouse para conhecer</div>
+        </div>
+        <div class="protocol-preview-panel" aria-hidden="true">
+          <div class="protocol-preview-media">
+            <img src="/protocolos/queda-cabelo.webp" alt="Tratamento para queda de cabelo e alopecia" loading="lazy">
+            <span class="protocol-preview-pin">Fixado</span>
+          </div>
+          <div class="protocol-preview-content">
+            <div class="protocol-preview-eyebrow">Dra. Cristiana Valente · Capilar</div>
+            <div class="protocol-preview-title">Tratamento para Queda de Cabelo e Alopecia</div>
+            <p class="protocol-preview-text">Avaliação individualizada para compreender queda capilar, alopecia, afinamento dos fios e condições do couro cabeludo.</p>
+            <a href="/tratamento-queda-de-cabelo-curitiba" class="protocol-preview-link">Acessar página completa <span aria-hidden="true">→</span></a>
+            <div class="protocol-preview-hint">Clique no card para manter aberto</div>
           </div>
         </div>
-      </ProtocoloPreview>
-      <a
-        href="/tratamento-queda-de-cabelo-curitiba"
-        class="inline-flex mt-5 text-sm font-semibold underline underline-offset-4"
-      >
-        Saiba mais sobre tratamento para queda de cabelo em Curitiba
-      </a>
       </div>
 
-      <div class="reveal card p-8 protocol"><span class="tag">Capilar</span><h3>Mesoterapia Capilar</h3><ul class="mt-3 list-none p-0">
-        <li>· Avaliação e Planejamento</li><li>· Higienização e Preparo do Couro Cabeludo</li><li>· Preparo da Mescla de Ativos</li><li>· Vitaminas</li><li>· Fatores de crescimento</li><li>· Intradermoterapia</li><li>· Associação com microagulhamento</li><li>· Cuidados Pós-Procedimento</li>
-      </ul><br>
-      <a
-        href="/tratamento-capilar-curitiba"
-        class="inline-flex text-sm font-semibold underline underline-offset-4"
-      >
-        Conheça o tratamento capilar em Curitiba
-      </a>
+      <!-- 2. MESOTERAPIA / TRATAMENTO CAPILAR -->
+      <div class="reveal protocol-preview" data-protocol-preview>
+        <div class="card p-8 protocol">
+          <span class="tag">Capilar</span>
+          <h3>Mesoterapia Capilar</h3>
+          <ul class="mt-3 list-none p-0">
+            <li>· Avaliação e Planejamento</li><li>· Higienização e Preparo do Couro Cabeludo</li>
+            <li>· Preparo da Mescla de Ativos</li><li>· Vitaminas</li>
+            <li>· Fatores de crescimento</li><li>· Intradermoterapia</li>
+            <li>· Associação com microagulhamento</li><li>· Cuidados Pós-Procedimento</li>
+          </ul>
+          <div class="mt-5 text-sm font-semibold underline underline-offset-4">Passe o mouse para conhecer</div>
+        </div>
+        <div class="protocol-preview-panel" aria-hidden="true">
+          <div class="protocol-preview-media">
+            <img src="/protocolos/mesoterapia-capilar.webp" alt="Mesoterapia capilar" loading="lazy">
+            <span class="protocol-preview-pin">Fixado</span>
+          </div>
+          <div class="protocol-preview-content">
+            <div class="protocol-preview-eyebrow">Dra. Cristiana Valente · Capilar</div>
+            <div class="protocol-preview-title">Mesoterapia Capilar</div>
+            <p class="protocol-preview-text">Avaliação, planejamento e protocolo capilar personalizado, direcionado às características dos fios e do couro cabeludo.</p>
+            <a href="/tratamento-capilar-curitiba" class="protocol-preview-link">Acessar página completa <span aria-hidden="true">→</span></a>
+            <div class="protocol-preview-hint">Clique no card para manter aberto</div>
+          </div>
+        </div>
       </div>
-      
-      <div class="reveal card p-8 protocol"><span class="tag">Avaliação Capilar</span><h3>Avaliação Capilar Personalizada</h3><ul class="mt-3 list-none p-0">
-        <li>· Anamnese completa</li><li>· Tricoscopia</li><li>· Planejamento individualizado</li><li>· Acompanhamento fotográfico</li><li>· Diagnóstico clínico</li><li>· Protocolo sob medida</li><li>· Cronograma de manutenção</li>
-      </ul>
-      <a
-        href="/avaliacao-capilar-curitiba"
-        class="inline-flex mt-5 text-sm font-semibold underline underline-offset-4"
-      >
-        Saiba mais sobre avaliação capilar em Curitiba
-      </a>
+
+      <!-- 3. AVALIAÇÃO CAPILAR -->
+      <div class="reveal protocol-preview" data-protocol-preview>
+        <div class="card p-8 protocol">
+          <span class="tag">Avaliação Capilar</span>
+          <h3>Avaliação Capilar Personalizada</h3>
+          <ul class="mt-3 list-none p-0">
+            <li>· Anamnese completa</li><li>· Tricoscopia</li><li>· Planejamento individualizado</li>
+            <li>· Acompanhamento fotográfico</li><li>· Diagnóstico clínico</li>
+            <li>· Protocolo sob medida</li><li>· Cronograma de manutenção</li>
+          </ul>
+          <div class="mt-5 text-sm font-semibold underline underline-offset-4">Passe o mouse para conhecer</div>
+        </div>
+        <div class="protocol-preview-panel" aria-hidden="true">
+          <div class="protocol-preview-media">
+            <img src="/protocolos/avaliacao-capilar.webp" alt="Avaliação capilar personalizada com tricoscopia" loading="lazy">
+            <span class="protocol-preview-pin">Fixado</span>
+          </div>
+          <div class="protocol-preview-content">
+            <div class="protocol-preview-eyebrow">Dra. Cristiana Valente · Avaliação</div>
+            <div class="protocol-preview-title">Avaliação Capilar Personalizada</div>
+            <p class="protocol-preview-text">Anamnese, análise dos fios e couro cabeludo, tricoscopia quando indicada e planejamento individualizado.</p>
+            <a href="/avaliacao-capilar-curitiba" class="protocol-preview-link">Acessar página completa <span aria-hidden="true">→</span></a>
+            <div class="protocol-preview-hint">Clique no card para manter aberto</div>
+          </div>
+        </div>
       </div>
 
       <div class="reveal card p-8 protocol"><span class="tag">Facial</span><h3>Dermaplaning</h3><ul class="mt-3 list-none p-0">
@@ -1644,6 +1791,53 @@ function Index() {
       removeEventListener("scroll", onScroll);
       removeEventListener("pointermove", onPointerMove);
     };
+  }, []);
+
+  // Preview dos 3 cards capilares
+  useEffect(() => {
+    const selector = "[data-protocol-preview]";
+
+    const closeAll = (except?: HTMLElement | null) => {
+      document.querySelectorAll<HTMLElement>(selector).forEach((item) => {
+        if (item !== except) {
+          item.classList.remove("preview-pinned");
+          item.querySelector<HTMLElement>(".protocol-preview-panel")?.setAttribute("aria-hidden", "true");
+        }
+      });
+    };
+
+    const handleClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+
+      if (target.closest(".protocol-preview-link")) return;
+
+      const preview = target.closest(selector) as HTMLElement | null;
+
+      if (preview) {
+        if (target.closest(".protocol-preview-panel")) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const alreadyPinned = preview.classList.contains("preview-pinned");
+        closeAll(preview);
+
+        if (alreadyPinned) {
+          preview.classList.remove("preview-pinned");
+          preview.querySelector<HTMLElement>(".protocol-preview-panel")?.setAttribute("aria-hidden", "true");
+        } else {
+          preview.classList.add("preview-pinned");
+          preview.querySelector<HTMLElement>(".protocol-preview-panel")?.setAttribute("aria-hidden", "false");
+        }
+
+        return;
+      }
+
+      closeAll();
+    };
+
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
   }, []);
 
   // Escuta global de cliques corrigida: funciona sempre, independente de atualizações de estado
