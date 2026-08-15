@@ -203,7 +203,7 @@ export const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunc
   .hero-word-track{
     display:flex;
     flex-direction:column;
-    animation:wordLoop 10s cubic-bezier(.77,0,.18,1) infinite;
+    animation:wordLoop 16s cubic-bezier(.77,0,.18,1) infinite;
   }
   .hero-word-track span{
     height:44px;
@@ -214,21 +214,39 @@ export const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunc
     color:var(--rose2);
     white-space:nowrap;
   }
+  
   @keyframes wordLoop{
-    <!-- 0%,18%{transform:translateY(0)}
-    25%,43%{transform:translateY(-44px)}
-    50%,68%{transform:translateY(-88px)}
-    75%,93%{transform:translateY(-132px)}
-    100%{transform:translateY(-176px)} -->
-    
-    0%, 12,5%{transform:translateY(0)}
-    14,29%, 26,79%{transform:translateY(-44px)}
-    28,57%, 41,07%{transform:translateY(-88px)}
-    42,86%, 55,36%{transform:translateY(-132px)}
-    57,14%, 69,64%{transform:translateY(-176px)}
-    71,43%, 83,93%{transform:translateY(-220px)}
-    85,71%, 98,21%{transform:translateY(-264px)}
-    100%{transform:translateY(-308px)}
+    0%,12%{
+      transform:translateY(0);
+    }
+  
+    14.3%,26.3%{
+      transform:translateY(-44px);
+    }
+  
+    28.6%,40.6%{
+      transform:translateY(-88px);
+    }
+  
+    42.9%,54.9%{
+      transform:translateY(-132px);
+    }
+  
+    57.2%,69.2%{
+      transform:translateY(-176px);
+    }
+  
+    71.5%,83.5%{
+      transform:translateY(-220px);
+    }
+  
+    85.8%,97.8%{
+      transform:translateY(-264px);
+    }
+  
+    100%{
+      transform:translateY(-308px);
+    }
   }
 
   /* =========================================================
@@ -661,20 +679,37 @@ export const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunc
     .hero-word-loop{height:36px}
     .hero-word-track span{height:36px;font-size:1.15rem}
     @keyframes wordLoop{
-     <!-- 0%,18%{transform:translateY(0)}
-      25%,43%{transform:translateY(-36px)}
-      50%,68%{transform:translateY(-72px)}
-      75%,93%{transform:translateY(-108px)}
-      100%{transform:translateY(-144px)} -->
-      
-      0%, 12,5%{transform:translateY(0)}
-      14,29%, 26,79%{transform:translateY(-44px)}
-      28,57%, 41,07%{transform:translateY(-88px)}
-      42,86%, 55,36%{transform:translateY(-132px)}
-      57,14%, 69,64%{transform:translateY(-176px)}
-      71,43%, 83,93%{transform:translateY(-220px)}
-      85,71%, 98,21%{transform:translateY(-264px)}
-      100%{transform:translateY(-308px)}
+      0%,12%{
+        transform:translateY(0);
+      }
+    
+      14.3%,26.3%{
+        transform:translateY(-36px);
+      }
+    
+      28.6%,40.6%{
+        transform:translateY(-72px);
+      }
+    
+      42.9%,54.9%{
+        transform:translateY(-108px);
+      }
+    
+      57.2%,69.2%{
+        transform:translateY(-144px);
+      }
+    
+      71.5%,83.5%{
+        transform:translateY(-180px);
+      }
+    
+      85.8%,97.8%{
+        transform:translateY(-216px);
+      }
+    
+      100%{
+        transform:translateY(-252px);
+      }
     }
     .motion-track{animation-duration:20s}
     .auto-gallery-track{animation-duration:24s}
