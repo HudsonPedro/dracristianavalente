@@ -8,6 +8,7 @@ import homemImg from "../assets/homem.jpeg";
 import faceImg from "../assets/face.jpeg";
 import mitosImg from "../assets/mitos.jpeg";
 import ambienteImg from "../assets/ambiente.png";
+import { ProtocoloPreview } from "../components/ui/protocolo-preview";
 
 export const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Jost:wght@400;500;600;700&display=swap');
 
@@ -684,10 +685,36 @@ const BODY = `
   <section id="protocolos" class="container py-24">
     <div class="reveal max-w-2xl"><div class="kicker mb-6">Protocolos em destaque</div><h2 class="display text-5xl md:text-6xl">Tratamentos para Queda de Cabelo, Alopecia e Saúde Capilar</h2><p class="text-[color:var(--muted)] mt-6 text-lg leading-relaxed">Os tratamentos capilares são indicados após avaliação individualizada, considerando queda de cabelo, alopecia, calvície e alterações do couro cabeludo. Conheça os principais protocolos realizados pela Dra. Cristiana Valente em Curitiba.</p></div>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-14">
-
-      <div class="reveal card p-8 protocol"><span class="tag">Capilar</span><h3>Tratamento Capilar para Queda de Cabelo e Alopecia</h3><ul class="mt-3 list-none p-0">
-        <li>· Regenera Hair</li><li>· PRP Capilar</li><li>· Regenera Hair + PRP</li><li>· Alopecia androgenética</li><li>· Alopecia areata</li><li>· Eflúvio telógeno</li><li>· Fortalecimento pós-transplante</li>
-      </ul>
+      
+      <!-- CARD 1 QUEDA DE CABELO -->
+      
+      <ProtocoloPreview
+        imagem="/protocolos/queda-cabelo.webp"
+        titulo="Tratamento para Queda de Cabelo e Alopecia"
+        texto="Avaliação individualizada para compreender a queda capilar, alopecia, afinamento dos fios e condições do couro cabeludo."
+        link="/tratamento-queda-de-cabelo-curitiba"
+        textoLink="Conhecer tratamento"
+      >
+        <div className="reveal card p-8 protocol cursor-pointer">
+          <span className="tag">Capilar</span>
+      
+          <h3>Tratamento Capilar para Queda de Cabelo e Alopecia</h3>
+      
+          <ul className="mt-3 list-none p-0">
+            <li>· Regenera Hair</li>
+            <li>· PRP Capilar</li>
+            <li>· Regenera Hair + PRP</li>
+            <li>· Alopecia androgenética</li>
+            <li>· Alopecia areata</li>
+            <li>· Eflúvio telógeno</li>
+            <li>· Fortalecimento pós-transplante</li>
+          </ul>
+      
+          <div className="mt-5 text-sm font-semibold underline underline-offset-4">
+            Passe o mouse para conhecer
+          </div>
+        </div>
+      </ProtocoloPreview>
       <a
         href="/tratamento-queda-de-cabelo-curitiba"
         class="inline-flex mt-5 text-sm font-semibold underline underline-offset-4"
@@ -696,6 +723,7 @@ const BODY = `
       </a>
       </div>
 
+      <!-- CARD 2 MESOTERAPIA -->
       <div class="reveal card p-8 protocol"><span class="tag">Capilar</span><h3>Mesoterapia Capilar</h3><ul class="mt-3 list-none p-0">
         <li>· Avaliação e Planejamento</li><li>· Higienização e Preparo do Couro Cabeludo</li><li>· Preparo da Mescla de Ativos</li><li>· Vitaminas</li><li>· Fatores de crescimento</li><li>· Intradermoterapia</li><li>· Associação com microagulhamento</li><li>· Cuidados Pós-Procedimento</li>
       </ul><br>
@@ -706,7 +734,8 @@ const BODY = `
         Conheça o tratamento capilar em Curitiba
       </a>
       </div>
-      
+
+      <!-- CARD 3 AVALIAÇÃO -->
       <div class="reveal card p-8 protocol"><span class="tag">Avaliação Capilar</span><h3>Avaliação Capilar Personalizada</h3><ul class="mt-3 list-none p-0">
         <li>· Anamnese completa</li><li>· Tricoscopia</li><li>· Planejamento individualizado</li><li>· Acompanhamento fotográfico</li><li>· Diagnóstico clínico</li><li>· Protocolo sob medida</li><li>· Cronograma de manutenção</li>
       </ul>
