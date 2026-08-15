@@ -8,9 +8,19 @@ export const products: Product[] = [
     id: "bio-smart-profissional",
     name: "Linha Bio Smart Profissional",
     slug: "bio-smart-profissional",
+
     brand: "DNA VITAL",
     manufacturer: "DNA VITAL",
+
     categoryId: "profissional",
+
+    categoryIds: [
+      "profissional",
+      "controle-queda",
+      "couro-cabeludo",
+      "tratamentos-especificos",
+    ],
+
     line: "Linha Bio Smart",
     usageType: "PROFESSIONAL",
 
@@ -38,20 +48,26 @@ export const products: Product[] = [
       },
     ],
 
-    // 1 — Linha Bio Smart Profissional
     images: [
       "/images/produtos/dna-vital/bio-smart-profissional.webp",
     ],
+
     priceVisibility: "REQUIRES_PROTOCOL",
+
     saleEnabled: false,
     requiresEvaluation: true,
     requiresProtocol: true,
+
     professionalProduct: true,
     homeCare: false,
+
     stockEnabled: false,
     availability: "UNDER_CONSULTATION",
+
     badge: "Uso profissional",
+
     officialSource,
+
     status: "ACTIVE",
   },
 
@@ -59,9 +75,18 @@ export const products: Product[] = [
     id: "bio-smart-home-care",
     name: "Linha Bio Smart Home Care",
     slug: "bio-smart-home-care",
+
     brand: "DNA VITAL",
     manufacturer: "DNA VITAL",
+
     categoryId: "home-care",
+
+    categoryIds: [
+      "home-care",
+      "couro-cabeludo",
+      "tratamentos-especificos",
+    ],
+
     line: "Linha Bio Smart",
     usageType: "HOME_CARE",
 
@@ -89,20 +114,26 @@ export const products: Product[] = [
       },
     ],
 
-    // 2 — Linha Bio Smart Home Care
     images: [
       "/images/produtos/dna-vital/bio-smart-home-care.webp",
     ],
+
     priceVisibility: "CONTACT_FOR_PRICE",
+
     saleEnabled: false,
     requiresEvaluation: false,
     requiresProtocol: false,
+
     professionalProduct: false,
     homeCare: true,
+
     stockEnabled: false,
     availability: "UNDER_CONSULTATION",
+
     badge: "Home Care",
+
     officialSource,
+
     status: "ACTIVE",
   },
 
@@ -110,9 +141,20 @@ export const products: Product[] = [
     id: "linha-crescimento-profissional",
     name: "Linha de Crescimento Profissional",
     slug: "linha-crescimento-profissional",
+
     brand: "DNA VITAL",
     manufacturer: "DNA VITAL",
+
     categoryId: "crescimento",
+
+    categoryIds: [
+      "crescimento",
+      "controle-queda",
+      "couro-cabeludo",
+      "profissional",
+      "tratamentos-especificos",
+    ],
+
     line: "Linha de Crescimento",
     usageType: "PROFESSIONAL",
 
@@ -120,43 +162,49 @@ export const products: Product[] = [
       "Linha profissional com Regenerador Homeostático, Redutor de Queda e Estimulador de Crescimento.",
 
     description:
-      "Linha profissional DNA VITAL estruturada em três componentes para equilíbrio do couro cabeludo, redução da queda e estímulo ao crescimento.",
+      "Linha profissional estruturada em três componentes para equilíbrio do couro cabeludo, redução da queda e estímulo ao crescimento.",
 
     components: [
       {
         id: "regenerador-homeostatico",
         name: "Regenerador Homeostático",
         description:
-          "Contém simbióticos, um blend de pré, pró e parabióticos voltado ao equilíbrio da flora cutânea e à redução de processos inflamatórios, irritabilidade e sensibilidade do couro cabeludo.",
+          "Contém simbióticos, um blend de pré, pró e parabióticos que auxilia no equilíbrio da flora cutânea e na redução de processos inflamatórios, irritabilidade e sensibilidade do couro cabeludo. Atua também em descamação, coceira e vermelhidão.",
       },
       {
         id: "redutor-de-queda",
         name: "Redutor de Queda",
         description:
-          "Auxilia nos aspectos causadores da queda, como desordem e desnutrição celular, falta de oxigenação e traumas. Também auxilia no controle da 5-alfa-redutase e nos danos capilares causados pelo estresse.",
+          "Auxilia nos aspectos causadores da queda, como desordem e desnutrição celular, falta de oxigenação e traumas. Auxilia também no controle da 5-alfa-redutase e nos danos capilares causados pelo estresse.",
       },
       {
         id: "estimulador-de-crescimento",
         name: "Estimulador de Crescimento",
         description:
-          "Auxilia no crescimento de novos fios saudáveis, estimula a vascularização, aumenta o calibre da haste capilar e a fase anágena.",
+          "Auxilia no crescimento de novos fios saudáveis, estimula a vascularização, aumenta o calibre da haste capilar e aumenta a fase anágena.",
       },
     ],
 
-    // 3 — Linha de Crescimento Profissional
     images: [
       "/images/produtos/dna-vital/linha-crescimento.webp",
     ],
+
     priceVisibility: "REQUIRES_PROTOCOL",
+
     saleEnabled: false,
     requiresEvaluation: true,
     requiresProtocol: true,
+
     professionalProduct: true,
     homeCare: false,
+
     stockEnabled: false,
     availability: "UNDER_CONSULTATION",
+
     badge: "Uso profissional",
+
     officialSource,
+
     status: "ACTIVE",
   },
 
@@ -164,9 +212,19 @@ export const products: Product[] = [
     id: "shaft-care-profissional",
     name: "Shaft Care Profissional",
     slug: "shaft-care-profissional",
+
     brand: "DNA VITAL",
     manufacturer: "DNA VITAL",
+
     categoryId: "reestruturacao",
+
+    categoryIds: [
+      "reestruturacao",
+      "profissional",
+      "controle-queda",
+      "tratamentos-especificos",
+    ],
+
     line: "Shaft Care",
     usageType: "PROFESSIONAL",
 
@@ -174,7 +232,7 @@ export const products: Product[] = [
       "Linha profissional para reestruturação dos fios, promovendo maior resistência e saúde capilar.",
 
     description:
-      "Promove reestruturação, proporcionando fios mais saudáveis e resistentes. A liberação controlada dos ativos contribui para manutenção prolongada dos resultados.",
+      "Promove reestruturação, proporcionando fios mais saudáveis e resistentes. Mantém o resultado por períodos prolongados por meio da liberação controlada de ativos.",
 
     activeIngredients: [
       {
@@ -194,20 +252,26 @@ export const products: Product[] = [
       },
     ],
 
-    // 4 — Shaft Care Profissional
     images: [
       "/images/produtos/dna-vital/shaft-care-profissional.webp",
     ],
+
     priceVisibility: "REQUIRES_PROTOCOL",
+
     saleEnabled: false,
     requiresEvaluation: true,
     requiresProtocol: true,
+
     professionalProduct: true,
     homeCare: false,
+
     stockEnabled: false,
     availability: "UNDER_CONSULTATION",
+
     badge: "Uso profissional",
+
     officialSource,
+
     status: "ACTIVE",
   },
 
@@ -215,9 +279,17 @@ export const products: Product[] = [
     id: "shaft-care-home-care",
     name: "Shaft Care Home Care",
     slug: "shaft-care-home-care",
+
     brand: "DNA VITAL",
     manufacturer: "DNA VITAL",
+
     categoryId: "home-care",
+
+    categoryIds: [
+      "home-care",
+      "reestruturacao",
+    ],
+
     line: "Shaft Care",
     usageType: "HOME_CARE",
 
@@ -225,7 +297,7 @@ export const products: Product[] = [
       "Linha Home Care para manutenção do tratamento realizado na clínica.",
 
     description:
-      "Desenvolvida para manutenção do tratamento feito na clínica, utilizando os mesmos ativos da linha profissional em concentrações inferiores.",
+      "Desenvolvida para promover manutenção do tratamento feito na clínica, com os mesmos ativos da linha profissional em concentrações inferiores.",
 
     components: [
       {
@@ -248,20 +320,26 @@ export const products: Product[] = [
       },
     ],
 
-    // 5 — Shaft Care Home Care
     images: [
       "/images/produtos/dna-vital/shaft-care-home-care.webp",
     ],
+
     priceVisibility: "CONTACT_FOR_PRICE",
+
     saleEnabled: false,
     requiresEvaluation: false,
     requiresProtocol: false,
+
     professionalProduct: false,
     homeCare: true,
+
     stockEnabled: false,
     availability: "UNDER_CONSULTATION",
+
     badge: "Home Care",
+
     officialSource,
+
     status: "ACTIVE",
   },
 
@@ -269,39 +347,54 @@ export const products: Product[] = [
     id: "monodoses-profissional",
     name: "Monodoses Profissional",
     slug: "monodoses-profissional",
+
     brand: "DNA VITAL",
     manufacturer: "DNA VITAL",
+
     categoryId: "monodoses",
+
+    categoryIds: [
+      "monodoses",
+      "profissional",
+      "controle-queda",
+      "couro-cabeludo",
+      "crescimento",
+      "tratamentos-especificos",
+    ],
+
     line: "Monodoses",
     usageType: "PROFESSIONAL",
 
     shortDescription:
       "Cinco monodoses profissionais com funcionalidades específicas para diferentes necessidades do couro cabeludo e sistema capilar.",
 
+    description:
+      "Linha profissional composta por cinco monodoses destinadas a diferentes necessidades relacionadas à microbiota, inflamação, regeneração dérmica, queda e estímulo capilar.",
+
     components: [
       {
         id: "arm",
         name: "A.R.M. — Antifúngico e regulador da microbiota",
         description:
-          "Atua contra fungos e bactérias por meio de reguladores da microbiota, contribuindo para a homeostasia do couro cabeludo e cuidados relacionados a vermelhidão, coceira e descamação.",
+          "Atua contra fungos e bactérias por meio de reguladores da microbiota. Promove homeostasia do couro cabeludo e é indicada pela DNA VITAL para situações relacionadas a vermelhidão, coceira e descamação.",
       },
       {
         id: "aic",
         name: "A.I.C. — Anti-inflamatório e Calmante",
         description:
-          "Auxilia em situações de couro cabeludo sensível e inflamado, contribuindo para calma, cicatrização e regeneração.",
+          "Auxilia quando o couro cabeludo está sensível e inflamado, contribuindo para acalmar e favorecer os processos de cicatrização e regeneração.",
       },
       {
         id: "rn",
         name: "R.N. — Regenerador dérmico",
         description:
-          "Promove regeneração celular e renovação do estrato córneo, contribuindo para recuperar a integridade do couro cabeludo.",
+          "Promove regeneração celular e renovação do estrato córneo, contribuindo para devolver a integridade do couro cabeludo.",
       },
       {
         id: "rqb5",
         name: "R.Q.B.5 — Redutor de queda",
         description:
-          "Atua na redução da queda e no aumento da microcirculação com nutrientes e minerais para favorecer um ciclo capilar mais equilibrado.",
+          "Atua na redução da queda e promove aumento da microcirculação com nutrientes e minerais para favorecer um ciclo capilar mais equilibrado.",
       },
       {
         id: "en",
@@ -311,20 +404,26 @@ export const products: Product[] = [
       },
     ],
 
-    // 6 — Monodoses Profissional
     images: [
       "/images/produtos/dna-vital/monodoses.webp",
     ],
+
     priceVisibility: "REQUIRES_PROTOCOL",
+
     saleEnabled: false,
     requiresEvaluation: true,
     requiresProtocol: true,
+
     professionalProduct: true,
     homeCare: false,
+
     stockEnabled: false,
     availability: "UNDER_CONSULTATION",
+
     badge: "Uso profissional",
+
     officialSource,
+
     status: "ACTIVE",
   },
 
@@ -332,9 +431,18 @@ export const products: Product[] = [
     id: "mask-repair-profissional",
     name: "Mask Repair Profissional",
     slug: "mask-repair-profissional",
+
     brand: "DNA VITAL",
     manufacturer: "DNA VITAL",
+
     categoryId: "reestruturacao",
+
+    categoryIds: [
+      "reestruturacao",
+      "profissional",
+      "tratamentos-especificos",
+    ],
+
     line: "Mask Repair",
     usageType: "PROFESSIONAL",
 
@@ -342,7 +450,7 @@ export const products: Product[] = [
       "Máscara dupla para reparação interna e externa dos fios.",
 
     description:
-      "Máscara dupla desenvolvida para reparação dentro e fora do fio, por preenchimento intersticial e restauração das fissuras cuticulares.",
+      "Máscara dupla que promove reparação dentro e fora do fio por preenchimento intersticial e restauração das fissuras cuticulares.",
 
     components: [
       {
@@ -392,20 +500,26 @@ export const products: Product[] = [
       },
     ],
 
-    // 7 — Mask Repair Profissional
     images: [
       "/images/produtos/dna-vital/mask-repair.webp",
     ],
+
     priceVisibility: "REQUIRES_PROTOCOL",
+
     saleEnabled: false,
     requiresEvaluation: true,
     requiresProtocol: true,
+
     professionalProduct: true,
     homeCare: false,
+
     stockEnabled: false,
     availability: "UNDER_CONSULTATION",
+
     badge: "Uso profissional",
+
     officialSource,
+
     status: "ACTIVE",
   },
 
@@ -413,9 +527,18 @@ export const products: Product[] = [
     id: "biomimetic-line-profissional",
     name: "Biomimetic Line Profissional",
     slug: "biomimetic-line-profissional",
+
     brand: "DNA VITAL",
     manufacturer: "DNA VITAL",
+
     categoryId: "reestruturacao",
+
+    categoryIds: [
+      "reestruturacao",
+      "profissional",
+      "tratamentos-especificos",
+    ],
+
     line: "Biomimetic Line",
     usageType: "PROFESSIONAL",
 
@@ -423,7 +546,7 @@ export const products: Product[] = [
       "Linha profissional para reestruturação e resistência dos fios com liberação controlada de ativos.",
 
     description:
-      "Promove reestruturação, proporcionando fios mais saudáveis e resistentes, com liberação controlada dos ativos.",
+      "Promove reestruturação, proporcionando fios mais saudáveis e resistentes. Mantém o resultado por períodos prolongados por meio da liberação controlada dos ativos.",
 
     components: [
       {
@@ -440,20 +563,26 @@ export const products: Product[] = [
       },
     ],
 
-    // 8 — Biomimetic Line Profissional
     images: [
       "/images/produtos/dna-vital/biomimetic.webp",
     ],
+
     priceVisibility: "REQUIRES_PROTOCOL",
+
     saleEnabled: false,
     requiresEvaluation: true,
     requiresProtocol: true,
+
     professionalProduct: true,
     homeCare: false,
+
     stockEnabled: false,
     availability: "UNDER_CONSULTATION",
+
     badge: "Uso profissional",
+
     officialSource,
+
     status: "ACTIVE",
   },
 
@@ -461,9 +590,19 @@ export const products: Product[] = [
     id: "pos-transplante-home-care",
     name: "Pós-Transplante Home Care",
     slug: "pos-transplante-home-care",
+
     brand: "DNA VITAL",
     manufacturer: "DNA VITAL",
+
     categoryId: "pos-transplante",
+
+    categoryIds: [
+      "pos-transplante",
+      "home-care",
+      "couro-cabeludo",
+      "tratamentos-especificos",
+    ],
+
     line: "Pós-Transplante",
     usageType: "HOME_CARE",
 
@@ -501,30 +640,36 @@ export const products: Product[] = [
         id: "tonico-pos-transplante",
         name: "Tônico pós-transplante capilar",
         description:
-          "Promove bem-estar e homeostasia para o couro cabeludo pós-transplantado, auxilia na cicatrização e na ancoragem dos novos fios.",
+          "Promove bem-estar e homeostasia para o couro cabeludo pós-transplantado. Auxilia na cicatrização e na ancoragem dos novos fios.",
       },
       {
         id: "espuma-pos-transplante",
         name: "Espuma pós-transplante capilar",
         description:
-          "Shampoo em espuma calmante e anti-inflamatório para higienização e assepsia no pós-transplante, auxiliando na retirada de crostas e nos cuidados com coceira, vermelhidão, foliculite e descamação.",
+          "Shampoo em espuma calmante e anti-inflamatório para higienização e assepsia no pós-transplante. Auxilia na retirada de crostas e nos cuidados relacionados a coceira, vermelhidão, foliculite e descamação.",
       },
     ],
 
-    // 9 — Pós-Transplante Home Care
     images: [
       "/images/produtos/dna-vital/pos-transplante.webp",
     ],
+
     priceVisibility: "CONTACT_FOR_PRICE",
+
     saleEnabled: false,
     requiresEvaluation: false,
     requiresProtocol: false,
+
     professionalProduct: false,
     homeCare: true,
+
     stockEnabled: false,
     availability: "UNDER_CONSULTATION",
+
     badge: "Pós-Transplante",
+
     officialSource,
+
     status: "ACTIVE",
   },
 ];
