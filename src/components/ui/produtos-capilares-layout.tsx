@@ -26,8 +26,8 @@ export function ProdutosCapilaresLayout({
   const produtosFiltrados =
     categoriaSelecionada === "todos"
       ? produtosAtivos
-      : produtosAtivos.filter(
-          (product) => product.categoryId === categoriaSelecionada
+      : produtosAtivos.filter((product) =>
+          product.categoryIds.includes(categoriaSelecionada)
         );
 
   const catalogoRef = useRef<HTMLDivElement | null>(null);
