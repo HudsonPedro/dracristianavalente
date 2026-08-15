@@ -1117,7 +1117,39 @@ const BODY = `
           </div>
         </div>
       </div>
+      
+      <!--AIRTON MARTINS-->
+      <div class="reveal card p-7 flex flex-col">
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-[color:var(--gold)] text-base tracking-wide">
+            ★★★★★
+          </div>
   
+          <div class="text-xs font-semibold text-[color:var(--muted)]">
+            Google
+          </div>
+        </div>
+  
+        <p class="leading-relaxed flex-1">
+          "Avaliação de 5 estrelas no Google."
+        </p>
+  
+        <div class="flex items-center gap-3 mt-6">
+          <img
+            src="/avaliacoes/airton.webp"
+            alt="Airton Martins Leucz - avaliação no Google"
+            class="w-11 h-11 rounded-full object-cover shrink-0"
+            loading="lazy"
+          />
+  
+          <div>
+            <div class="font-semibold">Airton Martins</div>
+            <div class="text-xs text-[color:var(--muted)]">
+              ★★★★★ · Avaliação no Google
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   
     <div class="reveal mt-10 text-center">
