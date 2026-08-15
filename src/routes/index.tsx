@@ -724,6 +724,9 @@ const BODY = `
           <span>Alopecia</span>
           <span>Tricoscopia</span>
           <span>Saúde capilar</span>
+          <span>Terapia capilar</span>
+          <span>Mesoterapia capilar</span>
+          <span>Avaliação capilar</span>
           <span>Queda de cabelo</span>
         </div>
       </div>
