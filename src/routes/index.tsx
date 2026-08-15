@@ -709,9 +709,9 @@ const BODY = `
 
   <header id="topo" class="container pt-36 pb-20 md:pt-44 md:pb-28 grid lg:grid-cols-[1.05fr_.95fr] gap-14 items-center">
     <div>
-      <div class="reveal kicker">★ Estética facial, corporal e capilar · resultados naturais</div>
+      <div class="reveal kicker">★ Estética capilar, facial e corporal · resultados naturais</div>
       <h1 class="reveal display text-6xl md:text-7xl mt-7">
-        Dra. Cristiana Valente <br />
+       <!-- Dra. Cristiana Valente <br /> -->
         Tratamento Capilar
         <span class="rosetext italic"><br />em Curitiba</span>.
       </h1>
