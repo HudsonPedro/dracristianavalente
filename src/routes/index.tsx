@@ -727,7 +727,6 @@ const BODY = `
           <span>Terapia capilar</span>
           <span>Mesoterapia capilar</span>
           <span>Avaliação capilar</span>
-          <span>Queda de cabelo</span>
         </div>
       </div>
       <div class="reveal flex flex-col sm:flex-row gap-4 mt-10"><a href="${WA}" class="btn btn-wa">Agendar minha avaliação →</a><a href="#protocolos" class="btn btn-ghost">Ver protocolos</a></div>
