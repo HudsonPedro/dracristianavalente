@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { ProdutosCapilaresLayout } from "../components/ui/produtos-capilares-layout";
 
 export const Route = createFileRoute("/produtos-capilares")({
   head: () => ({
@@ -30,9 +31,20 @@ export const Route = createFileRoute("/produtos-capilares")({
 });
 
 function ProdutosCapilaresPage() {
+  const irParaProdutos = () => {
+    const destino = document.getElementById("catalogo-produtos");
+
+    if (destino) {
+      destino.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+
   return (
-    <main>
-      <h1>Produtos Capilares</h1>
-    </main>
+    <ProdutosCapilaresLayout
+      onConhecerProdutos={irParaProdutos}
+    />
   );
 }
