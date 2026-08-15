@@ -640,7 +640,7 @@ const BODY = `
             rel="noopener noreferrer"
             class="text-xs text-[color:var(--muted)] hover:text-[color:var(--ink)] transition"
           >
-            5,0 no Google · 8 avaliações →
+            5.0 no Google +10 avaliações →
           </a>
         </div>
       </div>
