@@ -43,46 +43,33 @@ export type Product = {
   manufacturer?: string;
 
   /**
-   * Categoria usada pelos filtros da loja.
+   * Categoria principal.
+   * Mantida para compatibilidade e organização administrativa.
    */
   categoryId: string;
 
   /**
-   * Linha oficial à qual o produto pertence.
-   * Ex.: Bio Smart, Shaft Care, Monodoses.
+   * Todas as categorias nas quais o produto deve aparecer.
+   *
+   * Exemplo:
+   * ["crescimento", "controle-queda", "couro-cabeludo"]
+   */
+  categoryIds: string[];
+
+  /**
+   * Linha oficial DNA VITAL.
    */
   line?: string;
 
-  /**
-   * Classificação apresentada pela DNA VITAL.
-   */
   usageType?: "PROFESSIONAL" | "HOME_CARE";
 
   shortDescription: string;
   description?: string;
 
-  /**
-   * Características e benefícios divulgados
-   * oficialmente para a linha/produto.
-   */
   benefits?: ProductBenefit[];
 
-  /**
-   * Ativos principais divulgados oficialmente.
-   */
   activeIngredients?: ProductActive[];
 
-  /**
-   * Componentes individuais de uma linha.
-   *
-   * Ex. Shaft Care Home Care:
-   * Shampoo, Condicionador e Leave-in.
-   *
-   * Ex. Linha de Crescimento:
-   * Regenerador Homeostático,
-   * Redutor de Queda,
-   * Estimulador de Crescimento.
-   */
   components?: ProductComponent[];
 
   images: string[];
@@ -113,16 +100,8 @@ export type Product = {
     length?: number;
   };
 
-  /**
-   * Preencher somente quando houver
-   * orientação oficial/autorizada.
-   */
   usageInstructions?: string;
 
-  /**
-   * Campo mantido para composição completa,
-   * quando essa informação estiver disponível.
-   */
   composition?: string;
 
   warnings?: string;
@@ -132,10 +111,6 @@ export type Product = {
 
   badge?: string;
 
-  /**
-   * URL da fonte oficial usada para
-   * conferência das informações.
-   */
   officialSource?: string;
 
   status: ProductStatus;
