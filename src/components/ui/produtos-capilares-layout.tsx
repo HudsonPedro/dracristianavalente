@@ -17,6 +17,9 @@ export function ProdutosCapilaresLayout({
       </div>
 
       <main className="wrap min-h-screen">
+        {/* =====================================================
+            HERO
+            ===================================================== */}
         <section className="relative flex min-h-[92vh] items-center overflow-hidden">
           <div className="container w-full py-24 md:py-32">
             <div className="max-w-4xl">
@@ -77,6 +80,135 @@ export function ProdutosCapilaresLayout({
             aria-hidden="true"
             className="pointer-events-none absolute right-[140px] top-1/2 hidden h-[250px] w-[250px] -translate-y-1/2 rounded-full border border-[color:var(--gold)]/20 lg:block"
           />
+        </section>
+
+        {/* =====================================================
+            POSICIONAMENTO
+            ===================================================== */}
+        <section className="container py-24 md:py-32">
+          <div className="mx-auto max-w-5xl">
+            <div className="kicker mb-6">
+              Cuidado que continua em casa
+            </div>
+
+            <div className="grid gap-12 lg:grid-cols-[1.05fr_.95fr] lg:items-end">
+              <div>
+                <h2 className="display text-4xl md:text-6xl">
+                  Mais do que produtos.
+                  <br />
+                  <span className="rosetext italic">
+                    Uma extensão do seu cuidado capilar.
+                  </span>
+                </h2>
+              </div>
+
+              <div>
+                <p className="text-base leading-7 text-[color:var(--muted)] md:text-lg">
+                  Na Dra. Cristiana Valente, os produtos são selecionados de
+                  acordo com a estratégia de cuidado de cada paciente. Alguns
+                  itens podem ser adquiridos diretamente, enquanto outros
+                  dependem de avaliação, indicação profissional ou integração
+                  com protocolos realizados na clínica.
+                </p>
+              </div>
+            </div>
+
+            <div className="hair my-14" />
+
+            {/* =================================================
+                3 PILARES
+                ================================================= */}
+            <div className="grid gap-5 md:grid-cols-3">
+              <article className="card p-8">
+                <div className="mb-6 flex items-center justify-between">
+                  <span className="serif rosetext text-5xl">01</span>
+
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--muted)]">
+                    Primeiro passo
+                  </span>
+                </div>
+
+                <h3 className="serif text-2xl">
+                  Avaliação
+                </h3>
+
+                <p className="mt-4 leading-relaxed text-[color:var(--muted)]">
+                  Entendemos as necessidades do couro cabeludo e dos fios.
+                </p>
+              </article>
+
+              <article className="card p-8">
+                <div className="mb-6 flex items-center justify-between">
+                  <span className="serif rosetext text-5xl">02</span>
+
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--muted)]">
+                    Seleção
+                  </span>
+                </div>
+
+                <h3 className="serif text-2xl">
+                  Indicação
+                </h3>
+
+                <p className="mt-4 leading-relaxed text-[color:var(--muted)]">
+                  Selecionamos os produtos de acordo com o momento e objetivo
+                  do tratamento.
+                </p>
+              </article>
+
+              <article className="card p-8">
+                <div className="mb-6 flex items-center justify-between">
+                  <span className="serif rosetext text-5xl">03</span>
+
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--muted)]">
+                    Continuidade
+                  </span>
+                </div>
+
+                <h3 className="serif text-2xl">
+                  Acompanhamento
+                </h3>
+
+                <p className="mt-4 leading-relaxed text-[color:var(--muted)]">
+                  O cuidado continua em casa e pode ser acompanhado durante a
+                  evolução do tratamento.
+                </p>
+              </article>
+            </div>
+
+            {/* =================================================
+                MENSAGEM INSTITUCIONAL
+                ================================================= */}
+            <div className="mt-14 rounded-[22px] border border-[color:var(--line)] bg-white/70 p-8 backdrop-blur-md md:p-10">
+              <div className="max-w-3xl">
+                <div className="mb-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-[color:var(--rose2)]">
+                  Orientação profissional
+                </div>
+
+                <p className="serif text-2xl leading-relaxed md:text-3xl">
+                  Cada couro cabeludo possui necessidades diferentes.
+                  Por isso, alguns produtos são indicados somente após
+                  avaliação profissional.
+                </p>
+
+                <div className="mt-7 flex flex-col gap-4 sm:flex-row">
+                  <a
+                    href="/avaliacao-capilar-curitiba"
+                    className="btn btn-rose"
+                  >
+                    Agendar avaliação capilar
+                  </a>
+
+                  <a
+                    href="/tratamento-capilar-curitiba"
+                    className="btn btn-ghost"
+                  >
+                    Conhecer protocolos capilares
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
       </main>
     </>
