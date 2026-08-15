@@ -2,6 +2,8 @@ import { useState } from "react";
 
 import { CSS } from "../../routes/index";
 import { productCategories } from "../../data/categories";
+import { products } from "../../data/products";
+import { ProductCard } from "./product-card";
 
 type ProdutosCapilaresLayoutProps = {
   onConhecerProdutos?: () => void;
@@ -16,6 +18,17 @@ export function ProdutosCapilaresLayout({
 
   const [categoriaSelecionada, setCategoriaSelecionada] =
     useState<string>("todos");
+
+  const produtosAtivos = products.filter(
+    (product) => product.status === "ACTIVE"
+  );
+
+  const produtosFiltrados =
+    categoriaSelecionada === "todos"
+      ? produtosAtivos
+      : produtosAtivos.filter(
+          (product) => product.categoryId === categoriaSelecionada
+        );
 
   return (
     <>
@@ -291,35 +304,51 @@ export function ProdutosCapilaresLayout({
             </div>
 
             {/* =================================================
-                ESTADO DA CATEGORIA
-                Produtos entram na próxima etapa
+                PRODUTOS DA CATEGORIA SELECIONADA
                 ================================================= */}
-            <div className="mt-12 rounded-[24px] border border-[color:var(--line)] bg-white/70 px-6 py-10 md:px-10 md:py-12">
-              <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+            <div className="mt-12">
+              <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                 <div>
                   <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-[color:var(--rose2)]">
                     Categoria selecionada
                   </div>
 
-                  <h3 className="serif text-3xl">
+                  <h3 className="serif text-3xl md:text-4xl">
                     {categoriasAtivas.find(
                       (categoria) =>
                         categoria.id === categoriaSelecionada
                     )?.name ?? "Todos os produtos"}
                   </h3>
+                </div>
 
-                  <p className="mt-3 max-w-xl text-sm leading-6 text-[color:var(--muted)]">
-                    Os produtos desta categoria serão apresentados aqui na
-                    próxima etapa do catálogo.
+                <p className="max-w-xl text-sm leading-6 text-[color:var(--muted)] md:text-right">
+                  Alguns produtos podem exigir avaliação, indicação profissional
+                  ou integração com um protocolo realizado na clínica.
+                </p>
+              </div>
+
+              {produtosFiltrados.length > 0 ? (
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {produtosFiltrados.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="rounded-[24px] border border-[color:var(--line)] bg-white/70 px-6 py-12 text-center md:px-10">
+                  <div className="serif rosetext text-3xl">
+                    Em preparação
+                  </div>
+
+                  <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-[color:var(--muted)]">
+                    Ainda não há produtos publicados nesta categoria.
+                    O catálogo será liberado somente com informações oficiais
+                    e autorizadas.
                   </p>
                 </div>
-
-                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-[color:var(--line)] bg-[color:var(--bg)]">
-                  <span className="serif rosetext text-2xl">
-                    ✦
-                  </span>
-                </div>
-              </div>
+              )}
             </div>
           </div>
         </section>
