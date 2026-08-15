@@ -215,11 +215,20 @@ export const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunc
     white-space:nowrap;
   }
   @keyframes wordLoop{
-    0%,18%{transform:translateY(0)}
+    <!-- 0%,18%{transform:translateY(0)}
     25%,43%{transform:translateY(-44px)}
     50%,68%{transform:translateY(-88px)}
     75%,93%{transform:translateY(-132px)}
-    100%{transform:translateY(-176px)}
+    100%{transform:translateY(-176px)} -->
+    
+    0%, 12,5%{transform:translateY(0)}
+    14,29%, 26,79%{transform:translateY(-44px)}
+    28,57%, 41,07%{transform:translateY(-88px)}
+    42,86%, 55,36%{transform:translateY(-132px)}
+    57,14%, 69,64%{transform:translateY(-176px)}
+    71,43%, 83,93%{transform:translateY(-220px)}
+    85,71%, 98,21%{transform:translateY(-264px)}
+    100%{transform:translateY(-308px)}
   }
 
   /* =========================================================
@@ -652,11 +661,20 @@ export const CSS = `@import url('https://fonts.googleapis.com/css2?family=Fraunc
     .hero-word-loop{height:36px}
     .hero-word-track span{height:36px;font-size:1.15rem}
     @keyframes wordLoop{
-      0%,18%{transform:translateY(0)}
+     <!-- 0%,18%{transform:translateY(0)}
       25%,43%{transform:translateY(-36px)}
       50%,68%{transform:translateY(-72px)}
       75%,93%{transform:translateY(-108px)}
-      100%{transform:translateY(-144px)}
+      100%{transform:translateY(-144px)} -->
+      
+      0%, 12,5%{transform:translateY(0)}
+      14,29%, 26,79%{transform:translateY(-44px)}
+      28,57%, 41,07%{transform:translateY(-88px)}
+      42,86%, 55,36%{transform:translateY(-132px)}
+      57,14%, 69,64%{transform:translateY(-176px)}
+      71,43%, 83,93%{transform:translateY(-220px)}
+      85,71%, 98,21%{transform:translateY(-264px)}
+      100%{transform:translateY(-308px)}
     }
     .motion-track{animation-duration:20s}
     .auto-gallery-track{animation-duration:24s}
@@ -727,6 +745,7 @@ const BODY = `
           <span>Terapia capilar</span>
           <span>Mesoterapia capilar</span>
           <span>Avaliação capilar</span>
+          <span>Queda de cabelo</span>
         </div>
       </div>
       <div class="reveal flex flex-col sm:flex-row gap-4 mt-10"><a href="${WA}" class="btn btn-wa">Agendar minha avaliação →</a><a href="#protocolos" class="btn btn-ghost">Ver protocolos</a></div>
