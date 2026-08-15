@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { CSS } from "../../routes/index";
 import { productCategories } from "../../data/categories";
@@ -30,9 +30,119 @@ export function ProdutosCapilaresLayout({
           (product) => product.categoryId === categoriaSelecionada
         );
 
+  const catalogoRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const catalogo = catalogoRef.current;
+
+    if (!catalogo) return;
+
+    const cards = Array.from(
+      catalogo.querySelectorAll<HTMLElement>("[data-product-reveal]")
+    );
+
+    cards.forEach((card) => {
+      card.classList.remove("dna-product-visible");
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+
+          const card = entry.target as HTMLElement;
+          card.classList.add("dna-product-visible");
+          observer.unobserve(card);
+        });
+      },
+      {
+        threshold: 0.14,
+        rootMargin: "0px 0px -60px 0px",
+      }
+    );
+
+    cards.forEach((card) => observer.observe(card));
+
+    return () => observer.disconnect();
+  }, [categoriaSelecionada]);
+
+  const getRevealDirection = (index: number) => {
+    const row = Math.floor(index / 3);
+
+    return row % 2 === 0 ? "right" : "left";
+  };
+
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: CSS }} />
+      <style
+        dangerouslySetInnerHTML={{
+          __html:
+            CSS +
+            `
+              /* =====================================================
+                 DNA VITAL — PRODUCT REVEAL
+                 Mesmo catálogo. Sem duplicação. Sem marquee infinito.
+                 Linha 1: direita -> posição final
+                 Linha 2: esquerda -> posição final
+                 Linha 3: direita -> posição final
+                 ===================================================== */
+
+              #catalogo-produtos {
+                overflow: hidden;
+              }
+
+              .dna-product-reveal {
+                opacity: 0;
+                will-change: transform, opacity;
+                transition:
+                  opacity 760ms cubic-bezier(.22, 1, .36, 1),
+                  transform 980ms cubic-bezier(.22, 1, .36, 1);
+              }
+
+              .dna-product-reveal[data-direction="right"] {
+                transform: translate3d(130px, 0, 0);
+              }
+
+              .dna-product-reveal[data-direction="left"] {
+                transform: translate3d(-130px, 0, 0);
+              }
+
+              .dna-product-reveal.dna-product-visible {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+              }
+
+              .dna-product-reveal > article {
+                height: 100%;
+              }
+
+              @media (max-width: 767px) {
+                .dna-product-reveal[data-direction="right"] {
+                  transform: translate3d(52px, 0, 0);
+                }
+
+                .dna-product-reveal[data-direction="left"] {
+                  transform: translate3d(-52px, 0, 0);
+                }
+
+                .dna-product-reveal.dna-product-visible {
+                  transform: translate3d(0, 0, 0);
+                }
+              }
+
+              @media (prefers-reduced-motion: reduce) {
+                .dna-product-reveal,
+                .dna-product-reveal[data-direction="right"],
+                .dna-product-reveal[data-direction="left"],
+                .dna-product-reveal.dna-product-visible {
+                  opacity: 1 !important;
+                  transform: none !important;
+                  transition: none !important;
+                }
+              }
+            `,
+        }}
+      />
 
       <div className="cine">
         <div className="l l1" />
@@ -328,13 +438,27 @@ export function ProdutosCapilaresLayout({
               </div>
 
               {produtosFiltrados.length > 0 ? (
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {produtosFiltrados.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                    />
-                  ))}
+                <div
+                  ref={catalogoRef}
+                  className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+                >
+                  {produtosFiltrados.map((product, index) => {
+                    const direction = getRevealDirection(index);
+
+                    return (
+                      <div
+                        key={product.id}
+                        data-product-reveal
+                        data-direction={direction}
+                        className="dna-product-reveal"
+                        style={{
+                          transitionDelay: `${(index % 3) * 110}ms`,
+                        }}
+                      >
+                        <ProductCard product={product} />
+                      </div>
+                    );
+                  })}
                 </div>
               ) : (
                 <div className="rounded-[24px] border border-[color:var(--line)] bg-white/70 px-6 py-12 text-center md:px-10">
@@ -352,7 +476,6 @@ export function ProdutosCapilaresLayout({
             </div>
           </div>
         </section>
-        
       </main>
     </>
   );
