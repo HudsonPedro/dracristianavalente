@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { ProductMarquee } from "./product-marquee";
 import { CSS } from "../../routes/index";
 import { productCategories } from "../../data/categories";
 import { products } from "../../data/products";
@@ -352,6 +352,7 @@ export function ProdutosCapilaresLayout({
             </div>
           </div>
         </section>
+        <ProductMarquee />
       </main>
     </>
   );
