@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 import { CSS } from "../../routes/index";
+import { productCategories } from "../../data/categories";
 
 type ProdutosCapilaresLayoutProps = {
   onConhecerProdutos?: () => void;
@@ -7,6 +10,13 @@ type ProdutosCapilaresLayoutProps = {
 export function ProdutosCapilaresLayout({
   onConhecerProdutos,
 }: ProdutosCapilaresLayoutProps) {
+  const categoriasAtivas = productCategories
+    .filter((categoria) => categoria.active)
+    .sort((a, b) => a.order - b.order);
+
+  const [categoriaSelecionada, setCategoriaSelecionada] =
+    useState<string>("todos");
+
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
@@ -177,7 +187,7 @@ export function ProdutosCapilaresLayout({
             </div>
 
             {/* =================================================
-                MENSAGEM INSTITUCIONAL
+                ORIENTAÇÃO PROFISSIONAL
                 ================================================= */}
             <div className="mt-14 rounded-[22px] border border-[color:var(--line)] bg-white/70 p-8 backdrop-blur-md md:p-10">
               <div className="max-w-3xl">
@@ -205,6 +215,109 @@ export function ProdutosCapilaresLayout({
                   >
                     Conhecer protocolos capilares
                   </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* =====================================================
+            CATEGORIAS
+            ===================================================== */}
+        <section
+          id="catalogo-produtos"
+          className="border-y border-[color:var(--line)] bg-white/45 py-24 md:py-28"
+        >
+          <div className="container">
+            <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
+              <div>
+                <div className="kicker mb-6">
+                  Catálogo capilar
+                </div>
+
+                <h2 className="display text-4xl md:text-6xl">
+                  Encontre por{" "}
+                  <span className="rosetext italic">
+                    categoria.
+                  </span>
+                </h2>
+              </div>
+
+              <div className="max-w-2xl lg:justify-self-end">
+                <p className="text-base leading-7 text-[color:var(--muted)] md:text-lg">
+                  Explore as categorias de produtos disponíveis para cuidado
+                  em casa, manutenção, uso profissional e estratégias
+                  específicas de terapia capilar.
+                </p>
+
+                <p className="mt-4 text-sm leading-6 text-[color:var(--muted)]">
+                  A disponibilidade de cada produto, a possibilidade de compra
+                  e a necessidade de avaliação serão informadas
+                  individualmente.
+                </p>
+              </div>
+            </div>
+
+            {/* =================================================
+                NAVEGAÇÃO DE CATEGORIAS
+                ================================================= */}
+            <div className="mt-12 overflow-x-auto pb-3">
+              <div className="flex min-w-max gap-3">
+                {categoriasAtivas.map((categoria) => {
+                  const ativa =
+                    categoriaSelecionada === categoria.id;
+
+                  return (
+                    <button
+                      key={categoria.id}
+                      type="button"
+                      onClick={() =>
+                        setCategoriaSelecionada(categoria.id)
+                      }
+                      aria-pressed={ativa}
+                      className={[
+                        "rounded-full border px-5 py-3 text-sm font-semibold",
+                        "transition duration-300",
+                        ativa
+                          ? "border-[#141414] bg-[#141414] text-white shadow-lg"
+                          : "border-[color:var(--line)] bg-white/70 text-[color:var(--muted)] hover:-translate-y-0.5 hover:border-[color:var(--gold)] hover:text-[color:var(--ink)]",
+                      ].join(" ")}
+                    >
+                      {categoria.name}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* =================================================
+                ESTADO DA CATEGORIA
+                Produtos entram na próxima etapa
+                ================================================= */}
+            <div className="mt-12 rounded-[24px] border border-[color:var(--line)] bg-white/70 px-6 py-10 md:px-10 md:py-12">
+              <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-[color:var(--rose2)]">
+                    Categoria selecionada
+                  </div>
+
+                  <h3 className="serif text-3xl">
+                    {categoriasAtivas.find(
+                      (categoria) =>
+                        categoria.id === categoriaSelecionada
+                    )?.name ?? "Todos os produtos"}
+                  </h3>
+
+                  <p className="mt-3 max-w-xl text-sm leading-6 text-[color:var(--muted)]">
+                    Os produtos desta categoria serão apresentados aqui na
+                    próxima etapa do catálogo.
+                  </p>
+                </div>
+
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-[color:var(--line)] bg-[color:var(--bg)]">
+                  <span className="serif rosetext text-2xl">
+                    ✦
+                  </span>
                 </div>
               </div>
             </div>
