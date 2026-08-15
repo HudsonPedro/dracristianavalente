@@ -38,7 +38,10 @@ export const products: Product[] = [
       },
     ],
 
-    images: [],
+    // 1 — Linha Bio Smart Profissional
+    images: [
+      "/images/produtos/dna-vital/bio-smart-profissional.webp",
+    ],
     priceVisibility: "REQUIRES_PROTOCOL",
     saleEnabled: false,
     requiresEvaluation: true,
@@ -86,7 +89,10 @@ export const products: Product[] = [
       },
     ],
 
-    images: [],
+    // 2 — Linha Bio Smart Home Care
+    images: [
+      "/images/produtos/dna-vital/bio-smart-home-care.webp",
+    ],
     priceVisibility: "CONTACT_FOR_PRICE",
     saleEnabled: false,
     requiresEvaluation: false,
@@ -137,7 +143,10 @@ export const products: Product[] = [
       },
     ],
 
-    images: [],
+    // 3 — Linha de Crescimento Profissional
+    images: [
+      "/images/produtos/dna-vital/linha-crescimento.webp",
+    ],
     priceVisibility: "REQUIRES_PROTOCOL",
     saleEnabled: false,
     requiresEvaluation: true,
@@ -185,7 +194,10 @@ export const products: Product[] = [
       },
     ],
 
-    images: [],
+    // 4 — Shaft Care Profissional
+    images: [
+      "/images/produtos/dna-vital/shaft-care-profissional.webp",
+    ],
     priceVisibility: "REQUIRES_PROTOCOL",
     saleEnabled: false,
     requiresEvaluation: true,
@@ -236,7 +248,10 @@ export const products: Product[] = [
       },
     ],
 
-    images: [],
+    // 5 — Shaft Care Home Care
+    images: [
+      "/images/produtos/dna-vital/shaft-care-home-care.webp",
+    ],
     priceVisibility: "CONTACT_FOR_PRICE",
     saleEnabled: false,
     requiresEvaluation: false,
@@ -296,7 +311,10 @@ export const products: Product[] = [
       },
     ],
 
-    images: [],
+    // 6 — Monodoses Profissional
+    images: [
+      "/images/produtos/dna-vital/monodoses.webp",
+    ],
     priceVisibility: "REQUIRES_PROTOCOL",
     saleEnabled: false,
     requiresEvaluation: true,
@@ -374,7 +392,10 @@ export const products: Product[] = [
       },
     ],
 
-    images: [],
+    // 7 — Mask Repair Profissional
+    images: [
+      "/images/produtos/dna-vital/mask-repair.webp",
+    ],
     priceVisibility: "REQUIRES_PROTOCOL",
     saleEnabled: false,
     requiresEvaluation: true,
@@ -419,7 +440,10 @@ export const products: Product[] = [
       },
     ],
 
-    images: [],
+    // 8 — Biomimetic Line Profissional
+    images: [
+      "/images/produtos/dna-vital/biomimetic.webp",
+    ],
     priceVisibility: "REQUIRES_PROTOCOL",
     saleEnabled: false,
     requiresEvaluation: true,
@@ -487,7 +511,10 @@ export const products: Product[] = [
       },
     ],
 
-    images: [],
+    // 9 — Pós-Transplante Home Care
+    images: [
+      "/images/produtos/dna-vital/pos-transplante.webp",
+    ],
     priceVisibility: "CONTACT_FOR_PRICE",
     saleEnabled: false,
     requiresEvaluation: false,
