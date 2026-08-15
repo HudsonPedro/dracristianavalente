@@ -19,6 +19,8 @@ export function ProdutosCapilaresLayout({
   const [categoriaSelecionada, setCategoriaSelecionada] =
     useState<string>("todos");
 
+  const [heroProductIndex, setHeroProductIndex] = useState(0);
+
   const produtosAtivos = products.filter(
     (product) => product.status === "ACTIVE"
   );
@@ -29,6 +31,21 @@ export function ProdutosCapilaresLayout({
       : produtosAtivos.filter((product) =>
           product.categoryIds.includes(categoriaSelecionada)
         );
+
+  useEffect(() => {
+    if (produtosAtivos.length <= 1) return;
+
+    const timer = window.setInterval(() => {
+      setHeroProductIndex((current) =>
+        (current + 1) % produtosAtivos.length
+      );
+    }, 2800);
+
+    return () => window.clearInterval(timer);
+  }, [produtosAtivos.length]);
+
+  const heroProduct =
+    produtosAtivos[heroProductIndex] ?? produtosAtivos[0];
 
   const catalogoRef = useRef<HTMLDivElement | null>(null);
 
@@ -130,6 +147,144 @@ export function ProdutosCapilaresLayout({
                 }
               }
 
+
+              /* =====================================================
+                 DNA VITAL — HERO PRODUCT LOOP
+                 Um produto por vez, deslizando da direita para a esquerda.
+                 ===================================================== */
+
+              .dna-hero-products {
+                position: absolute;
+                right: clamp(36px, 8vw, 150px);
+                top: 50%;
+                width: min(34vw, 430px);
+                height: min(56vh, 520px);
+                transform: translateY(-50%);
+                pointer-events: none;
+              }
+
+              .dna-hero-product-stage {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+
+              .dna-hero-product-card {
+                position: absolute;
+                inset: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 24px;
+                animation: dnaHeroProductEnter 760ms cubic-bezier(.22, 1, .36, 1);
+              }
+
+              .dna-hero-product-image-wrap {
+                position: relative;
+                width: min(100%, 390px);
+                height: min(42vh, 390px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+
+              .dna-hero-product-image {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                filter: drop-shadow(0 26px 28px rgba(25, 22, 19, .16));
+                transform: translateZ(0);
+              }
+
+              .dna-hero-product-meta {
+                margin-top: 14px;
+                text-align: center;
+                max-width: 330px;
+              }
+
+              .dna-hero-product-line {
+                font-size: 9px;
+                font-weight: 700;
+                letter-spacing: .18em;
+                text-transform: uppercase;
+                color: var(--rose2);
+              }
+
+              .dna-hero-product-name {
+                margin-top: 7px;
+                font-family: "Fraunces", serif;
+                font-size: clamp(1.2rem, 2vw, 1.7rem);
+                line-height: 1.05;
+                color: var(--ink);
+              }
+
+              .dna-hero-product-progress {
+                margin: 16px auto 0;
+                display: flex;
+                justify-content: center;
+                gap: 6px;
+              }
+
+              .dna-hero-product-dot {
+                width: 5px;
+                height: 5px;
+                border-radius: 999px;
+                background: rgba(138,106,59,.22);
+                transition: width .35s ease, background .35s ease;
+              }
+
+              .dna-hero-product-dot.is-active {
+                width: 22px;
+                background: var(--gold);
+              }
+
+              @keyframes dnaHeroProductEnter {
+                0% {
+                  opacity: 0;
+                  transform: translate3d(95px, 0, 0) scale(.96);
+                }
+
+                100% {
+                  opacity: 1;
+                  transform: translate3d(0, 0, 0) scale(1);
+                }
+              }
+
+              @media (max-width: 1023px) {
+                .dna-hero-products {
+                  position: relative;
+                  right: auto;
+                  top: auto;
+                  width: min(100%, 520px);
+                  height: 430px;
+                  margin: 54px auto 0;
+                  transform: none;
+                }
+
+                .dna-hero-product-image-wrap {
+                  height: 320px;
+                }
+              }
+
+              @media (max-width: 640px) {
+                .dna-hero-products {
+                  height: 360px;
+                  margin-top: 42px;
+                }
+
+                .dna-hero-product-image-wrap {
+                  height: 265px;
+                }
+
+                .dna-hero-product-card {
+                  padding: 14px;
+                }
+              }
+
               @media (prefers-reduced-motion: reduce) {
                 .dna-product-reveal,
                 .dna-product-reveal[data-direction="right"],
@@ -138,6 +293,10 @@ export function ProdutosCapilaresLayout({
                   opacity: 1 !important;
                   transform: none !important;
                   transition: none !important;
+                }
+
+                .dna-hero-product-card {
+                  animation: none !important;
                 }
               }
             `,
@@ -198,6 +357,57 @@ export function ProdutosCapilaresLayout({
               </div>
             </div>
           </div>
+
+          {heroProduct && (
+            <div
+              className="dna-hero-products"
+              aria-label="Produtos DNA VITAL em destaque"
+            >
+              <div className="dna-hero-product-stage">
+                <div
+                  key={heroProduct.id}
+                  className="dna-hero-product-card"
+                >
+                  <div className="dna-hero-product-image-wrap">
+                    {heroProduct.images[0] ? (
+                      <img
+                        src={heroProduct.images[0]}
+                        alt={heroProduct.name}
+                        className="dna-hero-product-image"
+                      />
+                    ) : null}
+                  </div>
+
+                  <div className="dna-hero-product-meta">
+                    <div className="dna-hero-product-line">
+                      {heroProduct.line ?? heroProduct.brand}
+                    </div>
+
+                    <div className="dna-hero-product-name">
+                      {heroProduct.name}
+                    </div>
+
+                    <div
+                      className="dna-hero-product-progress"
+                      aria-hidden="true"
+                    >
+                      {produtosAtivos.map((product, index) => (
+                        <span
+                          key={product.id}
+                          className={[
+                            "dna-hero-product-dot",
+                            index === heroProductIndex
+                              ? "is-active"
+                              : "",
+                          ].join(" ")}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div
             aria-hidden="true"
