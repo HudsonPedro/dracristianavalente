@@ -949,6 +949,136 @@ export function ProdutosCapilaresLayout({
             </div>
           </div>
         </section>
+
+        {/* =====================================================
+            COMO ESCOLHER
+            ===================================================== */}
+        <section className="container py-24 md:py-32">
+          <div className="mx-auto max-w-6xl">
+            <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+              <div className="lg:sticky lg:top-28">
+                <div className="kicker mb-6">
+                  Escolha orientada
+                </div>
+
+                <h2 className="display text-4xl md:text-6xl">
+                  Qual produto faz sentido para{" "}
+                  <span className="rosetext italic">
+                    o seu momento?
+                  </span>
+                </h2>
+
+                <p className="mt-6 max-w-xl text-base leading-7 text-[color:var(--muted)] md:text-lg">
+                  Cada couro cabeludo, fio e rotina possuem necessidades
+                  diferentes. Por isso, a escolha deve considerar o objetivo,
+                  o histórico, o protocolo realizado e a fase atual do cuidado.
+                </p>
+
+                <div className="hair my-8 max-w-[220px]" />
+
+                <a
+                  href="/avaliacao-capilar-curitiba"
+                  className="btn btn-rose"
+                >
+                  Agendar avaliação capilar
+                </a>
+              </div>
+
+              <div className="grid gap-5">
+                <article className="card p-7 md:p-8">
+                  <div className="flex gap-5">
+                    <div className="serif rosetext text-4xl">
+                      01
+                    </div>
+
+                    <div>
+                      <h3 className="serif text-2xl">
+                        Identifique seu objetivo
+                      </h3>
+
+                      <p className="mt-3 leading-7 text-[color:var(--muted)]">
+                        Entenda se o foco está no couro cabeludo, na manutenção
+                        em casa, na reestruturação dos fios, no crescimento ou
+                        em uma etapa específica do acompanhamento.
+                      </p>
+                    </div>
+                  </div>
+                </article>
+
+                <article className="card p-7 md:p-8">
+                  <div className="flex gap-5">
+                    <div className="serif rosetext text-4xl">
+                      02
+                    </div>
+
+                    <div>
+                      <h3 className="serif text-2xl">
+                        Conheça as possibilidades
+                      </h3>
+
+                      <p className="mt-3 leading-7 text-[color:var(--muted)]">
+                        O catálogo apresenta informações educativas sobre as
+                        linhas e produtos disponíveis, sem substituir a
+                        avaliação profissional.
+                      </p>
+                    </div>
+                  </div>
+                </article>
+
+                <article className="card p-7 md:p-8">
+                  <div className="flex gap-5">
+                    <div className="serif rosetext text-4xl">
+                      03
+                    </div>
+
+                    <div>
+                      <h3 className="serif text-2xl">
+                        Avalie quando necessário
+                      </h3>
+
+                      <p className="mt-3 leading-7 text-[color:var(--muted)]">
+                        Produtos profissionais, itens condicionados a protocolo
+                        ou situações específicas podem depender de avaliação e
+                        indicação antes da aquisição.
+                      </p>
+                    </div>
+                  </div>
+                </article>
+
+                <article className="card p-7 md:p-8">
+                  <div className="flex gap-5">
+                    <div className="serif rosetext text-4xl">
+                      04
+                    </div>
+
+                    <div>
+                      <h3 className="serif text-2xl">
+                        Receba a indicação
+                      </h3>
+
+                      <p className="mt-3 leading-7 text-[color:var(--muted)]">
+                        A recomendação pode integrar produto, rotina Home Care,
+                        protocolo em clínica e acompanhamento conforme a
+                        necessidade de cada paciente.
+                      </p>
+                    </div>
+                  </div>
+                </article>
+
+                <div className="rounded-[24px] border border-[color:var(--line)] bg-white/65 p-7 md:p-8">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+                    Importante
+                  </div>
+
+                  <p className="serif mt-4 text-2xl leading-relaxed">
+                    Esta área não realiza diagnóstico automático e não substitui
+                    avaliação profissional.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
     </>
   );
