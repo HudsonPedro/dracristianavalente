@@ -1708,6 +1708,168 @@ export function ProdutosCapilaresLayout({
           </div>
         </section>
 
+        {/* =====================================================
+            PRODUTOS RECOMENDADOS
+            ===================================================== */}
+        <section className="container py-24 md:py-32">
+          <div className="mx-auto max-w-6xl">
+            <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
+              <div className="max-w-4xl">
+                <div className="kicker mb-6">
+                  Encontre pelo objetivo
+                </div>
+
+                <h2 className="display text-4xl md:text-6xl">
+                  Explore os produtos por{" "}
+                  <span className="rosetext italic">
+                    necessidade de cuidado.
+                  </span>
+                </h2>
+
+                <p className="mt-6 max-w-3xl text-base leading-7 text-[color:var(--muted)] md:text-lg">
+                  Use os atalhos abaixo para retornar ao catálogo já filtrado
+                  pelo objetivo que deseja conhecer.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setCategoriaSelecionada("todos");
+                  document
+                    .getElementById("catalogo-produtos")
+                    ?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                }}
+                className="btn btn-ghost"
+              >
+                Ver todos
+              </button>
+            </div>
+
+            <div className="hair my-10" />
+
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                {
+                  categoryId: "controle-queda",
+                  eyebrow: "Objetivo",
+                  title: "Controle de queda",
+                  description:
+                    "Produtos relacionados ao cuidado de rotinas voltadas à queda capilar.",
+                },
+                {
+                  categoryId: "couro-cabeludo",
+                  eyebrow: "Objetivo",
+                  title: "Couro cabeludo",
+                  description:
+                    "Linhas relacionadas ao equilíbrio e aos cuidados específicos do couro cabeludo.",
+                },
+                {
+                  categoryId: "crescimento",
+                  eyebrow: "Objetivo",
+                  title: "Crescimento",
+                  description:
+                    "Produtos associados a estratégias de estímulo e continuidade do cuidado capilar.",
+                },
+                {
+                  categoryId: "home-care",
+                  eyebrow: "Rotina",
+                  title: "Home Care",
+                  description:
+                    "Produtos para continuidade da rotina de cuidado fora da clínica.",
+                },
+                {
+                  categoryId: "reestruturacao",
+                  eyebrow: "Fios",
+                  title: "Reestruturação",
+                  description:
+                    "Linhas direcionadas ao cuidado, resistência e aparência da haste capilar.",
+                },
+                {
+                  categoryId: "profissional",
+                  eyebrow: "Clínica",
+                  title: "Uso profissional",
+                  description:
+                    "Produtos destinados ao uso profissional e à integração com protocolos.",
+                },
+                {
+                  categoryId: "pos-transplante",
+                  eyebrow: "Cuidado específico",
+                  title: "Pós-Transplante",
+                  description:
+                    "Linha voltada aos cuidados específicos do período após o transplante capilar.",
+                },
+                {
+                  categoryId: "tratamentos-especificos",
+                  eyebrow: "Seleção",
+                  title: "Tratamentos específicos",
+                  description:
+                    "Produtos que podem integrar necessidades e estratégias específicas de cuidado.",
+                },
+              ].map((item) => (
+                <button
+                  key={item.categoryId}
+                  type="button"
+                  onClick={() => {
+                    setCategoriaSelecionada(item.categoryId);
+                    document
+                      .getElementById("catalogo-produtos")
+                      ?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                  }}
+                  className="card group min-h-[230px] p-7 text-left transition-transform duration-500 hover:-translate-y-2 md:p-8"
+                >
+                  <div className="text-[9px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+                    {item.eyebrow}
+                  </div>
+
+                  <h3 className="serif mt-5 text-2xl">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-4 text-sm leading-6 text-[color:var(--muted)]">
+                    {item.description}
+                  </p>
+
+                  <div className="mt-7 flex items-center gap-3 text-[9px] font-bold uppercase tracking-[0.16em]">
+                    Ver produtos
+                    <span className="transition-transform duration-300 group-hover:translate-x-2">
+                      →
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-10 rounded-[26px] border border-[color:var(--line)] bg-white/55 p-7 md:p-9">
+              <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
+                <div>
+                  <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+                    Ainda em dúvida?
+                  </div>
+
+                  <p className="serif mt-3 max-w-3xl text-2xl leading-relaxed">
+                    A avaliação capilar ajuda a orientar quais caminhos podem
+                    fazer sentido para o seu momento.
+                  </p>
+                </div>
+
+                <a
+                  href="/avaliacao-capilar-curitiba"
+                  className="btn btn-rose"
+                >
+                  Agendar avaliação
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </main>
     </>
   );
