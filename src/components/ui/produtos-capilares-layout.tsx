@@ -240,51 +240,134 @@ export function ProdutosCapilaresLayout({
             CSS +
             `
               /* =====================================================
-                 DRA. CRISTIANA — CAMADA VISUAL DA LOJA
-                 A loja usa os mesmos tokens da Home; DNA VITAL entra apenas
-                 como referência de movimento/apresentação.
+                 /PRODUTOS-CAPILARES — MESMO DESIGN SYSTEM DO SITE OFICIAL
+                 DNA VITAL permanece somente na experiência dos produtos.
                  ===================================================== */
 
-              .shop-section {
-                position: relative;
-                background: transparent;
+              .products-page {
+                background: var(--bg);
+                color: var(--ink);
               }
 
-              .shop-section-soft {
-                position: relative;
-                background:
-                  linear-gradient(
-                    180deg,
-                    rgba(255,255,255,.42),
-                    rgba(255,255,255,.18)
-                  );
-                border-top: 1px solid var(--line);
-                border-bottom: 1px solid var(--line);
+              .products-page .container {
+                width: min(1180px, calc(100% - 40px));
+                margin-inline: auto;
               }
 
-              .shop-panel {
+              .products-page .kicker {
+                display: inline-flex;
+                align-items: center;
+                min-height: 30px;
+                padding: 0 14px;
                 border: 1px solid var(--line);
-                background: rgba(255,255,255,.62);
-                box-shadow: 0 18px 48px rgba(34,28,22,.055);
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
+                border-radius: 999px;
+                background: transparent;
+                color: var(--rose2);
+                font-size: 9px;
+                font-weight: 700;
+                letter-spacing: .18em;
+                text-transform: uppercase;
               }
 
-              .shop-card {
-                transition:
-                  transform 360ms cubic-bezier(.22,1,.36,1),
-                  box-shadow 360ms ease,
-                  border-color 300ms ease;
+              .products-page .display {
+                color: var(--ink);
+                letter-spacing: -.035em;
+                line-height: .98;
+              }
+
+              .products-page .rosetext {
+                color: var(--rose2);
+              }
+
+              .products-page .hair {
+                height: 1px;
+                background: var(--line);
+              }
+
+              .products-page .card,
+              .products-page details {
+                border: 1px solid var(--line);
+                background: rgba(255,255,255,.58);
+                box-shadow: none;
+              }
+
+              .products-page .card {
+                border-radius: 24px;
+              }
+
+              .products-page .btn {
+                min-height: 48px;
+                border-radius: 14px;
+                padding-inline: 22px;
+                font-size: 13px;
+                font-weight: 700;
+                box-shadow: none;
+              }
+
+              .products-page .btn-rose {
+                border: 1px solid var(--ink);
+                background: var(--ink);
+                color: white;
+              }
+
+              .products-page .btn-ghost {
+                border: 1px solid var(--line);
+                background: transparent;
+                color: var(--ink);
+              }
+
+              /* As seções da loja não ganham paleta própria. */
+              .products-page .shop-section,
+              .products-page .shop-section-soft {
+                background: transparent;
+                border: 0;
+              }
+
+              .products-page .shop-panel {
+                border: 1px solid var(--line);
+                background: rgba(255,255,255,.52);
+                box-shadow: none;
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
               }
 
               @media (hover:hover) and (pointer:fine) {
-                .shop-card:hover,
-                .card:hover {
-                  transform: translateY(-4px);
+                .products-page .card,
+                .products-page details,
+                .products-page .btn {
+                  transition:
+                    transform 280ms ease,
+                    border-color 280ms ease,
+                    background-color 280ms ease,
+                    box-shadow 280ms ease;
+                }
+
+                .products-page .card:hover {
+                  transform: translateY(-3px);
                   border-color: rgba(138,106,59,.22);
-                  box-shadow: 0 20px 46px rgba(34,28,22,.075);
+                  box-shadow: 0 14px 34px rgba(34,28,22,.055);
+                }
+
+                .products-page details:hover {
+                  border-color: rgba(138,106,59,.22);
+                  background: rgba(255,255,255,.72);
+                }
+
+                .products-page .btn:hover {
+                  transform: translateY(-1px);
                 }
               }
+
+              @media (max-width: 767px) {
+                .products-page .container {
+                  width: min(100% - 28px, 1180px);
+                }
+
+                .products-page .display {
+                  line-height: 1.02;
+                }
+              }
+
 
               /* =====================================================
                  DNA VITAL — PRODUCT REVEAL
@@ -727,33 +810,6 @@ export function ProdutosCapilaresLayout({
                 }
               }
 
-              @media (hover:hover) and (pointer:fine) {
-                .btn {
-                  transition:
-                    transform 260ms ease,
-                    box-shadow 260ms ease,
-                    background-color 260ms ease,
-                    border-color 260ms ease;
-                }
-
-                .btn:hover {
-                  transform: translateY(-2px);
-                }
-
-                details {
-                  transition:
-                    transform 300ms ease,
-                    border-color 300ms ease,
-                    background-color 300ms ease;
-                }
-
-                details:hover {
-                  transform: translateY(-2px);
-                  border-color: rgba(138,106,59,.20);
-                  background: rgba(255,255,255,.72);
-                }
-              }
-
               @media (prefers-reduced-motion: reduce) {
                 .dna-product-reveal,
                 .dna-product-reveal[data-direction="right"],
@@ -777,12 +833,12 @@ export function ProdutosCapilaresLayout({
         <div className="l l2" />
       </div>
 
-      <main className="wrap min-h-screen">
+      <main className="products-page wrap min-h-screen">
         {/* =====================================================
             HERO
             ===================================================== */}
         <section className="dna-products-hero relative flex min-h-[92vh] items-center overflow-hidden">
-          <div className="container relative z-[4] w-full py-20 md:py-24">
+          <div className="container relative z-[4] w-full py-20">
             <div className="relative z-[5] max-w-4xl">
               <div className="kicker mb-7">
                 Dra. Cristiana Valente · Terapia Capilar
@@ -916,7 +972,7 @@ export function ProdutosCapilaresLayout({
         {/* =====================================================
             POSICIONAMENTO
             ===================================================== */}
-        <section className="container py-20 md:py-24">
+        <section className="container py-20">
           <div className="mx-auto max-w-5xl">
             <div className="kicker mb-6">
               Cuidado que continua em casa
@@ -1047,7 +1103,7 @@ export function ProdutosCapilaresLayout({
             ===================================================== */}
         <section
           id="catalogo-produtos"
-          className="border-y border-[color:var(--line)] bg-white/45 py-20 md:py-24"
+          className="border-y border-[color:var(--line)] bg-white/45 py-20"
         >
           <div className="container">
             <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
@@ -1178,7 +1234,7 @@ export function ProdutosCapilaresLayout({
         {/* =====================================================
             COMO ESCOLHER
             ===================================================== */}
-        <section className="container py-20 md:py-24">
+        <section className="container py-20">
           <div className="mx-auto max-w-6xl">
             <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
               <div className="lg:sticky lg:top-28">
@@ -1307,7 +1363,7 @@ export function ProdutosCapilaresLayout({
         {/* =====================================================
             AVALIAÇÃO PROFISSIONAL
             ===================================================== */}
-        <section className="relative overflow-hidden border-y border-[color:var(--line)] bg-white/45 py-20 md:py-24">
+        <section className="relative overflow-hidden border-y border-[color:var(--line)] bg-white/45 py-20">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute -left-32 top-1/2 h-[360px] w-[360px] -translate-y-1/2 rounded-full border border-[color:var(--gold)]/15 md:h-[520px] md:w-[520px]"
@@ -1415,7 +1471,7 @@ export function ProdutosCapilaresLayout({
         {/* =====================================================
             HOME CARE
             ===================================================== */}
-        <section className="container py-20 md:py-24">
+        <section className="container py-20">
           <div className="mx-auto max-w-6xl">
             <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
               <div>
@@ -1521,7 +1577,7 @@ export function ProdutosCapilaresLayout({
         {/* =====================================================
             PÓS-TRANSPLANTE
             ===================================================== */}
-        <section className="shop-section-soft relative overflow-hidden py-20 md:py-24">
+        <section className="shop-section-soft relative overflow-hidden py-20">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full border border-[color:var(--line)] md:h-[620px] md:w-[620px]"
@@ -1635,7 +1691,7 @@ export function ProdutosCapilaresLayout({
         {/* =====================================================
             PROTOCOLOS
             ===================================================== */}
-        <section className="container py-20 md:py-24">
+        <section className="container py-20">
           <div className="mx-auto max-w-6xl">
             <div className="max-w-4xl">
               <div className="kicker mb-6">
@@ -1762,7 +1818,7 @@ export function ProdutosCapilaresLayout({
         {/* =====================================================
             CONTEÚDO EDUCATIVO
             ===================================================== */}
-        <section className="relative overflow-hidden border-y border-[color:var(--line)] bg-white/45 py-20 md:py-24">
+        <section className="relative overflow-hidden border-y border-[color:var(--line)] bg-white/45 py-20">
           <div className="container relative z-[2]">
             <div className="mx-auto max-w-6xl">
               <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
@@ -1908,7 +1964,7 @@ export function ProdutosCapilaresLayout({
         {/* =====================================================
             PRODUTOS RECOMENDADOS
             ===================================================== */}
-        <section className="container py-20 md:py-24">
+        <section className="container py-20">
           <div className="mx-auto max-w-6xl">
             <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
               <div className="max-w-4xl">
@@ -2070,7 +2126,7 @@ export function ProdutosCapilaresLayout({
         {/* =====================================================
             CTA FINAL
             ===================================================== */}
-        <section className="container pb-24 pt-8 md:pb-32 md:pt-12">
+        <section className="container py-20">
           <div className="shop-panel relative mx-auto max-w-6xl overflow-hidden rounded-[28px] px-7 py-14 text-[color:var(--ink)] md:px-12 md:py-16 lg:px-16 lg:py-20">
             <div
               aria-hidden="true"
@@ -2160,7 +2216,7 @@ export function ProdutosCapilaresLayout({
         </section>
 
         {/* FAQ */}
-        <section className="container py-20 md:py-24">
+        <section className="container py-20">
           <div className="mx-auto max-w-5xl">
             <div className="mx-auto max-w-3xl text-center">
               <div className="kicker mb-6 mx-auto">Dúvidas frequentes</div>
@@ -2193,115 +2249,6 @@ export function ProdutosCapilaresLayout({
             </div>
           </div>
         </section>
-
-        {/* =====================================================
-            FOOTER — LOJA OFICIAL, COERENTE COM O SITE
-            ===================================================== */}
-        <footer className="border-t border-[color:var(--line)] bg-[color:var(--ink)] py-14 text-white md:py-16">
-          <div className="container">
-            <div className="grid gap-12 lg:grid-cols-[1.15fr_.8fr_.8fr_.9fr]">
-              <div className="max-w-md">
-                <div className="kicker mb-5 text-white/65">
-                  Dra. Cristiana Valente · Produtos Capilares
-                </div>
-
-                <h2 className="display text-3xl text-white md:text-4xl">
-                  Cuidado capilar que continua além da clínica.
-                </h2>
-
-                <p className="mt-5 text-sm leading-7 text-white/55">
-                  Produtos DNA VITAL selecionados para Home Care, protocolos
-                  profissionais e cuidados personalizados, com orientação
-                  quando necessária.
-                </p>
-
-                <a
-                  href="/avaliacao-capilar-curitiba"
-                  className="mt-7 inline-flex rounded-full border border-white/20 px-5 py-3 text-xs font-semibold text-white transition hover:bg-white/10"
-                >
-                  Agendar avaliação
-                </a>
-              </div>
-
-              <div>
-                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold2)]">
-                  Produtos
-                </div>
-
-                <div className="mt-5 grid gap-3 text-sm text-white/60">
-                  {[
-                    ["todos", "Todos os produtos"],
-                    ["home-care", "Home Care"],
-                    ["profissional", "Profissional"],
-                    ["pos-transplante", "Pós-transplante"],
-                    ["crescimento", "Crescimento"],
-                  ].map(([id, label]) => (
-                    <button
-                      key={id}
-                      type="button"
-                      onClick={() => {
-                        setCategoriaSelecionada(id);
-                        document
-                          .getElementById("catalogo-produtos")
-                          ?.scrollIntoView({ behavior: "smooth", block: "start" });
-                      }}
-                      className="text-left transition hover:text-white"
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold2)]">
-                  Atendimento
-                </div>
-
-                <div className="mt-5 grid gap-3 text-sm text-white/60">
-                  <a href="/avaliacao-capilar-curitiba" className="transition hover:text-white">
-                    Agendar avaliação
-                  </a>
-                  <a href="https://wa.me/5541991599558" target="_blank" rel="noreferrer" className="transition hover:text-white">
-                    WhatsApp
-                  </a>
-                  <a href="mailto:contato@dracristianavalente.com.br" className="transition hover:text-white">
-                    Contato
-                  </a>
-                </div>
-              </div>
-
-              <div>
-                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold2)]">
-                  Institucional
-                </div>
-
-                <div className="mt-5 grid gap-3 text-sm text-white/60">
-                  <a href="/#sobre" className="transition hover:text-white">
-                    Sobre a Dra. Cristiana
-                  </a>
-                  <a href="/tratamento-capilar-curitiba" className="transition hover:text-white">
-                    Protocolos
-                  </a>
-                  <a href="/" className="transition hover:text-white">
-                    Clínica
-                  </a>
-                  <span className="mt-2 text-white/35">Política de Privacidade</span>
-                  <span className="text-white/35">Termos de Uso</span>
-                  <span className="text-white/35">Política de Trocas</span>
-                  <span className="text-white/35">Política de Entrega</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-7 text-xs text-white/40 md:flex-row md:items-center md:justify-between">
-              <p>
-                © {new Date().getFullYear()}© 2026 Powered by ✠ HPtech PlatForm. Todos os direitos reservados.
-              </p>
-              <p>Loja oficial de produtos capilares · DNA VITAL</p>
-            </div>
-          </div>
-        </footer>
 
       </main>
     </>
