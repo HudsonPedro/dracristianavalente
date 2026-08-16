@@ -5,6 +5,8 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ product }: ProductCardProps) {
+  const productHref = `/produtos-capilares/${product.slug}`;
+
   const formatPrice = (value: number) =>
     new Intl.NumberFormat("pt-BR", {
       style: "currency",
@@ -94,14 +96,6 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   const getCta = () => {
-    if (product.requiresEvaluation) {
-      return {
-        label: "Agendar avaliação",
-        href: "/avaliacao-capilar-curitiba",
-        external: false,
-      };
-    }
-
     if (
       product.saleEnabled &&
       product.priceVisibility === "SHOW_PRICE"
@@ -109,18 +103,12 @@ export function ProductCard({ product }: ProductCardProps) {
       return {
         label: "Adicionar ao carrinho",
         href: "#",
-        external: false,
       };
     }
 
-    const mensagem = encodeURIComponent(
-      `Olá, gostaria de receber informações sobre ${product.name} da DNA VITAL.`
-    );
-
     return {
-      label: "Solicitar informações",
-      href: `https://wa.me/5541991599558?text=${mensagem}`,
-      external: true,
+      label: "Conhecer produto",
+      href: productHref,
     };
   };
 
@@ -131,7 +119,11 @@ export function ProductCard({ product }: ProductCardProps) {
       {/* =====================================================
           IMAGEM DO PRODUTO
           ===================================================== */}
-      <div className="relative aspect-[4/4.6] overflow-hidden bg-[#f1ece5]">
+      <a
+        href={productHref}
+        className="relative block aspect-[4/4.6] overflow-hidden bg-[#f1ece5]"
+        aria-label={`Conhecer ${product.name}`}
+      >
         {product.images.length > 0 ? (
           <img
             src={product.images[0]}
@@ -166,7 +158,7 @@ export function ProductCard({ product }: ProductCardProps) {
             {product.badge}
           </div>
         )}
-      </div>
+      </a>
 
       {/* =====================================================
           INFORMAÇÕES PRINCIPAIS
@@ -190,9 +182,14 @@ export function ProductCard({ product }: ProductCardProps) {
           )}
         </div>
 
-        <h3 className="serif mt-3 text-2xl leading-tight md:text-[28px]">
-          {product.name}
-        </h3>
+        <a
+          href={productHref}
+          className="group/title"
+        >
+          <h3 className="serif mt-3 text-2xl leading-tight transition-colors group-hover/title:text-[color:var(--rose2)] md:text-[28px]">
+            {product.name}
+          </h3>
+        </a>
 
         <div className="mt-4 flex flex-wrap gap-2">
           {product.professionalProduct && (
@@ -382,15 +379,9 @@ export function ProductCard({ product }: ProductCardProps) {
 
           <a
             href={cta.href}
-            target={cta.external ? "_blank" : undefined}
-            rel={
-              cta.external
-                ? "noopener noreferrer"
-                : undefined
-            }
-            className="btn btn-rose mt-6 w-full"
+            className="btn btn-wa mt-6 w-full"
           >
-            {cta.label}
+            {cta.label} →
           </a>
 
           {product.officialSource && (
