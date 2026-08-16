@@ -558,125 +558,42 @@ export function ProdutosCapilaresLayout({
               }
 
 
-              /* =====================================================
-                 MICROINTERAÇÕES PREMIUM — DESKTOP
-                 Hover sutil, sem alterar layout e sem afetar mobile.
-                 ===================================================== */
-
+              /* Hover sutil no mesmo padrão visual das demais páginas */
               @media (hover: hover) and (pointer: fine) {
                 .card {
                   transition:
-                    transform 420ms cubic-bezier(.22, 1, .36, 1),
-                    box-shadow 420ms ease,
-                    border-color 320ms ease,
-                    background-color 320ms ease;
-                  transform: translateZ(0);
+                    transform 360ms cubic-bezier(.22,1,.36,1),
+                    box-shadow 360ms ease,
+                    border-color 300ms ease;
                 }
 
                 .card:hover {
-                  transform: translateY(-7px);
-                  border-color: rgba(138,106,59,.28);
-                  box-shadow:
-                    0 22px 55px rgba(25,22,19,.10);
-                }
-
-                .card:hover .rosetext {
-                  transform: translateY(-2px);
+                  transform: translateY(-4px);
+                  border-color: rgba(138,106,59,.20);
+                  box-shadow: 0 18px 42px rgba(25,22,19,.07);
                 }
 
                 .btn {
                   transition:
-                    transform 300ms cubic-bezier(.22,1,.36,1),
-                    box-shadow 300ms ease,
-                    background-color 300ms ease,
-                    border-color 300ms ease,
-                    color 300ms ease;
+                    transform 260ms ease,
+                    box-shadow 260ms ease,
+                    background-color 260ms ease,
+                    border-color 260ms ease;
                 }
 
                 .btn:hover {
-                  transform: translateY(-2px);
-                  box-shadow: 0 12px 28px rgba(25,22,19,.10);
-                }
-
-                #catalogo-produtos button[aria-pressed] {
-                  transition:
-                    transform 300ms cubic-bezier(.22,1,.36,1),
-                    box-shadow 300ms ease,
-                    border-color 300ms ease,
-                    background-color 300ms ease,
-                    color 300ms ease;
-                }
-
-                #catalogo-produtos button[aria-pressed]:hover {
-                  transform: translateY(-3px);
-                  box-shadow: 0 10px 24px rgba(25,22,19,.08);
+                  transform: translateY(-1px);
                 }
 
                 details {
                   transition:
-                    transform 360ms cubic-bezier(.22,1,.36,1),
-                    box-shadow 360ms ease,
                     border-color 300ms ease,
                     background-color 300ms ease;
                 }
 
                 details:hover {
-                  transform: translateY(-3px);
-                  border-color: rgba(138,106,59,.24);
-                  background: rgba(255,255,255,.78);
-                  box-shadow: 0 16px 36px rgba(25,22,19,.07);
-                }
-
-                details summary span:last-child {
-                  transition:
-                    transform 300ms ease,
-                    border-color 300ms ease,
-                    background-color 300ms ease;
-                }
-
-                details:hover summary span:last-child {
-                  border-color: rgba(138,106,59,.30);
-                  background: rgba(201,163,107,.08);
-                }
-
-                a.card,
-                button.card {
-                  position: relative;
-                  overflow: hidden;
-                }
-
-                a.card::after,
-                button.card::after {
-                  content: "";
-                  position: absolute;
-                  inset: 0;
-                  pointer-events: none;
-                  opacity: 0;
-                  background:
-                    radial-gradient(
-                      420px circle at 80% 10%,
-                      rgba(201,163,107,.12),
-                      transparent 52%
-                    );
-                  transition: opacity 360ms ease;
-                }
-
-                a.card:hover::after,
-                button.card:hover::after {
-                  opacity: 1;
-                }
-
-                .dna-hero-product-card {
-                  transition:
-                    transform 420ms cubic-bezier(.22,1,.36,1),
-                    box-shadow 420ms ease,
-                    opacity 320ms ease,
-                    filter 320ms ease;
-                }
-
-                .dna-hero-product-card:hover {
-                  opacity: 1;
-                  filter: saturate(1.04) contrast(1.02);
+                  border-color: rgba(138,106,59,.20);
+                  background: rgba(255,255,255,.72);
                 }
               }
 
@@ -708,7 +625,7 @@ export function ProdutosCapilaresLayout({
             HERO
             ===================================================== */}
         <section className="dna-products-hero relative flex min-h-[92vh] items-center overflow-hidden">
-          <div className="container relative z-[4] w-full py-24 md:py-32">
+          <div className="container relative z-[4] w-full py-20 md:py-24">
             <div className="relative z-[5] max-w-4xl">
               <div className="kicker mb-7">
                 Dra. Cristiana Valente · Terapia Capilar
@@ -842,7 +759,7 @@ export function ProdutosCapilaresLayout({
         {/* =====================================================
             POSICIONAMENTO
             ===================================================== */}
-        <section className="container py-24 md:py-32">
+        <section className="container py-20 md:py-24">
           <div className="mx-auto max-w-5xl">
             <div className="kicker mb-6">
               Cuidado que continua em casa
@@ -850,7 +767,7 @@ export function ProdutosCapilaresLayout({
 
             <div className="grid gap-12 lg:grid-cols-[1.05fr_.95fr] lg:items-end">
               <div>
-                <h2 className="display text-4xl md:text-6xl">
+                <h2 className="display text-4xl md:text-5xl">
                   Mais do que produtos.
                   <br />
                   <span className="rosetext italic">
@@ -982,7 +899,7 @@ export function ProdutosCapilaresLayout({
                   Catálogo capilar
                 </div>
 
-                <h2 className="display text-4xl md:text-6xl">
+                <h2 className="display text-4xl md:text-5xl">
                   Encontre por{" "}
                   <span className="rosetext italic">
                     categoria.
@@ -1104,7 +1021,7 @@ export function ProdutosCapilaresLayout({
         {/* =====================================================
             COMO ESCOLHER
             ===================================================== */}
-        <section className="container py-24 md:py-32">
+        <section className="container py-20 md:py-24">
           <div className="mx-auto max-w-6xl">
             <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
               <div className="lg:sticky lg:top-28">
@@ -1112,7 +1029,7 @@ export function ProdutosCapilaresLayout({
                   Escolha orientada
                 </div>
 
-                <h2 className="display text-4xl md:text-6xl">
+                <h2 className="display text-4xl md:text-5xl">
                   Qual produto faz sentido para{" "}
                   <span className="rosetext italic">
                     o seu momento?
@@ -1233,7 +1150,7 @@ export function ProdutosCapilaresLayout({
         {/* =====================================================
             AVALIAÇÃO PROFISSIONAL
             ===================================================== */}
-        <section className="relative overflow-hidden border-y border-[color:var(--line)] bg-white/45 py-24 md:py-32">
+        <section className="relative overflow-hidden border-y border-[color:var(--line)] bg-white/45 py-20 md:py-24">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute -left-32 top-1/2 h-[360px] w-[360px] -translate-y-1/2 rounded-full border border-[color:var(--gold)]/15 md:h-[520px] md:w-[520px]"
@@ -1251,7 +1168,7 @@ export function ProdutosCapilaresLayout({
                   Avaliação profissional
                 </div>
 
-                <h2 className="display text-4xl md:text-6xl">
+                <h2 className="display text-4xl md:text-5xl">
                   Nem todo produto é indicado para{" "}
                   <span className="rosetext italic">
                     todas as pessoas.
@@ -1341,7 +1258,7 @@ export function ProdutosCapilaresLayout({
         {/* =====================================================
             HOME CARE
             ===================================================== */}
-        <section className="container py-24 md:py-32">
+        <section className="container py-20 md:py-24">
           <div className="mx-auto max-w-6xl">
             <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
               <div>
@@ -1349,7 +1266,7 @@ export function ProdutosCapilaresLayout({
                   Continuidade do cuidado
                 </div>
 
-                <h2 className="display text-4xl md:text-6xl">
+                <h2 className="display text-4xl md:text-5xl">
                   Home Care não é um produto isolado.{" "}
                   <span className="rosetext italic">
                     É continuidade.
@@ -1465,7 +1382,7 @@ export function ProdutosCapilaresLayout({
                   Cuidado específico
                 </div>
 
-                <h2 className="display text-4xl text-white md:text-6xl">
+                <h2 className="display text-4xl text-white md:text-5xl">
                   Pós-transplante exige uma rotina{" "}
                   <span className="italic text-[color:var(--gold2)]">
                     própria de cuidado.
@@ -1561,14 +1478,14 @@ export function ProdutosCapilaresLayout({
         {/* =====================================================
             PROTOCOLOS
             ===================================================== */}
-        <section className="container py-24 md:py-32">
+        <section className="container py-20 md:py-24">
           <div className="mx-auto max-w-6xl">
             <div className="max-w-4xl">
               <div className="kicker mb-6">
                 Produtos + protocolos
               </div>
 
-              <h2 className="display text-4xl md:text-6xl">
+              <h2 className="display text-4xl md:text-5xl">
                 O produto pode fazer parte de uma{" "}
                 <span className="rosetext italic">
                   estratégia maior.
@@ -1688,7 +1605,7 @@ export function ProdutosCapilaresLayout({
         {/* =====================================================
             CONTEÚDO EDUCATIVO
             ===================================================== */}
-        <section className="relative overflow-hidden border-y border-[color:var(--line)] bg-white/45 py-24 md:py-32">
+        <section className="relative overflow-hidden border-y border-[color:var(--line)] bg-white/45 py-20 md:py-24">
           <div className="container relative z-[2]">
             <div className="mx-auto max-w-6xl">
               <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
@@ -1697,7 +1614,7 @@ export function ProdutosCapilaresLayout({
                     Conteúdo educativo
                   </div>
 
-                  <h2 className="display text-4xl md:text-6xl">
+                  <h2 className="display text-4xl md:text-5xl">
                     Informação também faz parte do{" "}
                     <span className="rosetext italic">
                       cuidado capilar.
@@ -1834,7 +1751,7 @@ export function ProdutosCapilaresLayout({
         {/* =====================================================
             PRODUTOS RECOMENDADOS
             ===================================================== */}
-        <section className="container py-24 md:py-32">
+        <section className="container py-20 md:py-24">
           <div className="mx-auto max-w-6xl">
             <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
               <div className="max-w-4xl">
@@ -1842,7 +1759,7 @@ export function ProdutosCapilaresLayout({
                   Encontre pelo objetivo
                 </div>
 
-                <h2 className="display text-4xl md:text-6xl">
+                <h2 className="display text-4xl md:text-5xl">
                   Explore os produtos por{" "}
                   <span className="rosetext italic">
                     necessidade de cuidado.
@@ -1996,7 +1913,7 @@ export function ProdutosCapilaresLayout({
         {/* =====================================================
             CTA FINAL
             ===================================================== */}
-        <section className="container pb-24 pt-8 md:pb-32 md:pt-12">
+        <section className="container pb-20 pt-6 md:pb-24 md:pt-10">
           <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[34px] border border-[color:var(--line)] bg-[color:var(--ink)] px-7 py-14 text-white md:px-12 md:py-16 lg:px-16 lg:py-20">
             <div
               aria-hidden="true"
@@ -2014,7 +1931,7 @@ export function ProdutosCapilaresLayout({
                   Próximo passo
                 </div>
 
-                <h2 className="display text-4xl text-white md:text-6xl">
+                <h2 className="display text-4xl text-white md:text-5xl">
                   Não sabe qual produto escolher?{" "}
                   <span className="italic text-[color:var(--gold2)]">
                     Comece pela avaliação.
@@ -2086,11 +2003,11 @@ export function ProdutosCapilaresLayout({
         </section>
 
         {/* FAQ */}
-        <section className="container py-24 md:py-32">
+        <section className="container py-20 md:py-24">
           <div className="mx-auto max-w-5xl">
             <div className="mx-auto max-w-3xl text-center">
               <div className="kicker mb-6 mx-auto">Dúvidas frequentes</div>
-              <h2 className="display text-4xl md:text-6xl">Antes de escolher seus <span className="rosetext italic">produtos capilares.</span></h2>
+              <h2 className="display text-4xl md:text-5xl">Antes de escolher seus <span className="rosetext italic">produtos capilares.</span></h2>
               <p className="mt-6 text-base leading-7 text-[color:var(--muted)] md:text-lg">Informações rápidas sobre compra, avaliação, Home Care, produtos profissionais e cuidados específicos.</p>
             </div>
             <div className="hair my-10" />
@@ -2121,203 +2038,88 @@ export function ProdutosCapilaresLayout({
         </section>
 
         {/* =====================================================
-            FOOTER
+            FOOTER — PADRÃO DA HOME
             ===================================================== */}
-        <footer className="border-t border-[color:var(--line)] bg-[color:var(--ink)] py-16 text-white md:py-20">
+        <footer className="border-t border-[color:var(--line)] bg-[color:var(--ink)] py-14 text-white md:py-16">
           <div className="container">
-            <div className="grid gap-12 lg:grid-cols-[1.2fr_.8fr_.8fr_.8fr]">
-              <div className="max-w-md">
-                <div className="kicker mb-5 text-white/70">
-                  Dra. Cristiana Valente
+            <div className="grid gap-12 lg:grid-cols-[1.35fr_.75fr_.9fr]">
+              <div className="max-w-xl">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 text-lg">
+                    CV
+                  </div>
+                  <div>
+                    <div className="serif text-xl text-white">
+                      Dra. Cristiana Valente
+                    </div>
+                    <div className="mt-1 text-[9px] font-bold uppercase tracking-[0.16em] text-white/45">
+                      Estética Avançada · Curitiba
+                    </div>
+                  </div>
                 </div>
 
-                <h2 className="display text-3xl text-white md:text-4xl">
-                  Produtos capilares com orientação, protocolo e continuidade.
-                </h2>
-
-                <p className="mt-5 text-sm leading-6 text-white/55">
-                  Catálogo oficial integrado à jornada de avaliação, tratamento,
-                  Home Care e acompanhamento capilar.
+                <p className="mt-6 max-w-lg text-sm leading-7 text-white/55">
+                  Estética facial, corporal e capilar com protocolos
+                  personalizados, tecnologia avançada e foco em resultados
+                  naturais. Saúde e autoestima começam pelo cuidado.
                 </p>
 
-                <div className="mt-7 flex flex-col gap-3 sm:flex-row lg:flex-col lg:items-start">
-                  <a
-                    href="/avaliacao-capilar-curitiba"
-                    className="btn border border-white bg-white text-[color:var(--ink)] hover:bg-white/90"
-                  >
-                    Agendar avaliação
-                  </a>
+                <p className="mt-5 text-xs leading-6 text-white/40">
+                  COREN-PR 451.408 · Enfermeira Esteta · Especialista em Saúde
+                  Pública e Estética Avançada
+                </p>
 
-                  <a
-                    href="/"
-                    className="btn border border-white/20 bg-transparent text-white hover:bg-white/10"
-                  >
-                    Voltar ao site
-                  </a>
-                </div>
+                <p className="mt-2 text-xs leading-6 text-white/40">
+                  Atendimento: mediante agendamento · Curitiba/PR
+                  (Batel · Centro Cívico)
+                </p>
               </div>
 
               <div>
                 <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold2)]">
-                  Produtos
+                  Navegação
                 </div>
 
-                <div className="mt-5 grid gap-3 text-sm text-white/60">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setCategoriaSelecionada("todos");
-                      document
-                        .getElementById("catalogo-produtos")
-                        ?.scrollIntoView({
-                          behavior: "smooth",
-                          block: "start",
-                        });
-                    }}
-                    className="text-left transition hover:text-white"
-                  >
-                    Todos os produtos
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setCategoriaSelecionada("home-care");
-                      document
-                        .getElementById("catalogo-produtos")
-                        ?.scrollIntoView({
-                          behavior: "smooth",
-                          block: "start",
-                        });
-                    }}
-                    className="text-left transition hover:text-white"
-                  >
-                    Home Care
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setCategoriaSelecionada("profissional");
-                      document
-                        .getElementById("catalogo-produtos")
-                        ?.scrollIntoView({
-                          behavior: "smooth",
-                          block: "start",
-                        });
-                    }}
-                    className="text-left transition hover:text-white"
-                  >
-                    Profissional
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setCategoriaSelecionada("pos-transplante");
-                      document
-                        .getElementById("catalogo-produtos")
-                        ?.scrollIntoView({
-                          behavior: "smooth",
-                          block: "start",
-                        });
-                    }}
-                    className="text-left transition hover:text-white"
-                  >
-                    Pós-transplante
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setCategoriaSelecionada("crescimento");
-                      document
-                        .getElementById("catalogo-produtos")
-                        ?.scrollIntoView({
-                          behavior: "smooth",
-                          block: "start",
-                        });
-                    }}
-                    className="text-left transition hover:text-white"
-                  >
-                    Crescimento
-                  </button>
-                </div>
+                <nav className="mt-5 grid gap-3 text-sm text-white/60">
+                  <a href="/#protocolos" className="transition hover:text-white">Protocolos</a>
+                  <a href="/#exclusivos" className="transition hover:text-white">Exclusivos Dra. Cristiana Valente</a>
+                  <a href="/#sobre" className="transition hover:text-white">Sobre a Dra.</a>
+                  <a href="/#depoimentos" className="transition hover:text-white">Depoimentos</a>
+                  <a href="/#faq" className="transition hover:text-white">FAQ</a>
+                </nav>
               </div>
 
               <div>
                 <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold2)]">
-                  Atendimento
+                  Contato
                 </div>
 
                 <div className="mt-5 grid gap-3 text-sm text-white/60">
-                  <a
-                    href="/avaliacao-capilar-curitiba"
-                    className="transition hover:text-white"
-                  >
-                    Agendar avaliação
+                  <a href="https://wa.me/5541991599558" target="_blank" rel="noreferrer" className="transition hover:text-white">
+                    📱 (41) 99159-9558
                   </a>
-
-                  <a
-                    href="/tratamento-capilar-curitiba"
-                    className="transition hover:text-white"
-                  >
-                    Protocolos capilares
+                  <a href="mailto:contato@dracristianavalente.com.br" className="transition hover:text-white">
+                    📧 contato@dracristianavalente.com.br
                   </a>
-
-                  <a
-                    href="/tratamento-queda-de-cabelo-curitiba"
-                    className="transition hover:text-white"
-                  >
-                    Queda de cabelo
+                  <a href="https://www.instagram.com/dra.cristianavalente.estetica/" target="_blank" rel="noreferrer" className="transition hover:text-white">
+                    📷 @dra.cristianavalente.estetica
                   </a>
-                </div>
-              </div>
-
-              <div>
-                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold2)]">
-                  Institucional
-                </div>
-
-                <div className="mt-5 grid gap-3 text-sm text-white/60">
                   <a href="/" className="transition hover:text-white">
-                    Site principal
+                    🌐 dracristianavalente.com.br
                   </a>
-
-                  <a
-                    href="/avaliacao-capilar-curitiba"
-                    className="transition hover:text-white"
-                  >
-                    Avaliação capilar
-                  </a>
-
-                  <span className="text-white/35">
-                    Política de Privacidade · em breve
-                  </span>
-
-                  <span className="text-white/35">
-                    Termos de Uso · em breve
-                  </span>
-
-                  <span className="text-white/35">
-                    Política de Entrega · em breve
-                  </span>
-
-                  <span className="text-white/35">
-                    Política de Trocas · em breve
-                  </span>
                 </div>
               </div>
             </div>
 
-            <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-7 text-xs text-white/40 md:flex-row md:items-center md:justify-between">
+            <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-7 text-xs text-white/35 md:flex-row md:items-center md:justify-between">
               <p>
-                © {new Date().getFullYear()} Dra. Cristiana Valente. Todos os direitos reservados.
+                © {new Date().getFullYear()} Powered by ✠ HPtech PlatForm. Todos os direitos reservados.
               </p>
-
-              <p>
-                Produtos capilares · DNA VITAL
-              </p>
+              <div className="flex flex-wrap gap-x-3 gap-y-2">
+                <span>Política de Privacidade</span>
+                <span>·</span>
+                <span>Termos</span>
+              </div>
             </div>
           </div>
         </footer>
