@@ -1962,6 +1962,41 @@ export function ProdutosCapilaresLayout({
           </div>
         </section>
 
+        {/* FAQ */}
+        <section className="container py-24 md:py-32">
+          <div className="mx-auto max-w-5xl">
+            <div className="mx-auto max-w-3xl text-center">
+              <div className="kicker mb-6 mx-auto">Dúvidas frequentes</div>
+              <h2 className="display text-4xl md:text-6xl">Antes de escolher seus <span className="rosetext italic">produtos capilares.</span></h2>
+              <p className="mt-6 text-base leading-7 text-[color:var(--muted)] md:text-lg">Informações rápidas sobre compra, avaliação, Home Care, produtos profissionais e cuidados específicos.</p>
+            </div>
+            <div className="hair my-10" />
+            <div className="grid gap-4">
+              {[
+                ["Posso comprar qualquer produto diretamente?", "Não necessariamente. A disponibilidade depende do produto. Alguns itens podem estar disponíveis para compra direta, enquanto outros podem exigir avaliação, indicação profissional ou integração com um protocolo."],
+                ["Preciso fazer avaliação antes de comprar?", "Depende do produto e do objetivo. Quando houver necessidade de compreender melhor o couro cabeludo, os fios ou a estratégia de cuidado, a avaliação profissional pode ser indicada antes da escolha."],
+                ["Qual a diferença entre produto profissional e Home Care?", "Os produtos profissionais são destinados ao uso em clínica e podem integrar protocolos. As linhas Home Care são voltadas à continuidade da rotina fora da clínica, conforme a indicação de uso."],
+                ["Os produtos Home Care substituem o tratamento na clínica?", "Não. Eles podem complementar e dar continuidade ao cuidado, mas não substituem automaticamente protocolos, avaliação ou acompanhamento profissional quando estes forem necessários."],
+                ["Existe uma linha específica para pós-transplante?", "Sim. O catálogo possui uma linha Pós-Transplante Home Care voltada aos cuidados específicos dessa fase. O uso deve respeitar as orientações do profissional responsável pelo procedimento."],
+                ["Como descubro qual produto faz sentido para mim?", "Você pode explorar o catálogo por objetivo e conhecer as características de cada linha. Se ainda houver dúvida, a avaliação capilar é o caminho indicado para receber orientação individualizada."],
+                ["As informações desta página fazem diagnóstico?", "Não. O conteúdo é educativo e comercial. Esta página não realiza diagnóstico automático e não substitui uma avaliação profissional individualizada."],
+              ].map(([question, answer], index) => (
+                <details key={question} className="group rounded-[24px] border border-[color:var(--line)] bg-white/60 px-6 py-1 md:px-8">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-6 [&::-webkit-details-marker]:hidden">
+                    <div className="flex items-center gap-5"><span className="serif rosetext text-lg">{String(index + 1).padStart(2, "0")}</span><h3 className="serif text-left text-xl md:text-2xl">{question}</h3></div>
+                    <span aria-hidden="true" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[color:var(--line)] text-lg transition-transform duration-300 group-open:rotate-45">+</span>
+                  </summary>
+                  <div className="border-t border-[color:var(--line)] py-6 text-sm leading-7 text-[color:var(--muted)] md:pl-12 md:text-base">{answer}</div>
+                </details>
+              ))}
+            </div>
+            <div className="mt-10 text-center">
+              <p className="text-sm leading-6 text-[color:var(--muted)]">Ainda ficou com alguma dúvida sobre qual caminho seguir?</p>
+              <a href="/avaliacao-capilar-curitiba" className="btn btn-rose mt-6">Agendar avaliação capilar</a>
+            </div>
+          </div>
+        </section>
+
       </main>
     </>
   );
