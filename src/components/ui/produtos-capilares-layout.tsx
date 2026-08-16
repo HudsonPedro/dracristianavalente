@@ -1435,6 +1435,133 @@ export function ProdutosCapilaresLayout({
           </div>
         </section>
 
+        {/* =====================================================
+            PROTOCOLOS
+            ===================================================== */}
+        <section className="container py-24 md:py-32">
+          <div className="mx-auto max-w-6xl">
+            <div className="max-w-4xl">
+              <div className="kicker mb-6">
+                Produtos + protocolos
+              </div>
+
+              <h2 className="display text-4xl md:text-6xl">
+                O produto pode fazer parte de uma{" "}
+                <span className="rosetext italic">
+                  estratégia maior.
+                </span>
+              </h2>
+
+              <p className="mt-6 max-w-3xl text-base leading-7 text-[color:var(--muted)] md:text-lg">
+                Dependendo da necessidade, produtos profissionais e Home Care
+                podem ser associados a protocolos realizados na clínica e ao
+                acompanhamento da evolução capilar.
+              </p>
+            </div>
+
+            <div className="hair my-10" />
+
+            <div className="grid gap-6 lg:grid-cols-3">
+              <a
+                href="/tratamento-queda-de-cabelo-curitiba"
+                className="card group relative overflow-hidden p-7 transition-transform duration-500 hover:-translate-y-2 md:p-8"
+              >
+                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+                  Protocolo 01
+                </div>
+
+                <h3 className="serif mt-5 text-3xl">
+                  Queda de cabelo
+                </h3>
+
+                <p className="mt-4 leading-7 text-[color:var(--muted)]">
+                  Conheça a abordagem clínica para investigação e cuidado da
+                  queda capilar.
+                </p>
+
+                <div className="mt-8 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.16em]">
+                  Conhecer protocolo
+                  <span className="transition-transform duration-300 group-hover:translate-x-2">
+                    →
+                  </span>
+                </div>
+              </a>
+
+              <a
+                href="/tratamento-capilar-curitiba"
+                className="card group relative overflow-hidden p-7 transition-transform duration-500 hover:-translate-y-2 md:p-8"
+              >
+                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+                  Protocolo 02
+                </div>
+
+                <h3 className="serif mt-5 text-3xl">
+                  Terapia capilar
+                </h3>
+
+                <p className="mt-4 leading-7 text-[color:var(--muted)]">
+                  Cuidados personalizados para couro cabeludo e fios dentro de
+                  uma estratégia profissional.
+                </p>
+
+                <div className="mt-8 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.16em]">
+                  Conhecer protocolo
+                  <span className="transition-transform duration-300 group-hover:translate-x-2">
+                    →
+                  </span>
+                </div>
+              </a>
+
+              <a
+                href="/avaliacao-capilar-curitiba"
+                className="card group relative overflow-hidden p-7 transition-transform duration-500 hover:-translate-y-2 md:p-8"
+              >
+                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+                  Protocolo 03
+                </div>
+
+                <h3 className="serif mt-5 text-3xl">
+                  Avaliação capilar
+                </h3>
+
+                <p className="mt-4 leading-7 text-[color:var(--muted)]">
+                  O ponto de partida para compreender necessidades, objetivos e
+                  possibilidades de cuidado.
+                </p>
+
+                <div className="mt-8 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.16em]">
+                  Agendar avaliação
+                  <span className="transition-transform duration-300 group-hover:translate-x-2">
+                    →
+                  </span>
+                </div>
+              </a>
+            </div>
+
+            <div className="mt-10 rounded-[26px] border border-[color:var(--line)] bg-white/55 p-7 md:p-9">
+              <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
+                <div>
+                  <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+                    Integração
+                  </div>
+
+                  <p className="serif mt-3 max-w-3xl text-2xl leading-relaxed">
+                    Produto, protocolo e acompanhamento podem trabalhar juntos,
+                    quando houver indicação profissional para essa combinação.
+                  </p>
+                </div>
+
+                <a
+                  href="/avaliacao-capilar-curitiba"
+                  className="btn btn-rose"
+                >
+                  Começar pela avaliação
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </main>
     </>
   );
