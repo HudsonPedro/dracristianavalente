@@ -330,10 +330,10 @@ export function ProdutosCapilaresLayout({
 
               .dna-hero-product-track {
                 display: flex;
-                align-items: center;
+                align-items: flex-start;
                 gap: 22px;
                 width: max-content;
-                padding: 28px 0;
+                padding: 28px 0 92px;
                 will-change: transform;
               }
 
@@ -341,7 +341,7 @@ export function ProdutosCapilaresLayout({
                 position: relative;
                 flex: 0 0 clamp(190px, 18vw, 270px);
                 aspect-ratio: .82;
-                overflow: hidden;
+                overflow: visible;
                 border-radius: 24px;
                 border: 1px solid rgba(138, 106, 59, .12);
                 background:
@@ -386,15 +386,17 @@ export function ProdutosCapilaresLayout({
                 position: absolute;
                 inset: 0;
                 overflow: hidden;
-                border-radius: inherit;
+                border-radius: 24px;
+                background: transparent;
               }
 
               .dna-hero-product-image {
                 display: block;
                 width: 100%;
                 height: 100%;
-                object-fit: contain;
+                object-fit: cover;
                 object-position: center;
+                border-radius: 24px;
                 pointer-events: none;
                 user-select: none;
                 -webkit-user-drag: none;
@@ -402,17 +404,16 @@ export function ProdutosCapilaresLayout({
 
               .dna-hero-product-caption {
                 position: absolute;
-                left: 10px;
-                right: 10px;
-                bottom: 10px;
+                left: 4px;
+                right: 4px;
+                top: calc(100% + 14px);
                 z-index: 2;
-                padding: 9px 11px;
-                border-radius: 14px;
-                background: rgba(255,255,255,.24);
-                border: 1px solid rgba(255,255,255,.34);
-                box-shadow: 0 8px 22px rgba(25,22,19,.06);
-                backdrop-filter: blur(3px);
-                -webkit-backdrop-filter: blur(3px);
+                padding: 0 4px;
+                background: transparent;
+                border: 0;
+                box-shadow: none;
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
               }
 
               .dna-hero-product-line {
@@ -421,14 +422,16 @@ export function ProdutosCapilaresLayout({
                 letter-spacing: .16em;
                 text-transform: uppercase;
                 color: var(--rose2);
+                opacity: .78;
               }
 
               .dna-hero-product-name {
                 margin-top: 4px;
                 font-family: "Fraunces", serif;
-                font-size: clamp(.92rem, 1.2vw, 1.08rem);
-                line-height: 1.08;
+                font-size: clamp(.88rem, 1.15vw, 1.02rem);
+                line-height: 1.15;
                 color: var(--ink);
+                opacity: .82;
               }
 
               .dna-hero-drag-hint {
@@ -484,7 +487,7 @@ export function ProdutosCapilaresLayout({
 
                 .dna-hero-product-track {
                   gap: 14px;
-                  padding: 22px 0;
+                  padding: 22px 0 82px;
                 }
 
                 .dna-hero-product-card {
