@@ -557,6 +557,129 @@ export function ProdutosCapilaresLayout({
                 }
               }
 
+
+              /* =====================================================
+                 MICROINTERAÇÕES PREMIUM — DESKTOP
+                 Hover sutil, sem alterar layout e sem afetar mobile.
+                 ===================================================== */
+
+              @media (hover: hover) and (pointer: fine) {
+                .card {
+                  transition:
+                    transform 420ms cubic-bezier(.22, 1, .36, 1),
+                    box-shadow 420ms ease,
+                    border-color 320ms ease,
+                    background-color 320ms ease;
+                  transform: translateZ(0);
+                }
+
+                .card:hover {
+                  transform: translateY(-7px);
+                  border-color: rgba(138,106,59,.28);
+                  box-shadow:
+                    0 22px 55px rgba(25,22,19,.10);
+                }
+
+                .card:hover .rosetext {
+                  transform: translateY(-2px);
+                }
+
+                .btn {
+                  transition:
+                    transform 300ms cubic-bezier(.22,1,.36,1),
+                    box-shadow 300ms ease,
+                    background-color 300ms ease,
+                    border-color 300ms ease,
+                    color 300ms ease;
+                }
+
+                .btn:hover {
+                  transform: translateY(-2px);
+                  box-shadow: 0 12px 28px rgba(25,22,19,.10);
+                }
+
+                #catalogo-produtos button[aria-pressed] {
+                  transition:
+                    transform 300ms cubic-bezier(.22,1,.36,1),
+                    box-shadow 300ms ease,
+                    border-color 300ms ease,
+                    background-color 300ms ease,
+                    color 300ms ease;
+                }
+
+                #catalogo-produtos button[aria-pressed]:hover {
+                  transform: translateY(-3px);
+                  box-shadow: 0 10px 24px rgba(25,22,19,.08);
+                }
+
+                details {
+                  transition:
+                    transform 360ms cubic-bezier(.22,1,.36,1),
+                    box-shadow 360ms ease,
+                    border-color 300ms ease,
+                    background-color 300ms ease;
+                }
+
+                details:hover {
+                  transform: translateY(-3px);
+                  border-color: rgba(138,106,59,.24);
+                  background: rgba(255,255,255,.78);
+                  box-shadow: 0 16px 36px rgba(25,22,19,.07);
+                }
+
+                details summary span:last-child {
+                  transition:
+                    transform 300ms ease,
+                    border-color 300ms ease,
+                    background-color 300ms ease;
+                }
+
+                details:hover summary span:last-child {
+                  border-color: rgba(138,106,59,.30);
+                  background: rgba(201,163,107,.08);
+                }
+
+                a.card,
+                button.card {
+                  position: relative;
+                  overflow: hidden;
+                }
+
+                a.card::after,
+                button.card::after {
+                  content: "";
+                  position: absolute;
+                  inset: 0;
+                  pointer-events: none;
+                  opacity: 0;
+                  background:
+                    radial-gradient(
+                      420px circle at 80% 10%,
+                      rgba(201,163,107,.12),
+                      transparent 52%
+                    );
+                  transition: opacity 360ms ease;
+                }
+
+                a.card:hover::after,
+                button.card:hover::after {
+                  opacity: 1;
+                }
+
+                .dna-hero-product-card {
+                  transition:
+                    transform 420ms cubic-bezier(.22,1,.36,1),
+                    box-shadow 420ms ease,
+                    opacity 320ms ease,
+                    filter 320ms ease;
+                }
+
+                .dna-hero-product-card:hover {
+                  opacity: 1;
+                  filter: saturate(1.04) contrast(1.02);
+                }
+              }
+
               @media (prefers-reduced-motion: reduce) {
                 .dna-product-reveal,
                 .dna-product-reveal[data-direction="right"],
