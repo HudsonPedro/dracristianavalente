@@ -1,0 +1,506 @@
+import type { ReactNode } from "react";
+
+import { CSS } from "../../routes/index";
+import logo from "../../assets/logo.png";
+
+type ProductDetailPageProps = {
+  eyebrow: string;
+  name: string;
+  shortDescription: string;
+
+  images: string[];
+
+  indication?: string;
+  characteristics?: string[];
+  composition?: string[];
+  howToUse?: string[];
+  safety?: string[];
+  professionalNotes?: string[];
+
+  availabilityLabel?: string;
+  acquisitionLabel?: string;
+
+  primaryHref?: string;
+  primaryLabel?: string;
+
+  secondaryHref?: string;
+  secondaryLabel?: string;
+
+  faq?: Array<{
+    question: string;
+    answer: string;
+  }>;
+
+  relatedProducts?: ReactNode;
+};
+
+const WA =
+  "https://wa.me/5541991599558?text=Ol%C3%A1%20Dra.%20Cristiana%2C%20gostaria%20de%20receber%20orienta%C3%A7%C3%A3o%20sobre%20um%20produto%20capilar.";
+
+export function ProductDetailPage({
+  eyebrow,
+  name,
+  shortDescription,
+
+  images,
+
+  indication,
+  characteristics = [],
+  composition = [],
+  howToUse = [],
+  safety = [],
+  professionalNotes = [],
+
+  availabilityLabel = "Disponibilidade sob consulta",
+  acquisitionLabel = "Aquisição conforme orientação",
+
+  primaryHref = WA,
+  primaryLabel = "Solicitar informações",
+
+  secondaryHref = "/produtos-capilares",
+  secondaryLabel = "Voltar aos produtos",
+
+  faq = [],
+
+  relatedProducts,
+}: ProductDetailPageProps) {
+  const mainImage = images[0];
+
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
+
+      <main>
+        {/* =====================================================
+            HERO DO PRODUTO
+            ===================================================== */}
+        <header className="container grid gap-12 pb-20 pt-28 md:pb-28 md:pt-40 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+          <div>
+            <div className="kicker">{eyebrow}</div>
+
+            <h1 className="display mt-7 text-5xl md:text-7xl">
+              {name}
+            </h1>
+
+            <p className="mt-7 max-w-2xl text-lg leading-relaxed text-[color:var(--muted)] md:text-xl">
+              {shortDescription}
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <span className="tag">{availabilityLabel}</span>
+              <span className="tag">{acquisitionLabel}</span>
+            </div>
+
+            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+              <a
+                href={primaryHref}
+                target={primaryHref.startsWith("http") ? "_blank" : undefined}
+                rel={
+                  primaryHref.startsWith("http")
+                    ? "noopener noreferrer"
+                    : undefined
+                }
+                className="btn btn-wa"
+              >
+                {primaryLabel} →
+              </a>
+
+              <a href={secondaryHref} className="btn btn-ghost">
+                {secondaryLabel}
+              </a>
+            </div>
+          </div>
+
+          <div>
+            {mainImage ? (
+              <div className="frame bg-white">
+                <img
+                  src={mainImage}
+                  alt={name}
+                  className="aspect-[4/5] h-full w-full object-cover"
+                />
+              </div>
+            ) : (
+              <div className="card flex aspect-[4/5] items-center justify-center p-8 text-center text-[color:var(--muted)]">
+                Imagem do produto
+              </div>
+            )}
+          </div>
+        </header>
+
+        {/* =====================================================
+            GALERIA
+            ===================================================== */}
+        {images.length > 1 && (
+          <section className="container py-12">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+              {images.slice(1).map((image, index) => (
+                <div key={`${image}-${index}`} className="frame">
+                  <img
+                    src={image}
+                    alt={`${name} - imagem ${index + 2}`}
+                    loading="lazy"
+                    className="aspect-square h-full w-full object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* =====================================================
+            INDICAÇÃO
+            ===================================================== */}
+        {indication && (
+          <section className="container py-20">
+            <div className="mx-auto max-w-4xl">
+              <div className="kicker mb-6">Indicação de uso</div>
+
+              <h2 className="display text-4xl md:text-5xl">
+                Para qual cuidado este produto é indicado?
+              </h2>
+
+              <p className="mt-7 text-lg leading-relaxed text-[color:var(--muted)]">
+                {indication}
+              </p>
+            </div>
+          </section>
+        )}
+
+        {/* =====================================================
+            CARACTERÍSTICAS
+            ===================================================== */}
+        {characteristics.length > 0 && (
+          <section className="container py-20">
+            <div className="max-w-3xl">
+              <div className="kicker mb-6">Características</div>
+
+              <h2 className="display text-4xl md:text-5xl">
+                Principais características
+              </h2>
+            </div>
+
+            <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {characteristics.map((item, index) => (
+                <article key={item} className="card protocol p-8">
+                  <span className="serif rosetext text-5xl">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+
+                  <p className="mt-4 leading-relaxed text-[color:var(--muted)]">
+                    {item}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* =====================================================
+            COMPOSIÇÃO
+            ===================================================== */}
+        {composition.length > 0 && (
+          <section className="container py-20">
+            <div className="mx-auto max-w-4xl">
+              <div className="card p-8 md:p-10">
+                <div className="kicker mb-6">Composição</div>
+
+                <h2 className="display text-3xl md:text-4xl">
+                  Informações de composição
+                </h2>
+
+                <div className="mt-7 grid gap-3 text-[color:var(--muted)]">
+                  {composition.map((item) => (
+                    <div
+                      key={item}
+                      className="border-b border-[color:var(--line)] pb-3"
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* =====================================================
+            MODO DE UTILIZAÇÃO
+            ===================================================== */}
+        {howToUse.length > 0 && (
+          <section className="container py-20">
+            <div className="max-w-3xl">
+              <div className="kicker mb-6">Modo de utilização</div>
+
+              <h2 className="display text-4xl md:text-5xl">
+                Como utilizar
+              </h2>
+            </div>
+
+            <div className="mt-12 grid gap-5 md:grid-cols-3">
+              {howToUse.map((item, index) => (
+                <article key={item} className="card protocol p-8">
+                  <span className="serif rosetext text-5xl">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+
+                  <p className="mt-4 leading-relaxed text-[color:var(--muted)]">
+                    {item}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* =====================================================
+            SEGURANÇA
+            ===================================================== */}
+        {safety.length > 0 && (
+          <section className="container py-20">
+            <div className="mx-auto max-w-4xl">
+              <div className="card p-8 md:p-10">
+                <div className="kicker mb-6">Segurança</div>
+
+                <h2 className="display text-3xl md:text-4xl">
+                  Informações importantes
+                </h2>
+
+                <ul className="mt-7 grid gap-4 text-[color:var(--muted)]">
+                  {safety.map((item) => (
+                    <li
+                      key={item}
+                      className="border-b border-[color:var(--line)] pb-4 leading-relaxed"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* =====================================================
+            OBSERVAÇÕES PROFISSIONAIS
+            ===================================================== */}
+        {professionalNotes.length > 0 && (
+          <section className="container py-20">
+            <div className="mx-auto max-w-4xl">
+              <div className="kicker mb-6">
+                Orientação profissional
+              </div>
+
+              <h2 className="display text-4xl md:text-5xl">
+                Observações sobre este produto
+              </h2>
+
+              <div className="mt-10 grid gap-5">
+                {professionalNotes.map((item) => (
+                  <div key={item} className="card p-8">
+                    <p className="leading-relaxed text-[color:var(--muted)]">
+                      {item}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* =====================================================
+            FAQ
+            ===================================================== */}
+        {faq.length > 0 && (
+          <section id="faq" className="container py-20">
+            <div className="mx-auto max-w-4xl">
+              <div className="kicker mb-6">Dúvidas frequentes</div>
+
+              <h2 className="display text-4xl md:text-5xl">
+                Perguntas sobre {name}
+              </h2>
+
+              <div className="mt-10">
+                {faq.map((item) => (
+                  <details key={item.question} className="faq">
+                    <summary>
+                      {item.question}
+                      <span className="pl">+</span>
+                    </summary>
+
+                    <p className="pb-5 leading-relaxed text-[color:var(--muted)]">
+                      {item.answer}
+                    </p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* =====================================================
+            PRODUTOS RELACIONADOS
+            ===================================================== */}
+        {relatedProducts && (
+          <section className="container py-20">
+            <div className="kicker mb-6">Produtos relacionados</div>
+
+            <h2 className="display text-4xl md:text-5xl">
+              Continue explorando
+            </h2>
+
+            <div className="mt-12">{relatedProducts}</div>
+          </section>
+        )}
+
+        {/* =====================================================
+            CTA FINAL
+            ===================================================== */}
+        <section className="container py-20">
+          <div
+            className="card mx-auto max-w-4xl p-8 text-center md:p-12"
+            style={{
+              background: "linear-gradient(180deg,#fff,#faf5ee)",
+            }}
+          >
+            <div className="kicker mb-6 mx-auto">
+              Orientação personalizada
+            </div>
+
+            <h2 className="display text-4xl md:text-5xl">
+              Tem dúvida se este produto é indicado para você?
+            </h2>
+
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-[color:var(--muted)]">
+              Fale com a equipe da Dra. Cristiana Valente ou agende uma
+              avaliação capilar para receber uma orientação individualizada.
+            </p>
+
+            <a
+              href={primaryHref}
+              target={primaryHref.startsWith("http") ? "_blank" : undefined}
+              rel={
+                primaryHref.startsWith("http")
+                  ? "noopener noreferrer"
+                  : undefined
+              }
+              className="btn btn-wa mt-8"
+            >
+              {primaryLabel} →
+            </a>
+          </div>
+        </section>
+
+        {/* =====================================================
+            FOOTER
+            ===================================================== */}
+        <footer
+          className="border-t border-[color:var(--line)]"
+          style={{ background: "#fff" }}
+        >
+          <div className="container grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="lg:col-span-2">
+              <div className="flex items-center gap-3">
+                <img
+                  src={logo}
+                  alt="Dra. Cristiana Valente Estética"
+                  className="mark"
+                />
+
+                <span className="serif text-lg">
+                  Dra. Cristiana Valente
+                </span>
+              </div>
+
+              <p className="mt-4 max-w-sm text-sm leading-relaxed text-[color:var(--muted)]">
+                Produtos capilares selecionados para integrar cuidados
+                profissionais e rotinas Home Care.
+              </p>
+
+              <p className="mt-4 text-xs text-[color:var(--muted)]">
+                <strong className="text-[color:var(--ink)]">
+                  COREN-PR 451.408
+                </strong>{" "}
+                · Enfermeira Esteta · Especialista em Saúde Pública e Estética
+                Avançada
+              </p>
+            </div>
+
+            <div>
+              <p className="mb-4 text-xs font-bold uppercase tracking-wider">
+                Produtos
+              </p>
+
+              <div className="grid gap-2 text-sm text-[color:var(--muted)]">
+                <a
+                  href="/produtos-capilares"
+                  className="hover:text-[color:var(--ink)]"
+                >
+                  Todos os produtos
+                </a>
+
+                <a
+                  href="/produtos-capilares"
+                  className="hover:text-[color:var(--ink)]"
+                >
+                  Home Care
+                </a>
+
+                <a
+                  href="/produtos-capilares"
+                  className="hover:text-[color:var(--ink)]"
+                >
+                  Uso profissional
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <p className="mb-4 text-xs font-bold uppercase tracking-wider">
+                Atendimento
+              </p>
+
+              <div className="grid gap-2 text-sm text-[color:var(--muted)]">
+                <a
+                  href="/avaliacao-capilar-curitiba"
+                  className="hover:text-[color:var(--ink)]"
+                >
+                  Avaliação capilar
+                </a>
+
+                <a
+                  href="/tratamento-capilar-curitiba"
+                  className="hover:text-[color:var(--ink)]"
+                >
+                  Tratamentos capilares
+                </a>
+
+                <a
+                  href="/"
+                  className="hover:text-[color:var(--ink)]"
+                >
+                  Site principal
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="container pb-8">
+            <div className="hair mb-6" />
+
+            <div className="flex flex-col justify-between gap-3 text-xs text-[color:var(--muted)] sm:flex-row">
+              <span>
+                © {new Date().getFullYear()} Powered by ✠ HPtech PlatForm.
+                Todos os direitos reservados.
+              </span>
+
+              <span>
+                Política de Privacidade · Termos
+              </span>
+            </div>
+          </div>
+        </footer>
+      </main>
+    </>
+  );
+}
