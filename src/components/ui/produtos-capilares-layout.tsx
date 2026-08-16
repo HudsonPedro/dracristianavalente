@@ -408,11 +408,11 @@ export function ProdutosCapilaresLayout({
                 z-index: 2;
                 padding: 11px 13px;
                 border-radius: 16px;
-                background: rgba(255,255,255,.88);
-                border: 1px solid rgba(255,255,255,.72);
-                box-shadow: 0 10px 28px rgba(25,22,19,.10);
-                backdrop-filter: blur(14px);
-                -webkit-backdrop-filter: blur(14px);
+                background: rgba(255,255,255,.52);
+                border: 1px solid rgba(255,255,255,.46);
+                box-shadow: 0 10px 28px rgba(25,22,19,.08);
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
               }
 
               .dna-hero-product-line {
