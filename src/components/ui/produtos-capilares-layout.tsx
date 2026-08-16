@@ -298,12 +298,13 @@ export function ProdutosCapilaresLayout({
 
               .dna-hero-products {
                 position: absolute;
+                left: 0;
                 right: 0;
                 top: 50%;
-                width: min(48vw, 720px);
+                width: 100%;
                 transform: translateY(-50%);
                 overflow: hidden;
-                z-index: 3;
+                z-index: 1;
                 cursor: grab;
                 touch-action: pan-y;
                 user-select: none;
@@ -311,17 +312,37 @@ export function ProdutosCapilaresLayout({
                 mask-image: linear-gradient(
                   90deg,
                   transparent 0%,
-                  #000 10%,
-                  #000 90%,
+                  #000 4%,
+                  #000 96%,
                   transparent 100%
                 );
                 -webkit-mask-image: linear-gradient(
                   90deg,
                   transparent 0%,
-                  #000 10%,
-                  #000 90%,
+                  #000 4%,
+                  #000 96%,
                   transparent 100%
                 );
+              }
+
+              /*
+               * Véu sutil: os produtos continuam visíveis atrás do texto,
+               * mas o título permanece legível.
+               */
+              .dna-hero-products::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                z-index: 2;
+                pointer-events: none;
+                background:
+                  linear-gradient(
+                    90deg,
+                    rgba(248,244,238,.78) 0%,
+                    rgba(248,244,238,.56) 22%,
+                    rgba(248,244,238,.18) 46%,
+                    rgba(248,244,238,0) 68%
+                  );
               }
 
               .dna-hero-products.is-dragging {
@@ -335,6 +356,8 @@ export function ProdutosCapilaresLayout({
                 width: max-content;
                 padding: 28px 0 92px;
                 will-change: transform;
+                position: relative;
+                z-index: 1;
               }
 
               .dna-hero-product-card {
@@ -352,10 +375,12 @@ export function ProdutosCapilaresLayout({
                   );
                 box-shadow:
                   0 24px 60px rgba(25, 22, 19, .10);
+                opacity: .88;
                 transform: translateZ(0);
                 transition:
                   transform 420ms cubic-bezier(.22, 1, .36, 1),
-                  box-shadow 420ms ease;
+                  box-shadow 420ms ease,
+                  opacity 320ms ease;
               }
 
               .dna-hero-product-card:nth-child(3n + 2) {
@@ -377,6 +402,7 @@ export function ProdutosCapilaresLayout({
               }
 
               .dna-hero-product-card:hover {
+                opacity: 1;
                 transform: translateY(-8px) scale(1.015);
                 box-shadow:
                   0 32px 70px rgba(25, 22, 19, .14);
@@ -458,15 +484,22 @@ export function ProdutosCapilaresLayout({
               @media (max-width: 1023px) {
                 .dna-hero-products {
                   position: relative;
+                  left: auto;
                   right: auto;
                   top: auto;
                   width: calc(100% + 48px);
                   margin: 50px -24px 0;
                   transform: none;
+                  z-index: 2;
+                }
+
+                .dna-hero-products::after {
+                  display: none;
                 }
 
                 .dna-hero-product-card {
                   flex-basis: clamp(190px, 42vw, 260px);
+                  opacity: 1;
                 }
 
                 .dna-hero-drag-hint {
@@ -524,8 +557,8 @@ export function ProdutosCapilaresLayout({
             HERO
             ===================================================== */}
         <section className="relative flex min-h-[92vh] items-center overflow-hidden">
-          <div className="container w-full py-24 md:py-32">
-            <div className="max-w-4xl">
+          <div className="container relative z-[4] w-full py-24 md:py-32">
+            <div className="relative z-[5] max-w-4xl">
               <div className="kicker mb-7">
                 Dra. Cristiana Valente · Terapia Capilar
               </div>
