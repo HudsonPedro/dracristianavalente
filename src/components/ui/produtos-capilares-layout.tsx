@@ -1870,6 +1870,98 @@ export function ProdutosCapilaresLayout({
           </div>
         </section>
 
+        {/* =====================================================
+            CTA FINAL
+            ===================================================== */}
+        <section className="container pb-24 pt-8 md:pb-32 md:pt-12">
+          <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[34px] border border-[color:var(--line)] bg-[color:var(--ink)] px-7 py-14 text-white md:px-12 md:py-16 lg:px-16 lg:py-20">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -right-24 -top-32 h-[360px] w-[360px] rounded-full border border-white/10 md:h-[520px] md:w-[520px]"
+            />
+
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -bottom-40 right-[18%] h-[300px] w-[300px] rounded-full border border-[color:var(--gold)]/20 md:h-[420px] md:w-[420px]"
+            />
+
+            <div className="relative z-[2] grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
+              <div className="max-w-4xl">
+                <div className="mb-6 inline-flex rounded-full border border-white/15 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.18em] text-white/65">
+                  Próximo passo
+                </div>
+
+                <h2 className="display text-4xl text-white md:text-6xl">
+                  Não sabe qual produto escolher?{" "}
+                  <span className="italic text-[color:var(--gold2)]">
+                    Comece pela avaliação.
+                  </span>
+                </h2>
+
+                <p className="mt-6 max-w-3xl text-base leading-7 text-white/60 md:text-lg">
+                  A avaliação capilar ajuda a compreender seu momento e orientar
+                  quais produtos, cuidados em casa ou protocolos podem fazer
+                  sentido para a sua rotina.
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
+                <a
+                  href="/avaliacao-capilar-curitiba"
+                  className="btn border border-white bg-white text-[color:var(--ink)] hover:bg-white/90"
+                >
+                  Agendar avaliação
+                </a>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCategoriaSelecionada("todos");
+                    document
+                      .getElementById("catalogo-produtos")
+                      ?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                  }}
+                  className="btn border border-white/20 bg-transparent text-white hover:bg-white/10"
+                >
+                  Rever produtos
+                </button>
+              </div>
+            </div>
+
+            <div className="relative z-[2] mt-12 grid gap-4 border-t border-white/10 pt-8 sm:grid-cols-3">
+              <div>
+                <div className="text-[9px] font-bold uppercase tracking-[0.16em] text-[color:var(--gold2)]">
+                  01
+                </div>
+                <p className="mt-2 text-sm leading-6 text-white/55">
+                  Entenda sua necessidade.
+                </p>
+              </div>
+
+              <div>
+                <div className="text-[9px] font-bold uppercase tracking-[0.16em] text-[color:var(--gold2)]">
+                  02
+                </div>
+                <p className="mt-2 text-sm leading-6 text-white/55">
+                  Receba orientação profissional.
+                </p>
+              </div>
+
+              <div>
+                <div className="text-[9px] font-bold uppercase tracking-[0.16em] text-[color:var(--gold2)]">
+                  03
+                </div>
+                <p className="mt-2 text-sm leading-6 text-white/55">
+                  Defina produtos e próximos cuidados.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </main>
     </>
   );
