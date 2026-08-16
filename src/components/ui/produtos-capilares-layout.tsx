@@ -240,136 +240,6 @@ export function ProdutosCapilaresLayout({
             CSS +
             `
               /* =====================================================
-                 /PRODUTOS-CAPILARES — MESMO DESIGN SYSTEM DO SITE OFICIAL
-                 DNA VITAL permanece somente na experiência dos produtos.
-                 ===================================================== */
-
-              .products-page {
-                background: var(--bg);
-                color: var(--ink);
-              }
-
-              .products-page .container {
-                width: min(1180px, calc(100% - 40px));
-                margin-inline: auto;
-              }
-
-              .products-page .kicker {
-                display: inline-flex;
-                align-items: center;
-                min-height: 30px;
-                padding: 0 14px;
-                border: 1px solid var(--line);
-                border-radius: 999px;
-                background: transparent;
-                color: var(--rose2);
-                font-size: 9px;
-                font-weight: 700;
-                letter-spacing: .18em;
-                text-transform: uppercase;
-              }
-
-              .products-page .display {
-                color: var(--ink);
-                letter-spacing: -.035em;
-                line-height: .98;
-              }
-
-              .products-page .rosetext {
-                color: var(--rose2);
-              }
-
-              .products-page .hair {
-                height: 1px;
-                background: var(--line);
-              }
-
-              .products-page .card,
-              .products-page details {
-                border: 1px solid var(--line);
-                background: rgba(255,255,255,.58);
-                box-shadow: none;
-              }
-
-              .products-page .card {
-                border-radius: 24px;
-              }
-
-              .products-page .btn {
-                min-height: 48px;
-                border-radius: 14px;
-                padding-inline: 22px;
-                font-size: 13px;
-                font-weight: 700;
-                box-shadow: none;
-              }
-
-              .products-page .btn-rose {
-                border: 1px solid var(--ink);
-                background: var(--ink);
-                color: white;
-              }
-
-              .products-page .btn-ghost {
-                border: 1px solid var(--line);
-                background: transparent;
-                color: var(--ink);
-              }
-
-              /* As seções da loja não ganham paleta própria. */
-              .products-page .shop-section,
-              .products-page .shop-section-soft {
-                background: transparent;
-                border: 0;
-              }
-
-              .products-page .shop-panel {
-                border: 1px solid var(--line);
-                background: rgba(255,255,255,.52);
-                box-shadow: none;
-                backdrop-filter: none;
-                -webkit-backdrop-filter: none;
-              }
-
-              @media (hover:hover) and (pointer:fine) {
-                .products-page .card,
-                .products-page details,
-                .products-page .btn {
-                  transition:
-                    transform 280ms ease,
-                    border-color 280ms ease,
-                    background-color 280ms ease,
-                    box-shadow 280ms ease;
-                }
-
-                .products-page .card:hover {
-                  transform: translateY(-3px);
-                  border-color: rgba(138,106,59,.22);
-                  box-shadow: 0 14px 34px rgba(34,28,22,.055);
-                }
-
-                .products-page details:hover {
-                  border-color: rgba(138,106,59,.22);
-                  background: rgba(255,255,255,.72);
-                }
-
-                .products-page .btn:hover {
-                  transform: translateY(-1px);
-                }
-              }
-
-              @media (max-width: 767px) {
-                .products-page .container {
-                  width: min(100% - 28px, 1180px);
-                }
-
-                .products-page .display {
-                  line-height: 1.02;
-                }
-              }
-
-
-              /* =====================================================
                  DNA VITAL — PRODUCT REVEAL
                  Mesmo catálogo. Sem duplicação. Sem marquee infinito.
                  Linha 1: direita -> posição final
@@ -688,128 +558,6 @@ export function ProdutosCapilaresLayout({
               }
 
 
-              /* =====================================================
-                 MICROINTERAÇÕES PREMIUM — DESKTOP
-                 Hover sutil, sem alterar layout e sem afetar mobile.
-                 ===================================================== */
-
-              @media (hover: hover) and (pointer: fine) {
-                .card {
-                  transition:
-                    transform 420ms cubic-bezier(.22, 1, .36, 1),
-                    box-shadow 420ms ease,
-                    border-color 320ms ease,
-                    background-color 320ms ease;
-                  transform: translateZ(0);
-                }
-
-                .card:hover {
-                  transform: translateY(-7px);
-                  border-color: rgba(138,106,59,.28);
-                  box-shadow:
-                    0 22px 55px rgba(25,22,19,.10);
-                }
-
-                .card:hover .rosetext {
-                  transform: translateY(-2px);
-                }
-
-                .btn {
-                  transition:
-                    transform 300ms cubic-bezier(.22,1,.36,1),
-                    box-shadow 300ms ease,
-                    background-color 300ms ease,
-                    border-color 300ms ease,
-                    color 300ms ease;
-                }
-
-                .btn:hover {
-                  transform: translateY(-2px);
-                  box-shadow: 0 12px 28px rgba(25,22,19,.10);
-                }
-
-                #catalogo-produtos button[aria-pressed] {
-                  transition:
-                    transform 300ms cubic-bezier(.22,1,.36,1),
-                    box-shadow 300ms ease,
-                    border-color 300ms ease,
-                    background-color 300ms ease,
-                    color 300ms ease;
-                }
-
-                #catalogo-produtos button[aria-pressed]:hover {
-                  transform: translateY(-3px);
-                  box-shadow: 0 10px 24px rgba(25,22,19,.08);
-                }
-
-                details {
-                  transition:
-                    transform 360ms cubic-bezier(.22,1,.36,1),
-                    box-shadow 360ms ease,
-                    border-color 300ms ease,
-                    background-color 300ms ease;
-                }
-
-                details:hover {
-                  transform: translateY(-3px);
-                  border-color: rgba(138,106,59,.24);
-                  background: rgba(255,255,255,.78);
-                  box-shadow: 0 16px 36px rgba(25,22,19,.07);
-                }
-
-                details summary span:last-child {
-                  transition:
-                    transform 300ms ease,
-                    border-color 300ms ease,
-                    background-color 300ms ease;
-                }
-
-                details:hover summary span:last-child {
-                  border-color: rgba(138,106,59,.30);
-                  background: rgba(201,163,107,.08);
-                }
-
-                a.card,
-                button.card {
-                  position: relative;
-                  overflow: hidden;
-                }
-
-                a.card::after,
-                button.card::after {
-                  content: "";
-                  position: absolute;
-                  inset: 0;
-                  pointer-events: none;
-                  opacity: 0;
-                  background:
-                    radial-gradient(
-                      420px circle at 80% 10%,
-                      rgba(201,163,107,.12),
-                      transparent 52%
-                    );
-                  transition: opacity 360ms ease;
-                }
-
-                a.card:hover::after,
-                button.card:hover::after {
-                  opacity: 1;
-                }
-
-                .dna-hero-product-card {
-                  transition:
-                    transform 420ms cubic-bezier(.22,1,.36,1),
-                    box-shadow 420ms ease,
-                    opacity 320ms ease,
-                    filter 320ms ease;
-                }
-
-                .dna-hero-product-card:hover {
-                  opacity: 1;
-                  filter: saturate(1.04) contrast(1.02);
-                }
-              }
-
               @media (prefers-reduced-motion: reduce) {
                 .dna-product-reveal,
                 .dna-product-reveal[data-direction="right"],
@@ -833,7 +581,7 @@ export function ProdutosCapilaresLayout({
         <div className="l l2" />
       </div>
 
-      <main className="products-page wrap min-h-screen">
+      <main className="wrap min-h-screen">
         {/* =====================================================
             HERO
             ===================================================== */}
@@ -1006,7 +754,7 @@ export function ProdutosCapilaresLayout({
                 3 PILARES
                 ================================================= */}
             <div className="grid gap-5 md:grid-cols-3">
-              <article className="card p-8">
+              <article className="card protocol p-8">
                 <div className="mb-6 flex items-center justify-between">
                   <span className="serif rosetext text-5xl">01</span>
 
@@ -1024,7 +772,7 @@ export function ProdutosCapilaresLayout({
                 </p>
               </article>
 
-              <article className="card p-8">
+              <article className="card protocol p-8">
                 <div className="mb-6 flex items-center justify-between">
                   <span className="serif rosetext text-5xl">02</span>
 
@@ -1043,7 +791,7 @@ export function ProdutosCapilaresLayout({
                 </p>
               </article>
 
-              <article className="card p-8">
+              <article className="card protocol p-8">
                 <div className="mb-6 flex items-center justify-between">
                   <span className="serif rosetext text-5xl">03</span>
 
@@ -1266,7 +1014,7 @@ export function ProdutosCapilaresLayout({
               </div>
 
               <div className="grid gap-5">
-                <article className="card p-7 md:p-8">
+                <article className="card protocol p-7 md:p-8">
                   <div className="flex gap-5">
                     <div className="serif rosetext text-4xl">
                       01
@@ -1286,7 +1034,7 @@ export function ProdutosCapilaresLayout({
                   </div>
                 </article>
 
-                <article className="card p-7 md:p-8">
+                <article className="card protocol p-7 md:p-8">
                   <div className="flex gap-5">
                     <div className="serif rosetext text-4xl">
                       02
@@ -1306,7 +1054,7 @@ export function ProdutosCapilaresLayout({
                   </div>
                 </article>
 
-                <article className="card p-7 md:p-8">
+                <article className="card protocol p-7 md:p-8">
                   <div className="flex gap-5">
                     <div className="serif rosetext text-4xl">
                       03
@@ -1326,7 +1074,7 @@ export function ProdutosCapilaresLayout({
                   </div>
                 </article>
 
-                <article className="card p-7 md:p-8">
+                <article className="card protocol p-7 md:p-8">
                   <div className="flex gap-5">
                     <div className="serif rosetext text-4xl">
                       04
@@ -1423,7 +1171,7 @@ export function ProdutosCapilaresLayout({
               </div>
 
               <div className="grid gap-5">
-                <article className="card p-7 md:p-8">
+                <article className="card protocol p-7 md:p-8">
                   <div className="mb-5 text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
                     01 · Avaliar
                   </div>
@@ -1438,7 +1186,7 @@ export function ProdutosCapilaresLayout({
                   </p>
                 </article>
 
-                <article className="card p-7 md:p-8">
+                <article className="card protocol p-7 md:p-8">
                   <div className="mb-5 text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
                     02 · Indicar
                   </div>
@@ -1497,7 +1245,7 @@ export function ProdutosCapilaresLayout({
             <div className="hair my-10" />
 
             <div className="grid gap-6 md:grid-cols-3">
-              <article className="card p-7 md:p-8">
+              <article className="card protocol p-7 md:p-8">
                 <div className="serif rosetext text-4xl">
                   01
                 </div>
@@ -1512,7 +1260,7 @@ export function ProdutosCapilaresLayout({
                 </p>
               </article>
 
-              <article className="card p-7 md:p-8">
+              <article className="card protocol p-7 md:p-8">
                 <div className="serif rosetext text-4xl">
                   02
                 </div>
@@ -1527,7 +1275,7 @@ export function ProdutosCapilaresLayout({
                 </p>
               </article>
 
-              <article className="card p-7 md:p-8">
+              <article className="card protocol p-7 md:p-8">
                 <div className="serif rosetext text-4xl">
                   03
                 </div>
@@ -1577,7 +1325,7 @@ export function ProdutosCapilaresLayout({
         {/* =====================================================
             PÓS-TRANSPLANTE
             ===================================================== */}
-        <section className="shop-section-soft relative overflow-hidden py-20">
+        <section className="relative overflow-hidden border-y border-[color:var(--line)] bg-[color:var(--bg2)]/45 py-20">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full border border-[color:var(--line)] md:h-[620px] md:w-[620px]"
@@ -1628,14 +1376,14 @@ export function ProdutosCapilaresLayout({
                           block: "start",
                         });
                     }}
-                    className="btn border border-white/20 bg-[color:var(--ink)] text-white"
+                    className="btn border border-white/20 bg-white text-[color:var(--ink)] hover:bg-white/90"
                   >
                     Ver Pós-Transplante
                   </button>
 
                   <a
                     href="/avaliacao-capilar-curitiba"
-                    className="btn border border-white/20 bg-white/40 text-[color:var(--ink)] hover:bg-white/70"
+                    className="btn border border-white/20 bg-transparent text-white hover:bg-white/10"
                   >
                     Falar sobre meu cuidado
                   </a>
@@ -1643,7 +1391,7 @@ export function ProdutosCapilaresLayout({
               </div>
 
               <div className="grid gap-5">
-                <article className="rounded-[26px] border border-[color:var(--line)] bg-white/60 p-7 backdrop-blur-sm md:p-8">
+                <article className="rounded-[26px] border border-[color:var(--line)] bg-white p-7 backdrop-blur-sm md:p-8">
                   <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold2)]">
                     Tônico pós-transplante
                   </div>
@@ -1658,7 +1406,7 @@ export function ProdutosCapilaresLayout({
                   </p>
                 </article>
 
-                <article className="rounded-[26px] border border-[color:var(--line)] bg-white/60 p-7 backdrop-blur-sm md:p-8">
+                <article className="rounded-[26px] border border-[color:var(--line)] bg-white p-7 backdrop-blur-sm md:p-8">
                   <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold2)]">
                     Espuma pós-transplante
                   </div>
@@ -1717,7 +1465,7 @@ export function ProdutosCapilaresLayout({
             <div className="grid gap-6 lg:grid-cols-3">
               <a
                 href="/tratamento-queda-de-cabelo-curitiba"
-                className="card group relative overflow-hidden p-7 transition-transform duration-500 hover:-translate-y-2 md:p-8"
+                className="card protocol group relative overflow-hidden p-7 transition-transform duration-500 hover:-translate-y-2 md:p-8"
               >
                 <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
                   Protocolo 01
@@ -1742,7 +1490,7 @@ export function ProdutosCapilaresLayout({
 
               <a
                 href="/tratamento-capilar-curitiba"
-                className="card group relative overflow-hidden p-7 transition-transform duration-500 hover:-translate-y-2 md:p-8"
+                className="card protocol group relative overflow-hidden p-7 transition-transform duration-500 hover:-translate-y-2 md:p-8"
               >
                 <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
                   Protocolo 02
@@ -1767,7 +1515,7 @@ export function ProdutosCapilaresLayout({
 
               <a
                 href="/avaliacao-capilar-curitiba"
-                className="card group relative overflow-hidden p-7 transition-transform duration-500 hover:-translate-y-2 md:p-8"
+                className="card protocol group relative overflow-hidden p-7 transition-transform duration-500 hover:-translate-y-2 md:p-8"
               >
                 <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
                   Protocolo 03
@@ -1845,7 +1593,7 @@ export function ProdutosCapilaresLayout({
               <div className="hair my-10" />
 
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                <article className="card p-7 md:p-8">
+                <article className="card protocol p-7 md:p-8">
                   <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
                     Couro cabeludo
                   </div>
@@ -1860,7 +1608,7 @@ export function ProdutosCapilaresLayout({
                   </p>
                 </article>
 
-                <article className="card p-7 md:p-8">
+                <article className="card protocol p-7 md:p-8">
                   <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
                     Queda capilar
                   </div>
@@ -1876,7 +1624,7 @@ export function ProdutosCapilaresLayout({
                   </p>
                 </article>
 
-                <article className="card p-7 md:p-8">
+                <article className="card protocol p-7 md:p-8">
                   <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
                     Crescimento
                   </div>
@@ -1891,7 +1639,7 @@ export function ProdutosCapilaresLayout({
                   </p>
                 </article>
 
-                <article className="card p-7 md:p-8">
+                <article className="card protocol p-7 md:p-8">
                   <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
                     Home Care
                   </div>
@@ -1906,7 +1654,7 @@ export function ProdutosCapilaresLayout({
                   </p>
                 </article>
 
-                <article className="card p-7 md:p-8">
+                <article className="card protocol p-7 md:p-8">
                   <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
                     Reestruturação
                   </div>
@@ -1921,7 +1669,7 @@ export function ProdutosCapilaresLayout({
                   </p>
                 </article>
 
-                <article className="card p-7 md:p-8">
+                <article className="card protocol p-7 md:p-8">
                   <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
                     Avaliação
                   </div>
@@ -2075,7 +1823,7 @@ export function ProdutosCapilaresLayout({
                         block: "start",
                       });
                   }}
-                  className="card group min-h-[230px] p-7 text-left transition-transform duration-500 hover:-translate-y-2 md:p-8"
+                  className="card protocol group min-h-[230px] p-7 text-left transition-transform duration-500 hover:-translate-y-2 md:p-8"
                 >
                   <div className="text-[9px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
                     {item.eyebrow}
@@ -2126,25 +1874,15 @@ export function ProdutosCapilaresLayout({
         {/* =====================================================
             CTA FINAL
             ===================================================== */}
-        <section className="container py-20">
-          <div className="shop-panel relative mx-auto max-w-6xl overflow-hidden rounded-[28px] px-7 py-14 text-[color:var(--ink)] md:px-12 md:py-16 lg:px-16 lg:py-20">
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -right-24 -top-32 h-[360px] w-[360px] rounded-full border border-[color:var(--line)] md:h-[520px] md:w-[520px]"
-            />
-
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -bottom-40 right-[18%] h-[300px] w-[300px] rounded-full border border-[color:var(--gold)]/20 md:h-[420px] md:w-[420px]"
-            />
-
-            <div className="relative z-[2] grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
-              <div className="max-w-4xl">
-                <div className="mb-6 inline-flex rounded-full border border-[color:var(--line)] px-4 py-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--muted)]">
+        <section className="container pb-24 pt-8 md:pb-32 md:pt-12">
+          <div className="card protocol mx-auto max-w-4xl p-8 text-center md:p-12">
+<div className="mx-auto max-w-3xl">
+              <div className="mx-auto max-w-3xl">
+                <div className="kicker mb-6 mx-auto">
                   Próximo passo
                 </div>
 
-                <h2 className="display text-4xl text-[color:var(--ink)] md:text-6xl">
+                <h2 className="display text-4xl text-[color:var(--ink)] md:text-5xl">
                   Não sabe qual produto escolher?{" "}
                   <span className="italic text-[color:var(--gold2)]">
                     Comece pela avaliação.
@@ -2158,7 +1896,7 @@ export function ProdutosCapilaresLayout({
                 </p>
               </div>
 
-              <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
+              <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
                 <a
                   href="/avaliacao-capilar-curitiba"
                   className="btn btn-rose"
@@ -2177,78 +1915,301 @@ export function ProdutosCapilaresLayout({
                         block: "start",
                       });
                   }}
-                  className="btn border border-white/20 bg-white/40 text-[color:var(--ink)] hover:bg-white/70"
+                  className="btn btn-ghost"
                 >
                   Rever produtos
                 </button>
               </div>
             </div>
 
-            <div className="relative z-[2] mt-12 grid gap-4 border-t border-white/10 pt-8 sm:grid-cols-3">
-              <div>
-                <div className="text-[9px] font-bold uppercase tracking-[0.16em] text-[color:var(--gold2)]">
-                  01
-                </div>
-                <p className="mt-2 text-sm leading-6 text-[color:var(--muted)]">
-                  Entenda sua necessidade.
-                </p>
-              </div>
+                      </div>
+        </section>
 
-              <div>
-                <div className="text-[9px] font-bold uppercase tracking-[0.16em] text-[color:var(--gold2)]">
-                  02
-                </div>
-                <p className="mt-2 text-sm leading-6 text-[color:var(--muted)]">
-                  Receba orientação profissional.
+        {/* FAQ — MESMO DESIGN DA HOME */}
+        <section id="faq" className="container py-20">
+          <div className="mx-auto max-w-4xl">
+            <div className="reveal kicker mb-6">Dúvidas frequentes</div>
+            <h2 className="reveal display text-4xl md:text-5xl">
+              Antes de escolher seus{" "}
+              <span className="rosetext italic">produtos capilares.</span>
+            </h2>
+            <p className="reveal mt-6 max-w-3xl text-lg leading-relaxed text-[color:var(--muted)]">
+              Informações sobre compra, avaliação, Home Care, produtos profissionais e cuidados específicos.
+            </p>
+            <div className="mt-10">
+              <details className="faq reveal">
+                <summary>
+                  Posso comprar qualquer produto diretamente?
+                  <span className="pl">+</span>
+                </summary>
+                <p className="pb-5 text-[color:var(--muted)] leading-relaxed">
+                  Não necessariamente. A disponibilidade depende do produto. Alguns itens podem estar disponíveis para compra direta, enquanto outros podem exigir avaliação, indicação profissional ou integração com um protocolo.
                 </p>
-              </div>
-
-              <div>
-                <div className="text-[9px] font-bold uppercase tracking-[0.16em] text-[color:var(--gold2)]">
-                  03
-                </div>
-                <p className="mt-2 text-sm leading-6 text-[color:var(--muted)]">
-                  Defina produtos e próximos cuidados.
+              </details>
+              <details className="faq reveal">
+                <summary>
+                  Preciso fazer avaliação antes de comprar?
+                  <span className="pl">+</span>
+                </summary>
+                <p className="pb-5 text-[color:var(--muted)] leading-relaxed">
+                  Depende do produto e do objetivo. Quando houver necessidade de compreender melhor o couro cabeludo, os fios ou a estratégia de cuidado, a avaliação profissional pode ser indicada antes da escolha.
                 </p>
-              </div>
+              </details>
+              <details className="faq reveal">
+                <summary>
+                  Qual a diferença entre produto profissional e Home Care?
+                  <span className="pl">+</span>
+                </summary>
+                <p className="pb-5 text-[color:var(--muted)] leading-relaxed">
+                  Os produtos profissionais são destinados ao uso em clínica e podem integrar protocolos. As linhas Home Care são voltadas à continuidade da rotina fora da clínica, conforme a indicação de uso.
+                </p>
+              </details>
+              <details className="faq reveal">
+                <summary>
+                  Os produtos Home Care substituem o tratamento na clínica?
+                  <span className="pl">+</span>
+                </summary>
+                <p className="pb-5 text-[color:var(--muted)] leading-relaxed">
+                  Não. Eles podem complementar e dar continuidade ao cuidado, mas não substituem automaticamente protocolos, avaliação ou acompanhamento profissional quando estes forem necessários.
+                </p>
+              </details>
+              <details className="faq reveal">
+                <summary>
+                  Existe uma linha específica para pós-transplante?
+                  <span className="pl">+</span>
+                </summary>
+                <p className="pb-5 text-[color:var(--muted)] leading-relaxed">
+                  Sim. O catálogo possui uma linha Pós-Transplante Home Care voltada aos cuidados específicos dessa fase. O uso deve respeitar as orientações do profissional responsável pelo procedimento.
+                </p>
+              </details>
+              <details className="faq reveal">
+                <summary>
+                  Como descubro qual produto faz sentido para mim?
+                  <span className="pl">+</span>
+                </summary>
+                <p className="pb-5 text-[color:var(--muted)] leading-relaxed">
+                  Você pode explorar o catálogo por objetivo e conhecer as características de cada linha. Se ainda houver dúvida, a avaliação capilar é o caminho indicado para receber orientação individualizada.
+                </p>
+              </details>
+              <details className="faq reveal">
+                <summary>
+                  As informações desta página fazem diagnóstico?
+                  <span className="pl">+</span>
+                </summary>
+                <p className="pb-5 text-[color:var(--muted)] leading-relaxed">
+                  Não. O conteúdo é educativo e comercial. Esta página não realiza diagnóstico automático e não substitui uma avaliação profissional individualizada.
+                </p>
+              </details>
+            </div>
+            <div className="reveal mt-10">
+              <a href="/avaliacao-capilar-curitiba" className="btn btn-rose">
+                Agendar avaliação →
+              </a>
             </div>
           </div>
         </section>
 
-        {/* FAQ */}
-        <section className="container py-20">
-          <div className="mx-auto max-w-5xl">
-            <div className="mx-auto max-w-3xl text-center">
-              <div className="kicker mb-6 mx-auto">Dúvidas frequentes</div>
-              <h2 className="display text-4xl md:text-6xl">Antes de escolher seus <span className="rosetext italic">produtos capilares.</span></h2>
-              <p className="mt-6 text-base leading-7 text-[color:var(--muted)] md:text-lg">Informações rápidas sobre compra, avaliação, Home Care, produtos profissionais e cuidados específicos.</p>
+        {/* =====================================================
+            FOOTER
+            ===================================================== */}
+        <footer className="border-t border-[color:var(--line)] bg-[color:var(--ink)] py-16 text-white md:py-20">
+          <div className="container">
+            <div className="grid gap-12 lg:grid-cols-[1.2fr_.8fr_.8fr_.8fr]">
+              <div className="max-w-md">
+                <div className="kicker mb-5 text-white/70">
+                  Dra. Cristiana Valente
+                </div>
+
+                <h2 className="display text-3xl text-white md:text-4xl">
+                  Produtos capilares com orientação, protocolo e continuidade.
+                </h2>
+
+                <p className="mt-5 text-sm leading-6 text-white/55">
+                  Catálogo oficial integrado à jornada de avaliação, tratamento,
+                  Home Care e acompanhamento capilar.
+                </p>
+
+                <div className="mt-7 flex flex-col gap-3 sm:flex-row lg:flex-col lg:items-start">
+                  <a
+                    href="/avaliacao-capilar-curitiba"
+                    className="btn border border-white bg-white text-[color:var(--ink)] hover:bg-white/90"
+                  >
+                    Agendar avaliação
+                  </a>
+
+                  <a
+                    href="/"
+                    className="btn border border-white/20 bg-transparent text-white hover:bg-white/10"
+                  >
+                    Voltar ao site
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold2)]">
+                  Produtos
+                </div>
+
+                <div className="mt-5 grid gap-3 text-sm text-white/60">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCategoriaSelecionada("todos");
+                      document
+                        .getElementById("catalogo-produtos")
+                        ?.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
+                    }}
+                    className="text-left transition hover:text-white"
+                  >
+                    Todos os produtos
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCategoriaSelecionada("home-care");
+                      document
+                        .getElementById("catalogo-produtos")
+                        ?.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
+                    }}
+                    className="text-left transition hover:text-white"
+                  >
+                    Home Care
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCategoriaSelecionada("profissional");
+                      document
+                        .getElementById("catalogo-produtos")
+                        ?.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
+                    }}
+                    className="text-left transition hover:text-white"
+                  >
+                    Profissional
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCategoriaSelecionada("pos-transplante");
+                      document
+                        .getElementById("catalogo-produtos")
+                        ?.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
+                    }}
+                    className="text-left transition hover:text-white"
+                  >
+                    Pós-transplante
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCategoriaSelecionada("crescimento");
+                      document
+                        .getElementById("catalogo-produtos")
+                        ?.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
+                    }}
+                    className="text-left transition hover:text-white"
+                  >
+                    Crescimento
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold2)]">
+                  Atendimento
+                </div>
+
+                <div className="mt-5 grid gap-3 text-sm text-white/60">
+                  <a
+                    href="/avaliacao-capilar-curitiba"
+                    className="transition hover:text-white"
+                  >
+                    Agendar avaliação
+                  </a>
+
+                  <a
+                    href="/tratamento-capilar-curitiba"
+                    className="transition hover:text-white"
+                  >
+                    Protocolos capilares
+                  </a>
+
+                  <a
+                    href="/tratamento-queda-de-cabelo-curitiba"
+                    className="transition hover:text-white"
+                  >
+                    Queda de cabelo
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold2)]">
+                  Institucional
+                </div>
+
+                <div className="mt-5 grid gap-3 text-sm text-white/60">
+                  <a href="/" className="transition hover:text-white">
+                    Site principal
+                  </a>
+
+                  <a
+                    href="/avaliacao-capilar-curitiba"
+                    className="transition hover:text-white"
+                  >
+                    Avaliação capilar
+                  </a>
+
+                  <span className="text-white/35">
+                    Política de Privacidade · em breve
+                  </span>
+
+                  <span className="text-white/35">
+                    Termos de Uso · em breve
+                  </span>
+
+                  <span className="text-white/35">
+                    Política de Entrega · em breve
+                  </span>
+
+                  <span className="text-white/35">
+                    Política de Trocas · em breve
+                  </span>
+                </div>
+              </div>
             </div>
-            <div className="hair my-10" />
-            <div className="grid gap-4">
-              {[
-                ["Posso comprar qualquer produto diretamente?", "Não necessariamente. A disponibilidade depende do produto. Alguns itens podem estar disponíveis para compra direta, enquanto outros podem exigir avaliação, indicação profissional ou integração com um protocolo."],
-                ["Preciso fazer avaliação antes de comprar?", "Depende do produto e do objetivo. Quando houver necessidade de compreender melhor o couro cabeludo, os fios ou a estratégia de cuidado, a avaliação profissional pode ser indicada antes da escolha."],
-                ["Qual a diferença entre produto profissional e Home Care?", "Os produtos profissionais são destinados ao uso em clínica e podem integrar protocolos. As linhas Home Care são voltadas à continuidade da rotina fora da clínica, conforme a indicação de uso."],
-                ["Os produtos Home Care substituem o tratamento na clínica?", "Não. Eles podem complementar e dar continuidade ao cuidado, mas não substituem automaticamente protocolos, avaliação ou acompanhamento profissional quando estes forem necessários."],
-                ["Existe uma linha específica para pós-transplante?", "Sim. O catálogo possui uma linha Pós-Transplante Home Care voltada aos cuidados específicos dessa fase. O uso deve respeitar as orientações do profissional responsável pelo procedimento."],
-                ["Como descubro qual produto faz sentido para mim?", "Você pode explorar o catálogo por objetivo e conhecer as características de cada linha. Se ainda houver dúvida, a avaliação capilar é o caminho indicado para receber orientação individualizada."],
-                ["As informações desta página fazem diagnóstico?", "Não. O conteúdo é educativo e comercial. Esta página não realiza diagnóstico automático e não substitui uma avaliação profissional individualizada."],
-              ].map(([question, answer], index) => (
-                <details key={question} className="group rounded-[24px] border border-[color:var(--line)] bg-white/60 px-6 py-1 md:px-8">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-6 [&::-webkit-details-marker]:hidden">
-                    <div className="flex items-center gap-5"><span className="serif rosetext text-lg">{String(index + 1).padStart(2, "0")}</span><h3 className="serif text-left text-xl md:text-2xl">{question}</h3></div>
-                    <span aria-hidden="true" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[color:var(--line)] text-lg transition-transform duration-300 group-open:rotate-45">+</span>
-                  </summary>
-                  <div className="border-t border-[color:var(--line)] py-6 text-sm leading-7 text-[color:var(--muted)] md:pl-12 md:text-base">{answer}</div>
-                </details>
-              ))}
-            </div>
-            <div className="mt-10 text-center">
-              <p className="text-sm leading-6 text-[color:var(--muted)]">Ainda ficou com alguma dúvida sobre qual caminho seguir?</p>
-              <a href="/avaliacao-capilar-curitiba" className="btn btn-rose mt-6">Agendar avaliação capilar</a>
+
+            <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-7 text-xs text-white/40 md:flex-row md:items-center md:justify-between">
+              <p>
+                © {new Date().getFullYear()} © 2026 Powered by ✠ HPtech PlatForm. Todos os direitos reservados.
+              </p>
+
+              <p>
+                Produtos capilares · DNA VITAL
+              </p>
             </div>
           </div>
-        </section>
+        </footer>
 
       </main>
     </>
