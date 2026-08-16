@@ -385,31 +385,32 @@ export function ProdutosCapilaresLayout({
               .dna-hero-product-image-wrap {
                 position: absolute;
                 inset: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 16px;
+                overflow: hidden;
+                border-radius: inherit;
               }
 
               .dna-hero-product-image {
+                display: block;
                 width: 100%;
                 height: 100%;
-                object-fit: contain;
+                object-fit: cover;
+                object-position: center;
                 pointer-events: none;
-                filter:
-                  drop-shadow(0 20px 22px rgba(25,22,19,.13));
+                user-select: none;
+                -webkit-user-drag: none;
               }
 
               .dna-hero-product-caption {
                 position: absolute;
-                left: 14px;
-                right: 14px;
-                bottom: 14px;
+                left: 12px;
+                right: 12px;
+                bottom: 12px;
                 z-index: 2;
                 padding: 11px 13px;
-                border-radius: 15px;
-                background: rgba(255,255,255,.82);
-                border: 1px solid rgba(255,255,255,.66);
+                border-radius: 16px;
+                background: rgba(255,255,255,.88);
+                border: 1px solid rgba(255,255,255,.72);
+                box-shadow: 0 10px 28px rgba(25,22,19,.10);
                 backdrop-filter: blur(14px);
                 -webkit-backdrop-filter: blur(14px);
               }
