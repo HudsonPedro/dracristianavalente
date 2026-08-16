@@ -1,3 +1,9 @@
+import { useState } from "react";
+
+import {
+  canProductBeAddedToCart,
+  useCart,
+} from "../../contexts/cart-context";
 import type { Product } from "../../types/product";
 
 type ProductCardProps = {
@@ -5,6 +11,12 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ product }: ProductCardProps) {
+  const { addItem } = useCart();
+
+  const [cartFeedback, setCartFeedback] = useState<string | null>(
+    null,
+  );
+
   const productHref = `/produtos-capilares/${product.slug}`;
 
   const formatPrice = (value: number) =>
@@ -30,7 +42,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
             <div className="serif mt-1 text-2xl">
               {formatPrice(
-                product.promotionalPrice ?? product.price
+                product.promotionalPrice ?? product.price,
               )}
             </div>
           </div>
@@ -95,24 +107,24 @@ export function ProductCard({ product }: ProductCardProps) {
     }
   };
 
-  const getCta = () => {
-    if (
-      product.saleEnabled &&
-      product.priceVisibility === "SHOW_PRICE"
-    ) {
-      return {
-        label: "Adicionar ao carrinho",
-        href: "#",
-      };
+  const cartEligibility =
+    canProductBeAddedToCart(product);
+
+  const canAddToCart =
+    cartEligibility.success;
+
+  const handleAddToCart = () => {
+    setCartFeedback(null);
+
+    const result = addItem(product);
+
+    if (!result.success) {
+      setCartFeedback(result.reason);
+      return;
     }
 
-    return {
-      label: "Conhecer produto",
-      href: productHref,
-    };
+    setCartFeedback("Produto adicionado ao carrinho.");
   };
-
-  const cta = getCta();
 
   return (
     <article className="card group flex h-full flex-col overflow-hidden">
@@ -289,7 +301,7 @@ export function ProductCard({ product }: ProductCardProps) {
                         )}
                       </div>
                     </div>
-                  )
+                  ),
                 )}
               </div>
             </div>
@@ -377,12 +389,45 @@ export function ProductCard({ product }: ProductCardProps) {
             />
           </div>
 
-          <a
-            href={cta.href}
-            className="btn btn-wa mt-6 w-full"
-          >
-            {cta.label} →
-          </a>
+          {/* ===================================================
+              CTA
+              =================================================== */}
+          {canAddToCart ? (
+            <button
+              type="button"
+              onClick={handleAddToCart}
+              className="btn btn-wa mt-6 w-full"
+            >
+              Adicionar ao carrinho →
+            </button>
+          ) : (
+            <a
+              href={productHref}
+              className="btn btn-wa mt-6 w-full"
+            >
+              Conhecer produto →
+            </a>
+          )}
+
+          {/* ===================================================
+              FEEDBACK DO CARRINHO
+              =================================================== */}
+          {cartFeedback && (
+            <div className="mt-4 rounded-[14px] border border-[color:var(--line)] bg-white/65 p-4 text-center">
+              <p className="text-xs font-semibold text-[color:var(--ink)]">
+                {cartFeedback}
+              </p>
+
+              {canAddToCart && (
+                <a
+                  href="/carrinho"
+                  className="mt-2 inline-block text-xs font-bold text-[color:var(--rose2)] transition hover:text-[color:var(--ink)]"
+                >
+                  Ver carrinho →
+                </a>
+              )}
+            </div>
+          )}
 
           {product.officialSource && (
             <p className="mt-4 text-center text-[9px] uppercase tracking-[0.12em] text-[color:var(--muted)]">
