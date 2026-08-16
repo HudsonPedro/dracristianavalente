@@ -1321,6 +1321,120 @@ export function ProdutosCapilaresLayout({
           </div>
         </section>
 
+        {/* =====================================================
+            PÓS-TRANSPLANTE
+            ===================================================== */}
+        <section className="relative overflow-hidden bg-[color:var(--ink)] py-24 text-white md:py-32">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full border border-white/10 md:h-[620px] md:w-[620px]"
+          />
+
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -bottom-40 right-20 h-[320px] w-[320px] rounded-full border border-[color:var(--gold)]/25 md:h-[460px] md:w-[460px]"
+          />
+
+          <div className="container relative z-[2]">
+            <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1fr_1fr] lg:items-center">
+              <div>
+                <div className="mb-6 inline-flex rounded-full border border-white/15 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.18em] text-white/70">
+                  Cuidado específico
+                </div>
+
+                <h2 className="display text-4xl text-white md:text-6xl">
+                  Pós-transplante exige uma rotina{" "}
+                  <span className="italic text-[color:var(--gold2)]">
+                    própria de cuidado.
+                  </span>
+                </h2>
+
+                <p className="mt-6 max-w-2xl text-base leading-7 text-white/65 md:text-lg">
+                  A linha Pós-Transplante Home Care integra os cuidados do
+                  couro cabeludo após o procedimento, com produtos destinados
+                  à higienização e ao cuidado dessa fase específica.
+                </p>
+
+                <div className="my-8 h-px max-w-[240px] bg-white/15" />
+
+                <p className="max-w-2xl text-sm leading-6 text-white/55">
+                  A utilização deve respeitar a orientação recebida para o
+                  período pós-procedimento e o acompanhamento profissional
+                  responsável pelo transplante.
+                </p>
+
+                <div className="mt-9 flex flex-col gap-4 sm:flex-row">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCategoriaSelecionada("pos-transplante");
+                      document
+                        .getElementById("catalogo-produtos")
+                        ?.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
+                    }}
+                    className="btn border border-white/20 bg-white text-[color:var(--ink)] hover:bg-white/90"
+                  >
+                    Ver Pós-Transplante
+                  </button>
+
+                  <a
+                    href="/avaliacao-capilar-curitiba"
+                    className="btn border border-white/20 bg-transparent text-white hover:bg-white/10"
+                  >
+                    Falar sobre meu cuidado
+                  </a>
+                </div>
+              </div>
+
+              <div className="grid gap-5">
+                <article className="rounded-[26px] border border-white/10 bg-white/[0.06] p-7 backdrop-blur-sm md:p-8">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold2)]">
+                    Tônico pós-transplante
+                  </div>
+
+                  <h3 className="serif mt-4 text-2xl text-white">
+                    Cuidado do couro cabeludo
+                  </h3>
+
+                  <p className="mt-3 leading-7 text-white/60">
+                    Produto da linha voltado ao cuidado do couro cabeludo no
+                    período pós-transplante, conforme orientação profissional.
+                  </p>
+                </article>
+
+                <article className="rounded-[26px] border border-white/10 bg-white/[0.06] p-7 backdrop-blur-sm md:p-8">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold2)]">
+                    Espuma pós-transplante
+                  </div>
+
+                  <h3 className="serif mt-4 text-2xl text-white">
+                    Higienização delicada
+                  </h3>
+
+                  <p className="mt-3 leading-7 text-white/60">
+                    Shampoo em espuma desenvolvido para a higienização do couro
+                    cabeludo durante os cuidados do pós-transplante.
+                  </p>
+                </article>
+
+                <div className="rounded-[26px] border border-[color:var(--gold)]/25 bg-[color:var(--gold)]/[0.08] p-7 md:p-8">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold2)]">
+                    Atenção
+                  </div>
+
+                  <p className="serif mt-4 text-xl leading-relaxed text-white/85 md:text-2xl">
+                    O cuidado pós-transplante deve seguir as orientações do
+                    profissional responsável pelo procedimento.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </main>
     </>
   );
