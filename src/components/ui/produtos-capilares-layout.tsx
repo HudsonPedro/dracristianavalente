@@ -1107,6 +1107,114 @@ export function ProdutosCapilaresLayout({
             </div>
           </div>
         </section>
+        {/* =====================================================
+            AVALIAÇÃO PROFISSIONAL
+            ===================================================== */}
+        <section className="relative overflow-hidden border-y border-[color:var(--line)] bg-white/45 py-24 md:py-32">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -left-32 top-1/2 h-[360px] w-[360px] -translate-y-1/2 rounded-full border border-[color:var(--gold)]/15 md:h-[520px] md:w-[520px]"
+          />
+
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -left-12 top-1/2 h-[240px] w-[240px] -translate-y-1/2 rounded-full border border-[color:var(--gold)]/10 md:h-[360px] md:w-[360px]"
+          />
+
+          <div className="container relative z-[2]">
+            <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.02fr_.98fr] lg:items-center">
+              <div>
+                <div className="kicker mb-6">
+                  Avaliação profissional
+                </div>
+
+                <h2 className="display text-4xl md:text-6xl">
+                  Nem todo produto é indicado para{" "}
+                  <span className="rosetext italic">
+                    todas as pessoas.
+                  </span>
+                </h2>
+
+                <p className="mt-6 max-w-2xl text-base leading-7 text-[color:var(--muted)] md:text-lg">
+                  Alguns produtos podem estar disponíveis para compra direta,
+                  enquanto outros dependem de avaliação, indicação profissional
+                  ou integração com um protocolo realizado na clínica.
+                </p>
+
+                <div className="hair my-8 max-w-[240px]" />
+
+                <p className="max-w-2xl text-sm leading-6 text-[color:var(--muted)]">
+                  A avaliação ajuda a compreender o momento do couro cabeludo e
+                  dos fios antes de definir quais produtos podem integrar a
+                  rotina de cuidado.
+                </p>
+
+                <div className="mt-9 flex flex-col gap-4 sm:flex-row">
+                  <a
+                    href="/avaliacao-capilar-curitiba"
+                    className="btn btn-rose"
+                  >
+                    Agendar avaliação
+                  </a>
+
+                  <button
+                    type="button"
+                    disabled
+                    aria-disabled="true"
+                    className="btn btn-ghost cursor-not-allowed opacity-60"
+                    title="Área do paciente em preparação"
+                  >
+                    Já sou paciente · em breve
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid gap-5">
+                <article className="card p-7 md:p-8">
+                  <div className="mb-5 text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+                    01 · Avaliar
+                  </div>
+
+                  <h3 className="serif text-2xl">
+                    Entender antes de indicar
+                  </h3>
+
+                  <p className="mt-3 leading-7 text-[color:var(--muted)]">
+                    A necessidade de avaliação depende do produto, do objetivo
+                    e do contexto de cuidado de cada pessoa.
+                  </p>
+                </article>
+
+                <article className="card p-7 md:p-8">
+                  <div className="mb-5 text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+                    02 · Indicar
+                  </div>
+
+                  <h3 className="serif text-2xl">
+                    Produto dentro de uma estratégia
+                  </h3>
+
+                  <p className="mt-3 leading-7 text-[color:var(--muted)]">
+                    Quando necessário, a recomendação é integrada ao protocolo,
+                    à rotina Home Care e ao acompanhamento profissional.
+                  </p>
+                </article>
+
+                <article className="rounded-[24px] border border-[color:var(--line)] bg-[color:var(--bg)]/88 p-7 md:p-8">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+                    Importante
+                  </div>
+
+                  <p className="serif mt-4 text-2xl leading-relaxed">
+                    Esta página não realiza diagnóstico automático e não
+                    substitui avaliação profissional.
+                  </p>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </main>
     </>
   );
