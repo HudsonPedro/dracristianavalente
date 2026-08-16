@@ -2120,6 +2120,208 @@ export function ProdutosCapilaresLayout({
           </div>
         </section>
 
+        {/* =====================================================
+            FOOTER
+            ===================================================== */}
+        <footer className="border-t border-[color:var(--line)] bg-[color:var(--ink)] py-16 text-white md:py-20">
+          <div className="container">
+            <div className="grid gap-12 lg:grid-cols-[1.2fr_.8fr_.8fr_.8fr]">
+              <div className="max-w-md">
+                <div className="kicker mb-5 text-white/70">
+                  Dra. Cristiana Valente
+                </div>
+
+                <h2 className="display text-3xl text-white md:text-4xl">
+                  Produtos capilares com orientação, protocolo e continuidade.
+                </h2>
+
+                <p className="mt-5 text-sm leading-6 text-white/55">
+                  Catálogo oficial integrado à jornada de avaliação, tratamento,
+                  Home Care e acompanhamento capilar.
+                </p>
+
+                <div className="mt-7 flex flex-col gap-3 sm:flex-row lg:flex-col lg:items-start">
+                  <a
+                    href="/avaliacao-capilar-curitiba"
+                    className="btn border border-white bg-white text-[color:var(--ink)] hover:bg-white/90"
+                  >
+                    Agendar avaliação
+                  </a>
+
+                  <a
+                    href="/"
+                    className="btn border border-white/20 bg-transparent text-white hover:bg-white/10"
+                  >
+                    Voltar ao site
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold2)]">
+                  Produtos
+                </div>
+
+                <div className="mt-5 grid gap-3 text-sm text-white/60">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCategoriaSelecionada("todos");
+                      document
+                        .getElementById("catalogo-produtos")
+                        ?.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
+                    }}
+                    className="text-left transition hover:text-white"
+                  >
+                    Todos os produtos
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCategoriaSelecionada("home-care");
+                      document
+                        .getElementById("catalogo-produtos")
+                        ?.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
+                    }}
+                    className="text-left transition hover:text-white"
+                  >
+                    Home Care
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCategoriaSelecionada("profissional");
+                      document
+                        .getElementById("catalogo-produtos")
+                        ?.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
+                    }}
+                    className="text-left transition hover:text-white"
+                  >
+                    Profissional
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCategoriaSelecionada("pos-transplante");
+                      document
+                        .getElementById("catalogo-produtos")
+                        ?.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
+                    }}
+                    className="text-left transition hover:text-white"
+                  >
+                    Pós-transplante
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCategoriaSelecionada("crescimento");
+                      document
+                        .getElementById("catalogo-produtos")
+                        ?.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
+                    }}
+                    className="text-left transition hover:text-white"
+                  >
+                    Crescimento
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold2)]">
+                  Atendimento
+                </div>
+
+                <div className="mt-5 grid gap-3 text-sm text-white/60">
+                  <a
+                    href="/avaliacao-capilar-curitiba"
+                    className="transition hover:text-white"
+                  >
+                    Agendar avaliação
+                  </a>
+
+                  <a
+                    href="/tratamento-capilar-curitiba"
+                    className="transition hover:text-white"
+                  >
+                    Protocolos capilares
+                  </a>
+
+                  <a
+                    href="/tratamento-queda-de-cabelo-curitiba"
+                    className="transition hover:text-white"
+                  >
+                    Queda de cabelo
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold2)]">
+                  Institucional
+                </div>
+
+                <div className="mt-5 grid gap-3 text-sm text-white/60">
+                  <a href="/" className="transition hover:text-white">
+                    Site principal
+                  </a>
+
+                  <a
+                    href="/avaliacao-capilar-curitiba"
+                    className="transition hover:text-white"
+                  >
+                    Avaliação capilar
+                  </a>
+
+                  <span className="text-white/35">
+                    Política de Privacidade · em breve
+                  </span>
+
+                  <span className="text-white/35">
+                    Termos de Uso · em breve
+                  </span>
+
+                  <span className="text-white/35">
+                    Política de Entrega · em breve
+                  </span>
+
+                  <span className="text-white/35">
+                    Política de Trocas · em breve
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-7 text-xs text-white/40 md:flex-row md:items-center md:justify-between">
+              <p>
+                © {new Date().getFullYear()} Dra. Cristiana Valente. Todos os direitos reservados.
+              </p>
+
+              <p>
+                Produtos capilares · DNA VITAL
+              </p>
+            </div>
+          </div>
+        </footer>
+
       </main>
     </>
   );
