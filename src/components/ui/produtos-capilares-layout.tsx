@@ -1215,6 +1215,112 @@ export function ProdutosCapilaresLayout({
           </div>
         </section>
 
+        {/* =====================================================
+            HOME CARE
+            ===================================================== */}
+        <section className="container py-24 md:py-32">
+          <div className="mx-auto max-w-6xl">
+            <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+              <div>
+                <div className="kicker mb-6">
+                  Continuidade do cuidado
+                </div>
+
+                <h2 className="display text-4xl md:text-6xl">
+                  Home Care não é um produto isolado.{" "}
+                  <span className="rosetext italic">
+                    É continuidade.
+                  </span>
+                </h2>
+              </div>
+
+              <p className="max-w-xl text-base leading-7 text-[color:var(--muted)] md:text-lg lg:justify-self-end">
+                As linhas Home Care ajudam a manter em casa o cuidado iniciado
+                na clínica, respeitando a indicação, a rotina e o momento de
+                cada paciente.
+              </p>
+            </div>
+
+            <div className="hair my-10" />
+
+            <div className="grid gap-6 md:grid-cols-3">
+              <article className="card p-7 md:p-8">
+                <div className="serif rosetext text-4xl">
+                  01
+                </div>
+
+                <h3 className="serif mt-5 text-2xl">
+                  Manutenção
+                </h3>
+
+                <p className="mt-3 leading-7 text-[color:var(--muted)]">
+                  Produtos para dar continuidade, em casa, ao cuidado realizado
+                  e orientado na clínica.
+                </p>
+              </article>
+
+              <article className="card p-7 md:p-8">
+                <div className="serif rosetext text-4xl">
+                  02
+                </div>
+
+                <h3 className="serif mt-5 text-2xl">
+                  Rotina
+                </h3>
+
+                <p className="mt-3 leading-7 text-[color:var(--muted)]">
+                  A escolha considera frequência de uso, objetivo e integração
+                  com os demais produtos da rotina capilar.
+                </p>
+              </article>
+
+              <article className="card p-7 md:p-8">
+                <div className="serif rosetext text-4xl">
+                  03
+                </div>
+
+                <h3 className="serif mt-5 text-2xl">
+                  Acompanhamento
+                </h3>
+
+                <p className="mt-3 leading-7 text-[color:var(--muted)]">
+                  Quando necessário, a rotina pode ser ajustada conforme a
+                  evolução observada durante o acompanhamento profissional.
+                </p>
+              </article>
+            </div>
+
+            <div className="mt-10 flex flex-col items-start justify-between gap-6 rounded-[26px] border border-[color:var(--line)] bg-white/55 p-7 md:flex-row md:items-center md:p-9">
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+                  Produtos Home Care
+                </div>
+
+                <p className="serif mt-3 max-w-2xl text-2xl leading-relaxed">
+                  Veja no catálogo as linhas indicadas para continuidade do
+                  cuidado fora da clínica.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setCategoriaSelecionada("home-care");
+                  document
+                    .getElementById("catalogo-produtos")
+                    ?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                }}
+                className="btn btn-rose shrink-0"
+              >
+                Ver Home Care
+              </button>
+            </div>
+          </div>
+        </section>
+
       </main>
     </>
   );
