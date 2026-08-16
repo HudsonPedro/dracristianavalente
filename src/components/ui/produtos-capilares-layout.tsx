@@ -482,15 +482,29 @@ export function ProdutosCapilaresLayout({
               }
 
               @media (max-width: 1023px) {
+                .dna-products-hero {
+                  flex-direction: column;
+                  align-items: stretch;
+                  min-height: auto;
+                }
+
+                .dna-products-hero > .container {
+                  width: 100%;
+                  flex: 0 0 auto;
+                }
+
                 .dna-hero-products {
                   position: relative;
                   left: auto;
                   right: auto;
                   top: auto;
                   width: calc(100% + 48px);
-                  margin: 50px -24px 0;
+                  min-height: 390px;
+                  margin: 22px -24px 0;
                   transform: none;
                   z-index: 2;
+                  overflow: hidden;
+                  flex: 0 0 auto;
                 }
 
                 .dna-hero-products::after {
@@ -512,20 +526,34 @@ export function ProdutosCapilaresLayout({
               }
 
               @media (max-width: 640px) {
+                .dna-products-hero {
+                  overflow: hidden;
+                }
+
                 .dna-hero-products {
                   width: calc(100% + 32px);
-                  margin-left: -16px;
-                  margin-right: -16px;
+                  min-height: 340px;
+                  margin: 16px -16px 0;
                 }
 
                 .dna-hero-product-track {
                   gap: 14px;
-                  padding: 22px 0 82px;
+                  padding: 18px 0 78px;
                 }
 
                 .dna-hero-product-card {
                   flex-basis: min(64vw, 235px);
                   border-radius: 20px;
+                }
+
+                .dna-hero-product-image-wrap,
+                .dna-hero-product-image {
+                  border-radius: 20px;
+                }
+
+                .dna-hero-drag-hint {
+                  margin-top: 2px;
+                  margin-bottom: 18px;
                 }
               }
 
@@ -556,7 +584,7 @@ export function ProdutosCapilaresLayout({
         {/* =====================================================
             HERO
             ===================================================== */}
-        <section className="relative flex min-h-[92vh] items-center overflow-hidden">
+        <section className="dna-products-hero relative flex min-h-[92vh] items-center overflow-hidden">
           <div className="container relative z-[4] w-full py-24 md:py-32">
             <div className="relative z-[5] max-w-4xl">
               <div className="kicker mb-7">
