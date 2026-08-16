@@ -1562,6 +1562,152 @@ export function ProdutosCapilaresLayout({
           </div>
         </section>
 
+        {/* =====================================================
+            CONTEÚDO EDUCATIVO
+            ===================================================== */}
+        <section className="relative overflow-hidden border-y border-[color:var(--line)] bg-white/45 py-24 md:py-32">
+          <div className="container relative z-[2]">
+            <div className="mx-auto max-w-6xl">
+              <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+                <div>
+                  <div className="kicker mb-6">
+                    Conteúdo educativo
+                  </div>
+
+                  <h2 className="display text-4xl md:text-6xl">
+                    Informação também faz parte do{" "}
+                    <span className="rosetext italic">
+                      cuidado capilar.
+                    </span>
+                  </h2>
+                </div>
+
+                <p className="max-w-xl text-base leading-7 text-[color:var(--muted)] md:text-lg lg:justify-self-end">
+                  Entender a função de cada etapa ajuda a usar produtos e
+                  protocolos com mais consciência, sem transformar informação
+                  em diagnóstico automático.
+                </p>
+              </div>
+
+              <div className="hair my-10" />
+
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <article className="card p-7 md:p-8">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+                    Couro cabeludo
+                  </div>
+
+                  <h3 className="serif mt-5 text-2xl">
+                    O cuidado começa na base
+                  </h3>
+
+                  <p className="mt-4 leading-7 text-[color:var(--muted)]">
+                    Oleosidade, sensibilidade, descamação e equilíbrio do couro
+                    cabeludo podem influenciar a escolha da rotina de cuidado.
+                  </p>
+                </article>
+
+                <article className="card p-7 md:p-8">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+                    Queda capilar
+                  </div>
+
+                  <h3 className="serif mt-5 text-2xl">
+                    Queda não é uma causa única
+                  </h3>
+
+                  <p className="mt-4 leading-7 text-[color:var(--muted)]">
+                    Diferentes fatores podem estar envolvidos. Por isso,
+                    produtos para queda não devem ser tratados como uma solução
+                    universal para todos os casos.
+                  </p>
+                </article>
+
+                <article className="card p-7 md:p-8">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+                    Crescimento
+                  </div>
+
+                  <h3 className="serif mt-5 text-2xl">
+                    Crescimento envolve continuidade
+                  </h3>
+
+                  <p className="mt-4 leading-7 text-[color:var(--muted)]">
+                    O cuidado pode envolver couro cabeludo, fios, rotina em casa
+                    e acompanhamento ao longo do tempo.
+                  </p>
+                </article>
+
+                <article className="card p-7 md:p-8">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+                    Home Care
+                  </div>
+
+                  <h3 className="serif mt-5 text-2xl">
+                    O tratamento continua em casa
+                  </h3>
+
+                  <p className="mt-4 leading-7 text-[color:var(--muted)]">
+                    A rotina Home Care pode complementar o cuidado realizado na
+                    clínica quando há indicação adequada para sua utilização.
+                  </p>
+                </article>
+
+                <article className="card p-7 md:p-8">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+                    Reestruturação
+                  </div>
+
+                  <h3 className="serif mt-5 text-2xl">
+                    Couro cabeludo e fio são cuidados diferentes
+                  </h3>
+
+                  <p className="mt-4 leading-7 text-[color:var(--muted)]">
+                    Produtos destinados à haste capilar têm objetivos
+                    diferentes daqueles direcionados ao couro cabeludo.
+                  </p>
+                </article>
+
+                <article className="card p-7 md:p-8">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+                    Avaliação
+                  </div>
+
+                  <h3 className="serif mt-5 text-2xl">
+                    Quando procurar orientação?
+                  </h3>
+
+                  <p className="mt-4 leading-7 text-[color:var(--muted)]">
+                    Quando houver dúvida sobre a necessidade, associação de
+                    produtos ou integração com protocolos, a avaliação é o
+                    caminho mais seguro para orientar a escolha.
+                  </p>
+                </article>
+              </div>
+
+              <div className="mt-10 flex flex-col items-start justify-between gap-6 rounded-[26px] border border-[color:var(--line)] bg-[color:var(--bg)]/85 p-7 md:flex-row md:items-center md:p-9">
+                <div>
+                  <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+                    Informação não é diagnóstico
+                  </div>
+
+                  <p className="serif mt-3 max-w-3xl text-2xl leading-relaxed">
+                    O conteúdo desta página é educativo e não substitui
+                    avaliação individualizada.
+                  </p>
+                </div>
+
+                <a
+                  href="/avaliacao-capilar-curitiba"
+                  className="btn btn-rose shrink-0"
+                >
+                  Agendar avaliação
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </main>
     </>
   );
