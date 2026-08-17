@@ -3,13 +3,18 @@ name: Store Database Migrate
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   migrate:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -22,13 +27,27 @@ jobs:
           node-version: 22
           cache: pnpm
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Install dependencies and update lockfile
+        run: pnpm install --no-frozen-lockfile
 
-      - name: Generate Drizzle migrations
+      - name: Generate initial Drizzle migration
         run: pnpm db:generate
 
-      - name: Apply Drizzle migrations
+      - name: Save lockfile and migration in repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add pnpm-lock.yaml drizzle/
+
+          if git diff --cached --quiet; then
+            echo "Nenhuma alteração de migration ou lockfile para salvar."
+          else
+            git commit -m "chore(store): generate database migration"
+            git push
+          fi
+
+      - name: Apply migrations to Neon
         run: pnpm db:migrate
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
