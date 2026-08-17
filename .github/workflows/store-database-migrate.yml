@@ -10,6 +10,9 @@ jobs:
   migrate:
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -30,7 +33,7 @@ jobs:
       - name: Install dependencies and update lockfile
         run: pnpm install --no-frozen-lockfile
 
-      - name: Generate initial Drizzle migration
+      - name: Generate Drizzle migration
         run: pnpm db:generate
 
       - name: Save lockfile and migration in repository
@@ -49,5 +52,3 @@ jobs:
 
       - name: Apply migrations to Neon
         run: pnpm db:migrate
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
