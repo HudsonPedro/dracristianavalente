@@ -34,7 +34,14 @@ jobs:
           pnpm dlx tsx -e "
           import { seedStoreProducts } from './src/services/store/seed-products.server.ts';
 
-          const result = await seedStoreProducts();
+          async function main() {
+            const result = await seedStoreProducts();
 
-          console.log(JSON.stringify(result, null, 2));
+            console.log(JSON.stringify(result, null, 2));
+          }
+
+          main().catch((error) => {
+            console.error(error);
+            process.exit(1);
+          });
           "
