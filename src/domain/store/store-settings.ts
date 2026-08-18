@@ -28,31 +28,30 @@ export type StoreSettings = {
   requireCustomerIdentification: boolean;
 };
 
-export const DEFAULT_STORE_SETTINGS: StoreSettings =
-  {
-    storeEnabled: true,
+export const DEFAULT_STORE_SETTINGS: StoreSettings = {
+  storeEnabled: true,
 
-    cartEnabled: true,
+  cartEnabled: true,
 
-    checkoutEnabled: false,
+  checkoutEnabled: false,
 
-    paymentEnabled: false,
+  paymentEnabled: false,
 
-    inventoryEnabled: true,
+  inventoryEnabled: true,
 
-    pickupEnabled: false,
+  pickupEnabled: false,
 
-    deliveryEnabled: false,
+  deliveryEnabled: false,
 
-    whatsappEnabled: true,
+  whatsappEnabled: true,
 
-    whatsappNumber: "5541991599558",
+  whatsappNumber: "5541991599558",
 
-    currency: "BRL",
+  currency: "BRL",
 
-    defaultStockMinimum: 2,
+  defaultStockMinimum: 2,
 
-    allowSaleWithoutStockControl: false,
+  allowSaleWithoutStockControl: false,
 
-    requireCustomerIdentification: true,
-  };
+  requireCustomerIdentification: true,
+};

@@ -1,24 +1,11 @@
-export type ProductStatus =
-  | "ACTIVE"
-  | "INACTIVE"
-  | "DRAFT";
+export type ProductStatus = "ACTIVE" | "INACTIVE" | "DRAFT";
 
-export type ProductAvailability =
-  | "AVAILABLE"
-  | "UNAVAILABLE"
-  | "UNDER_CONSULTATION";
+export type ProductAvailability = "AVAILABLE" | "UNAVAILABLE" | "UNDER_CONSULTATION";
 
 export type ProductPriceVisibility =
-  | "SHOW_PRICE"
-  | "HIDE_PRICE"
-  | "CONTACT_FOR_PRICE"
-  | "REQUIRES_EVALUATION"
-  | "REQUIRES_PROTOCOL";
+  "SHOW_PRICE" | "HIDE_PRICE" | "CONTACT_FOR_PRICE" | "REQUIRES_EVALUATION" | "REQUIRES_PROTOCOL";
 
-export type ProductUsageType =
-  | "PROFESSIONAL"
-  | "HOME_CARE"
-  | "PROFESSIONAL_AND_HOME_CARE";
+export type ProductUsageType = "PROFESSIONAL" | "HOME_CARE" | "PROFESSIONAL_AND_HOME_CARE";
 
 export type StoreProductImage = {
   id: string;

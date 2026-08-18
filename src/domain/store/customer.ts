@@ -1,6 +1,4 @@
-export type CustomerStatus =
-  | "ACTIVE"
-  | "INACTIVE";
+export type CustomerStatus = "ACTIVE" | "INACTIVE";
 
 export type Customer = {
   id: string;

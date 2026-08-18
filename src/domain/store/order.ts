@@ -8,17 +8,9 @@ export type OrderStatus =
   | "DELIVERED"
   | "CANCELLED";
 
-export type PaymentStatus =
-  | "PENDING"
-  | "AUTHORIZED"
-  | "PAID"
-  | "FAILED"
-  | "REFUNDED"
-  | "CANCELLED";
+export type PaymentStatus = "PENDING" | "AUTHORIZED" | "PAID" | "FAILED" | "REFUNDED" | "CANCELLED";
 
-export type FulfillmentType =
-  | "DELIVERY"
-  | "PICKUP";
+export type FulfillmentType = "DELIVERY" | "PICKUP";
 
 export type OrderItem = {
   id: string;

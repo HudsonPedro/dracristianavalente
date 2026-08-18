@@ -1,8 +1,4 @@
-export type InventoryStatus =
-  | "IN_STOCK"
-  | "LOW_STOCK"
-  | "OUT_OF_STOCK"
-  | "NOT_CONTROLLED";
+export type InventoryStatus = "IN_STOCK" | "LOW_STOCK" | "OUT_OF_STOCK" | "NOT_CONTROLLED";
 
 export type Inventory = {
   id: string;
@@ -34,48 +30,33 @@ export type InventoryAvailability = {
   status: InventoryStatus;
 };
 
-export function getQuantityForSale(
-  inventory: Inventory,
-): number {
+export function getQuantityForSale(inventory: Inventory): number {
   if (!inventory.stockEnabled) {
     return Number.POSITIVE_INFINITY;
   }
 
-  return Math.max(
-    0,
-    inventory.quantityAvailable -
-      inventory.quantityReserved,
-  );
+  return Math.max(0, inventory.quantityAvailable - inventory.quantityReserved);
 }
 
-export function getInventoryStatus(
-  inventory: Inventory,
-): InventoryStatus {
+export function getInventoryStatus(inventory: Inventory): InventoryStatus {
   if (!inventory.stockEnabled) {
     return "NOT_CONTROLLED";
   }
 
-  const quantityForSale =
-    getQuantityForSale(inventory);
+  const quantityForSale = getQuantityForSale(inventory);
 
   if (quantityForSale <= 0) {
     return "OUT_OF_STOCK";
   }
 
-  if (
-    quantityForSale <=
-    inventory.minimumStock
-  ) {
+  if (quantityForSale <= inventory.minimumStock) {
     return "LOW_STOCK";
   }
 
   return "IN_STOCK";
 }
 
-export function canFulfillQuantity(
-  inventory: Inventory,
-  quantity: number,
-): boolean {
+export function canFulfillQuantity(inventory: Inventory, quantity: number): boolean {
   if (quantity <= 0) {
     return false;
   }
@@ -88,8 +69,5 @@ export function canFulfillQuantity(
     return true;
   }
 
-  return (
-    getQuantityForSale(inventory) >=
-    quantity
-  );
+  return getQuantityForSale(inventory) >= quantity;
 }

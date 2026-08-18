@@ -10,13 +10,10 @@ import * as productsSchema from "./schema/products";
 import * as storeSettingsSchema from "./schema/store-settings";
 
 function getDatabaseUrl() {
-  const databaseUrl =
-    process.env.DATABASE_URL;
+  const databaseUrl = process.env.DATABASE_URL;
 
   if (!databaseUrl) {
-    throw new Error(
-      "DATABASE_URL não configurada no ambiente.",
-    );
+    throw new Error("DATABASE_URL não configurada no ambiente.");
   }
 
   return databaseUrl;
@@ -33,9 +30,7 @@ const schema = {
 };
 
 export function getDb() {
-  const sql = neon(
-    getDatabaseUrl(),
-  );
+  const sql = neon(getDatabaseUrl());
 
   return drizzle({
     client: sql,
@@ -43,5 +38,4 @@ export function getDb() {
   });
 }
 
-export type Database =
-  ReturnType<typeof getDb>;
+export type Database = ReturnType<typeof getDb>;
