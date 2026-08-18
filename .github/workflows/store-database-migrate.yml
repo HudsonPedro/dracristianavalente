@@ -21,9 +21,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Generate TanStack route tree
+        run: pnpm exec vite build
 
       - name: TypeScript - validate entire project
         run: pnpm exec tsc --noEmit --pretty false
