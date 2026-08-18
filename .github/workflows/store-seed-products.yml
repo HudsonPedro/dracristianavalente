@@ -1,0 +1,40 @@
+name: Store Seed Products
+
+on:
+  workflow_dispatch:
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Execute product seed
+        run: |
+          pnpm exec tsx -e "
+          import { seedStoreProducts } from './src/services/store/seed-products.server.ts';
+
+          const result = await seedStoreProducts();
+
+          console.log(JSON.stringify(result, null, 2));
+          "
