@@ -1,3 +1,5 @@
+-- Initial store schema migration
+-- Validated against the current Drizzle schema.
 CREATE TABLE "store_addresses" (
 	"id" varchar(120) PRIMARY KEY NOT NULL,
 	"customer_id" varchar(120),
