@@ -113,7 +113,9 @@ function AdminProdutoPage() {
             ===================================================== */}
         <section className="container py-10 pb-24">
           <div className="grid gap-6 lg:grid-cols-[340px_1fr]">
-            {/* IMAGEM */}
+            {/* =================================================
+                IMAGEM
+                ================================================= */}
             <div className="card overflow-hidden">
               {product.images[0] ? (
                 <img
@@ -128,7 +130,9 @@ function AdminProdutoPage() {
               )}
             </div>
 
-            {/* DADOS */}
+            {/* =================================================
+                DADOS
+                ================================================= */}
             <div className="card p-7 md:p-9">
               <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
                 Dados atuais
@@ -151,8 +155,18 @@ function AdminProdutoPage() {
                 />
 
                 <AdminField
+                  label="Fabricante"
+                  value={product.manufacturer}
+                />
+
+                <AdminField
                   label="Linha"
-                  value={product.line ?? "—"}
+                  value={product.line}
+                />
+
+                <AdminField
+                  label="Categoria principal"
+                  value={product.categoryId}
                 />
 
                 <AdminField
@@ -175,7 +189,7 @@ function AdminProdutoPage() {
                 />
 
                 <AdminField
-                  label="Mostrar preço"
+                  label="Exibição de preço"
                   value={product.priceVisibility}
                 />
 
@@ -198,6 +212,24 @@ function AdminProdutoPage() {
                 />
 
                 <AdminField
+                  label="Produto profissional"
+                  value={
+                    product.professionalProduct
+                      ? "Sim"
+                      : "Não"
+                  }
+                />
+
+                <AdminField
+                  label="Home Care"
+                  value={
+                    product.homeCare
+                      ? "Sim"
+                      : "Não"
+                  }
+                />
+
+                <AdminField
                   label="Controle de estoque"
                   value={
                     product.stockEnabled
@@ -210,8 +242,42 @@ function AdminProdutoPage() {
                   label="Disponibilidade"
                   value={product.availability}
                 />
+
+                <AdminField
+                  label="Selo"
+                  value={product.badge}
+                />
+
+                <AdminField
+                  label="Preço"
+                  value={
+                    typeof product.price === "number"
+                      ? new Intl.NumberFormat("pt-BR", {
+                          style: "currency",
+                          currency: "BRL",
+                        }).format(product.price)
+                      : undefined
+                  }
+                />
+
+                <AdminField
+                  label="Preço promocional"
+                  value={
+                    typeof product.promotionalPrice === "number"
+                      ? new Intl.NumberFormat("pt-BR", {
+                          style: "currency",
+                          currency: "BRL",
+                        }).format(
+                          product.promotionalPrice,
+                        )
+                      : undefined
+                  }
+                />
               </div>
 
+              {/* =================================================
+                  DESCRIÇÃO
+                  ================================================= */}
               <div className="hair my-8" />
 
               <div>
@@ -225,20 +291,52 @@ function AdminProdutoPage() {
                 </p>
               </div>
 
+              {/* =================================================
+                  CATEGORIAS
+                  ================================================= */}
+              {product.categoryIds.length > 0 && (
+                <>
+                  <div className="hair my-8" />
+
+                  <div>
+                    <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+                      Categorias
+                    </div>
+
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {product.categoryIds.map(
+                        (category) => (
+                          <span
+                            key={category}
+                            className="tag"
+                          >
+                            {category}
+                          </span>
+                        ),
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* =================================================
+                  STATUS DA INTEGRAÇÃO
+                  ================================================= */}
               <div className="mt-8 rounded-[18px] border border-[color:var(--line)] bg-[color:var(--bg2)]/50 p-6">
                 <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
-                  Próxima integração
+                  Arquitetura da loja
                 </div>
 
                 <h2 className="serif mt-3 text-2xl">
-                  Edição pelo banco Neon
+                  Integração com Neon preparada
                 </h2>
 
                 <p className="mt-3 text-sm leading-6 text-[color:var(--muted)]">
-                  Preço, estoque, disponibilidade e regras de venda
-                  ainda aparecem a partir do catálogo temporário.
-                  Eles serão transferidos para o banco e editáveis
-                  neste painel.
+                  Esta página ainda utiliza o catálogo temporário
+                  enquanto concluímos a integração central com o
+                  banco de dados. Depois da validação da arquitetura,
+                  preço, estoque, disponibilidade e regras comerciais
+                  serão administrados sem alteração manual de código.
                 </p>
               </div>
             </div>
@@ -254,7 +352,7 @@ function AdminField({
   value,
 }: {
   label: string;
-  value: string;
+  value?: string;
 }) {
   return (
     <div className="rounded-[14px] border border-[color:var(--line)] bg-white/70 p-4">
@@ -263,7 +361,7 @@ function AdminField({
       </div>
 
       <div className="mt-2 break-words text-sm font-semibold">
-        {value}
+        {value ?? "—"}
       </div>
     </div>
   );
