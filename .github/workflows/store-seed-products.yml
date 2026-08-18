@@ -31,7 +31,7 @@ jobs:
 
       - name: Execute product seed
         run: |
-          pnpm exec tsx -e "
+          pnpm dlx tsx -e "
           import { seedStoreProducts } from './src/services/store/seed-products.server.ts';
 
           const result = await seedStoreProducts();
