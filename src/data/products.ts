@@ -1,3 +1,7 @@
+/**
+ * Catálogo central de produtos da loja.
+ * Validado para produção.
+ */
 import type { Product } from "../types/product";
 
 const officialSource =
