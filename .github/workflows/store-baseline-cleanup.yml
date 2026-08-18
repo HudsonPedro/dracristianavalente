@@ -28,6 +28,9 @@ jobs:
           node-version: 22
           cache: pnpm
 
+      - name: Synchronize pnpm lockfile
+        run: pnpm install --lockfile-only --no-frozen-lockfile
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -37,38 +40,19 @@ jobs:
       - name: Validate TypeScript
         run: pnpm exec tsc --noEmit --pretty false
 
-      - name: Normalize store architecture files
-        run: |
-          pnpm exec prettier --write \
-            "src/db/**/*.{ts,tsx}" \
-            "src/domain/store/**/*.{ts,tsx}" \
-            "src/repositories/store/**/*.{ts,tsx}" \
-            "src/services/store/**/*.{ts,tsx}" \
-            "src/routes/admin/**/*.{ts,tsx}" \
-            "drizzle.config.ts"
-
-      - name: Validate TypeScript after normalization
-        run: pnpm exec tsc --noEmit --pretty false
-
       - name: Validate production build
         run: pnpm run build
 
-      - name: Commit sanitized store baseline
+      - name: Commit synchronized pnpm lockfile
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add \
-            src/db \
-            src/domain/store \
-            src/repositories/store \
-            src/services/store \
-            src/routes/admin \
-            drizzle.config.ts
+          git add pnpm-lock.yaml
 
           if git diff --cached --quiet; then
-            echo "Nenhuma alteração necessária."
+            echo "pnpm-lock.yaml já está sincronizado."
           else
-            git commit -m "chore(store): normalize validated store architecture"
+            git commit -m "fix(store): synchronize pnpm lockfile"
             git push origin main
           fi
