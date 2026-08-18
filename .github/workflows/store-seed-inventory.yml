@@ -1,0 +1,47 @@
+name: Store Seed Inventory
+
+on:
+  workflow_dispatch:
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Execute inventory seed
+        run: |
+          pnpm dlx tsx -e "
+          import { seedStoreInventory } from './src/services/store/seed-inventory.server.ts';
+
+          async function main() {
+            const result = await seedStoreInventory();
+
+            console.log(JSON.stringify(result, null, 2));
+          }
+
+          main().catch((error) => {
+            console.error(error);
+            process.exit(1);
+          });
+          "
