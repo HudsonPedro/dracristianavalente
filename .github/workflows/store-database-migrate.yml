@@ -30,29 +30,33 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install dependencies and create lockfile
+      - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
       - name: Generate Drizzle migration
         shell: bash
         run: |
           set -euo pipefail
+
           pnpm db:generate
-      
+
           if [ ! -d "drizzle" ]; then
-            echo "ERRO: pasta drizzle não foi gerada."
+            echo "ERRO: pasta drizzle não foi criada."
             exit 1
           fi
-      
+
           if ! find drizzle -type f -name "*.sql" | grep -q .; then
             echo "ERRO: nenhuma migration SQL foi gerada."
             exit 1
           fi
-      
+
           echo "Migration Drizzle gerada e validada."
 
       - name: Save lockfile and migration
+        shell: bash
         run: |
+          set -euo pipefail
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
@@ -66,4 +70,7 @@ jobs:
           fi
 
       - name: Apply migrations to Neon
-        run: pnpm db:migrate
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm db:migrate
