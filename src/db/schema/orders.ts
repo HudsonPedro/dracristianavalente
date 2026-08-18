@@ -86,10 +86,13 @@ export const ordersTable =
         .notNull()
         .default("0"),
 
-      total: numeric("total", {
-        precision: 12,
-        scale: 2,
-      }).notNull(),
+      total: numeric(
+        "total",
+        {
+          precision: 12,
+          scale: 2,
+        },
+      ).notNull(),
 
       fulfillmentType: varchar(
         "fulfillment_type",
@@ -112,9 +115,12 @@ export const ordersTable =
         country: string;
       }>(),
 
-      status: varchar("status", {
-        length: 40,
-      })
+      status: varchar(
+        "status",
+        {
+          length: 40,
+        },
+      )
         .notNull()
         .default("PENDING"),
 
