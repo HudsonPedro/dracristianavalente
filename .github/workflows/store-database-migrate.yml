@@ -34,7 +34,22 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Generate Drizzle migration
-        run: pnpm db:generate
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm db:generate
+      
+          if [ ! -d "drizzle" ]; then
+            echo "ERRO: pasta drizzle não foi gerada."
+            exit 1
+          fi
+      
+          if ! find drizzle -type f -name "*.sql" | grep -q .; then
+            echo "ERRO: nenhuma migration SQL foi gerada."
+            exit 1
+          fi
+      
+          echo "Migration Drizzle gerada e validada."
 
       - name: Save lockfile and migration
         run: |
