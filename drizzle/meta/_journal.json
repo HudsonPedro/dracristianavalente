@@ -1,6 +1,6 @@
 {
-  "version": "7",
   "dialect": "postgresql",
+  "version": "7",
   "entries": [
     {
       "idx": 0,
