@@ -1,0 +1,74 @@
+name: Store Baseline Cleanup
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate TanStack route tree
+        run: pnpm exec vite build
+
+      - name: Validate TypeScript
+        run: pnpm exec tsc --noEmit --pretty false
+
+      - name: Normalize store architecture files
+        run: |
+          pnpm exec prettier --write \
+            "src/db/**/*.{ts,tsx}" \
+            "src/domain/store/**/*.{ts,tsx}" \
+            "src/repositories/store/**/*.{ts,tsx}" \
+            "src/services/store/**/*.{ts,tsx}" \
+            "src/routes/admin/**/*.{ts,tsx}" \
+            "drizzle.config.ts"
+
+      - name: Validate TypeScript after normalization
+        run: pnpm exec tsc --noEmit --pretty false
+
+      - name: Validate production build
+        run: pnpm run build
+
+      - name: Commit sanitized store baseline
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            src/db \
+            src/domain/store \
+            src/repositories/store \
+            src/services/store \
+            src/routes/admin \
+            drizzle.config.ts
+
+          if git diff --cached --quiet; then
+            echo "Nenhuma alteração necessária."
+          else
+            git commit -m "chore(store): normalize validated store architecture"
+            git push origin main
+          fi
