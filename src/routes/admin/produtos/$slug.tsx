@@ -151,9 +151,6 @@ function AdminProdutoPage() {
       />
 
       <main className="min-h-screen bg-[color:var(--bg)] text-[color:var(--ink)]">
-        {/* =====================================================
-            CABEÇALHO
-            ===================================================== */}
         <header className="border-b border-[color:var(--line)] bg-white">
           <div className="container py-8">
             <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
@@ -193,33 +190,25 @@ function AdminProdutoPage() {
           </div>
         </header>
 
-        {/* =====================================================
-            CONTEÚDO
-            ===================================================== */}
         <section className="container py-10 pb-24">
           <div className="grid items-start gap-6 lg:grid-cols-[380px_1fr]">
-            {/* =================================================
-                IMAGEM
-                ================================================= */}
+
+            {/* IMAGEM */}
             <div className="card overflow-hidden">
-              <div className="flex min-h-[520px] items-center justify-center bg-[#eef3f6] p-6">
-                {mainImage ? (
-                  <img
-                    src={mainImage.url}
-                    alt={mainImage.alt || product.name}
-                    className="max-h-[620px] w-full object-contain"
-                  />
-                ) : (
-                  <div className="flex min-h-[420px] items-center justify-center p-8 text-center text-sm text-[color:var(--muted)]">
-                    Produto sem imagem cadastrada
-                  </div>
-                )}
-              </div>
+              {mainImage ? (
+                <img
+                  src={mainImage.url}
+                  alt={mainImage.alt || product.name}
+                  className="block h-auto w-full"
+                />
+              ) : (
+                <div className="flex min-h-[320px] items-center justify-center p-8 text-center text-sm text-[color:var(--muted)]">
+                  Produto sem imagem cadastrada
+                </div>
+              )}
             </div>
 
-            {/* =================================================
-                DADOS
-                ================================================= */}
+            {/* DADOS */}
             <div className="card p-7 md:p-9">
               <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
                 Dados atuais
@@ -348,9 +337,6 @@ function AdminProdutoPage() {
                 />
               </div>
 
-              {/* =================================================
-                  DESCRIÇÃO
-                  ================================================= */}
               <div className="hair my-8" />
 
               <div>
@@ -364,9 +350,6 @@ function AdminProdutoPage() {
                 </p>
               </div>
 
-              {/* =================================================
-                  CATEGORIAS
-                  ================================================= */}
               {product.categoryIds.length > 0 && (
                 <>
                   <div className="hair my-8" />
