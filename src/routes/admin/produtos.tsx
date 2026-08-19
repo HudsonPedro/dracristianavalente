@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 
-import { listStoreProducts } from "../../server/store-products";
+import { listStoreProducts } from "../../functions/store-products";
 import { CSS } from "../index";
 
 export const Route = createFileRoute("/admin/produtos")({
