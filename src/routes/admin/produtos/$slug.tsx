@@ -28,15 +28,22 @@ function AdminProdutoPage() {
         <main className="min-h-screen bg-[color:var(--bg)] text-[color:var(--ink)]">
           <section className="container flex min-h-[70vh] items-center justify-center py-20">
             <div className="card max-w-xl p-8 text-center md:p-10">
-              <div className="kicker mb-6">Administração da loja</div>
+              <div className="kicker mb-6">
+                Administração da loja
+              </div>
 
-              <h1 className="display text-4xl">Produto não encontrado.</h1>
+              <h1 className="display text-4xl">
+                Produto não encontrado.
+              </h1>
 
               <p className="mt-5 text-sm leading-6 text-[color:var(--muted)]">
-                O produto solicitado não existe no catálogo atual.
+                O produto solicitado não existe no banco de produção.
               </p>
 
-              <Link to="/admin/produtos" className="btn btn-wa mt-8">
+              <Link
+                to="/admin/produtos"
+                className="btn btn-wa mt-8"
+              >
                 Voltar aos produtos
               </Link>
             </div>
@@ -45,6 +52,11 @@ function AdminProdutoPage() {
       </>
     );
   }
+
+  const mainImage =
+    product.images.find(
+      (image) => image.main,
+    ) ?? product.images[0];
 
   return (
     <>
@@ -62,18 +74,25 @@ function AdminProdutoPage() {
           <div className="container py-8">
             <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <div>
-                <div className="kicker mb-4">Administração da loja</div>
+                <div className="kicker mb-4">
+                  Administração da loja
+                </div>
 
-                <h1 className="display text-4xl md:text-5xl">{product.name}</h1>
+                <h1 className="display text-4xl md:text-5xl">
+                  {product.name}
+                </h1>
 
                 <p className="mt-4 max-w-2xl text-sm leading-6 text-[color:var(--muted)]">
-                  Visualização administrativa temporária do produto. A edição será conectada ao
-                  banco Neon na próxima etapa da arquitetura.
+                  Visualização administrativa do produto
+                  carregado diretamente do banco Neon.
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-3">
-                <Link to="/admin/produtos" className="btn btn-ghost">
+                <Link
+                  to="/admin/produtos"
+                  className="btn btn-ghost"
+                >
                   ← Produtos
                 </Link>
 
@@ -99,10 +118,13 @@ function AdminProdutoPage() {
                 IMAGEM
                 ================================================= */}
             <div className="card overflow-hidden">
-              {product.images[0] ? (
+              {mainImage ? (
                 <img
-                  src={product.images[0].url}
-                  alt={product.images[0].alt || product.name}
+                  src={mainImage.url}
+                  alt={
+                    mainImage.alt ||
+                    product.name
+                  }
                   className="aspect-square h-full w-full object-cover"
                 />
               ) : (
@@ -121,63 +143,122 @@ function AdminProdutoPage() {
               </div>
 
               <div className="mt-7 grid gap-4 sm:grid-cols-2">
-                <AdminField label="ID" value={product.id} />
+                <AdminField
+                  label="ID"
+                  value={product.id}
+                />
 
-                <AdminField label="Slug" value={product.slug} />
+                <AdminField
+                  label="Slug"
+                  value={product.slug}
+                />
 
-                <AdminField label="Marca" value={product.brand} />
+                <AdminField
+                  label="Marca"
+                  value={product.brand}
+                />
 
-                <AdminField label="Fabricante" value={product.manufacturer} />
+                <AdminField
+                  label="Fabricante"
+                  value={product.manufacturer}
+                />
 
-                <AdminField label="Linha" value={product.line} />
+                <AdminField
+                  label="Linha"
+                  value={product.line}
+                />
 
-                <AdminField label="Categoria principal" value={product.categoryId} />
+                <AdminField
+                  label="Categoria principal"
+                  value={product.categoryId}
+                />
 
-                <AdminField label="Tipo" value={product.usageType} />
+                <AdminField
+                  label="Tipo"
+                  value={product.usageType}
+                />
 
-                <AdminField label="Status" value={product.status} />
+                <AdminField
+                  label="Status"
+                  value={product.status}
+                />
 
                 <AdminField
                   label="Venda online"
-                  value={product.saleEnabled ? "Liberada" : "Bloqueada"}
+                  value={
+                    product.saleEnabled
+                      ? "Liberada"
+                      : "Bloqueada"
+                  }
                 />
 
-                <AdminField label="Exibição de preço" value={product.priceVisibility} />
+                <AdminField
+                  label="Exibição de preço"
+                  value={product.priceVisibility}
+                />
 
                 <AdminField
                   label="Avaliação obrigatória"
-                  value={product.requiresEvaluation ? "Sim" : "Não"}
+                  value={
+                    product.requiresEvaluation
+                      ? "Sim"
+                      : "Não"
+                  }
                 />
 
                 <AdminField
                   label="Protocolo obrigatório"
-                  value={product.requiresProtocol ? "Sim" : "Não"}
+                  value={
+                    product.requiresProtocol
+                      ? "Sim"
+                      : "Não"
+                  }
                 />
 
                 <AdminField
                   label="Produto profissional"
-                  value={product.professionalProduct ? "Sim" : "Não"}
+                  value={
+                    product.professionalProduct
+                      ? "Sim"
+                      : "Não"
+                  }
                 />
 
-                <AdminField label="Home Care" value={product.homeCare ? "Sim" : "Não"} />
+                <AdminField
+                  label="Home Care"
+                  value={
+                    product.homeCare
+                      ? "Sim"
+                      : "Não"
+                  }
+                />
 
                 <AdminField
                   label="Controle de estoque"
                   value="Gerenciado separadamente"
                 />
 
-                <AdminField label="Disponibilidade" value={product.availability} />
+                <AdminField
+                  label="Disponibilidade"
+                  value={product.availability}
+                />
 
-                <AdminField label="Selo" value={product.badge} />
+                <AdminField
+                  label="Selo"
+                  value={product.badge}
+                />
 
                 <AdminField
                   label="Preço"
                   value={
                     typeof product.price === "number"
-                      ? new Intl.NumberFormat("pt-BR", {
-                          style: "currency",
-                          currency: "BRL",
-                        }).format(product.price)
+                      ? new Intl.NumberFormat(
+                          "pt-BR",
+                          {
+                            style: "currency",
+                            currency: "BRL",
+                          },
+                        ).format(product.price)
                       : undefined
                   }
                 />
@@ -185,11 +266,17 @@ function AdminProdutoPage() {
                 <AdminField
                   label="Preço promocional"
                   value={
-                    typeof product.promotionalPrice === "number"
-                      ? new Intl.NumberFormat("pt-BR", {
-                          style: "currency",
-                          currency: "BRL",
-                        }).format(product.promotionalPrice)
+                    typeof product.promotionalPrice ===
+                    "number"
+                      ? new Intl.NumberFormat(
+                          "pt-BR",
+                          {
+                            style: "currency",
+                            currency: "BRL",
+                          },
+                        ).format(
+                          product.promotionalPrice,
+                        )
                       : undefined
                   }
                 />
@@ -206,7 +293,8 @@ function AdminProdutoPage() {
                 </div>
 
                 <p className="mt-3 leading-7 text-[color:var(--muted)]">
-                  {product.description ?? product.shortDescription}
+                  {product.description ??
+                    product.shortDescription}
                 </p>
               </div>
 
@@ -223,11 +311,16 @@ function AdminProdutoPage() {
                     </div>
 
                     <div className="mt-4 flex flex-wrap gap-2">
-                      {product.categoryIds.map((category) => (
-                        <span key={category} className="tag">
-                          {category}
-                        </span>
-                      ))}
+                      {product.categoryIds.map(
+                        (category) => (
+                          <span
+                            key={category}
+                            className="tag"
+                          >
+                            {category}
+                          </span>
+                        ),
+                      )}
                     </div>
                   </div>
                 </>
@@ -244,11 +337,14 @@ function AdminProdutoPage() {
                 <h2 className="serif mt-3 text-2xl">
                   Produto conectado ao Neon
                 </h2>
-                
+
                 <p className="mt-3 text-sm leading-6 text-[color:var(--muted)]">
-                  Os dados deste produto são carregados diretamente do banco de produção.
-                  O controle de estoque é mantido separadamente em store_inventory e será
-                  integrado ao painel na próxima etapa.
+                  Os dados deste produto são
+                  carregados diretamente do banco de
+                  produção. O controle de estoque é
+                  mantido separadamente em
+                  store_inventory e será integrado ao
+                  painel na próxima etapa.
                 </p>
               </div>
             </div>
@@ -259,14 +355,22 @@ function AdminProdutoPage() {
   );
 }
 
-function AdminField({ label, value }: { label: string; value?: string }) {
+function AdminField({
+  label,
+  value,
+}: {
+  label: string;
+  value?: string;
+}) {
   return (
     <div className="rounded-[14px] border border-[color:var(--line)] bg-white/70 p-4">
       <div className="text-[9px] font-bold uppercase tracking-[0.14em] text-[color:var(--muted)]">
         {label}
       </div>
 
-      <div className="mt-2 break-words text-sm font-semibold">{value ?? "—"}</div>
+      <div className="mt-2 break-words text-sm font-semibold">
+        {value ?? "—"}
+      </div>
     </div>
   );
 }
