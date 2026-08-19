@@ -13,6 +13,90 @@ export const Route = createFileRoute("/admin/produtos/$slug")({
   component: AdminProdutoPage,
 });
 
+function translateUsageType(value: string) {
+  switch (value) {
+    case "PROFESSIONAL":
+      return "Profissional";
+
+    case "HOME_CARE":
+      return "Home Care";
+
+    case "PROFESSIONAL_AND_HOME_CARE":
+      return "Profissional e Home Care";
+
+    default:
+      return value;
+  }
+}
+
+function translateStatus(value: string) {
+  switch (value) {
+    case "ACTIVE":
+      return "Ativo";
+
+    case "INACTIVE":
+      return "Inativo";
+
+    case "DRAFT":
+      return "Rascunho";
+
+    case "OUT_OF_STOCK":
+      return "Sem estoque";
+
+    default:
+      return value;
+  }
+}
+
+function translatePriceVisibility(value: string) {
+  switch (value) {
+    case "SHOW_PRICE":
+      return "Exibir preço";
+
+    case "HIDE_PRICE":
+      return "Ocultar preço";
+
+    case "CONTACT_FOR_PRICE":
+      return "Consultar preço";
+
+    case "REQUIRES_EVALUATION":
+      return "Requer avaliação";
+
+    case "REQUIRES_PROTOCOL":
+      return "Requer protocolo";
+
+    default:
+      return value;
+  }
+}
+
+function translateAvailability(value: string) {
+  switch (value) {
+    case "AVAILABLE":
+      return "Disponível";
+
+    case "UNAVAILABLE":
+      return "Indisponível";
+
+    case "UNDER_CONSULTATION":
+      return "Sob consulta";
+
+    default:
+      return value;
+  }
+}
+
+function formatPrice(value?: number) {
+  if (typeof value !== "number") {
+    return undefined;
+  }
+
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(value);
+}
+
 function AdminProdutoPage() {
   const product = Route.useLoaderData();
 
@@ -37,7 +121,7 @@ function AdminProdutoPage() {
               </h1>
 
               <p className="mt-5 text-sm leading-6 text-[color:var(--muted)]">
-                O produto solicitado não existe no banco de produção.
+                O produto solicitado não foi encontrado.
               </p>
 
               <Link
@@ -83,8 +167,8 @@ function AdminProdutoPage() {
                 </h1>
 
                 <p className="mt-4 max-w-2xl text-sm leading-6 text-[color:var(--muted)]">
-                  Visualização administrativa do produto
-                  carregado diretamente do banco Neon.
+                  Consulte os dados comerciais e as configurações
+                  atuais deste produto.
                 </p>
               </div>
 
@@ -113,25 +197,24 @@ function AdminProdutoPage() {
             CONTEÚDO
             ===================================================== */}
         <section className="container py-10 pb-24">
-          <div className="grid gap-6 lg:grid-cols-[340px_1fr]">
+          <div className="grid items-start gap-6 lg:grid-cols-[380px_1fr]">
             {/* =================================================
                 IMAGEM
                 ================================================= */}
             <div className="card overflow-hidden">
-              {mainImage ? (
-                <img
-                  src={mainImage.url}
-                  alt={
-                    mainImage.alt ||
-                    product.name
-                  }
-                  className="aspect-square h-full w-full object-cover"
-                />
-              ) : (
-                <div className="flex aspect-square items-center justify-center p-8 text-center text-sm text-[color:var(--muted)]">
-                  Produto sem imagem cadastrada
-                </div>
-              )}
+              <div className="flex min-h-[520px] items-center justify-center bg-[#eef3f6] p-6">
+                {mainImage ? (
+                  <img
+                    src={mainImage.url}
+                    alt={mainImage.alt || product.name}
+                    className="max-h-[620px] w-full object-contain"
+                  />
+                ) : (
+                  <div className="flex min-h-[420px] items-center justify-center p-8 text-center text-sm text-[color:var(--muted)]">
+                    Produto sem imagem cadastrada
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* =================================================
@@ -175,12 +258,12 @@ function AdminProdutoPage() {
 
                 <AdminField
                   label="Tipo"
-                  value={product.usageType}
+                  value={translateUsageType(product.usageType)}
                 />
 
                 <AdminField
                   label="Status"
-                  value={product.status}
+                  value={translateStatus(product.status)}
                 />
 
                 <AdminField
@@ -194,7 +277,9 @@ function AdminProdutoPage() {
 
                 <AdminField
                   label="Exibição de preço"
-                  value={product.priceVisibility}
+                  value={translatePriceVisibility(
+                    product.priceVisibility,
+                  )}
                 />
 
                 <AdminField
@@ -240,7 +325,9 @@ function AdminProdutoPage() {
 
                 <AdminField
                   label="Disponibilidade"
-                  value={product.availability}
+                  value={translateAvailability(
+                    product.availability,
+                  )}
                 />
 
                 <AdminField
@@ -250,35 +337,14 @@ function AdminProdutoPage() {
 
                 <AdminField
                   label="Preço"
-                  value={
-                    typeof product.price === "number"
-                      ? new Intl.NumberFormat(
-                          "pt-BR",
-                          {
-                            style: "currency",
-                            currency: "BRL",
-                          },
-                        ).format(product.price)
-                      : undefined
-                  }
+                  value={formatPrice(product.price)}
                 />
 
                 <AdminField
                   label="Preço promocional"
-                  value={
-                    typeof product.promotionalPrice ===
-                    "number"
-                      ? new Intl.NumberFormat(
-                          "pt-BR",
-                          {
-                            style: "currency",
-                            currency: "BRL",
-                          },
-                        ).format(
-                          product.promotionalPrice,
-                        )
-                      : undefined
-                  }
+                  value={formatPrice(
+                    product.promotionalPrice,
+                  )}
                 />
               </div>
 
@@ -325,28 +391,6 @@ function AdminProdutoPage() {
                   </div>
                 </>
               )}
-
-              {/* =================================================
-                  STATUS DA INTEGRAÇÃO
-                  ================================================= */}
-              <div className="mt-8 rounded-[18px] border border-[color:var(--line)] bg-[color:var(--bg2)]/50 p-6">
-                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
-                  Arquitetura da loja
-                </div>
-
-                <h2 className="serif mt-3 text-2xl">
-                  Produto conectado ao Neon
-                </h2>
-
-                <p className="mt-3 text-sm leading-6 text-[color:var(--muted)]">
-                  Os dados deste produto são
-                  carregados diretamente do banco de
-                  produção. O controle de estoque é
-                  mantido separadamente em
-                  store_inventory e será integrado ao
-                  painel na próxima etapa.
-                </p>
-              </div>
             </div>
           </div>
         </section>
