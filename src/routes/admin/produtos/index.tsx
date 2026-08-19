@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 
-import { listStoreProducts } from "../../functions/store-products";
-import { CSS } from "../index";
+import { listStoreProducts } from "../../../functions/store-products";
+import { CSS } from "../../index";
 
-export const Route = createFileRoute("/admin/produtos")({
+export const Route = createFileRoute("/admin/produtos/")({
   loader: async () => {
     return listStoreProducts({
       data: {},
@@ -118,7 +118,7 @@ function AdminProdutosPage() {
                 {
                   products.filter(
                     (product) =>
-                      product.status === "ACTIVE",
+                      product.status === "ATIVO",
                   ).length
                 }
               </div>
