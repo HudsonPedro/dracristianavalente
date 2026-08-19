@@ -62,3 +62,60 @@ export const getStoreInventoryAvailability =
         data,
       );
     });
+
+export const updateStoreInventoryQuantity =
+  createServerFn({
+    method: "POST",
+  })
+    .validator(
+      (input: {
+        productId: string;
+        quantityAvailable: number;
+      }) => {
+        const productId =
+          input.productId.trim();
+
+        if (!productId) {
+          throw new Error(
+            "ID do produto é obrigatório.",
+          );
+        }
+
+        if (
+          !Number.isInteger(
+            input.quantityAvailable,
+          ) ||
+          input.quantityAvailable < 0
+        ) {
+          throw new Error(
+            "A quantidade disponível deve ser um número inteiro maior ou igual a zero.",
+          );
+        }
+
+        return {
+          productId,
+          quantityAvailable:
+            input.quantityAvailable,
+        };
+      },
+    )
+    .handler(async ({ data }) => {
+      const {
+        requireAdmin,
+      } = await import(
+        "../services/auth/require-admin.server"
+      );
+
+      await requireAdmin();
+
+      const {
+        inventoryService,
+      } = await import(
+        "../services/store/inventory-service.server"
+      );
+
+      return inventoryService.setQuantity(
+        data.productId,
+        data.quantityAvailable,
+      );
+    });
