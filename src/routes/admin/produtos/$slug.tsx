@@ -1,13 +1,30 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
+import { getStoreInventoryByProductId } from "../../../functions/store-inventory";
 import { getStoreProductBySlug } from "../../../functions/store-products";
 import { CSS } from "../../index";
 
 export const Route = createFileRoute("/admin/produtos/$slug")({
   loader: async ({ params }) => {
-    return getStoreProductBySlug({
+    const product = await getStoreProductBySlug({
       data: params.slug,
     });
+
+    if (!product) {
+      return {
+        product: null,
+        inventory: null,
+      };
+    }
+
+    const inventory = await getStoreInventoryByProductId({
+      data: product.id,
+    });
+
+    return {
+      product,
+      inventory,
+    };
   },
 
   component: AdminProdutoPage,
@@ -17,13 +34,10 @@ function translateUsageType(value: string) {
   switch (value) {
     case "PROFESSIONAL":
       return "Profissional";
-
     case "HOME_CARE":
       return "Home Care";
-
     case "PROFESSIONAL_AND_HOME_CARE":
       return "Profissional e Home Care";
-
     default:
       return value;
   }
@@ -33,16 +47,12 @@ function translateStatus(value: string) {
   switch (value) {
     case "ACTIVE":
       return "Ativo";
-
     case "INACTIVE":
       return "Inativo";
-
     case "DRAFT":
       return "Rascunho";
-
     case "OUT_OF_STOCK":
       return "Sem estoque";
-
     default:
       return value;
   }
@@ -52,19 +62,14 @@ function translatePriceVisibility(value: string) {
   switch (value) {
     case "SHOW_PRICE":
       return "Exibir preço";
-
     case "HIDE_PRICE":
       return "Ocultar preço";
-
     case "CONTACT_FOR_PRICE":
       return "Consultar preço";
-
     case "REQUIRES_EVALUATION":
       return "Requer avaliação";
-
     case "REQUIRES_PROTOCOL":
       return "Requer protocolo";
-
     default:
       return value;
   }
@@ -74,16 +79,46 @@ function translateAvailability(value: string) {
   switch (value) {
     case "AVAILABLE":
       return "Disponível";
-
     case "UNAVAILABLE":
       return "Indisponível";
-
     case "UNDER_CONSULTATION":
       return "Sob consulta";
-
     default:
       return value;
   }
+}
+
+function translateInventoryStatus(params: {
+  stockEnabled: boolean;
+  quantityAvailable: number;
+  quantityReserved: number;
+  minimumStock: number;
+}) {
+  const {
+    stockEnabled,
+    quantityAvailable,
+    quantityReserved,
+    minimumStock,
+  } = params;
+
+  if (!stockEnabled) {
+    return "Não controlado";
+  }
+
+  const quantityForSale = Math.max(
+    0,
+    quantityAvailable - quantityReserved,
+  );
+
+  if (quantityForSale <= 0) {
+    return "Sem estoque";
+  }
+
+  if (quantityForSale <= minimumStock) {
+    return "Estoque baixo";
+  }
+
+  return "Em estoque";
 }
 
 function formatPrice(value?: number) {
@@ -98,7 +133,7 @@ function formatPrice(value?: number) {
 }
 
 function AdminProdutoPage() {
-  const product = Route.useLoaderData();
+  const { product, inventory } = Route.useLoaderData();
 
   if (!product) {
     return (
@@ -142,6 +177,23 @@ function AdminProdutoPage() {
       (image) => image.main,
     ) ?? product.images[0];
 
+  const quantityForSale = inventory
+    ? Math.max(
+        0,
+        inventory.quantityAvailable -
+          inventory.quantityReserved,
+      )
+    : 0;
+
+  const inventoryStatus = inventory
+    ? translateInventoryStatus({
+        stockEnabled: inventory.stockEnabled,
+        quantityAvailable: inventory.quantityAvailable,
+        quantityReserved: inventory.quantityReserved,
+        minimumStock: inventory.minimumStock,
+      })
+    : "Não configurado";
+
   return (
     <>
       <style
@@ -164,8 +216,7 @@ function AdminProdutoPage() {
                 </h1>
 
                 <p className="mt-4 max-w-2xl text-sm leading-6 text-[color:var(--muted)]">
-                  Consulte os dados comerciais e as configurações
-                  atuais deste produto.
+                  Consulte os dados comerciais e o estoque atual deste produto.
                 </p>
               </div>
 
@@ -192,8 +243,6 @@ function AdminProdutoPage() {
 
         <section className="container py-10 pb-24">
           <div className="grid items-start gap-6 lg:grid-cols-[380px_1fr]">
-
-            {/* IMAGEM */}
             <div className="card overflow-hidden">
               {mainImage ? (
                 <img
@@ -208,132 +257,136 @@ function AdminProdutoPage() {
               )}
             </div>
 
-            {/* DADOS */}
             <div className="card p-7 md:p-9">
               <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
                 Dados atuais
               </div>
 
               <div className="mt-7 grid gap-4 sm:grid-cols-2">
-                <AdminField
-                  label="ID"
-                  value={product.id}
-                />
-
-                <AdminField
-                  label="Slug"
-                  value={product.slug}
-                />
-
-                <AdminField
-                  label="Marca"
-                  value={product.brand}
-                />
-
-                <AdminField
-                  label="Fabricante"
-                  value={product.manufacturer}
-                />
-
-                <AdminField
-                  label="Linha"
-                  value={product.line}
-                />
-
-                <AdminField
-                  label="Categoria principal"
-                  value={product.categoryId}
-                />
-
+                <AdminField label="ID" value={product.id} />
+                <AdminField label="Slug" value={product.slug} />
+                <AdminField label="Marca" value={product.brand} />
+                <AdminField label="Fabricante" value={product.manufacturer} />
+                <AdminField label="Linha" value={product.line} />
+                <AdminField label="Categoria principal" value={product.categoryId} />
                 <AdminField
                   label="Tipo"
                   value={translateUsageType(product.usageType)}
                 />
-
                 <AdminField
                   label="Status"
                   value={translateStatus(product.status)}
                 />
-
                 <AdminField
                   label="Venda online"
-                  value={
-                    product.saleEnabled
-                      ? "Liberada"
-                      : "Bloqueada"
-                  }
+                  value={product.saleEnabled ? "Liberada" : "Bloqueada"}
                 />
-
                 <AdminField
                   label="Exibição de preço"
-                  value={translatePriceVisibility(
-                    product.priceVisibility,
-                  )}
+                  value={translatePriceVisibility(product.priceVisibility)}
                 />
-
                 <AdminField
                   label="Avaliação obrigatória"
-                  value={
-                    product.requiresEvaluation
-                      ? "Sim"
-                      : "Não"
-                  }
+                  value={product.requiresEvaluation ? "Sim" : "Não"}
                 />
-
                 <AdminField
                   label="Protocolo obrigatório"
-                  value={
-                    product.requiresProtocol
-                      ? "Sim"
-                      : "Não"
-                  }
+                  value={product.requiresProtocol ? "Sim" : "Não"}
                 />
-
                 <AdminField
                   label="Produto profissional"
-                  value={
-                    product.professionalProduct
-                      ? "Sim"
-                      : "Não"
-                  }
+                  value={product.professionalProduct ? "Sim" : "Não"}
                 />
-
                 <AdminField
                   label="Home Care"
-                  value={
-                    product.homeCare
-                      ? "Sim"
-                      : "Não"
-                  }
+                  value={product.homeCare ? "Sim" : "Não"}
                 />
-
-                <AdminField
-                  label="Controle de estoque"
-                  value="Gerenciado separadamente"
-                />
-
                 <AdminField
                   label="Disponibilidade"
-                  value={translateAvailability(
-                    product.availability,
-                  )}
+                  value={translateAvailability(product.availability)}
                 />
-
                 <AdminField
                   label="Selo"
                   value={product.badge}
                 />
-
                 <AdminField
                   label="Preço"
                   value={formatPrice(product.price)}
                 />
-
                 <AdminField
                   label="Preço promocional"
-                  value={formatPrice(
-                    product.promotionalPrice,
-                  )}
+                  value={formatPrice(product.promotionalPrice)}
+                />
+              </div>
+
+              <div className="hair my-8" />
+
+              <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+                Estoque
+              </div>
+
+              <div className="mt-7 grid gap-4 sm:grid-cols-2">
+                <AdminField
+                  label="Controle de estoque"
+                  value={
+                    inventory
+                      ? inventory.stockEnabled
+                        ? "Ativo"
+                        : "Inativo"
+                      : "Não configurado"
+                  }
+                />
+
+                <AdminField
+                  label="Situação"
+                  value={inventoryStatus}
+                />
+
+                <AdminField
+                  label="Quantidade disponível"
+                  value={
+                    inventory
+                      ? String(inventory.quantityAvailable)
+                      : "—"
+                  }
+                />
+
+                <AdminField
+                  label="Quantidade reservada"
+                  value={
+                    inventory
+                      ? String(inventory.quantityReserved)
+                      : "—"
+                  }
+                />
+
+                <AdminField
+                  label="Disponível para venda"
+                  value={
+                    inventory
+                      ? String(quantityForSale)
+                      : "—"
+                  }
+                />
+
+                <AdminField
+                  label="Estoque mínimo"
+                  value={
+                    inventory
+                      ? String(inventory.minimumStock)
+                      : "—"
+                  }
+                />
+
+                <AdminField
+                  label="Venda sem estoque"
+                  value={
+                    inventory
+                      ? inventory.allowBackorder
+                        ? "Sim"
+                        : "Não"
+                      : "—"
+                  }
                 />
               </div>
 
