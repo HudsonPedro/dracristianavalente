@@ -25,6 +25,41 @@ function formatPrice(value?: number) {
   }).format(value);
 }
 
+function translateStatus(value: string) {
+  switch (value) {
+    case "ACTIVE":
+      return "Ativo";
+
+    case "INACTIVE":
+      return "Inativo";
+
+    case "DRAFT":
+      return "Rascunho";
+
+    case "OUT_OF_STOCK":
+      return "Sem estoque";
+
+    default:
+      return value;
+  }
+}
+
+function translateAvailability(value: string) {
+  switch (value) {
+    case "AVAILABLE":
+      return "Disponível";
+
+    case "UNAVAILABLE":
+      return "Indisponível";
+
+    case "UNDER_CONSULTATION":
+      return "Sob consulta";
+
+    default:
+      return value;
+  }
+}
+
 function AdminProdutosPage() {
   const products = Route.useLoaderData();
 
@@ -62,9 +97,6 @@ function AdminProdutosPage() {
       />
 
       <main className="min-h-screen bg-[color:var(--bg)] text-[color:var(--ink)]">
-        {/* =====================================================
-            CABEÇALHO
-            ===================================================== */}
         <header className="border-b border-[color:var(--line)] bg-white">
           <div className="container flex flex-col gap-6 py-8 md:flex-row md:items-end md:justify-between">
             <div>
@@ -87,16 +119,13 @@ function AdminProdutosPage() {
               type="button"
               className="btn btn-wa"
               disabled
-              title="Será habilitado na próxima etapa"
+              title="Será habilitado em etapa futura"
             >
               + Novo produto
             </button>
           </div>
         </header>
 
-        {/* =====================================================
-            RESUMO
-            ===================================================== */}
         <section className="container py-10">
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <div className="card p-6">
@@ -157,9 +186,6 @@ function AdminProdutosPage() {
           </div>
         </section>
 
-        {/* =====================================================
-            FILTRO
-            ===================================================== */}
         <section className="container pb-8">
           <div className="card p-5">
             <label
@@ -181,9 +207,6 @@ function AdminProdutosPage() {
           </div>
         </section>
 
-        {/* =====================================================
-            LISTA DE PRODUTOS
-            ===================================================== */}
         <section className="container pb-24">
           <div className="grid gap-5">
             {filteredProducts.map((product) => {
@@ -198,7 +221,6 @@ function AdminProdutosPage() {
                   className="card overflow-hidden"
                 >
                   <div className="grid md:grid-cols-[150px_1fr]">
-                    {/* IMAGEM */}
                     <div className="bg-[#f1ece5]">
                       {mainImage ? (
                         <img
@@ -216,10 +238,9 @@ function AdminProdutosPage() {
                       )}
                     </div>
 
-                    {/* DADOS */}
                     <div className="p-6">
                       <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
-                        <div>
+                        <div className="min-w-0">
                           <div className="text-[10px] font-bold uppercase tracking-[0.16em] text-[color:var(--rose2)]">
                             {product.brand}
 
@@ -239,12 +260,12 @@ function AdminProdutosPage() {
                           </p>
                         </div>
 
-                        <div className="flex gap-3">
+                        <div className="flex shrink-0 gap-3">
                           <a
                             href={`/produtos-capilares/${product.slug}`}
                             target="_blank"
                             rel="noreferrer"
-                            className="btn btn-ghost"
+                            className="btn btn-ghost whitespace-nowrap"
                           >
                             Ver página
                           </a>
@@ -252,85 +273,62 @@ function AdminProdutosPage() {
                           <button
                             type="button"
                             disabled
-                            className="btn btn-wa cursor-not-allowed opacity-60"
-                            title="Edição será habilitada na próxima etapa"
+                            className="btn btn-wa cursor-not-allowed whitespace-nowrap opacity-60"
+                            title="Edição será habilitada em etapa futura"
                           >
                             Editar
                           </button>
                         </div>
                       </div>
 
-                      {/* STATUS */}
                       <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-6">
-                        <div className="rounded-[14px] border border-[color:var(--line)] bg-white/70 p-4">
-                          <div className="text-[9px] font-bold uppercase tracking-[0.14em] text-[color:var(--muted)]">
-                            Status
-                          </div>
+                        <AdminSummary
+                          label="Status"
+                          value={translateStatus(
+                            product.status,
+                          )}
+                        />
 
-                          <div className="mt-1 text-sm font-semibold">
-                            {product.status}
-                          </div>
-                        </div>
+                        <AdminSummary
+                          label="Preço"
+                          value={formatPrice(
+                            product.price,
+                          )}
+                        />
 
-                        <div className="rounded-[14px] border border-[color:var(--line)] bg-white/70 p-4">
-                          <div className="text-[9px] font-bold uppercase tracking-[0.14em] text-[color:var(--muted)]">
-                            Preço
-                          </div>
-
-                          <div className="mt-1 text-sm font-semibold">
-                            {formatPrice(
-                              product.price,
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="rounded-[14px] border border-[color:var(--line)] bg-white/70 p-4">
-                          <div className="text-[9px] font-bold uppercase tracking-[0.14em] text-[color:var(--muted)]">
-                            Venda
-                          </div>
-
-                          <div className="mt-1 text-sm font-semibold">
-                            {product.saleEnabled
+                        <AdminSummary
+                          label="Venda"
+                          value={
+                            product.saleEnabled
                               ? "Liberada"
-                              : "Bloqueada"}
-                          </div>
-                        </div>
+                              : "Bloqueada"
+                          }
+                        />
 
-                        <div className="rounded-[14px] border border-[color:var(--line)] bg-white/70 p-4">
-                          <div className="text-[9px] font-bold uppercase tracking-[0.14em] text-[color:var(--muted)]">
-                            Avaliação
-                          </div>
-
-                          <div className="mt-1 text-sm font-semibold">
-                            {product.requiresEvaluation
+                        <AdminSummary
+                          label="Avaliação"
+                          value={
+                            product.requiresEvaluation
                               ? "Obrigatória"
-                              : "Não"}
-                          </div>
-                        </div>
+                              : "Não"
+                          }
+                        />
 
-                        <div className="rounded-[14px] border border-[color:var(--line)] bg-white/70 p-4">
-                          <div className="text-[9px] font-bold uppercase tracking-[0.14em] text-[color:var(--muted)]">
-                            Protocolo
-                          </div>
-
-                          <div className="mt-1 text-sm font-semibold">
-                            {product.requiresProtocol
+                        <AdminSummary
+                          label="Protocolo"
+                          value={
+                            product.requiresProtocol
                               ? "Obrigatório"
-                              : "Não"}
-                          </div>
-                        </div>
+                              : "Não"
+                          }
+                        />
 
-                        <div className="rounded-[14px] border border-[color:var(--line)] bg-white/70 p-4">
-                          <div className="text-[9px] font-bold uppercase tracking-[0.14em] text-[color:var(--muted)]">
-                            Disponibilidade
-                          </div>
-
-                          <div className="mt-1 text-sm font-semibold">
-                            {
-                              product.availability
-                            }
-                          </div>
-                        </div>
+                        <AdminSummary
+                          label="Disponibilidade"
+                          value={translateAvailability(
+                            product.availability,
+                          )}
+                        />
                       </div>
                     </div>
                   </div>
@@ -353,5 +351,25 @@ function AdminProdutosPage() {
         </section>
       </main>
     </>
+  );
+}
+
+function AdminSummary({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="min-w-0 rounded-[14px] border border-[color:var(--line)] bg-white/70 p-4">
+      <div className="text-[9px] font-bold uppercase tracking-[0.14em] text-[color:var(--muted)]">
+        {label}
+      </div>
+
+      <div className="mt-1 break-words text-sm font-semibold leading-5">
+        {value}
+      </div>
+    </div>
   );
 }
