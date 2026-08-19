@@ -1,16 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-import { products } from "../../../data/products";
+import { getStoreProductBySlug } from "../../../functions/store-products";
 import { CSS } from "../../index";
 
 export const Route = createFileRoute("/admin/produtos/$slug")({
+  loader: async ({ params }) => {
+    return getStoreProductBySlug({
+      data: params.slug,
+    });
+  },
+
   component: AdminProdutoPage,
 });
 
 function AdminProdutoPage() {
-  const { slug } = Route.useParams();
-
-  const product = products.find((item) => item.slug === slug);
+  const product = Route.useLoaderData();
 
   if (!product) {
     return (
@@ -97,8 +101,8 @@ function AdminProdutoPage() {
             <div className="card overflow-hidden">
               {product.images[0] ? (
                 <img
-                  src={product.images[0]}
-                  alt={product.name}
+                  src={product.images[0].url}
+                  alt={product.images[0].alt || product.name}
                   className="aspect-square h-full w-full object-cover"
                 />
               ) : (
@@ -159,7 +163,7 @@ function AdminProdutoPage() {
 
                 <AdminField
                   label="Controle de estoque"
-                  value={product.stockEnabled ? "Ativo" : "Inativo"}
+                  value="Gerenciado separadamente"
                 />
 
                 <AdminField label="Disponibilidade" value={product.availability} />
@@ -237,13 +241,14 @@ function AdminProdutoPage() {
                   Arquitetura da loja
                 </div>
 
-                <h2 className="serif mt-3 text-2xl">Integração com Neon preparada</h2>
-
+                <h2 className="serif mt-3 text-2xl">
+                  Produto conectado ao Neon
+                </h2>
+                
                 <p className="mt-3 text-sm leading-6 text-[color:var(--muted)]">
-                  Esta página ainda utiliza o catálogo temporário enquanto concluímos a integração
-                  central com o banco de dados. Depois da validação da arquitetura, preço, estoque,
-                  disponibilidade e regras comerciais serão administrados sem alteração manual de
-                  código.
+                  Os dados deste produto são carregados diretamente do banco de produção.
+                  O controle de estoque é mantido separadamente em store_inventory e será
+                  integrado ao painel na próxima etapa.
                 </p>
               </div>
             </div>
