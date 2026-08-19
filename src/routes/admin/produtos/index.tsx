@@ -118,7 +118,7 @@ function AdminProdutosPage() {
                 {
                   products.filter(
                     (product) =>
-                      product.status === "ATIVO",
+                      product.status === "ACTIVE",
                   ).length
                 }
               </div>
