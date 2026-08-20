@@ -102,8 +102,8 @@ export async function authenticateAdminUser(
       .limit(1);
 
   /*
-   * A resposta externa deve continuar genérica.
-   * Não revelamos se determinado e-mail existe.
+   * Não revelamos externamente se o e-mail
+   * informado existe no banco.
    */
   if (
     !result ||
@@ -122,7 +122,18 @@ export async function authenticateAdminUser(
     result.role;
 
   /*
-   * Usuário removido logicamente não pode autenticar.
+   * Guardamos o código em uma constante própria.
+   *
+   * Isso permite validar corretamente o possível
+   * valor null retornado pela tipagem do banco
+   * antes de tratá-lo como AdminRoleCode.
+   */
+  const roleCode =
+    role.code;
+
+  /*
+   * Usuário removido logicamente
+   * não pode autenticar.
    */
   if (user.deletedAt) {
     return {
@@ -147,7 +158,7 @@ export async function authenticateAdminUser(
   }
 
   /*
-   * Cargo também precisa continuar ativo.
+   * O cargo também precisa estar ativo.
    */
   if (!role.active) {
     return {
@@ -157,13 +168,16 @@ export async function authenticateAdminUser(
   }
 
   /*
-   * O código vindo do banco precisa pertencer
-   * aos cargos administrativos reconhecidos
-   * pela aplicação.
+   * O cargo precisa possuir código válido.
+   *
+   * Esta validação resolve o TS2345 porque
+   * elimina null antes de chamar
+   * isAdminRoleCode().
    */
   if (
+    typeof roleCode !== "string" ||
     !isAdminRoleCode(
-      role.code,
+      roleCode,
     )
   ) {
     return {
@@ -173,7 +187,7 @@ export async function authenticateAdminUser(
   }
 
   /*
-   * Bloqueio temporário ainda vigente.
+   * Conta temporariamente bloqueada.
    */
   if (
     user.lockedUntil &&
@@ -187,9 +201,14 @@ export async function authenticateAdminUser(
   }
 
   /*
-   * Se o bloqueio anterior já venceu,
-   * zeramos o estado antes de continuar.
+   * Controlamos o contador efetivo localmente.
+   *
+   * Se um bloqueio antigo expirou,
+   * o contador volta para zero.
    */
+  let effectiveFailedLoginAttempts =
+    user.failedLoginAttempts;
+
   if (
     user.lockedUntil &&
     user.lockedUntil.getTime() <=
@@ -209,8 +228,7 @@ export async function authenticateAdminUser(
         ),
       );
 
-    user.failedLoginAttempts = 0;
-    user.lockedUntil = null;
+    effectiveFailedLoginAttempts = 0;
   }
 
   const passwordValid =
@@ -224,7 +242,8 @@ export async function authenticateAdminUser(
    */
   if (!passwordValid) {
     const failedLoginAttempts =
-      user.failedLoginAttempts + 1;
+      effectiveFailedLoginAttempts +
+      1;
 
     const shouldLock =
       failedLoginAttempts >=
@@ -265,7 +284,8 @@ export async function authenticateAdminUser(
   /*
    * LOGIN CORRETO
    *
-   * Zera qualquer tentativa incorreta anterior
+   * Remove tentativas anteriores,
+   * libera eventual bloqueio expirado
    * e registra o último login.
    */
   await db
@@ -298,7 +318,7 @@ export async function authenticateAdminUser(
 
       roleId: role.id,
 
-      role: role.code,
+      role: roleCode,
 
       authVersion:
         user.authVersion,
