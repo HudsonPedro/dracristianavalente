@@ -34,15 +34,19 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Generate Drizzle migration
-        run: pnpm exec drizzle-kit generate --name=admin_identity_access
+        run: >
+          pnpm exec drizzle-kit generate
+          --config=drizzle.generate.config.ts
+          --name=admin_identity_access
 
       - name: Show generated files
+        shell: bash
         run: |
           echo "Arquivos alterados:"
           git status --short
 
           echo ""
-          echo "Arquivos dentro de drizzle:"
+          echo "Arquivos dentro de drizzle/:"
           find drizzle -maxdepth 2 -type f | sort
 
       - name: Validate migration was generated
@@ -54,6 +58,36 @@ jobs:
           fi
 
           echo "Migration gerada pelo Drizzle com sucesso."
+
+      - name: Validate admin tables exist in generated migration
+        shell: bash
+        run: |
+          GENERATED_SQL="$(git diff --name-only -- drizzle | grep '\.sql$' | tail -n 1)"
+
+          if [ -z "$GENERATED_SQL" ]; then
+            echo "ERRO: arquivo SQL de migration não encontrado."
+            exit 1
+          fi
+
+          echo "Migration SQL encontrada:"
+          echo "$GENERATED_SQL"
+
+          grep -q 'CREATE TABLE "admin_roles"' "$GENERATED_SQL" || {
+            echo 'ERRO: admin_roles não encontrada na migration.'
+            exit 1
+          }
+
+          grep -q 'CREATE TABLE "admin_role_permissions"' "$GENERATED_SQL" || {
+            echo 'ERRO: admin_role_permissions não encontrada na migration.'
+            exit 1
+          }
+
+          grep -q 'CREATE TABLE "admin_users"' "$GENERATED_SQL" || {
+            echo 'ERRO: admin_users não encontrada na migration.'
+            exit 1
+          }
+
+          echo "As 3 tabelas administrativas foram encontradas."
 
       - name: Protect unrelated files
         shell: bash
