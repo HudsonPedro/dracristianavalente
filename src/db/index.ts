@@ -2,6 +2,7 @@ import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 
 import * as addressesSchema from "./schema/addresses";
+import * as adminAccessSchema from "./schema/admin-access";
 import * as customersSchema from "./schema/customers";
 import * as inventorySchema from "./schema/inventory";
 import * as orderItemsSchema from "./schema/order-items";
@@ -13,7 +14,9 @@ function getDatabaseUrl() {
   const databaseUrl = process.env.DATABASE_URL;
 
   if (!databaseUrl) {
-    throw new Error("DATABASE_URL não configurada no ambiente.");
+    throw new Error(
+      "DATABASE_URL não configurada no ambiente.",
+    );
   }
 
   return databaseUrl;
@@ -27,10 +30,13 @@ const schema = {
   ...ordersSchema,
   ...orderItemsSchema,
   ...storeSettingsSchema,
+  ...adminAccessSchema,
 };
 
 export function getDb() {
-  const sql = neon(getDatabaseUrl());
+  const sql = neon(
+    getDatabaseUrl(),
+  );
 
   return drizzle({
     client: sql,
@@ -38,4 +44,5 @@ export function getDb() {
   });
 }
 
-export type Database = ReturnType<typeof getDb>;
+export type Database =
+  ReturnType<typeof getDb>;
