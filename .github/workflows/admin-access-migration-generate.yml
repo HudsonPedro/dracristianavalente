@@ -1,0 +1,81 @@
+name: Admin Access Migration Generate
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    name: Generate admin access migration
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.28.0
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Drizzle migration
+        run: pnpm exec drizzle-kit generate --name=admin_identity_access
+
+      - name: Show generated files
+        run: |
+          echo "Arquivos alterados:"
+          git status --short
+
+          echo ""
+          echo "Arquivos dentro de drizzle:"
+          find drizzle -maxdepth 2 -type f | sort
+
+      - name: Validate migration was generated
+        shell: bash
+        run: |
+          if git diff --quiet -- drizzle; then
+            echo "ERRO: nenhuma alteração foi gerada dentro de drizzle/."
+            exit 1
+          fi
+
+          echo "Migration gerada pelo Drizzle com sucesso."
+
+      - name: Protect unrelated files
+        shell: bash
+        run: |
+          UNEXPECTED="$(git status --short | grep -vE '^[ MARC?D]{2} drizzle/' || true)"
+
+          if [ -n "$UNEXPECTED" ]; then
+            echo "ERRO: foram encontrados arquivos alterados fora de drizzle/:"
+            echo "$UNEXPECTED"
+            exit 1
+          fi
+
+          echo "Somente drizzle/ foi alterado."
+
+      - name: Commit generated migration
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add drizzle/
+
+          git commit -m "feat(admin): generate identity access migration"
+
+          git push origin HEAD:main
