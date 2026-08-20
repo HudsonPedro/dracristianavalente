@@ -1,0 +1,87 @@
+name: Admin Super Admin Bootstrap
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bootstrap:
+    name: Bootstrap first Super Admin
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.28.0
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate required secrets
+        shell: bash
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          ADMIN_LOGIN_EMAIL: ${{ secrets.ADMIN_LOGIN_EMAIL }}
+          ADMIN_LOGIN_PASSWORD: ${{ secrets.ADMIN_LOGIN_PASSWORD }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "ERRO: DATABASE_URL não configurada."
+            exit 1
+          fi
+
+          if [ -z "$ADMIN_LOGIN_EMAIL" ]; then
+            echo "ERRO: ADMIN_LOGIN_EMAIL não configurada."
+            exit 1
+          fi
+
+          if [ -z "$ADMIN_LOGIN_PASSWORD" ]; then
+            echo "ERRO: ADMIN_LOGIN_PASSWORD não configurada."
+            exit 1
+          fi
+
+          echo "Secrets obrigatórios disponíveis."
+
+      - name: Bootstrap Super Admin
+        shell: bash
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          ADMIN_LOGIN_EMAIL: ${{ secrets.ADMIN_LOGIN_EMAIL }}
+          ADMIN_LOGIN_PASSWORD: ${{ secrets.ADMIN_LOGIN_PASSWORD }}
+        run: |
+          pnpm dlx tsx -e "
+          import { bootstrapSuperAdmin } from './src/services/auth/bootstrap-super-admin.server.ts';
+
+          (async () => {
+            const result = await bootstrapSuperAdmin();
+
+            console.log(
+              JSON.stringify(
+                {
+                  created: result.created,
+                  userId: result.userId,
+                  role: result.role
+                },
+                null,
+                2
+              )
+            );
+          })().catch((error) => {
+            console.error(error);
+            process.exit(1);
+          });
+          "
