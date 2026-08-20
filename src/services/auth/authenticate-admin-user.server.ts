@@ -47,7 +47,7 @@ export type AdminAuthenticationResult =
 
 function normalizeEmail(
   email: string,
-) {
+): string {
   return email
     .trim()
     .toLowerCase();
@@ -61,7 +61,7 @@ function isAdminRoleCode(
   ).includes(value);
 }
 
-function getLockExpiration() {
+function getLockExpiration(): Date {
   return new Date(
     Date.now() +
       LOCK_DURATION_MINUTES *
@@ -102,13 +102,10 @@ export async function authenticateAdminUser(
       .limit(1);
 
   /*
-   * Não revelamos externamente se o e-mail
-   * informado existe no banco.
+   * Não revelamos externamente se
+   * determinado e-mail existe.
    */
-  if (
-    !result ||
-    !result.user.passwordHash
-  ) {
+  if (!result) {
     return {
       success: false,
       reason: "INVALID_CREDENTIALS",
@@ -122,11 +119,30 @@ export async function authenticateAdminUser(
     result.role;
 
   /*
-   * Guardamos o código em uma constante própria.
+   * password_hash é nullable no banco porque
+   * usuários convidados ainda podem não possuir
+   * uma senha definida.
    *
-   * Isso permite validar corretamente o possível
-   * valor null retornado pela tipagem do banco
-   * antes de tratá-lo como AdminRoleCode.
+   * Capturamos o valor agora e validamos
+   * explicitamente antes de utilizá-lo.
+   */
+  const passwordHash =
+    user.passwordHash;
+
+  if (
+    typeof passwordHash !== "string" ||
+    !passwordHash
+  ) {
+    return {
+      success: false,
+      reason: "INVALID_CREDENTIALS",
+    };
+  }
+
+  /*
+   * Código do cargo também é tratado
+   * defensivamente antes de ser utilizado
+   * como AdminRoleCode.
    */
   const roleCode =
     role.code;
@@ -158,7 +174,8 @@ export async function authenticateAdminUser(
   }
 
   /*
-   * O cargo também precisa estar ativo.
+   * O cargo associado ao usuário
+   * também precisa estar ativo.
    */
   if (!role.active) {
     return {
@@ -168,11 +185,8 @@ export async function authenticateAdminUser(
   }
 
   /*
-   * O cargo precisa possuir código válido.
-   *
-   * Esta validação resolve o TS2345 porque
-   * elimina null antes de chamar
-   * isAdminRoleCode().
+   * O cargo precisa possuir um código
+   * válido reconhecido pela aplicação.
    */
   if (
     typeof roleCode !== "string" ||
@@ -187,12 +201,16 @@ export async function authenticateAdminUser(
   }
 
   /*
-   * Conta temporariamente bloqueada.
+   * Verifica se existe bloqueio temporário
+   * ainda vigente.
    */
+  const now =
+    Date.now();
+
   if (
     user.lockedUntil &&
     user.lockedUntil.getTime() >
-      Date.now()
+      now
   ) {
     return {
       success: false,
@@ -201,10 +219,11 @@ export async function authenticateAdminUser(
   }
 
   /*
-   * Controlamos o contador efetivo localmente.
+   * Mantemos um contador efetivo local.
    *
-   * Se um bloqueio antigo expirou,
-   * o contador volta para zero.
+   * Se um bloqueio anterior já expirou,
+   * zeramos contador e locked_until
+   * antes de processar uma nova tentativa.
    */
   let effectiveFailedLoginAttempts =
     user.failedLoginAttempts;
@@ -212,13 +231,15 @@ export async function authenticateAdminUser(
   if (
     user.lockedUntil &&
     user.lockedUntil.getTime() <=
-      Date.now()
+      now
   ) {
     await db
       .update(adminUsersTable)
       .set({
         failedLoginAttempts: 0,
+
         lockedUntil: null,
+
         updatedAt: new Date(),
       })
       .where(
@@ -228,13 +249,20 @@ export async function authenticateAdminUser(
         ),
       );
 
-    effectiveFailedLoginAttempts = 0;
+    effectiveFailedLoginAttempts =
+      0;
   }
 
+  /*
+   * Validação criptográfica da senha.
+   *
+   * passwordHash já foi validado acima
+   * como string não nula.
+   */
   const passwordValid =
     await verifyAdminPassword(
       password,
-      user.passwordHash,
+      passwordHash,
     );
 
   /*
@@ -274,6 +302,7 @@ export async function authenticateAdminUser(
 
     return {
       success: false,
+
       reason:
         shouldLock
           ? "BLOCKED"
@@ -284,8 +313,8 @@ export async function authenticateAdminUser(
   /*
    * LOGIN CORRETO
    *
-   * Remove tentativas anteriores,
-   * libera eventual bloqueio expirado
+   * Zera qualquer tentativa anterior,
+   * remove bloqueio expirado
    * e registra o último login.
    */
   await db
@@ -316,7 +345,7 @@ export async function authenticateAdminUser(
 
       email: user.email,
 
-      roleId: role.id,
+      roleId: user.roleId,
 
       role: roleCode,
 
