@@ -193,8 +193,8 @@ export const logoutAdmin =
     const {
       useAdminSession,
     } = await import(
-        "../services/auth/admin-session.server"
-      );
+      "../services/auth/admin-session.server"
+    );
 
     const session =
       await useAdminSession();
@@ -203,5 +203,63 @@ export const logoutAdmin =
 
     return {
       success: true as const,
+    };
+  });
+
+export const revokeAllAdminSessions =
+  createServerFn({
+    method: "POST",
+  }).handler(async () => {
+    /*
+     * Primeiro validamos a sessão atual
+     * contra o usuário real no Neon.
+     */
+    const {
+      requireAdmin,
+    } = await import(
+      "../services/auth/require-admin.server"
+    );
+
+    const admin =
+      await requireAdmin();
+
+    /*
+     * Incrementamos authVersion no banco.
+     *
+     * Qualquer sessão antiga contendo
+     * a versão anterior passa a ser inválida
+     * na próxima chamada de requireAdmin().
+     */
+    const {
+      revokeAdminSessions,
+    } = await import(
+      "../services/auth/revoke-admin-sessions.server"
+    );
+
+    const result =
+      await revokeAdminSessions(
+        admin.userId,
+      );
+
+    /*
+     * A sessão que solicitou a revogação
+     * também precisa ser encerrada.
+     */
+    const {
+      useAdminSession,
+    } = await import(
+      "../services/auth/admin-session.server"
+    );
+
+    const session =
+      await useAdminSession();
+
+    await session.clear();
+
+    return {
+      success: true as const,
+
+      authVersion:
+        result.authVersion,
     };
   });
