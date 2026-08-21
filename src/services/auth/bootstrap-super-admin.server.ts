@@ -11,51 +11,49 @@ import { hashAdminPassword } from "./admin-password.server";
 export type BootstrapSuperAdminResult = {
   created: boolean;
 
-  userId: string;
+  repaired: boolean;
 
-  email: string;
+  userId: string;
 
   role: "SUPER_ADMIN";
 };
 
-function getRequiredEnvironmentVariable(
-  name:
-    | "ADMIN_LOGIN_EMAIL"
-    | "ADMIN_LOGIN_PASSWORD",
-) {
-  const value =
-    process.env[name];
+const SUPER_ADMIN_ID =
+  "admin-super-admin-primary";
 
-  if (!value) {
+const SUPER_ADMIN_EMAIL =
+  "hptech@hptechinformatica.com";
+
+const SUPER_ADMIN_NAME =
+  "Super Administrador";
+
+function getAdminPassword() {
+  const password =
+    process.env.ADMIN_LOGIN_PASSWORD;
+
+  if (!password) {
     throw new Error(
-      `${name} não configurada no ambiente.`,
+      "ADMIN_LOGIN_PASSWORD não configurada no ambiente.",
     );
   }
 
-  return value;
+  return password;
 }
 
 export async function bootstrapSuperAdmin(): Promise<BootstrapSuperAdminResult> {
-  const db =
-    getDb();
+  const db = getDb();
 
-  const email =
-    getRequiredEnvironmentVariable(
-      "ADMIN_LOGIN_EMAIL",
-    )
-      .trim()
-      .toLowerCase();
-
-  const password =
-    getRequiredEnvironmentVariable(
-      "ADMIN_LOGIN_PASSWORD",
-    );
-
-  if (!email) {
-    throw new Error(
-      "E-mail administrativo inválido.",
-    );
-  }
+  /*
+   * O e-mail principal do proprietário da loja
+   * possui uma identidade canônica única.
+   *
+   * Não dependemos mais de ADMIN_LOGIN_EMAIL
+   * durante o bootstrap para impedir que um
+   * Secret configurado incorretamente altere
+   * novamente a identidade do SUPER_ADMIN.
+   */
+  const canonicalEmail =
+    SUPER_ADMIN_EMAIL;
 
   const [superAdminRole] =
     await db
@@ -81,35 +79,104 @@ export async function bootstrapSuperAdmin(): Promise<BootstrapSuperAdminResult> 
     );
   }
 
-  const [existingUser] =
+  /*
+   * Primeiro procuramos pelo ID estrutural
+   * do SUPER_ADMIN.
+   *
+   * Isso permite reparar uma identidade que
+   * tenha sido criada anteriormente com e-mail
+   * incorreto, sem criar novo usuário.
+   */
+  const [existingPrimaryUser] =
     await db
       .select()
       .from(adminUsersTable)
       .where(
         eq(
-          adminUsersTable.email,
-          email,
+          adminUsersTable.id,
+          SUPER_ADMIN_ID,
         ),
       )
       .limit(1);
 
-  if (existingUser) {
+  if (existingPrimaryUser) {
     if (
-      existingUser.roleId !==
+      existingPrimaryUser.roleId !==
       superAdminRole.id
     ) {
       throw new Error(
-        "Já existe um usuário com este e-mail utilizando outro cargo.",
+        "O usuário administrativo principal está associado a um cargo diferente de SUPER_ADMIN.",
       );
     }
 
+    const needsRepair =
+      existingPrimaryUser.email !==
+        canonicalEmail ||
+      existingPrimaryUser.name !==
+        SUPER_ADMIN_NAME ||
+      existingPrimaryUser.department !==
+        "ADMINISTRATION" ||
+      existingPrimaryUser.status !==
+        "ACTIVE";
+
+    if (needsRepair) {
+      await db
+        .update(adminUsersTable)
+        .set({
+          name:
+            SUPER_ADMIN_NAME,
+
+          email:
+            canonicalEmail,
+
+          department:
+            "ADMINISTRATION",
+
+          status:
+            "ACTIVE",
+
+          updatedAt:
+            new Date(),
+        })
+        .where(
+          eq(
+            adminUsersTable.id,
+            SUPER_ADMIN_ID,
+          ),
+        );
+    }
+
+    /*
+     * IMPORTANTE:
+     *
+     * Não tocamos no password_hash existente.
+     * Portanto a senha atual permanece exatamente
+     * a mesma que foi utilizada para criar
+     * este SUPER_ADMIN.
+     */
     return {
       created: false,
-      userId: existingUser.id,
-      email: existingUser.email,
-      role: "SUPER_ADMIN",
+
+      repaired:
+        needsRepair,
+
+      userId:
+        existingPrimaryUser.id,
+
+      role:
+        "SUPER_ADMIN",
     };
   }
+
+  /*
+   * Somente chegamos aqui se o usuário estrutural
+   * realmente não existir.
+   *
+   * Nesse cenário usamos a senha protegida do
+   * ambiente para criar o primeiro hash.
+   */
+  const password =
+    getAdminPassword();
 
   const passwordHash =
     await hashAdminPassword(
@@ -119,19 +186,18 @@ export async function bootstrapSuperAdmin(): Promise<BootstrapSuperAdminResult> 
   const now =
     new Date();
 
-  const userId =
-    "admin-super-admin-primary";
-
   const [createdUser] =
     await db
       .insert(adminUsersTable)
       .values({
-        id: userId,
+        id:
+          SUPER_ADMIN_ID,
 
         name:
-          "Super Administrador",
+          SUPER_ADMIN_NAME,
 
-        email,
+        email:
+          canonicalEmail,
 
         passwordHash,
 
@@ -184,8 +250,13 @@ export async function bootstrapSuperAdmin(): Promise<BootstrapSuperAdminResult> 
 
   return {
     created: true,
-    userId: createdUser.id,
-    email: createdUser.email,
-    role: "SUPER_ADMIN",
+
+    repaired: false,
+
+    userId:
+      createdUser.id,
+
+    role:
+      "SUPER_ADMIN",
   };
 }
