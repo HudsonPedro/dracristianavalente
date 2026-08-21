@@ -1,8 +1,17 @@
 import { useSession } from "@tanstack/react-start/server";
 
+import type { AdminRoleCode } from "../../domain/admin/access";
+
 export type AdminSessionData = {
   authenticated?: boolean;
-  role?: "ADMIN";
+
+  userId?: string;
+
+  roleId?: string;
+
+  role?: AdminRoleCode;
+
+  authVersion?: number;
 };
 
 function getSessionSecret() {
@@ -26,18 +35,27 @@ function getSessionSecret() {
 
 export function useAdminSession() {
   return useSession<AdminSessionData>({
-    name: "dra-cris-admin-session",
+    name:
+      "dra-cris-admin-session",
 
-    password: getSessionSecret(),
+    password:
+      getSessionSecret(),
 
     cookie: {
       httpOnly: true,
+
       secure:
         process.env.NODE_ENV ===
         "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 8,
+
+      sameSite:
+        "lax",
+
+      path:
+        "/",
+
+      maxAge:
+        60 * 60 * 8,
     },
   });
 }
