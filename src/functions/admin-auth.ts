@@ -105,7 +105,18 @@ export const loginAdmin =
 
       await session.update({
         authenticated: true,
-        role: "ADMIN",
+
+        userId:
+          authentication.user.id,
+
+        roleId:
+          authentication.user.roleId,
+
+        role:
+          authentication.user.role,
+
+        authVersion:
+          authentication.user.authVersion,
       });
 
       return {
@@ -129,16 +140,49 @@ export const getAdminAuth =
     const authenticated =
       session.data.authenticated ===
         true &&
-      session.data.role ===
-        "ADMIN";
+      typeof session.data.userId ===
+        "string" &&
+      typeof session.data.roleId ===
+        "string" &&
+      typeof session.data.role ===
+        "string" &&
+      typeof session.data.authVersion ===
+        "number";
+
+    if (!authenticated) {
+      return {
+        authenticated:
+          false as const,
+
+        userId:
+          null,
+
+        roleId:
+          null,
+
+        role:
+          null,
+
+        authVersion:
+          null,
+      };
+    }
 
     return {
-      authenticated,
+      authenticated:
+        true as const,
+
+      userId:
+        session.data.userId!,
+
+      roleId:
+        session.data.roleId!,
 
       role:
-        authenticated
-          ? ("ADMIN" as const)
-          : null,
+        session.data.role!,
+
+      authVersion:
+        session.data.authVersion!,
     };
   });
 
@@ -149,8 +193,8 @@ export const logoutAdmin =
     const {
       useAdminSession,
     } = await import(
-      "../services/auth/admin-session.server"
-    );
+        "../services/auth/admin-session.server"
+      );
 
     const session =
       await useAdminSession();
