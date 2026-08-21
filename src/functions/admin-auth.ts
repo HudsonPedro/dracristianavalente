@@ -53,30 +53,52 @@ export const loginAdmin =
     .validator(validateLoginInput)
     .handler(async ({ data }) => {
       const {
-        validateAdminCredentials,
+        authenticateAdminUser,
       } = await import(
-        "../services/auth/admin-credentials.server"
+        "../services/auth/authenticate-admin-user.server"
       );
 
-      const {
-        useAdminSession,
-      } = await import(
-        "../services/auth/admin-session.server"
-      );
-
-      const authenticated =
-        validateAdminCredentials(
+      const authentication =
+        await authenticateAdminUser(
           data.email,
           data.password,
         );
 
-      if (!authenticated) {
+      if (!authentication.success) {
+        if (
+          authentication.reason ===
+          "BLOCKED"
+        ) {
+          return {
+            success: false as const,
+            error:
+              "Acesso temporariamente bloqueado. Tente novamente mais tarde.",
+          };
+        }
+
+        if (
+          authentication.reason ===
+          "INACTIVE"
+        ) {
+          return {
+            success: false as const,
+            error:
+              "Acesso administrativo indisponível.",
+          };
+        }
+
         return {
           success: false as const,
           error:
             "E-mail ou senha inválidos.",
         };
       }
+
+      const {
+        useAdminSession,
+      } = await import(
+        "../services/auth/admin-session.server"
+      );
 
       const session =
         await useAdminSession();
