@@ -128,28 +128,50 @@ export const getAdminAuth =
   createServerFn({
     method: "GET",
   }).handler(async () => {
-    const {
-      useAdminSession,
-    } = await import(
-      "../services/auth/admin-session.server"
-    );
+    /*
+     * Não confiamos mais apenas no conteúdo
+     * existente no cookie.
+     *
+     * Toda verificação administrativa passa
+     * pelo requireAdmin(), que confronta:
+     *
+     * - userId
+     * - roleId
+     * - role
+     * - authVersion
+     * - status
+     * - deletedAt
+     * - cargo ativo
+     *
+     * contra os dados atuais do Neon.
+     */
+    try {
+      const {
+        requireAdmin,
+      } = await import(
+        "../services/auth/require-admin.server"
+      );
 
-    const session =
-      await useAdminSession();
+      const admin =
+        await requireAdmin();
 
-    const authenticated =
-      session.data.authenticated ===
-        true &&
-      typeof session.data.userId ===
-        "string" &&
-      typeof session.data.roleId ===
-        "string" &&
-      typeof session.data.role ===
-        "string" &&
-      typeof session.data.authVersion ===
-        "number";
+      return {
+        authenticated:
+          true as const,
 
-    if (!authenticated) {
+        userId:
+          admin.userId,
+
+        roleId:
+          admin.roleId,
+
+        role:
+          admin.role,
+
+        authVersion:
+          admin.authVersion,
+      };
+    } catch {
       return {
         authenticated:
           false as const,
@@ -167,23 +189,6 @@ export const getAdminAuth =
           null,
       };
     }
-
-    return {
-      authenticated:
-        true as const,
-
-      userId:
-        session.data.userId!,
-
-      roleId:
-        session.data.roleId!,
-
-      role:
-        session.data.role!,
-
-      authVersion:
-        session.data.authVersion!,
-    };
   });
 
 export const logoutAdmin =
@@ -211,8 +216,9 @@ export const revokeAllAdminSessions =
     method: "POST",
   }).handler(async () => {
     /*
-     * Primeiro validamos a sessão atual
-     * contra o usuário real no Neon.
+     * A sessão atual precisa ser válida
+     * antes que uma operação crítica
+     * de segurança possa acontecer.
      */
     const {
       requireAdmin,
@@ -223,12 +229,12 @@ export const revokeAllAdminSessions =
     const admin =
       await requireAdmin();
 
+    const previousAuthVersion =
+      admin.authVersion;
+
     /*
-     * Incrementamos authVersion no banco.
-     *
-     * Qualquer sessão antiga contendo
-     * a versão anterior passa a ser inválida
-     * na próxima chamada de requireAdmin().
+     * Incrementa authVersion de forma
+     * atômica no PostgreSQL.
      */
     const {
       revokeAdminSessions,
@@ -242,8 +248,33 @@ export const revokeAllAdminSessions =
       );
 
     /*
-     * A sessão que solicitou a revogação
-     * também precisa ser encerrada.
+     * Gate crítico.
+     *
+     * A operação só poderá continuar
+     * se o banco realmente devolver
+     * a versão seguinte.
+     *
+     * Exemplo:
+     * 1 → 2
+     * 2 → 3
+     */
+    const expectedAuthVersion =
+      previousAuthVersion + 1;
+
+    if (
+      result.authVersion !==
+      expectedAuthVersion
+    ) {
+      throw new Error(
+        "Falha ao confirmar a revogação das sessões administrativas.",
+      );
+    }
+
+    /*
+     * Somente depois de confirmar que
+     * authVersion foi incrementado no banco
+     * encerramos a sessão que solicitou
+     * a revogação.
      */
     const {
       useAdminSession,
@@ -257,7 +288,10 @@ export const revokeAllAdminSessions =
     await session.clear();
 
     return {
-      success: true as const,
+      success:
+        true as const,
+
+      previousAuthVersion,
 
       authVersion:
         result.authVersion,
