@@ -5,6 +5,12 @@ type AdminLoginInput = {
   password: string;
 };
 
+type ChangeAdminPasswordInput = {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
+
 function validateLoginInput(
   input: AdminLoginInput,
 ) {
@@ -43,6 +49,70 @@ function validateLoginInput(
   return {
     email,
     password,
+  };
+}
+
+function validateChangePasswordInput(
+  input: ChangeAdminPasswordInput,
+) {
+  const currentPassword =
+    input.currentPassword ?? "";
+
+  const newPassword =
+    input.newPassword ?? "";
+
+  const confirmPassword =
+    input.confirmPassword ?? "";
+
+  if (!currentPassword) {
+    throw new Error(
+      "A senha atual é obrigatória.",
+    );
+  }
+
+  if (!newPassword) {
+    throw new Error(
+      "A nova senha é obrigatória.",
+    );
+  }
+
+  if (!confirmPassword) {
+    throw new Error(
+      "A confirmação da nova senha é obrigatória.",
+    );
+  }
+
+  if (
+    currentPassword.length > 200 ||
+    newPassword.length > 200 ||
+    confirmPassword.length > 200
+  ) {
+    throw new Error(
+      "Senha inválida.",
+    );
+  }
+
+  if (
+    newPassword !==
+    confirmPassword
+  ) {
+    throw new Error(
+      "A confirmação da nova senha não corresponde.",
+    );
+  }
+
+  if (
+    currentPassword ===
+    newPassword
+  ) {
+    throw new Error(
+      "A nova senha deve ser diferente da senha atual.",
+    );
+  }
+
+  return {
+    currentPassword,
+    newPassword,
   };
 }
 
@@ -128,23 +198,6 @@ export const getAdminAuth =
   createServerFn({
     method: "GET",
   }).handler(async () => {
-    /*
-     * Não confiamos mais apenas no conteúdo
-     * existente no cookie.
-     *
-     * Toda verificação administrativa passa
-     * pelo requireAdmin(), que confronta:
-     *
-     * - userId
-     * - roleId
-     * - role
-     * - authVersion
-     * - status
-     * - deletedAt
-     * - cargo ativo
-     *
-     * contra os dados atuais do Neon.
-     */
     try {
       const {
         requireAdmin,
@@ -215,11 +268,6 @@ export const revokeAllAdminSessions =
   createServerFn({
     method: "POST",
   }).handler(async () => {
-    /*
-     * A sessão atual precisa ser válida
-     * antes que uma operação crítica
-     * de segurança possa acontecer.
-     */
     const {
       requireAdmin,
     } = await import(
@@ -232,10 +280,6 @@ export const revokeAllAdminSessions =
     const previousAuthVersion =
       admin.authVersion;
 
-    /*
-     * Incrementa authVersion de forma
-     * atômica no PostgreSQL.
-     */
     const {
       revokeAdminSessions,
     } = await import(
@@ -247,17 +291,6 @@ export const revokeAllAdminSessions =
         admin.userId,
       );
 
-    /*
-     * Gate crítico.
-     *
-     * A operação só poderá continuar
-     * se o banco realmente devolver
-     * a versão seguinte.
-     *
-     * Exemplo:
-     * 1 → 2
-     * 2 → 3
-     */
     const expectedAuthVersion =
       previousAuthVersion + 1;
 
@@ -270,12 +303,6 @@ export const revokeAllAdminSessions =
       );
     }
 
-    /*
-     * Somente depois de confirmar que
-     * authVersion foi incrementado no banco
-     * encerramos a sessão que solicitou
-     * a revogação.
-     */
     const {
       useAdminSession,
     } = await import(
@@ -297,3 +324,57 @@ export const revokeAllAdminSessions =
         result.authVersion,
     };
   });
+
+export const changeAdminPasswordAction =
+  createServerFn({
+    method: "POST",
+  })
+    .validator(
+      validateChangePasswordInput,
+    )
+    .handler(async ({ data }) => {
+      /*
+       * O serviço já exige requireAdmin()
+       * internamente e valida novamente
+       * o usuário real antes de alterar
+       * qualquer credencial.
+       */
+      const {
+        changeAdminPassword,
+      } = await import(
+        "../services/auth/change-admin-password.server"
+      );
+
+      const result =
+        await changeAdminPassword(
+          data.currentPassword,
+          data.newPassword,
+        );
+
+      /*
+       * changeAdminPassword() incrementa
+       * authVersion através da revogação.
+       *
+       * Portanto o cookie atual passa a
+       * representar uma sessão antiga e
+       * também precisa ser removido.
+       */
+      const {
+        useAdminSession,
+      } = await import(
+        "../services/auth/admin-session.server"
+      );
+
+      const session =
+        await useAdminSession();
+
+      await session.clear();
+
+      return {
+        success:
+          true as const,
+
+        authVersion:
+          result.authVersion,
+      };
+    });
