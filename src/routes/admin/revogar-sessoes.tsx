@@ -1,6 +1,5 @@
 import {
   createFileRoute,
-  useNavigate,
 } from "@tanstack/react-router";
 import {
   useState,
@@ -18,10 +17,13 @@ export const Route =
       RevokeAdminSessionsPage,
   });
 
-function RevokeAdminSessionsPage() {
-  const navigate =
-    useNavigate();
+type RevocationResult = {
+  success: true;
+  previousAuthVersion: number;
+  authVersion: number;
+};
 
+function RevokeAdminSessionsPage() {
   const [loading, setLoading] =
     useState(false);
 
@@ -30,8 +32,16 @@ function RevokeAdminSessionsPage() {
       null,
     );
 
+  const [result, setResult] =
+    useState<RevocationResult | null>(
+      null,
+    );
+
   async function handleRevoke() {
-    if (loading) {
+    if (
+      loading ||
+      result
+    ) {
       return;
     }
 
@@ -39,26 +49,31 @@ function RevokeAdminSessionsPage() {
     setError(null);
 
     try {
-      const result =
+      const response =
         await revokeAllAdminSessions();
 
-      if (!result.success) {
+      if (!response.success) {
         throw new Error(
-          "Não foi possível revogar as sessões.",
+          "A revogação não retornou sucesso.",
         );
       }
 
-      await navigate({
-        to: "/admin/login",
-        replace: true,
+      setResult({
+        success: true,
+
+        previousAuthVersion:
+          response.previousAuthVersion,
+
+        authVersion:
+          response.authVersion,
       });
     } catch (cause) {
       setError(
         cause instanceof Error
           ? cause.message
-          : "Não foi possível revogar as sessões.",
+          : "Não foi possível revogar as sessões administrativas.",
       );
-
+    } finally {
       setLoading(false);
     }
   }
@@ -69,40 +84,94 @@ function RevokeAdminSessionsPage() {
         maxWidth: 720,
         margin: "0 auto",
         padding: "48px 24px",
+        fontFamily:
+          "Arial, sans-serif",
       }}
     >
       <h1>
-        Homologação de segurança
+        Homologação de revogação
       </h1>
 
       <p>
-        Esta página temporária valida a
-        revogação centralizada das sessões
-        administrativas.
+        Esta página executa uma única
+        revogação e exibe o retorno real
+        produzido pelo servidor.
       </p>
 
-      <p>
-        Ao continuar, todas as sessões
-        administrativas deste usuário serão
-        invalidadas e será necessário entrar
-        novamente.
-      </p>
-
-      {error ? (
-        <p role="alert">
-          {error}
-        </p>
+      {!result ? (
+        <button
+          type="button"
+          disabled={loading}
+          onClick={handleRevoke}
+          style={{
+            padding:
+              "12px 18px",
+            cursor:
+              loading
+                ? "wait"
+                : "pointer",
+          }}
+        >
+          {loading
+            ? "Executando..."
+            : "Executar revogação"}
+        </button>
       ) : null}
 
-      <button
-        type="button"
-        disabled={loading}
-        onClick={handleRevoke}
-      >
-        {loading
-          ? "Revogando..."
-          : "Revogar todas as sessões"}
-      </button>
+      {error ? (
+        <section
+          role="alert"
+          style={{
+            marginTop: 24,
+          }}
+        >
+          <strong>
+            ERRO
+          </strong>
+
+          <p>
+            {error}
+          </p>
+        </section>
+      ) : null}
+
+      {result ? (
+        <section
+          style={{
+            marginTop: 24,
+          }}
+        >
+          <h2>
+            Revogação executada
+          </h2>
+
+          <p>
+            previousAuthVersion:
+            {" "}
+            <strong>
+              {
+                result.previousAuthVersion
+              }
+            </strong>
+          </p>
+
+          <p>
+            authVersion:
+            {" "}
+            <strong>
+              {
+                result.authVersion
+              }
+            </strong>
+          </p>
+
+          <p>
+            A sessão atual foi encerrada
+            no servidor. Não atualize esta
+            página antes de validar o Neon.
+          </p>
+        </section>
+      ) : null}
     </main>
   );
 }
