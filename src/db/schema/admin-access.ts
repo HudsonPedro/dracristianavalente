@@ -9,12 +9,6 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 
-/**
- * ============================================================
- * CARGOS / PERFIS ADMINISTRATIVOS
- * ============================================================
- */
-
 export const adminRolesTable = pgTable(
   "admin_roles",
   {
@@ -62,25 +56,6 @@ export const adminRolesTable = pgTable(
     ).on(table.active),
   ],
 );
-
-/**
- * ============================================================
- * PERMISSÕES DOS CARGOS
- * ============================================================
- *
- * Exemplo:
- *
- * INVENTORY + VIEW
- * INVENTORY + UPDATE
- * USERS + MANAGE
- *
- * A combinação:
- *
- * role_id + module + action
- *
- * não pode se repetir.
- * ============================================================
- */
 
 export const adminRolePermissionsTable =
   pgTable(
@@ -130,12 +105,6 @@ export const adminRolePermissionsTable =
     ],
   );
 
-/**
- * ============================================================
- * USUÁRIOS ADMINISTRATIVOS
- * ============================================================
- */
-
 export const adminUsersTable = pgTable(
   "admin_users",
   {
@@ -151,16 +120,9 @@ export const adminUsersTable = pgTable(
       length: 255,
     }).notNull(),
 
-    /**
-     * Nunca armazenar senha em texto puro.
-     *
-     * Este campo receberá futuramente
-     * somente o hash seguro da senha.
-     *
-     * Pode iniciar NULL para usuário
-     * convidado que ainda não definiu senha.
-     */
-    passwordHash: text("password_hash"),
+    passwordHash: text(
+      "password_hash",
+    ),
 
     department: varchar("department", {
       length: 80,
@@ -210,15 +172,6 @@ export const adminUsersTable = pgTable(
       },
     ),
 
-    /**
-     * Incrementado quando sessões existentes
-     * precisam ser invalidadas.
-     *
-     * Exemplos:
-     * - troca de senha;
-     * - bloqueio;
-     * - alteração crítica de acesso.
-     */
     authVersion: integer(
       "auth_version",
     )
@@ -289,8 +242,7 @@ export const adminPasswordResetTokensTable =
       })
         .notNull()
         .references(
-          () =>
-            adminUsersTable.id,
+          () => adminUsersTable.id,
           {
             onDelete: "cascade",
           },
@@ -326,21 +278,15 @@ export const adminPasswordResetTokensTable =
     (table) => [
       uniqueIndex(
         "admin_password_reset_tokens_hash_unique",
-      ).on(
-        table.tokenHash,
-      ),
+      ).on(table.tokenHash),
 
       index(
         "admin_password_reset_tokens_user_idx",
-      ).on(
-        table.userId,
-      ),
+      ).on(table.userId),
 
       index(
         "admin_password_reset_tokens_expires_idx",
-      ).on(
-        table.expiresAt,
-      ),
+      ).on(table.expiresAt),
     ],
   );
 
