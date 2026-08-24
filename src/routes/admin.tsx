@@ -82,7 +82,7 @@ function AdminShell() {
       <header className="sticky top-0 z-40 border-b border-stone-200 bg-white/95 backdrop-blur">
         <div className="flex min-h-16 items-center justify-between gap-6 px-5 md:px-8">
           <Link
-            to="/admin/"
+            to="/admin"
             className="flex min-w-0 items-center gap-4"
           >
             <div>
@@ -116,7 +116,7 @@ function AdminShell() {
 
               <div className="mt-3">
                 <Link
-                  to="/admin/"
+                  to="/admin"
                   className={[
                     "flex items-center rounded-xl px-3 py-2.5 text-sm font-semibold transition",
                     dashboardActive
@@ -206,7 +206,7 @@ function AdminShell() {
           <div className="border-b border-stone-200 bg-white px-4 py-3 lg:hidden">
             <div className="flex gap-2 overflow-x-auto">
               <Link
-                to="/admin/"
+                to="/admin"
                 className={[
                   "shrink-0 rounded-xl px-4 py-2 text-sm font-semibold",
                   dashboardActive
