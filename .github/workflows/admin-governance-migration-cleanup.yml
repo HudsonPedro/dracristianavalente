@@ -1,0 +1,93 @@
+name: Admin Governance Migration Cleanup
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    name: Remove obsolete governance migration
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Locate obsolete migration commit
+        id: obsolete
+        shell: bash
+        run: |
+          COMMIT_SHA="$(git log \
+            --all \
+            --format='%H|%s' \
+            | grep '|feat(admin): generate governance migration$' \
+            | head -n 1 \
+            | cut -d'|' -f1)"
+
+          if [ -z "$COMMIT_SHA" ]; then
+            echo "ERRO: commit antigo da migration não encontrado."
+            exit 1
+          fi
+
+          echo "Commit localizado:"
+          echo "$COMMIT_SHA"
+
+          echo "commit_sha=$COMMIT_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Validate obsolete commit
+        shell: bash
+        run: |
+          COMMIT_SHA="${{ steps.obsolete.outputs.commit_sha }}"
+
+          echo "Arquivos pertencentes ao commit:"
+          git diff-tree \
+            --no-commit-id \
+            --name-only \
+            -r "$COMMIT_SHA"
+
+          INVALID_FILES="$(git diff-tree \
+            --no-commit-id \
+            --name-only \
+            -r "$COMMIT_SHA" \
+            | grep -v '^drizzle/' \
+            || true)"
+
+          if [ -n "$INVALID_FILES" ]; then
+            echo "ERRO: o commit possui arquivos fora de drizzle/:"
+            echo "$INVALID_FILES"
+            exit 1
+          fi
+
+          echo "Commit validado: somente arquivos Drizzle."
+
+      - name: Revert obsolete migration
+        shell: bash
+        run: |
+          COMMIT_SHA="${{ steps.obsolete.outputs.commit_sha }}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git revert \
+            --no-edit \
+            "$COMMIT_SHA"
+
+      - name: Show cleanup result
+        shell: bash
+        run: |
+          echo "Estado após remoção da migration antiga:"
+          git status --short
+
+          echo ""
+          echo "Último commit:"
+          git log -1 --oneline
+
+      - name: Push cleanup
+        shell: bash
+        run: |
+          git push origin main
