@@ -11,6 +11,13 @@ type ChangeAdminPasswordInput = {
   confirmPassword: string;
 };
 
+type UpdateAdminUserInput = {
+  userId: string;
+  name: string;
+  department: string;
+  roleId: string;
+};
+
 function validateLoginInput(
   input: AdminLoginInput,
 ) {
@@ -113,6 +120,69 @@ function validateChangePasswordInput(
   return {
     currentPassword,
     newPassword,
+  };
+}
+
+function validateUpdateAdminUserInput(
+  input: UpdateAdminUserInput,
+) {
+  const userId =
+    input.userId
+      ?.trim();
+
+  const name =
+    input.name
+      ?.trim();
+
+  const department =
+    input.department
+      ?.trim();
+
+  const roleId =
+    input.roleId
+      ?.trim();
+
+  if (
+    !userId ||
+    userId.length > 120
+  ) {
+    throw new Error(
+      "Usuário administrativo inválido.",
+    );
+  }
+
+  if (
+    !name ||
+    name.length > 255
+  ) {
+    throw new Error(
+      "Nome do usuário inválido.",
+    );
+  }
+
+  if (
+    !department ||
+    department.length > 80
+  ) {
+    throw new Error(
+      "Departamento inválido.",
+    );
+  }
+
+  if (
+    !roleId ||
+    roleId.length > 120
+  ) {
+    throw new Error(
+      "Papel administrativo inválido.",
+    );
+  }
+
+  return {
+    userId,
+    name,
+    department,
+    roleId,
   };
 }
 
@@ -334,7 +404,7 @@ export const changeAdminPasswordAction =
     )
     .handler(async ({ data }) => {
       /*
-       * O serviço já exige requireAdmin()
+       * O serviço exige requireAdmin()
        * internamente e valida novamente
        * o usuário real antes de alterar
        * qualquer credencial.
@@ -376,5 +446,91 @@ export const changeAdminPasswordAction =
 
         authVersion:
           result.authVersion,
+      };
+    });
+
+export const updateAdminUserAction =
+  createServerFn({
+    method: "POST",
+  })
+    .validator(
+      validateUpdateAdminUserInput,
+    )
+    .handler(async ({ data }) => {
+      /*
+       * A implementação crítica permanece
+       * exclusivamente no módulo server-side.
+       *
+       * Esse serviço:
+       *
+       * - exige requireAdmin();
+       * - valida usuário existente;
+       * - ignora usuários removidos;
+       * - valida o papel escolhido;
+       * - exige papel ativo;
+       * - protege o próprio SUPER_ADMIN.
+       */
+      const {
+        updateAdminUser,
+      } = await import(
+        "../services/auth/update-admin-user.server"
+      );
+
+      const result =
+        await updateAdminUser({
+          userId:
+            data.userId,
+
+          name:
+            data.name,
+
+          department:
+            data.department,
+
+          roleId:
+            data.roleId,
+        });
+
+      /*
+       * Não retornamos Date diretamente
+       * para a futura interface.
+       *
+       * O resultado da Server Function
+       * fica explicitamente serializável.
+       */
+      return {
+        success:
+          true as const,
+
+        user: {
+          id:
+            result.user.id,
+
+          name:
+            result.user.name,
+
+          email:
+            result.user.email,
+
+          department:
+            result.user.department,
+
+          status:
+            result.user.status,
+
+          role: {
+            id:
+              result.user.role.id,
+
+            code:
+              result.user.role.code,
+
+            name:
+              result.user.role.name,
+          },
+
+          updatedAt:
+            result.user.updatedAt.toISOString(),
+        },
       };
     });
