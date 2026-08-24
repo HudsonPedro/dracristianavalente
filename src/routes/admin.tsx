@@ -73,6 +73,12 @@ function AdminShell() {
       "/admin/produtos/",
     );
 
+  const usersActive =
+    pathname === "/admin/usuarios" ||
+    pathname.startsWith(
+      "/admin/usuarios/",
+    );
+
   const passwordActive =
     pathname ===
     "/admin/seguranca/senha";
@@ -155,13 +161,17 @@ function AdminShell() {
               </p>
 
               <div className="mt-3 space-y-1">
-                <div className="flex cursor-not-allowed items-center rounded-xl px-3 py-2.5 text-sm font-medium text-stone-400">
+                <Link
+                  to="/admin/usuarios"
+                  className={[
+                    "flex items-center rounded-xl px-3 py-2.5 text-sm font-semibold transition",
+                    usersActive
+                      ? "bg-stone-950 text-white"
+                      : "text-stone-600 hover:bg-stone-100 hover:text-stone-950",
+                  ].join(" ")}
+                >
                   Usuários
-
-                  <span className="ml-auto text-[9px] uppercase tracking-wider">
-                    Em breve
-                  </span>
-                </div>
+                </Link>
 
                 <div className="flex cursor-not-allowed items-center rounded-xl px-3 py-2.5 text-sm font-medium text-stone-400">
                   Papéis e permissões
@@ -227,6 +237,18 @@ function AdminShell() {
                 ].join(" ")}
               >
                 Produtos
+              </Link>
+
+              <Link
+                to="/admin/usuarios"
+                className={[
+                  "shrink-0 rounded-xl px-4 py-2 text-sm font-semibold",
+                  usersActive
+                    ? "bg-stone-950 text-white"
+                    : "bg-stone-100 text-stone-700",
+                ].join(" ")}
+              >
+                Usuários
               </Link>
 
               <Link
