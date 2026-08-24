@@ -1,5 +1,4 @@
 import {
-  boolean,
   index,
   pgTable,
   text,
@@ -14,91 +13,15 @@ import {
 
 /*
  * =========================================================
- * DEPARTAMENTOS ADMINISTRATIVOS
- * =========================================================
- *
- * O campo admin_users.department já guarda o código
- * administrativo, por exemplo:
- *
- * ADMINISTRATION
- * CATALOG
- * INVENTORY
- *
- * Portanto o cadastro oficial usa "code" como identificador
- * funcional sem exigir alteração imediata de admin_users.
- */
-export const adminDepartmentsTable =
-  pgTable(
-    "admin_departments",
-    {
-      id: varchar("id", {
-        length: 120,
-      })
-        .primaryKey(),
-
-      code: varchar("code", {
-        length: 80,
-      })
-        .notNull(),
-
-      name: varchar("name", {
-        length: 160,
-      })
-        .notNull(),
-
-      description:
-        text("description"),
-
-      active:
-        boolean("active")
-          .notNull()
-          .default(true),
-
-      createdAt:
-        timestamp(
-          "created_at",
-          {
-            withTimezone: true,
-          },
-        )
-          .notNull()
-          .defaultNow(),
-
-      updatedAt:
-        timestamp(
-          "updated_at",
-          {
-            withTimezone: true,
-          },
-        )
-          .notNull()
-          .defaultNow(),
-    },
-    (table) => [
-      uniqueIndex(
-        "admin_departments_code_unique",
-      ).on(
-        table.code,
-      ),
-
-      index(
-        "admin_departments_active_idx",
-      ).on(
-        table.active,
-      ),
-
-      index(
-        "admin_departments_name_idx",
-      ).on(
-        table.name,
-      ),
-    ],
-  );
-
-/*
- * =========================================================
  * EXCEÇÕES DE PERMISSÃO POR USUÁRIO
  * =========================================================
+ *
+ * Departamentos possuem schema próprio em:
+ *
+ * src/db/schema/admin-departments.ts
+ *
+ * Portanto este arquivo NÃO redefine
+ * admin_departments.
  *
  * O papel continua fornecendo as permissões padrão através
  * de admin_role_permissions.
@@ -108,7 +31,7 @@ export const adminDepartmentsTable =
  * ALLOW → permite explicitamente.
  * DENY  → nega explicitamente.
  *
- * A regra definitiva de autorização será:
+ * Regra futura de autorização:
  *
  * DENY individual
  *   ↓
@@ -467,12 +390,6 @@ export const adminAuditLogsTable =
       ),
     ],
   );
-
-export type AdminDepartmentRecord =
-  typeof adminDepartmentsTable.$inferSelect;
-
-export type NewAdminDepartmentRecord =
-  typeof adminDepartmentsTable.$inferInsert;
 
 export type AdminUserPermissionOverrideRecord =
   typeof adminUserPermissionOverridesTable.$inferSelect;
