@@ -9,6 +9,7 @@ import {
 } from "react";
 
 import {
+  getAdminRoles,
   getAdminUsers,
 } from "../../../functions/admin-users";
 
@@ -23,8 +24,25 @@ export const Route =
     loader: async ({
       params,
     }) => {
-      const users =
-        await getAdminUsers();
+      /*
+       * Usuários e papéis são carregados
+       * diretamente das respectivas fontes
+       * administrativas protegidas.
+       *
+       * getAdminUsers()
+       *   → admin_users + papel atual
+       *
+       * getAdminRoles()
+       *   → todos os admin_roles ativos
+       */
+      const [
+        users,
+        roles,
+      ] =
+        await Promise.all([
+          getAdminUsers(),
+          getAdminRoles(),
+        ]);
 
       const user =
         users.find(
@@ -39,17 +57,25 @@ export const Route =
         );
       }
 
-      const roles =
-        Array.from(
-          new Map(
-            users.map(
-              (item) => [
-                item.role.id,
-                item.role,
-              ],
-            ),
-          ).values(),
+      /*
+       * O papel atual do usuário deve existir
+       * na lista oficial de papéis ativos.
+       *
+       * Isso evita apresentar ao formulário
+       * um papel inexistente ou inativo.
+       */
+      const currentRoleExists =
+        roles.some(
+          (role) =>
+            role.id ===
+            user.role.id,
         );
+
+      if (!currentRoleExists) {
+        throw new Error(
+          "O papel atual do usuário está indisponível.",
+        );
+      }
 
       return {
         user,
@@ -92,7 +118,10 @@ function AdminUserEditPage() {
   const navigate =
     useNavigate();
 
-  const [name, setName] =
+  const [
+    name,
+    setName,
+  ] =
     useState(
       user.name,
     );
@@ -127,12 +156,6 @@ function AdminUserEditPage() {
       null,
     );
 
-  const [
-    success,
-    setSuccess,
-  ] =
-    useState(false);
-
   async function handleSubmit(
     event:
       React.FormEvent<HTMLFormElement>,
@@ -144,7 +167,6 @@ function AdminUserEditPage() {
     }
 
     setError(null);
-    setSuccess(false);
     setSubmitting(true);
 
     try {
@@ -160,8 +182,6 @@ function AdminUserEditPage() {
           roleId,
         },
       });
-
-      setSuccess(true);
 
       await navigate({
         to:
@@ -298,6 +318,12 @@ function AdminUserEditPage() {
                 }
                 className="mt-2 min-h-12 w-full rounded-2xl border border-stone-200 bg-white px-4 text-sm text-stone-950 outline-none transition focus:border-stone-500"
               />
+
+              <p className="mt-2 text-xs leading-5 text-stone-400">
+                O departamento utiliza o campo
+                administrativo atualmente
+                existente no cadastro do usuário.
+              </p>
             </div>
 
             <div>
@@ -337,16 +363,29 @@ function AdminUserEditPage() {
                       {
                         role.name
                       }
+                      {" — "}
+                      {
+                        role.code
+                      }
                     </option>
                   ),
                 )}
               </select>
 
               <p className="mt-2 text-xs leading-5 text-stone-400">
-                O próprio Super Administrador
-                não pode remover de si o papel
-                SUPER_ADMIN por esta operação.
+                Os papéis acima são carregados
+                diretamente dos papéis ativos
+                cadastrados no banco de dados.
               </p>
+
+              {user.role.code ===
+              "SUPER_ADMIN" ? (
+                <p className="mt-2 text-xs font-semibold leading-5 text-amber-700">
+                  O próprio Super Administrador
+                  não pode remover de si o papel
+                  SUPER_ADMIN por esta operação.
+                </p>
+              ) : null}
             </div>
 
             <div>
@@ -369,12 +408,6 @@ function AdminUserEditPage() {
                 className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
               >
                 {error}
-              </div>
-            ) : null}
-
-            {success ? (
-              <div className="rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm font-medium text-stone-700">
-                Usuário atualizado com sucesso.
               </div>
             ) : null}
           </div>
