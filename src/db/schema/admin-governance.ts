@@ -4,29 +4,28 @@ import {
   text,
   timestamp,
   uniqueIndex,
+  uuid,
   varchar,
 } from "drizzle-orm/pg-core";
 
 import {
+  adminRolesTable,
   adminUsersTable,
 } from "./admin-access";
+
+import {
+  adminDepartmentsTable,
+} from "./admin-departments";
 
 /*
  * =========================================================
  * EXCEÇÕES DE PERMISSÃO POR USUÁRIO
  * =========================================================
  *
- * Departamentos possuem schema próprio em:
+ * O papel fornece as permissões padrão através de
+ * admin_role_permissions.
  *
- * src/db/schema/admin-departments.ts
- *
- * Portanto este arquivo NÃO redefine
- * admin_departments.
- *
- * O papel continua fornecendo as permissões padrão através
- * de admin_role_permissions.
- *
- * Esta tabela permite exceções individuais:
+ * Esta tabela permitirá exceções individuais:
  *
  * ALLOW → permite explicitamente.
  * DENY  → nega explicitamente.
@@ -37,7 +36,7 @@ import {
  *   ↓
  * ALLOW individual
  *   ↓
- * permissão do papel
+ * permissão herdada do papel
  *   ↓
  * DENY por padrão.
  */
@@ -45,9 +44,8 @@ export const adminUserPermissionOverridesTable =
   pgTable(
     "admin_user_permission_overrides",
     {
-      id: varchar("id", {
-        length: 120,
-      })
+      id: uuid("id")
+        .defaultRandom()
         .primaryKey(),
 
       userId:
@@ -130,17 +128,20 @@ export const adminUserPermissionOverridesTable =
  * CONVITES ADMINISTRATIVOS
  * =========================================================
  *
- * O token puro nunca será persistido.
+ * Regras estruturais:
  *
- * Somente tokenHash será armazenado.
+ * - o token puro nunca é persistido;
+ * - apenas token_hash é armazenado;
+ * - departamento precisa existir;
+ * - papel precisa existir;
+ * - usuário que envia o convite precisa existir.
  */
 export const adminUserInvitationsTable =
   pgTable(
     "admin_user_invitations",
     {
-      id: varchar("id", {
-        length: 120,
-      })
+      id: uuid("id")
+        .defaultRandom()
         .primaryKey(),
 
       email:
@@ -162,13 +163,33 @@ export const adminUserInvitationsTable =
             length: 80,
           },
         )
-          .notNull(),
+          .notNull()
+          .references(
+            () =>
+              adminDepartmentsTable.code,
+            {
+              onDelete:
+                "restrict",
+              onUpdate:
+                "cascade",
+            },
+          ),
 
       roleId:
         varchar("role_id", {
           length: 120,
         })
-          .notNull(),
+          .notNull()
+          .references(
+            () =>
+              adminRolesTable.id,
+            {
+              onDelete:
+                "restrict",
+              onUpdate:
+                "cascade",
+            },
+          ),
 
       tokenHash:
         text("token_hash")
@@ -222,6 +243,8 @@ export const adminUserInvitationsTable =
             {
               onDelete:
                 "restrict",
+              onUpdate:
+                "cascade",
             },
           ),
 
@@ -265,6 +288,18 @@ export const adminUserInvitationsTable =
       ),
 
       index(
+        "admin_user_invitations_role_idx",
+      ).on(
+        table.roleId,
+      ),
+
+      index(
+        "admin_user_invitations_department_idx",
+      ).on(
+        table.department,
+      ),
+
+      index(
         "admin_user_invitations_invited_by_idx",
       ).on(
         table.invitedByUserId,
@@ -279,7 +314,7 @@ export const adminUserInvitationsTable =
  *
  * Registra operações administrativas relevantes.
  *
- * Nunca devem ser persistidos aqui:
+ * Nunca devem ser persistidos:
  *
  * - senhas;
  * - password_hash;
@@ -292,9 +327,8 @@ export const adminAuditLogsTable =
   pgTable(
     "admin_audit_logs",
     {
-      id: varchar("id", {
-        length: 120,
-      })
+      id: uuid("id")
+        .defaultRandom()
         .primaryKey(),
 
       actorUserId:
@@ -310,6 +344,8 @@ export const adminAuditLogsTable =
             {
               onDelete:
                 "set null",
+              onUpdate:
+                "cascade",
             },
           ),
 
