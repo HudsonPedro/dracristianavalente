@@ -77,3 +77,39 @@ export const getAdminUsers =
       }),
     );
   });
+
+export const getAdminRoles =
+  createServerFn({
+    method: "GET",
+  }).handler(async () => {
+    const {
+      listAdminRoles,
+    } = await import(
+      "../services/auth/list-admin-roles.server"
+    );
+
+    const roles =
+      await listAdminRoles();
+
+    return roles.map(
+      (role) => ({
+        id:
+          role.id,
+
+        code:
+          role.code,
+
+        name:
+          role.name,
+
+        description:
+          role.description,
+
+        systemRole:
+          role.systemRole,
+
+        active:
+          role.active,
+      }),
+    );
+  });
