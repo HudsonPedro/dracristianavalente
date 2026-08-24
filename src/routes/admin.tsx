@@ -14,10 +14,8 @@ import {
 export const Route = createFileRoute("/admin")({
   beforeLoad: async ({ location }) => {
     /*
-     * /admin/login precisa continuar público.
-     *
-     * Todas as demais rotas filhas de /admin
-     * exigem sessão administrativa válida.
+     * O login permanece público e fora
+     * do shell visual administrativo.
      */
     if (location.pathname === "/admin/login") {
       return;
@@ -44,10 +42,6 @@ function AdminRouteLayout() {
         state.location.pathname,
     });
 
-  /*
-   * A tela de login permanece independente
-   * do painel administrativo.
-   */
   if (pathname === "/admin/login") {
     return <Outlet />;
   }
@@ -69,6 +63,10 @@ function AdminShell() {
       "/admin/login";
   }
 
+  const dashboardActive =
+    pathname === "/admin" ||
+    pathname === "/admin/";
+
   const productsActive =
     pathname === "/admin/produtos" ||
     pathname.startsWith(
@@ -83,7 +81,10 @@ function AdminShell() {
     <div className="min-h-screen bg-[#f7f4ef] text-stone-900">
       <header className="sticky top-0 z-40 border-b border-stone-200 bg-white/95 backdrop-blur">
         <div className="flex min-h-16 items-center justify-between gap-6 px-5 md:px-8">
-          <div className="flex min-w-0 items-center gap-4">
+          <Link
+            to="/admin/"
+            className="flex min-w-0 items-center gap-4"
+          >
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-stone-500">
                 Dra. Cristiana Valente
@@ -93,7 +94,7 @@ function AdminShell() {
                 Administração
               </p>
             </div>
-          </div>
+          </Link>
 
           <button
             type="button"
@@ -114,12 +115,17 @@ function AdminShell() {
               </p>
 
               <div className="mt-3">
-                <div className="flex cursor-not-allowed items-center rounded-xl px-3 py-2.5 text-sm font-medium text-stone-400">
+                <Link
+                  to="/admin/"
+                  className={[
+                    "flex items-center rounded-xl px-3 py-2.5 text-sm font-semibold transition",
+                    dashboardActive
+                      ? "bg-stone-950 text-white"
+                      : "text-stone-600 hover:bg-stone-100 hover:text-stone-950",
+                  ].join(" ")}
+                >
                   Visão geral
-                  <span className="ml-auto text-[9px] uppercase tracking-wider">
-                    Em breve
-                  </span>
-                </div>
+                </Link>
               </div>
             </section>
 
@@ -151,6 +157,7 @@ function AdminShell() {
               <div className="mt-3 space-y-1">
                 <div className="flex cursor-not-allowed items-center rounded-xl px-3 py-2.5 text-sm font-medium text-stone-400">
                   Usuários
+
                   <span className="ml-auto text-[9px] uppercase tracking-wider">
                     Em breve
                   </span>
@@ -158,6 +165,7 @@ function AdminShell() {
 
                 <div className="flex cursor-not-allowed items-center rounded-xl px-3 py-2.5 text-sm font-medium text-stone-400">
                   Papéis e permissões
+
                   <span className="ml-auto text-[9px] uppercase tracking-wider">
                     Em breve
                   </span>
@@ -197,6 +205,18 @@ function AdminShell() {
         <main className="min-w-0 flex-1">
           <div className="border-b border-stone-200 bg-white px-4 py-3 lg:hidden">
             <div className="flex gap-2 overflow-x-auto">
+              <Link
+                to="/admin/"
+                className={[
+                  "shrink-0 rounded-xl px-4 py-2 text-sm font-semibold",
+                  dashboardActive
+                    ? "bg-stone-950 text-white"
+                    : "bg-stone-100 text-stone-700",
+                ].join(" ")}
+              >
+                Visão geral
+              </Link>
+
               <Link
                 to="/admin/produtos"
                 className={[
