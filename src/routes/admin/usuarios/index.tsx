@@ -1,5 +1,6 @@
 import {
   createFileRoute,
+  Link,
 } from "@tanstack/react-router";
 
 import {
@@ -297,13 +298,16 @@ function AdminUsersPage() {
 
                           <td className="px-6 py-5">
                             <div className="flex justify-end gap-2">
-                              <button
-                                type="button"
-                                disabled
-                                className="cursor-not-allowed rounded-xl border border-stone-200 px-3 py-2 text-xs font-semibold text-stone-400"
+                              <Link
+                                to="/admin/usuarios/$userId"
+                                params={{
+                                  userId:
+                                    user.id,
+                                }}
+                                className="rounded-xl border border-stone-300 bg-white px-3 py-2 text-xs font-semibold text-stone-700 transition hover:border-stone-950 hover:bg-stone-950 hover:text-white"
                               >
                                 Editar
-                              </button>
+                              </Link>
 
                               <button
                                 type="button"
