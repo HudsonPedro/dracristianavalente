@@ -82,8 +82,10 @@ function AdminShell() {
   }
 
   const dashboardActive =
-    pathname === "/admin" ||
-    pathname === "/admin/";
+    pathname ===
+      "/admin" ||
+    pathname ===
+      "/admin/";
 
   const productsActive =
     pathname ===
@@ -104,6 +106,13 @@ function AdminShell() {
       "/admin/departamentos" ||
     pathname.startsWith(
       "/admin/departamentos/",
+    );
+
+  const rolesActive =
+    pathname ===
+      "/admin/papeis" ||
+    pathname.startsWith(
+      "/admin/papeis/",
     );
 
   const passwordActive =
@@ -226,13 +235,20 @@ function AdminShell() {
                   Departamentos
                 </Link>
 
-                <div className="flex cursor-not-allowed items-center rounded-xl px-3 py-2.5 text-sm font-medium text-stone-400">
-                  Papéis e permissões
+                <Link
+                  to="/admin/papeis"
+                  className={[
+                    "flex items-center rounded-xl px-3 py-2.5 text-sm font-semibold transition",
 
-                  <span className="ml-auto text-[9px] uppercase tracking-wider">
-                    Em breve
-                  </span>
-                </div>
+                    rolesActive
+                      ? "bg-stone-950 text-white"
+                      : "text-stone-600 hover:bg-stone-100 hover:text-stone-950",
+                  ].join(
+                    " ",
+                  )}
+                >
+                  Papéis e permissões
+                </Link>
               </div>
             </section>
 
@@ -329,6 +345,21 @@ function AdminShell() {
                 )}
               >
                 Departamentos
+              </Link>
+
+              <Link
+                to="/admin/papeis"
+                className={[
+                  "shrink-0 rounded-xl px-4 py-2 text-sm font-semibold",
+
+                  rolesActive
+                    ? "bg-stone-950 text-white"
+                    : "bg-stone-100 text-stone-700",
+                ].join(
+                  " ",
+                )}
+              >
+                Papéis
               </Link>
 
               <Link
