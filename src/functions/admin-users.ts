@@ -2,6 +2,71 @@ import {
   createServerFn,
 } from "@tanstack/react-start";
 
+type CreateAdminDepartmentInput = {
+  code: string;
+
+  name: string;
+
+  description?: string | null;
+};
+
+function validateCreateAdminDepartmentInput(
+  input: CreateAdminDepartmentInput,
+) {
+  const code =
+    input.code?.trim() ?? "";
+
+  const name =
+    input.name?.trim() ?? "";
+
+  const description =
+    input.description?.trim() ||
+    null;
+
+  if (!code) {
+    throw new Error(
+      "O código do departamento é obrigatório.",
+    );
+  }
+
+  if (
+    code.length > 80
+  ) {
+    throw new Error(
+      "O código do departamento é inválido.",
+    );
+  }
+
+  if (!name) {
+    throw new Error(
+      "O nome do departamento é obrigatório.",
+    );
+  }
+
+  if (
+    name.length > 120
+  ) {
+    throw new Error(
+      "O nome do departamento é inválido.",
+    );
+  }
+
+  if (
+    description &&
+    description.length > 2000
+  ) {
+    throw new Error(
+      "A descrição do departamento é inválida.",
+    );
+  }
+
+  return {
+    code,
+    name,
+    description,
+  };
+}
+
 export const getAdminUsers =
   createServerFn({
     method: "GET",
@@ -152,3 +217,60 @@ export const getAdminDepartments =
       }),
     );
   });
+
+export const createAdminDepartmentAction =
+  createServerFn({
+    method: "POST",
+  })
+    .validator(
+      validateCreateAdminDepartmentInput,
+    )
+    .handler(async ({
+      data,
+    }) => {
+      const {
+        createAdminDepartment,
+      } = await import(
+        "../services/auth/create-admin-department.server"
+      );
+
+      const department =
+        await createAdminDepartment({
+          code:
+            data.code,
+
+          name:
+            data.name,
+
+          description:
+            data.description,
+        });
+
+      return {
+        success:
+          true as const,
+
+        department: {
+          id:
+            department.id,
+
+          code:
+            department.code,
+
+          name:
+            department.name,
+
+          description:
+            department.description,
+
+          isActive:
+            department.isActive,
+
+          createdAt:
+            department.createdAt.toISOString(),
+
+          updatedAt:
+            department.updatedAt.toISOString(),
+        },
+      };
+    });
