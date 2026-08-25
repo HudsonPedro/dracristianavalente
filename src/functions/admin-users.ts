@@ -28,6 +28,14 @@ type DeleteAdminDepartmentInput = {
   departmentId: string;
 };
 
+type CreateAdminRoleInput = {
+  code: string;
+
+  name: string;
+
+  description?: string | null;
+};
+
 function validateCreateAdminDepartmentInput(
   input: CreateAdminDepartmentInput,
 ) {
@@ -177,6 +185,63 @@ function validateDeleteAdminDepartmentInput(
 
   return {
     departmentId,
+  };
+}
+
+function validateCreateAdminRoleInput(
+  input: CreateAdminRoleInput,
+) {
+  const code =
+    input.code?.trim() ?? "";
+
+  const name =
+    input.name?.trim() ?? "";
+
+  const description =
+    input.description?.trim() ||
+    null;
+
+  if (!code) {
+    throw new Error(
+      "O código do papel é obrigatório.",
+    );
+  }
+
+  if (
+    code.length > 80
+  ) {
+    throw new Error(
+      "O código do papel é inválido.",
+    );
+  }
+
+  if (!name) {
+    throw new Error(
+      "O nome do papel é obrigatório.",
+    );
+  }
+
+  if (
+    name.length > 160
+  ) {
+    throw new Error(
+      "O nome do papel é inválido.",
+    );
+  }
+
+  if (
+    description &&
+    description.length > 2000
+  ) {
+    throw new Error(
+      "A descrição do papel é inválida.",
+    );
+  }
+
+  return {
+    code,
+    name,
+    description,
   };
 }
 
@@ -340,6 +405,66 @@ export const getAdminRolesForManagement =
       serializeAdminRole,
     );
   });
+
+export const createAdminRoleAction =
+  createServerFn({
+    method: "POST",
+  })
+    .validator(
+      validateCreateAdminRoleInput,
+    )
+    .handler(async ({
+      data,
+    }) => {
+      const {
+        createAdminRole,
+      } = await import(
+        "../services/auth/create-admin-role.server"
+      );
+
+      const role =
+        await createAdminRole({
+          code:
+            data.code,
+
+          name:
+            data.name,
+
+          description:
+            data.description,
+        });
+
+      return {
+        success:
+          true as const,
+
+        role: {
+          id:
+            role.id,
+
+          code:
+            role.code,
+
+          name:
+            role.name,
+
+          description:
+            role.description,
+
+          systemRole:
+            role.systemRole,
+
+          active:
+            role.active,
+
+          permissions:
+            [] as {
+              module: string;
+              action: string;
+            }[],
+        },
+      };
+    });
 
 export const getAdminDepartments =
   createServerFn({
