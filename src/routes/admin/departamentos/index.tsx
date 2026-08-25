@@ -9,6 +9,11 @@ import {
 } from "react";
 
 import {
+  ADMIN_DEPARTMENTS,
+} from "../../../domain/admin/access";
+
+import {
+  deleteAdminDepartmentAction,
   getAdminDepartments,
   setAdminDepartmentStatusAction,
 } from "../../../functions/admin-users";
@@ -37,6 +42,14 @@ type PendingStatusChange = {
   nextStatus: boolean;
 };
 
+type PendingDelete = {
+  id: string;
+
+  name: string;
+
+  code: string;
+};
+
 function formatDate(
   value: string,
 ): string {
@@ -57,6 +70,16 @@ function formatDate(
   );
 }
 
+function isOfficialDepartment(
+  code: string,
+): boolean {
+  return (
+    ADMIN_DEPARTMENTS as readonly string[]
+  ).includes(
+    code,
+  );
+}
+
 function AdminDepartmentsPage() {
   const departments =
     Route.useLoaderData();
@@ -73,14 +96,36 @@ function AdminDepartmentsPage() {
     );
 
   const [
+    pendingDelete,
+    setPendingDelete,
+  ] =
+    useState<PendingDelete | null>(
+      null,
+    );
+
+  const [
     submittingStatus,
     setSubmittingStatus,
   ] =
     useState(false);
 
   const [
+    submittingDelete,
+    setSubmittingDelete,
+  ] =
+    useState(false);
+
+  const [
     statusError,
     setStatusError,
+  ] =
+    useState<string | null>(
+      null,
+    );
+
+  const [
+    deleteError,
+    setDeleteError,
   ] =
     useState<string | null>(
       null,
@@ -178,6 +223,86 @@ function AdminDepartmentsPage() {
     }
   }
 
+  function requestDelete(
+    department: {
+      id: string;
+      name: string;
+      code: string;
+      isActive: boolean;
+    },
+  ) {
+    if (
+      isOfficialDepartment(
+        department.code,
+      ) ||
+      department.isActive
+    ) {
+      return;
+    }
+
+    setDeleteError(null);
+
+    setPendingDelete({
+      id:
+        department.id,
+
+      name:
+        department.name,
+
+      code:
+        department.code,
+    });
+  }
+
+  function cancelDelete() {
+    if (submittingDelete) {
+      return;
+    }
+
+    setDeleteError(null);
+
+    setPendingDelete(
+      null,
+    );
+  }
+
+  async function confirmDelete() {
+    if (
+      !pendingDelete ||
+      submittingDelete
+    ) {
+      return;
+    }
+
+    setDeleteError(null);
+    setSubmittingDelete(true);
+
+    try {
+      await deleteAdminDepartmentAction({
+        data: {
+          departmentId:
+            pendingDelete.id,
+        },
+      });
+
+      setPendingDelete(
+        null,
+      );
+
+      await router.invalidate();
+    } catch (
+      caughtError
+    ) {
+      setDeleteError(
+        caughtError instanceof Error
+          ? caughtError.message
+          : "Não foi possível remover o departamento.",
+      );
+    } finally {
+      setSubmittingDelete(false);
+    }
+  }
+
   return (
     <>
       <div className="px-5 py-8 md:px-8 lg:px-10 lg:py-10">
@@ -259,7 +384,7 @@ function AdminDepartmentsPage() {
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[980px] text-left">
+                <table className="w-full min-w-[1120px] text-left">
                   <thead className="bg-stone-50">
                     <tr className="border-b border-stone-200">
                       <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-[0.16em] text-stone-400">
@@ -268,6 +393,10 @@ function AdminDepartmentsPage() {
 
                       <th className="px-4 py-4 text-[10px] font-bold uppercase tracking-[0.16em] text-stone-400">
                         Código
+                      </th>
+
+                      <th className="px-4 py-4 text-[10px] font-bold uppercase tracking-[0.16em] text-stone-400">
+                        Tipo
                       </th>
 
                       <th className="px-4 py-4 text-[10px] font-bold uppercase tracking-[0.16em] text-stone-400">
@@ -286,102 +415,153 @@ function AdminDepartmentsPage() {
 
                   <tbody>
                     {departments.map(
-                      (department) => (
-                        <tr
-                          key={
-                            department.id
-                          }
-                          className="border-b border-stone-100 last:border-b-0"
-                        >
-                          <td className="px-6 py-5">
-                            <p className="font-semibold text-stone-950">
-                              {
-                                department.name
-                              }
-                            </p>
+                      (department) => {
+                        const official =
+                          isOfficialDepartment(
+                            department.code,
+                          );
 
-                            <p className="mt-1 max-w-xl text-sm leading-5 text-stone-500">
-                              {
-                                department.description ??
-                                "Sem descrição."
-                              }
-                            </p>
-                          </td>
+                        const canDelete =
+                          !official &&
+                          !department.isActive;
 
-                          <td className="px-4 py-5">
-                            <span className="font-mono text-xs font-semibold text-stone-600">
-                              {
-                                department.code
-                              }
-                            </span>
-                          </td>
-
-                          <td className="px-4 py-5">
-                            <span
-                              className={[
-                                "inline-flex rounded-full border px-3 py-1 text-xs font-semibold",
-
-                                department.isActive
-                                  ? "border-stone-200 bg-stone-50 text-stone-700"
-                                  : "border-amber-200 bg-amber-50 text-amber-700",
-                              ].join(
-                                " ",
-                              )}
-                            >
-                              {
-                                department.isActive
-                                  ? "Ativo"
-                                  : "Inativo"
-                              }
-                            </span>
-                          </td>
-
-                          <td className="px-4 py-5 text-sm text-stone-500">
-                            {formatDate(
-                              department.updatedAt,
-                            )}
-                          </td>
-
-                          <td className="px-6 py-5">
-                            <div className="flex justify-end gap-2">
-                              <Link
-                                to="/admin/departamentos/$departmentId"
-                                params={{
-                                  departmentId:
-                                    department.id,
-                                }}
-                                className="rounded-xl border border-stone-300 bg-white px-3 py-2 text-xs font-semibold text-stone-700 transition hover:border-stone-950 hover:bg-stone-950 hover:text-white"
-                              >
-                                Editar
-                              </Link>
-
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  requestStatusChange(
-                                    department,
-                                  )
+                        return (
+                          <tr
+                            key={
+                              department.id
+                            }
+                            className="border-b border-stone-100 last:border-b-0"
+                          >
+                            <td className="px-6 py-5">
+                              <p className="font-semibold text-stone-950">
+                                {
+                                  department.name
                                 }
+                              </p>
+
+                              <p className="mt-1 max-w-xl text-sm leading-5 text-stone-500">
+                                {
+                                  department.description ??
+                                  "Sem descrição."
+                                }
+                              </p>
+                            </td>
+
+                            <td className="px-4 py-5">
+                              <span className="font-mono text-xs font-semibold text-stone-600">
+                                {
+                                  department.code
+                                }
+                              </span>
+                            </td>
+
+                            <td className="px-4 py-5">
+                              <span className="inline-flex rounded-full border border-stone-200 bg-stone-50 px-3 py-1 text-xs font-semibold text-stone-600">
+                                {
+                                  official
+                                    ? "Sistema"
+                                    : "Personalizado"
+                                }
+                              </span>
+                            </td>
+
+                            <td className="px-4 py-5">
+                              <span
                                 className={[
-                                  "rounded-xl border px-3 py-2 text-xs font-semibold transition",
+                                  "inline-flex rounded-full border px-3 py-1 text-xs font-semibold",
 
                                   department.isActive
-                                    ? "border-stone-300 bg-white text-stone-700 hover:border-amber-500 hover:bg-amber-50 hover:text-amber-800"
-                                    : "border-stone-950 bg-stone-950 text-white hover:bg-stone-800",
+                                    ? "border-stone-200 bg-stone-50 text-stone-700"
+                                    : "border-amber-200 bg-amber-50 text-amber-700",
                                 ].join(
                                   " ",
                                 )}
                               >
                                 {
                                   department.isActive
-                                    ? "Desativar"
-                                    : "Ativar"
+                                    ? "Ativo"
+                                    : "Inativo"
                                 }
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ),
+                              </span>
+                            </td>
+
+                            <td className="px-4 py-5 text-sm text-stone-500">
+                              {formatDate(
+                                department.updatedAt,
+                              )}
+                            </td>
+
+                            <td className="px-6 py-5">
+                              <div className="flex justify-end gap-2">
+                                <Link
+                                  to="/admin/departamentos/$departmentId"
+                                  params={{
+                                    departmentId:
+                                      department.id,
+                                  }}
+                                  className="rounded-xl border border-stone-300 bg-white px-3 py-2 text-xs font-semibold text-stone-700 transition hover:border-stone-950 hover:bg-stone-950 hover:text-white"
+                                >
+                                  Editar
+                                </Link>
+
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    requestStatusChange(
+                                      department,
+                                    )
+                                  }
+                                  className={[
+                                    "rounded-xl border px-3 py-2 text-xs font-semibold transition",
+
+                                    department.isActive
+                                      ? "border-stone-300 bg-white text-stone-700 hover:border-amber-500 hover:bg-amber-50 hover:text-amber-800"
+                                      : "border-stone-950 bg-stone-950 text-white hover:bg-stone-800",
+                                  ].join(
+                                    " ",
+                                  )}
+                                >
+                                  {
+                                    department.isActive
+                                      ? "Desativar"
+                                      : "Ativar"
+                                  }
+                                </button>
+
+                                <button
+                                  type="button"
+                                  disabled={
+                                    !canDelete
+                                  }
+                                  onClick={() =>
+                                    requestDelete(
+                                      department,
+                                    )
+                                  }
+                                  title={
+                                    official
+                                      ? "Departamentos do sistema não podem ser removidos."
+                                      : department.isActive
+                                        ? "Desative o departamento antes de removê-lo."
+                                        : "Remover departamento."
+                                  }
+                                  className={[
+                                    "rounded-xl border px-3 py-2 text-xs font-semibold transition",
+
+                                    canDelete
+                                      ? "border-red-200 bg-white text-red-700 hover:border-red-700 hover:bg-red-50"
+                                      : "cursor-not-allowed border-stone-200 bg-stone-50 text-stone-300",
+                                  ].join(
+                                    " ",
+                                  )}
+                                >
+                                  Remover
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      },
                     )}
                   </tbody>
                 </table>
@@ -456,15 +636,6 @@ function AdminDepartmentsPage() {
                 </p>
               </div>
 
-              {!pendingStatusChange.nextStatus ? (
-                <p className="mt-4 text-sm leading-6 text-amber-700">
-                  Um departamento inativo permanece
-                  cadastrado no sistema, mas não deve
-                  ser utilizado para novas associações
-                  administrativas.
-                </p>
-              ) : null}
-
               {statusError ? (
                 <div
                   role="alert"
@@ -513,6 +684,99 @@ function AdminDepartmentsPage() {
                     : pendingStatusChange.nextStatus
                       ? "Confirmar ativação"
                       : "Confirmar desativação"
+                }
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {pendingDelete ? (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="department-delete-title"
+            className="w-full max-w-lg overflow-hidden rounded-3xl border border-red-200 bg-white shadow-2xl"
+          >
+            <div className="px-6 py-6 md:px-8">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-red-500">
+                Remoção permanente
+              </p>
+
+              <h2
+                id="department-delete-title"
+                className="mt-3 text-2xl font-semibold tracking-tight text-stone-950"
+              >
+                Remover departamento?
+              </h2>
+
+              <p className="mt-4 text-sm leading-6 text-stone-600">
+                Você está prestes a remover
+                permanentemente o departamento{" "}
+                <strong>
+                  {
+                    pendingDelete.name
+                  }
+                </strong>.
+              </p>
+
+              <div className="mt-5 rounded-2xl border border-red-100 bg-red-50 px-4 py-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-red-500">
+                  Código
+                </p>
+
+                <p className="mt-1 font-mono text-sm font-semibold text-red-800">
+                  {
+                    pendingDelete.code
+                  }
+                </p>
+
+                <p className="mt-4 text-sm leading-6 text-red-700">
+                  Esta operação é permanente. O servidor
+                  ainda verificará usuários e convites
+                  vinculados antes de permitir a remoção.
+                </p>
+              </div>
+
+              {deleteError ? (
+                <div
+                  role="alert"
+                  className="mt-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+                >
+                  {deleteError}
+                </div>
+              ) : null}
+            </div>
+
+            <div className="flex flex-col-reverse gap-3 border-t border-red-100 bg-red-50/50 px-6 py-5 sm:flex-row sm:justify-end md:px-8">
+              <button
+                type="button"
+                disabled={
+                  submittingDelete
+                }
+                onClick={
+                  cancelDelete
+                }
+                className="inline-flex min-h-11 items-center justify-center rounded-xl border border-stone-200 bg-white px-5 text-sm font-semibold text-stone-700 transition hover:border-stone-300 hover:text-stone-950 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                Cancelar
+              </button>
+
+              <button
+                type="button"
+                disabled={
+                  submittingDelete
+                }
+                onClick={
+                  confirmDelete
+                }
+                className="inline-flex min-h-11 items-center justify-center rounded-xl bg-red-700 px-5 text-sm font-semibold text-white transition hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {
+                  submittingDelete
+                    ? "Removendo..."
+                    : "Remover permanentemente"
                 }
               </button>
             </div>
