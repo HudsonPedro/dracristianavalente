@@ -18,6 +18,12 @@ type UpdateAdminDepartmentInput = {
   description?: string | null;
 };
 
+type SetAdminDepartmentStatusInput = {
+  departmentId: string;
+
+  isActive: boolean;
+};
+
 function validateCreateAdminDepartmentInput(
   input: CreateAdminDepartmentInput,
 ) {
@@ -121,6 +127,35 @@ function validateUpdateAdminDepartmentInput(
     departmentId,
     name,
     description,
+  };
+}
+
+function validateSetAdminDepartmentStatusInput(
+  input: SetAdminDepartmentStatusInput,
+) {
+  const departmentId =
+    input.departmentId?.trim() ?? "";
+
+  if (!departmentId) {
+    throw new Error(
+      "Departamento inválido.",
+    );
+  }
+
+  if (
+    typeof input.isActive !==
+    "boolean"
+  ) {
+    throw new Error(
+      "Estado do departamento inválido.",
+    );
+  }
+
+  return {
+    departmentId,
+
+    isActive:
+      input.isActive,
   };
 }
 
@@ -358,6 +393,60 @@ export const updateAdminDepartmentAction =
 
           description:
             data.description,
+        });
+
+      return {
+        success:
+          true as const,
+
+        department: {
+          id:
+            department.id,
+
+          code:
+            department.code,
+
+          name:
+            department.name,
+
+          description:
+            department.description,
+
+          isActive:
+            department.isActive,
+
+          createdAt:
+            department.createdAt.toISOString(),
+
+          updatedAt:
+            department.updatedAt.toISOString(),
+        },
+      };
+    });
+
+export const setAdminDepartmentStatusAction =
+  createServerFn({
+    method: "POST",
+  })
+    .validator(
+      validateSetAdminDepartmentStatusInput,
+    )
+    .handler(async ({
+      data,
+    }) => {
+      const {
+        setAdminDepartmentStatus,
+      } = await import(
+        "../services/auth/set-admin-department-status.server"
+      );
+
+      const department =
+        await setAdminDepartmentStatus({
+          departmentId:
+            data.departmentId,
+
+          isActive:
+            data.isActive,
         });
 
       return {
