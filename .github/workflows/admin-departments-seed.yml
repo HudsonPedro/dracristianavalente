@@ -53,20 +53,20 @@ jobs:
       - name: Create seed executor
         shell: bash
         run: |
-          mkdir -p scripts
+          mkdir -p .github/tmp
 
-          cat > scripts/run-admin-departments-seed.ts <<'EOF'
+          cat > .github/tmp/run-admin-departments-seed.ts <<'EOF'
           import {
             seedAdminDepartments,
-          } from "../src/services/auth/seed-admin-departments.server";
+          } from "../../src/services/auth/seed-admin-departments.server";
 
           async function main() {
             const result =
               await seedAdminDepartments();
 
             console.log(
-              JSON.stringify(
-                {
+              "ADMIN_DEPARTMENTS_SEED_RESULT=" +
+                JSON.stringify({
                   inserted:
                     result.inserted,
 
@@ -75,10 +75,7 @@ jobs:
 
                   total:
                     result.total,
-                },
-                null,
-                2,
-              ),
+                }),
             );
           }
 
@@ -95,24 +92,25 @@ jobs:
           );
           EOF
 
-          test -f scripts/run-admin-departments-seed.ts
+          test -f .github/tmp/run-admin-departments-seed.ts
 
           echo "Executor temporário criado com sucesso."
 
       - name: Run admin departments seed
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        shell: bash
         run: |
-          pnpm exec tsx scripts/run-admin-departments-seed.ts
+          pnpm dlx tsx@4 .github/tmp/run-admin-departments-seed.ts
 
       - name: Remove temporary executor
         if: always()
         shell: bash
         run: |
-          rm -f scripts/run-admin-departments-seed.ts
+          rm -f .github/tmp/run-admin-departments-seed.ts
 
-          if [ -d scripts ] && [ -z "$(ls -A scripts)" ]; then
-            rmdir scripts
+          if [ -d .github/tmp ] && [ -z "$(ls -A .github/tmp)" ]; then
+            rmdir .github/tmp
           fi
 
           if [ -n "$(git status --porcelain)" ]; then
@@ -121,5 +119,5 @@ jobs:
             exit 1
           fi
 
-          echo "Executor removido."
+          echo "Executor temporário removido."
           echo "Repositório permaneceu limpo."
