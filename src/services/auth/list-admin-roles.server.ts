@@ -3,14 +3,24 @@ import {
   eq,
 } from "drizzle-orm";
 
-import { getDb } from "../../db";
 import {
+  getDb,
+} from "../../db";
+
+import {
+  adminRolePermissionsTable,
   adminRolesTable,
 } from "../../db/schema/admin-access";
 
 import {
   requireAdmin,
 } from "./require-admin.server";
+
+export type AdminRolePermissionListItem = {
+  module: string;
+
+  action: string;
+};
 
 export type AdminRoleListItem = {
   id: string;
@@ -24,6 +34,8 @@ export type AdminRoleListItem = {
   systemRole: boolean;
 
   active: boolean;
+
+  permissions: AdminRolePermissionListItem[];
 };
 
 export async function listAdminRoles(): Promise<
@@ -74,5 +86,86 @@ export async function listAdminRoles(): Promise<
         ),
       );
 
-  return roles;
+  const rolePermissions =
+    await db
+      .select({
+        roleId:
+          adminRolePermissionsTable.roleId,
+
+        module:
+          adminRolePermissionsTable.module,
+
+        action:
+          adminRolePermissionsTable.action,
+      })
+      .from(
+        adminRolePermissionsTable,
+      )
+      .orderBy(
+        asc(
+          adminRolePermissionsTable.roleId,
+        ),
+        asc(
+          adminRolePermissionsTable.module,
+        ),
+        asc(
+          adminRolePermissionsTable.action,
+        ),
+      );
+
+  const permissionsByRole =
+    new Map<
+      string,
+      AdminRolePermissionListItem[]
+    >();
+
+  for (
+    const permission
+    of rolePermissions
+  ) {
+    const currentPermissions =
+      permissionsByRole.get(
+        permission.roleId,
+      ) ?? [];
+
+    currentPermissions.push({
+      module:
+        permission.module,
+
+      action:
+        permission.action,
+    });
+
+    permissionsByRole.set(
+      permission.roleId,
+      currentPermissions,
+    );
+  }
+
+  return roles.map(
+    (role) => ({
+      id:
+        role.id,
+
+      code:
+        role.code,
+
+      name:
+        role.name,
+
+      description:
+        role.description,
+
+      systemRole:
+        role.systemRole,
+
+      active:
+        role.active,
+
+      permissions:
+        permissionsByRole.get(
+          role.id,
+        ) ?? [],
+    }),
+  );
 }
