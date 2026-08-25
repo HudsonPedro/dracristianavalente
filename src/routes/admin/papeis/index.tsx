@@ -1,5 +1,6 @@
 import {
   createFileRoute,
+  Link,
 } from "@tanstack/react-router";
 
 import {
@@ -146,13 +147,12 @@ function AdminRolesPage() {
             </p>
           </div>
 
-          <button
-            type="button"
-            disabled
-            className="inline-flex min-h-12 cursor-not-allowed items-center justify-center rounded-2xl bg-stone-300 px-6 text-sm font-semibold text-stone-500"
+          <Link
+            to="/admin/papeis/novo"
+            className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-stone-950 px-6 text-sm font-semibold text-white transition hover:bg-stone-800"
           >
             + Novo papel
-          </button>
+          </Link>
         </header>
 
         <section className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -306,20 +306,18 @@ function AdminRolesPage() {
                   </div>
 
                   <div className="px-6 py-6 md:px-8">
-                    <div className="mb-5 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-400">
-                          Matriz de acesso
-                        </p>
+                    <div className="mb-5">
+                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-400">
+                        Matriz de acesso
+                      </p>
 
-                        <p className="mt-1 text-sm text-stone-500">
-                          {
-                            role.permissions.length
-                          }{" "}
-                          permissões persistidas
-                          para este papel.
-                        </p>
-                      </div>
+                      <p className="mt-1 text-sm text-stone-500">
+                        {
+                          role.permissions.length
+                        }{" "}
+                        permissões persistidas
+                        para este papel.
+                      </p>
                     </div>
 
                     <div className="overflow-x-auto rounded-2xl border border-stone-200">
