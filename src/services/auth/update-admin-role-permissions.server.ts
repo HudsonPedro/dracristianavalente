@@ -1,5 +1,8 @@
 import {
-  and,
+  randomUUID,
+} from "node:crypto";
+
+import {
   eq,
 } from "drizzle-orm";
 
@@ -122,8 +125,8 @@ export async function updateAdminRolePermissions(
     UpdateAdminRolePermissionsInput,
 ): Promise<UpdateAdminRolePermissionsResult> {
   /*
-   * Alterar a matriz de autorização é
-   * operação crítica de governança.
+   * Alteração da matriz de autorização
+   * é uma operação crítica de governança.
    */
   const admin =
     await requireAdmin();
@@ -138,7 +141,7 @@ export async function updateAdminRolePermissions(
   }
 
   const roleId =
-    input.roleId?.trim();
+    input.roleId?.trim() ?? "";
 
   if (!roleId) {
     throw new Error(
@@ -164,6 +167,10 @@ export async function updateAdminRolePermissions(
   const db =
     getDb();
 
+  /*
+   * Carrega o papel real antes de qualquer
+   * alteração na matriz de permissões.
+   */
   const [
     role,
   ] =
@@ -171,6 +178,9 @@ export async function updateAdminRolePermissions(
       .select({
         id:
           adminRolesTable.id,
+
+        code:
+          adminRolesTable.code,
 
         systemRole:
           adminRolesTable.systemRole,
@@ -196,11 +206,11 @@ export async function updateAdminRolePermissions(
   }
 
   /*
-   * Nesta etapa os sete papéis estruturais
-   * permanecem imutáveis.
+   * Os sete papéis estruturais atualmente
+   * existentes permanecem protegidos.
    *
-   * A matriz editável será liberada somente
-   * para papéis personalizados.
+   * Esta operação é exclusiva para papéis
+   * personalizados.
    */
   if (
     role.systemRole
@@ -219,12 +229,11 @@ export async function updateAdminRolePermissions(
   }
 
   /*
-   * Substituição completa da matriz dentro
-   * de uma única transação.
+   * A matriz inteira é substituída dentro
+   * da mesma transação.
    *
-   * Isso evita estados intermediários onde
-   * parte das permissões antigas e novas
-   * coexistam.
+   * Dessa forma nunca ficamos com uma
+   * alteração parcialmente persistida.
    */
   await db.transaction(
     async (
@@ -254,6 +263,16 @@ export async function updateAdminRolePermissions(
               (
                 permission,
               ) => ({
+                /*
+                 * O schema real exige ID.
+                 *
+                 * Cada vínculo Papel +
+                 * Módulo + Ação recebe uma
+                 * identidade própria.
+                 */
+                id:
+                  `role-permission-${randomUUID()}`,
+
                 roleId,
 
                 module:
@@ -269,10 +288,11 @@ export async function updateAdminRolePermissions(
   );
 
   /*
-   * Leitura pós-transação.
+   * Não confiamos somente no payload recebido.
    *
-   * O retorno representa o estado realmente
-   * persistido, e não apenas o payload recebido.
+   * Relê o estado persistido no Neon depois
+   * da transação e retorna exatamente o que
+   * ficou gravado.
    */
   const persistedPermissions =
     await db
@@ -287,11 +307,9 @@ export async function updateAdminRolePermissions(
         adminRolePermissionsTable,
       )
       .where(
-        and(
-          eq(
-            adminRolePermissionsTable.roleId,
-            roleId,
-          ),
+        eq(
+          adminRolePermissionsTable.roleId,
+          roleId,
         ),
       );
 
