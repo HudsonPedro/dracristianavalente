@@ -53,6 +53,8 @@ jobs:
       - name: Create seed executor
         shell: bash
         run: |
+          mkdir -p scripts
+
           cat > scripts/run-admin-departments-seed.ts <<'EOF'
           import {
             seedAdminDepartments,
@@ -93,18 +95,15 @@ jobs:
           );
           EOF
 
+          test -f scripts/run-admin-departments-seed.ts
+
+          echo "Executor temporário criado com sucesso."
+
       - name: Run admin departments seed
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           pnpm exec tsx scripts/run-admin-departments-seed.ts
-
-      - name: Validate seed result
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        shell: bash
-        run: |
-          echo "Seed de departamentos executado com sucesso."
 
       - name: Remove temporary executor
         if: always()
@@ -112,10 +111,15 @@ jobs:
         run: |
           rm -f scripts/run-admin-departments-seed.ts
 
+          if [ -d scripts ] && [ -z "$(ls -A scripts)" ]; then
+            rmdir scripts
+          fi
+
           if [ -n "$(git status --porcelain)" ]; then
             echo "ERRO: workflow deixou alterações no repositório."
             git status --short
             exit 1
           fi
 
+          echo "Executor removido."
           echo "Repositório permaneceu limpo."
