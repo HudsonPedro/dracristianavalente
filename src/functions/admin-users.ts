@@ -10,6 +10,14 @@ type CreateAdminDepartmentInput = {
   description?: string | null;
 };
 
+type UpdateAdminDepartmentInput = {
+  departmentId: string;
+
+  name: string;
+
+  description?: string | null;
+};
+
 function validateCreateAdminDepartmentInput(
   input: CreateAdminDepartmentInput,
 ) {
@@ -62,6 +70,55 @@ function validateCreateAdminDepartmentInput(
 
   return {
     code,
+    name,
+    description,
+  };
+}
+
+function validateUpdateAdminDepartmentInput(
+  input: UpdateAdminDepartmentInput,
+) {
+  const departmentId =
+    input.departmentId?.trim() ?? "";
+
+  const name =
+    input.name?.trim() ?? "";
+
+  const description =
+    input.description?.trim() ||
+    null;
+
+  if (!departmentId) {
+    throw new Error(
+      "Departamento inválido.",
+    );
+  }
+
+  if (!name) {
+    throw new Error(
+      "O nome do departamento é obrigatório.",
+    );
+  }
+
+  if (
+    name.length > 120
+  ) {
+    throw new Error(
+      "O nome do departamento é inválido.",
+    );
+  }
+
+  if (
+    description &&
+    description.length > 2000
+  ) {
+    throw new Error(
+      "A descrição do departamento é inválida.",
+    );
+  }
+
+  return {
+    departmentId,
     name,
     description,
   };
@@ -238,6 +295,63 @@ export const createAdminDepartmentAction =
         await createAdminDepartment({
           code:
             data.code,
+
+          name:
+            data.name,
+
+          description:
+            data.description,
+        });
+
+      return {
+        success:
+          true as const,
+
+        department: {
+          id:
+            department.id,
+
+          code:
+            department.code,
+
+          name:
+            department.name,
+
+          description:
+            department.description,
+
+          isActive:
+            department.isActive,
+
+          createdAt:
+            department.createdAt.toISOString(),
+
+          updatedAt:
+            department.updatedAt.toISOString(),
+        },
+      };
+    });
+
+export const updateAdminDepartmentAction =
+  createServerFn({
+    method: "POST",
+  })
+    .validator(
+      validateUpdateAdminDepartmentInput,
+    )
+    .handler(async ({
+      data,
+    }) => {
+      const {
+        updateAdminDepartment,
+      } = await import(
+        "../services/auth/update-admin-department.server"
+      );
+
+      const department =
+        await updateAdminDepartment({
+          departmentId:
+            data.departmentId,
 
           name:
             data.name,
