@@ -1,0 +1,121 @@
+name: Admin Departments Seed
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: admin-departments-seed-production
+  cancel-in-progress: false
+
+jobs:
+  seed:
+    name: Seed admin departments
+    runs-on: ubuntu-latest
+    environment: Production
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate DATABASE_URL
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        shell: bash
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "ERRO: DATABASE_URL não configurada."
+            exit 1
+          fi
+
+          echo "DATABASE_URL configurada."
+
+      - name: Create seed executor
+        shell: bash
+        run: |
+          cat > scripts/run-admin-departments-seed.ts <<'EOF'
+          import {
+            seedAdminDepartments,
+          } from "../src/services/auth/seed-admin-departments.server";
+
+          async function main() {
+            const result =
+              await seedAdminDepartments();
+
+            console.log(
+              JSON.stringify(
+                {
+                  inserted:
+                    result.inserted,
+
+                  updated:
+                    result.updated,
+
+                  total:
+                    result.total,
+                },
+                null,
+                2,
+              ),
+            );
+          }
+
+          main().catch(
+            (error) => {
+              console.error(
+                error instanceof Error
+                  ? error.message
+                  : error,
+              );
+
+              process.exit(1);
+            },
+          );
+          EOF
+
+      - name: Run admin departments seed
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          pnpm exec tsx scripts/run-admin-departments-seed.ts
+
+      - name: Validate seed result
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        shell: bash
+        run: |
+          echo "Seed de departamentos executado com sucesso."
+
+      - name: Remove temporary executor
+        if: always()
+        shell: bash
+        run: |
+          rm -f scripts/run-admin-departments-seed.ts
+
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "ERRO: workflow deixou alterações no repositório."
+            git status --short
+            exit 1
+          fi
+
+          echo "Repositório permaneceu limpo."
