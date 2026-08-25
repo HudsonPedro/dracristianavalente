@@ -3,7 +3,7 @@ import {
 } from "drizzle-orm";
 
 import {
-  db,
+  getDb,
 } from "../../db";
 
 import {
@@ -16,7 +16,9 @@ import {
 
 type CreateAdminDepartmentInput = {
   code: string;
+
   name: string;
+
   description?: string | null;
 };
 
@@ -64,7 +66,9 @@ function validateDepartmentInput(
     );
   }
 
-  if (code.length > 80) {
+  if (
+    code.length > 80
+  ) {
     throw new Error(
       "O código do departamento deve possuir no máximo 80 caracteres.",
     );
@@ -76,9 +80,22 @@ function validateDepartmentInput(
     );
   }
 
-  if (name.length > 120) {
+  if (
+    name.length > 120
+  ) {
     throw new Error(
       "O nome do departamento deve possuir no máximo 120 caracteres.",
+    );
+  }
+
+  const descriptionLength =
+    description?.length ?? 0;
+
+  if (
+    descriptionLength > 2000
+  ) {
+    throw new Error(
+      "A descrição do departamento deve possuir no máximo 2000 caracteres.",
     );
   }
 
@@ -92,10 +109,6 @@ function validateDepartmentInput(
 export async function createAdminDepartment(
   input: CreateAdminDepartmentInput,
 ) {
-  /*
-   * Toda operação administrativa de escrita
-   * exige uma sessão administrativa válida.
-   */
   await requireAdmin();
 
   const data =
@@ -103,13 +116,9 @@ export async function createAdminDepartment(
       input,
     );
 
-  /*
-   * A constraint UNIQUE do banco continua sendo
-   * a garantia definitiva de integridade.
-   *
-   * Esta consulta permite retornar uma mensagem
-   * administrativa compreensível antes do INSERT.
-   */
+  const db =
+    getDb();
+
   const [
     existingDepartment,
   ] =
@@ -129,7 +138,9 @@ export async function createAdminDepartment(
       )
       .limit(1);
 
-  if (existingDepartment) {
+  if (
+    existingDepartment
+  ) {
     throw new Error(
       "Já existe um departamento com este código.",
     );
