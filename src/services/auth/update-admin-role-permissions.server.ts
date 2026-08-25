@@ -4,6 +4,7 @@ import {
 
 import {
   eq,
+  sql,
 } from "drizzle-orm";
 
 import {
@@ -125,8 +126,8 @@ export async function updateAdminRolePermissions(
     UpdateAdminRolePermissionsInput,
 ): Promise<UpdateAdminRolePermissionsResult> {
   /*
-   * Alteração da matriz de autorização
-   * é uma operação crítica de governança.
+   * Alterar permissões é uma operação
+   * crítica de governança.
    */
   const admin =
     await requireAdmin();
@@ -168,8 +169,8 @@ export async function updateAdminRolePermissions(
     getDb();
 
   /*
-   * Carrega o papel real antes de qualquer
-   * alteração na matriz de permissões.
+   * Carregamos o papel real antes
+   * de qualquer modificação.
    */
   const [
     role,
@@ -206,11 +207,8 @@ export async function updateAdminRolePermissions(
   }
 
   /*
-   * Os sete papéis estruturais atualmente
-   * existentes permanecem protegidos.
-   *
-   * Esta operação é exclusiva para papéis
-   * personalizados.
+   * Papéis estruturais permanecem
+   * protegidos nesta etapa.
    */
   if (
     role.systemRole
@@ -229,70 +227,98 @@ export async function updateAdminRolePermissions(
   }
 
   /*
-   * A matriz inteira é substituída dentro
-   * da mesma transação.
+   * IMPORTANTE:
    *
-   * Dessa forma nunca ficamos com uma
-   * alteração parcialmente persistida.
+   * O projeto utiliza o driver neon-http.
+   * Esse driver não oferece db.transaction().
+   *
+   * Portanto fazemos a substituição da matriz
+   * utilizando UMA ÚNICA instrução PostgreSQL.
+   *
+   * Uma instrução SQL individual é atômica:
+   * ou toda ela é concluída, ou nenhuma parte
+   * fica persistida.
    */
-  await db.transaction(
-    async (
-      tx,
-    ) => {
-      await tx
-        .delete(
-          adminRolePermissionsTable,
+
+  if (
+    permissions.length ===
+    0
+  ) {
+    /*
+     * Matriz vazia:
+     * apenas remove todas as permissões
+     * existentes do papel.
+     */
+    await db
+      .delete(
+        adminRolePermissionsTable,
+      )
+      .where(
+        eq(
+          adminRolePermissionsTable.roleId,
+          roleId,
+        ),
+      );
+  } else {
+    /*
+     * Criamos os valores que serão inseridos.
+     *
+     * Cada vínculo Papel + Módulo + Ação
+     * recebe ID próprio.
+     */
+    const values =
+      permissions.map(
+        (
+          permission,
+        ) => {
+          const id =
+            `role-permission-${randomUUID()}`;
+
+          return sql`
+            (
+              ${id},
+              ${roleId},
+              ${permission.module},
+              ${permission.action}
+            )
+          `;
+        },
+      );
+
+    /*
+     * DELETE + INSERT executados dentro
+     * da mesma instrução SQL usando CTE.
+     *
+     * Compatível com neon-http e atômico
+     * no PostgreSQL.
+     */
+    await db.execute(
+      sql`
+        WITH deleted_permissions AS (
+          DELETE FROM admin_role_permissions
+          WHERE role_id = ${roleId}
+          RETURNING id
         )
-        .where(
-          eq(
-            adminRolePermissionsTable.roleId,
-            roleId,
-          ),
-        );
-
-      if (
-        permissions.length >
-        0
-      ) {
-        await tx
-          .insert(
-            adminRolePermissionsTable,
-          )
-          .values(
-            permissions.map(
-              (
-                permission,
-              ) => ({
-                /*
-                 * O schema real exige ID.
-                 *
-                 * Cada vínculo Papel +
-                 * Módulo + Ação recebe uma
-                 * identidade própria.
-                 */
-                id:
-                  `role-permission-${randomUUID()}`,
-
-                roleId,
-
-                module:
-                  permission.module,
-
-                action:
-                  permission.action,
-              }),
-            ),
-          );
-      }
-    },
-  );
+        INSERT INTO admin_role_permissions (
+          id,
+          role_id,
+          module,
+          action
+        )
+        VALUES
+        ${sql.join(
+          values,
+          sql`, `,
+        )}
+      `,
+    );
+  }
 
   /*
-   * Não confiamos somente no payload recebido.
+   * Relê o estado realmente persistido.
    *
-   * Relê o estado persistido no Neon depois
-   * da transação e retorna exatamente o que
-   * ficou gravado.
+   * O retorno nunca depende somente
+   * do payload recebido pela aplicação.
    */
   const persistedPermissions =
     await db
