@@ -126,8 +126,8 @@ export async function updateAdminRolePermissions(
     UpdateAdminRolePermissionsInput,
 ): Promise<UpdateAdminRolePermissionsResult> {
   /*
-   * Alterar permissões é uma operação
-   * crítica de governança.
+   * Alterar permissões administrativas
+   * é uma operação crítica de governança.
    */
   const admin =
     await requireAdmin();
@@ -169,8 +169,8 @@ export async function updateAdminRolePermissions(
     getDb();
 
   /*
-   * Carregamos o papel real antes
-   * de qualquer modificação.
+   * Valida o papel real antes de qualquer
+   * alteração na matriz de acesso.
    */
   const [
     role,
@@ -207,8 +207,8 @@ export async function updateAdminRolePermissions(
   }
 
   /*
-   * Papéis estruturais permanecem
-   * protegidos nesta etapa.
+   * Os papéis estruturais permanecem
+   * protegidos nesta frente.
    */
   if (
     role.systemRole
@@ -227,28 +227,17 @@ export async function updateAdminRolePermissions(
   }
 
   /*
-   * IMPORTANTE:
+   * O projeto usa Neon HTTP.
    *
-   * O projeto utiliza o driver neon-http.
-   * Esse driver não oferece db.transaction().
+   * Não utilizamos db.transaction().
    *
-   * Portanto fazemos a substituição da matriz
-   * utilizando UMA ÚNICA instrução PostgreSQL.
-   *
-   * Uma instrução SQL individual é atômica:
-   * ou toda ela é concluída, ou nenhuma parte
-   * fica persistida.
+   * Para matriz vazia, um DELETE individual
+   * já representa a operação inteira.
    */
-
   if (
     permissions.length ===
     0
   ) {
-    /*
-     * Matriz vazia:
-     * apenas remove todas as permissões
-     * existentes do papel.
-     */
     await db
       .delete(
         adminRolePermissionsTable,
@@ -261,12 +250,22 @@ export async function updateAdminRolePermissions(
       );
   } else {
     /*
-     * Criamos os valores que serão inseridos.
+     * IMPORTANTE:
      *
-     * Cada vínculo Papel + Módulo + Ação
-     * recebe ID próprio.
+     * A sincronização agora funciona por
+     * convergência de estado:
+     *
+     * 1. INSERT das permissões desejadas.
+     *    Permissões que já existem usam
+     *    ON CONFLICT DO NOTHING.
+     *
+     * 2. DELETE das permissões antigas que
+     *    NÃO pertencem mais à matriz desejada.
+     *
+     * Tudo ocorre em UMA ÚNICA instrução SQL.
      */
-    const values =
+
+    const insertValues =
       permissions.map(
         (
           permission,
@@ -285,40 +284,70 @@ export async function updateAdminRolePermissions(
         },
       );
 
-    /*
-     * DELETE + INSERT executados dentro
-     * da mesma instrução SQL usando CTE.
-     *
-     * Compatível com neon-http e atômico
-     * no PostgreSQL.
-     */
+    const desiredValues =
+      permissions.map(
+        (
+          permission,
+        ) =>
+          sql`
+            (
+              ${permission.module},
+              ${permission.action}
+            )
+          `,
+      );
+
     await db.execute(
       sql`
-        WITH deleted_permissions AS (
-          DELETE FROM admin_role_permissions
-          WHERE role_id = ${roleId}
+        WITH inserted_permissions AS (
+          INSERT INTO admin_role_permissions (
+            id,
+            role_id,
+            module,
+            action
+          )
+          VALUES
+          ${sql.join(
+            insertValues,
+            sql`, `,
+          )}
+          ON CONFLICT (
+            role_id,
+            module,
+            action
+          )
+          DO NOTHING
           RETURNING id
         )
-        INSERT INTO admin_role_permissions (
-          id,
-          role_id,
-          module,
-          action
-        )
-        VALUES
-        ${sql.join(
-          values,
-          sql`, `,
-        )}
+        DELETE FROM admin_role_permissions
+        WHERE
+          role_id = ${roleId}
+          AND NOT EXISTS (
+            SELECT 1
+            FROM (
+              VALUES
+              ${sql.join(
+                desiredValues,
+                sql`, `,
+              )}
+            ) AS desired_permissions (
+              module,
+              action
+            )
+            WHERE
+              desired_permissions.module =
+                admin_role_permissions.module
+              AND
+              desired_permissions.action =
+                admin_role_permissions.action
+          )
       `,
     );
   }
 
   /*
-   * Relê o estado realmente persistido.
-   *
-   * O retorno nunca depende somente
-   * do payload recebido pela aplicação.
+   * Relê o estado realmente persistido
+   * depois da sincronização.
    */
   const persistedPermissions =
     await db
