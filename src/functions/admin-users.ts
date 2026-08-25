@@ -24,6 +24,10 @@ type SetAdminDepartmentStatusInput = {
   isActive: boolean;
 };
 
+type DeleteAdminDepartmentInput = {
+  departmentId: string;
+};
+
 function validateCreateAdminDepartmentInput(
   input: CreateAdminDepartmentInput,
 ) {
@@ -156,6 +160,23 @@ function validateSetAdminDepartmentStatusInput(
 
     isActive:
       input.isActive,
+  };
+}
+
+function validateDeleteAdminDepartmentInput(
+  input: DeleteAdminDepartmentInput,
+) {
+  const departmentId =
+    input.departmentId?.trim() ?? "";
+
+  if (!departmentId) {
+    throw new Error(
+      "Departamento inválido.",
+    );
+  }
+
+  return {
+    departmentId,
   };
 }
 
@@ -475,5 +496,47 @@ export const setAdminDepartmentStatusAction =
           updatedAt:
             department.updatedAt.toISOString(),
         },
+      };
+    });
+
+export const deleteAdminDepartmentAction =
+  createServerFn({
+    method: "POST",
+  })
+    .validator(
+      validateDeleteAdminDepartmentInput,
+    )
+    .handler(async ({
+      data,
+    }) => {
+      const {
+        deleteAdminDepartment,
+      } = await import(
+        "../services/auth/delete-admin-department.server"
+      );
+
+      const result =
+        await deleteAdminDepartment({
+          departmentId:
+            data.departmentId,
+        });
+
+      return {
+        success:
+          true as const,
+
+        department: {
+          id:
+            result.id,
+
+          code:
+            result.code,
+
+          name:
+            result.name,
+        },
+
+        deleted:
+          result.deleted,
       };
     });
