@@ -2,6 +2,13 @@ import {
   createServerFn,
 } from "@tanstack/react-start";
 
+import {
+  ADMIN_ACTIONS,
+  ADMIN_MODULES,
+  type AdminAction,
+  type AdminModule,
+} from "../domain/admin/access";
+
 type CreateAdminDepartmentInput = {
   code: string;
 
@@ -34,6 +41,16 @@ type CreateAdminRoleInput = {
   name: string;
 
   description?: string | null;
+};
+
+type UpdateAdminRolePermissionsInput = {
+  roleId: string;
+
+  permissions: {
+    module: AdminModule;
+
+    action: AdminAction;
+  }[];
 };
 
 function validateCreateAdminDepartmentInput(
@@ -245,6 +262,89 @@ function validateCreateAdminRoleInput(
   };
 }
 
+function isAdminModule(
+  value: string,
+): value is AdminModule {
+  return (
+    ADMIN_MODULES as readonly string[]
+  ).includes(
+    value,
+  );
+}
+
+function isAdminAction(
+  value: string,
+): value is AdminAction {
+  return (
+    ADMIN_ACTIONS as readonly string[]
+  ).includes(
+    value,
+  );
+}
+
+function validateUpdateAdminRolePermissionsInput(
+  input: UpdateAdminRolePermissionsInput,
+) {
+  const roleId =
+    input.roleId?.trim() ?? "";
+
+  if (!roleId) {
+    throw new Error(
+      "Papel administrativo inválido.",
+    );
+  }
+
+  if (
+    !Array.isArray(
+      input.permissions,
+    )
+  ) {
+    throw new Error(
+      "Permissões administrativas inválidas.",
+    );
+  }
+
+  const permissions =
+    input.permissions.map(
+      (
+        permission,
+      ) => {
+        if (
+          !isAdminModule(
+            permission.module,
+          )
+        ) {
+          throw new Error(
+            "Módulo administrativo inválido.",
+          );
+        }
+
+        if (
+          !isAdminAction(
+            permission.action,
+          )
+        ) {
+          throw new Error(
+            "Ação administrativa inválida.",
+          );
+        }
+
+        return {
+          module:
+            permission.module,
+
+          action:
+            permission.action,
+        };
+      },
+    );
+
+  return {
+    roleId,
+    permissions,
+  };
+}
+
 function serializeAdminRole(
   role: {
     id: string;
@@ -280,7 +380,9 @@ function serializeAdminRole(
 
     permissions:
       role.permissions.map(
-        (permission) => ({
+        (
+          permission,
+        ) => ({
           module:
             permission.module,
 
@@ -305,7 +407,9 @@ export const getAdminUsers =
       await listAdminUsers();
 
     return users.map(
-      (user) => ({
+      (
+        user,
+      ) => ({
         id:
           user.id,
 
@@ -466,6 +570,53 @@ export const createAdminRoleAction =
       };
     });
 
+export const updateAdminRolePermissionsAction =
+  createServerFn({
+    method: "POST",
+  })
+    .validator(
+      validateUpdateAdminRolePermissionsInput,
+    )
+    .handler(async ({
+      data,
+    }) => {
+      const {
+        updateAdminRolePermissions,
+      } = await import(
+        "../services/auth/update-admin-role-permissions.server"
+      );
+
+      const result =
+        await updateAdminRolePermissions({
+          roleId:
+            data.roleId,
+
+          permissions:
+            data.permissions,
+        });
+
+      return {
+        success:
+          true as const,
+
+        roleId:
+          result.roleId,
+
+        permissions:
+          result.permissions.map(
+            (
+              permission,
+            ) => ({
+              module:
+                permission.module,
+
+              action:
+                permission.action,
+            }),
+          ),
+      };
+    });
+
 export const getAdminDepartments =
   createServerFn({
     method: "GET",
@@ -480,7 +631,9 @@ export const getAdminDepartments =
       await listAdminDepartments();
 
     return departments.map(
-      (department) => ({
+      (
+        department,
+      ) => ({
         id:
           department.id,
 
