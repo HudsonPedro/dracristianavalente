@@ -113,3 +113,42 @@ export const getAdminRoles =
       }),
     );
   });
+
+export const getAdminDepartments =
+  createServerFn({
+    method: "GET",
+  }).handler(async () => {
+    const {
+      listAdminDepartments,
+    } = await import(
+      "../services/auth/list-admin-departments.server"
+    );
+
+    const departments =
+      await listAdminDepartments();
+
+    return departments.map(
+      (department) => ({
+        id:
+          department.id,
+
+        code:
+          department.code,
+
+        name:
+          department.name,
+
+        description:
+          department.description,
+
+        isActive:
+          department.isActive,
+
+        createdAt:
+          department.createdAt.toISOString(),
+
+        updatedAt:
+          department.updatedAt.toISOString(),
+      }),
+    );
+  });
