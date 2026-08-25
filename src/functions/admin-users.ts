@@ -47,9 +47,7 @@ function validateCreateAdminDepartmentInput(
     );
   }
 
-  if (
-    code.length > 80
-  ) {
+  if (code.length > 80) {
     throw new Error(
       "O código do departamento é inválido.",
     );
@@ -61,9 +59,7 @@ function validateCreateAdminDepartmentInput(
     );
   }
 
-  if (
-    name.length > 120
-  ) {
+  if (name.length > 120) {
     throw new Error(
       "O nome do departamento é inválido.",
     );
@@ -110,9 +106,7 @@ function validateUpdateAdminDepartmentInput(
     );
   }
 
-  if (
-    name.length > 120
-  ) {
+  if (name.length > 120) {
     throw new Error(
       "O nome do departamento é inválido.",
     );
@@ -157,7 +151,6 @@ function validateSetAdminDepartmentStatusInput(
 
   return {
     departmentId,
-
     isActive:
       input.isActive,
   };
@@ -288,6 +281,17 @@ export const getAdminRoles =
 
         active:
           role.active,
+
+        permissions:
+          role.permissions.map(
+            (permission) => ({
+              module:
+                permission.module,
+
+              action:
+                permission.action,
+            }),
+          ),
       }),
     );
   });
