@@ -11,48 +11,66 @@ import {
   logoutAdmin,
 } from "../functions/admin-auth";
 
-export const Route = createFileRoute("/admin")({
-  beforeLoad: async ({ location }) => {
-    /*
-     * O login permanece público e fora
-     * do shell visual administrativo.
-     */
-    if (location.pathname === "/admin/login") {
-      return;
-    }
+export const Route =
+  createFileRoute(
+    "/admin",
+  )({
+    beforeLoad: async ({
+      location,
+    }) => {
+      if (
+        location.pathname ===
+        "/admin/login"
+      ) {
+        return;
+      }
 
-    const auth =
-      await getAdminAuth();
+      const auth =
+        await getAdminAuth();
 
-    if (!auth.authenticated) {
-      throw redirect({
-        to: "/admin/login",
-      });
-    }
-  },
+      if (
+        !auth.authenticated
+      ) {
+        throw redirect({
+          to:
+            "/admin/login",
+        });
+      }
+    },
 
-  component:
-    AdminRouteLayout,
-});
+    component:
+      AdminRouteLayout,
+  });
 
 function AdminRouteLayout() {
   const pathname =
     useRouterState({
-      select: (state) =>
+      select: (
+        state,
+      ) =>
         state.location.pathname,
     });
 
-  if (pathname === "/admin/login") {
-    return <Outlet />;
+  if (
+    pathname ===
+    "/admin/login"
+  ) {
+    return (
+      <Outlet />
+    );
   }
 
-  return <AdminShell />;
+  return (
+    <AdminShell />
+  );
 }
 
 function AdminShell() {
   const pathname =
     useRouterState({
-      select: (state) =>
+      select: (
+        state,
+      ) =>
         state.location.pathname,
     });
 
@@ -68,15 +86,24 @@ function AdminShell() {
     pathname === "/admin/";
 
   const productsActive =
-    pathname === "/admin/produtos" ||
+    pathname ===
+      "/admin/produtos" ||
     pathname.startsWith(
       "/admin/produtos/",
     );
 
   const usersActive =
-    pathname === "/admin/usuarios" ||
+    pathname ===
+      "/admin/usuarios" ||
     pathname.startsWith(
       "/admin/usuarios/",
+    );
+
+  const departmentsActive =
+    pathname ===
+      "/admin/departamentos" ||
+    pathname.startsWith(
+      "/admin/departamentos/",
     );
 
   const passwordActive =
@@ -104,7 +131,9 @@ function AdminShell() {
 
           <button
             type="button"
-            onClick={handleLogout}
+            onClick={
+              handleLogout
+            }
             className="rounded-xl border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-700 transition hover:border-stone-300 hover:bg-stone-50 hover:text-stone-950"
           >
             Sair
@@ -125,10 +154,13 @@ function AdminShell() {
                   to="/admin"
                   className={[
                     "flex items-center rounded-xl px-3 py-2.5 text-sm font-semibold transition",
+
                     dashboardActive
                       ? "bg-stone-950 text-white"
                       : "text-stone-600 hover:bg-stone-100 hover:text-stone-950",
-                  ].join(" ")}
+                  ].join(
+                    " ",
+                  )}
                 >
                   Visão geral
                 </Link>
@@ -145,10 +177,13 @@ function AdminShell() {
                   to="/admin/produtos"
                   className={[
                     "flex items-center rounded-xl px-3 py-2.5 text-sm font-semibold transition",
+
                     productsActive
                       ? "bg-stone-950 text-white"
                       : "text-stone-600 hover:bg-stone-100 hover:text-stone-950",
-                  ].join(" ")}
+                  ].join(
+                    " ",
+                  )}
                 >
                   Produtos
                 </Link>
@@ -165,12 +200,30 @@ function AdminShell() {
                   to="/admin/usuarios"
                   className={[
                     "flex items-center rounded-xl px-3 py-2.5 text-sm font-semibold transition",
+
                     usersActive
                       ? "bg-stone-950 text-white"
                       : "text-stone-600 hover:bg-stone-100 hover:text-stone-950",
-                  ].join(" ")}
+                  ].join(
+                    " ",
+                  )}
                 >
                   Usuários
+                </Link>
+
+                <Link
+                  to="/admin/departamentos"
+                  className={[
+                    "flex items-center rounded-xl px-3 py-2.5 text-sm font-semibold transition",
+
+                    departmentsActive
+                      ? "bg-stone-950 text-white"
+                      : "text-stone-600 hover:bg-stone-100 hover:text-stone-950",
+                  ].join(
+                    " ",
+                  )}
+                >
+                  Departamentos
                 </Link>
 
                 <div className="flex cursor-not-allowed items-center rounded-xl px-3 py-2.5 text-sm font-medium text-stone-400">
@@ -193,10 +246,13 @@ function AdminShell() {
                   to="/admin/seguranca/senha"
                   className={[
                     "flex items-center rounded-xl px-3 py-2.5 text-sm font-semibold transition",
+
                     passwordActive
                       ? "bg-stone-950 text-white"
                       : "text-stone-600 hover:bg-stone-100 hover:text-stone-950",
-                  ].join(" ")}
+                  ].join(
+                    " ",
+                  )}
                 >
                   Alterar senha
                 </Link>
@@ -219,10 +275,13 @@ function AdminShell() {
                 to="/admin"
                 className={[
                   "shrink-0 rounded-xl px-4 py-2 text-sm font-semibold",
+
                   dashboardActive
                     ? "bg-stone-950 text-white"
                     : "bg-stone-100 text-stone-700",
-                ].join(" ")}
+                ].join(
+                  " ",
+                )}
               >
                 Visão geral
               </Link>
@@ -231,10 +290,13 @@ function AdminShell() {
                 to="/admin/produtos"
                 className={[
                   "shrink-0 rounded-xl px-4 py-2 text-sm font-semibold",
+
                   productsActive
                     ? "bg-stone-950 text-white"
                     : "bg-stone-100 text-stone-700",
-                ].join(" ")}
+                ].join(
+                  " ",
+                )}
               >
                 Produtos
               </Link>
@@ -243,22 +305,43 @@ function AdminShell() {
                 to="/admin/usuarios"
                 className={[
                   "shrink-0 rounded-xl px-4 py-2 text-sm font-semibold",
+
                   usersActive
                     ? "bg-stone-950 text-white"
                     : "bg-stone-100 text-stone-700",
-                ].join(" ")}
+                ].join(
+                  " ",
+                )}
               >
                 Usuários
+              </Link>
+
+              <Link
+                to="/admin/departamentos"
+                className={[
+                  "shrink-0 rounded-xl px-4 py-2 text-sm font-semibold",
+
+                  departmentsActive
+                    ? "bg-stone-950 text-white"
+                    : "bg-stone-100 text-stone-700",
+                ].join(
+                  " ",
+                )}
+              >
+                Departamentos
               </Link>
 
               <Link
                 to="/admin/seguranca/senha"
                 className={[
                   "shrink-0 rounded-xl px-4 py-2 text-sm font-semibold",
+
                   passwordActive
                     ? "bg-stone-950 text-white"
                     : "bg-stone-100 text-stone-700",
-                ].join(" ")}
+                ].join(
+                  " ",
+                )}
               >
                 Alterar senha
               </Link>
