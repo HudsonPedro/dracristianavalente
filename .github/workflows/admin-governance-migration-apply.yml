@@ -1,0 +1,97 @@
+name: Admin Governance Migration Apply
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: admin-governance-migration-production
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    name: Apply admin governance migration
+    runs-on: ubuntu-latest
+    environment: Production
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate DATABASE_URL
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        shell: bash
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "ERRO: DATABASE_URL não configurada."
+            exit 1
+          fi
+
+          echo "DATABASE_URL configurada."
+
+      - name: Validate governance migration exists
+        shell: bash
+        run: |
+          GOVERNANCE_SQL="$(find drizzle \
+            -maxdepth 1 \
+            -type f \
+            -name '*admin_governance.sql' \
+            | sort \
+            | tail -n 1)"
+
+          if [ -z "$GOVERNANCE_SQL" ]; then
+            echo "ERRO: migration admin_governance não encontrada."
+            exit 1
+          fi
+
+          echo "Migration encontrada:"
+          echo "$GOVERNANCE_SQL"
+
+          grep -q 'CREATE TABLE "admin_departments"' "$GOVERNANCE_SQL" || exit 1
+          grep -q 'CREATE TABLE "admin_audit_logs"' "$GOVERNANCE_SQL" || exit 1
+          grep -q 'CREATE TABLE "admin_user_invitations"' "$GOVERNANCE_SQL" || exit 1
+          grep -q 'CREATE TABLE "admin_user_permission_overrides"' "$GOVERNANCE_SQL" || exit 1
+
+          if grep -q 'DROP TABLE' "$GOVERNANCE_SQL"; then
+            echo "ERRO: DROP TABLE encontrado."
+            exit 1
+          fi
+
+          if grep -q 'DROP COLUMN' "$GOVERNANCE_SQL"; then
+            echo "ERRO: DROP COLUMN encontrado."
+            exit 1
+          fi
+
+          echo "Migration de governança validada."
+
+      - name: Apply Drizzle migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          pnpm exec drizzle-kit migrate
+
+      - name: Migration completed
+        shell: bash
+        run: |
+          echo "Governança administrativa aplicada com sucesso."
