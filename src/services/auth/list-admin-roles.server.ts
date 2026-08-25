@@ -38,7 +38,13 @@ export type AdminRoleListItem = {
   permissions: AdminRolePermissionListItem[];
 };
 
-export async function listAdminRoles(): Promise<
+type ListAdminRolesOptions = {
+  includeInactive?: boolean;
+};
+
+export async function listAdminRoles(
+  options: ListAdminRolesOptions = {},
+): Promise<
   AdminRoleListItem[]
 > {
   /*
@@ -50,42 +56,84 @@ export async function listAdminRoles(): Promise<
   const db =
     getDb();
 
+  /*
+   * Por padrão mantemos somente papéis
+   * ativos para preservar todas as
+   * utilizações atuais do serviço.
+   *
+   * A gestão administrativa poderá
+   * solicitar também os inativos.
+   */
   const roles =
-    await db
-      .select({
-        id:
-          adminRolesTable.id,
+    options.includeInactive
+      ? await db
+          .select({
+            id:
+              adminRolesTable.id,
 
-        code:
-          adminRolesTable.code,
+            code:
+              adminRolesTable.code,
 
-        name:
-          adminRolesTable.name,
+            name:
+              adminRolesTable.name,
 
-        description:
-          adminRolesTable.description,
+            description:
+              adminRolesTable.description,
 
-        systemRole:
-          adminRolesTable.systemRole,
+            systemRole:
+              adminRolesTable.systemRole,
 
-        active:
-          adminRolesTable.active,
-      })
-      .from(
-        adminRolesTable,
-      )
-      .where(
-        eq(
-          adminRolesTable.active,
-          true,
-        ),
-      )
-      .orderBy(
-        asc(
-          adminRolesTable.name,
-        ),
-      );
+            active:
+              adminRolesTable.active,
+          })
+          .from(
+            adminRolesTable,
+          )
+          .orderBy(
+            asc(
+              adminRolesTable.name,
+            ),
+          )
+      : await db
+          .select({
+            id:
+              adminRolesTable.id,
 
+            code:
+              adminRolesTable.code,
+
+            name:
+              adminRolesTable.name,
+
+            description:
+              adminRolesTable.description,
+
+            systemRole:
+              adminRolesTable.systemRole,
+
+            active:
+              adminRolesTable.active,
+          })
+          .from(
+            adminRolesTable,
+          )
+          .where(
+            eq(
+              adminRolesTable.active,
+              true,
+            ),
+          )
+          .orderBy(
+            asc(
+              adminRolesTable.name,
+            ),
+          );
+
+  /*
+   * As permissões são carregadas
+   * diretamente da tabela real
+   * admin_role_permissions.
+   */
   const rolePermissions =
     await db
       .select({
