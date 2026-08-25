@@ -47,7 +47,9 @@ function validateCreateAdminDepartmentInput(
     );
   }
 
-  if (code.length > 80) {
+  if (
+    code.length > 80
+  ) {
     throw new Error(
       "O código do departamento é inválido.",
     );
@@ -59,7 +61,9 @@ function validateCreateAdminDepartmentInput(
     );
   }
 
-  if (name.length > 120) {
+  if (
+    name.length > 120
+  ) {
     throw new Error(
       "O nome do departamento é inválido.",
     );
@@ -106,7 +110,9 @@ function validateUpdateAdminDepartmentInput(
     );
   }
 
-  if (name.length > 120) {
+  if (
+    name.length > 120
+  ) {
     throw new Error(
       "O nome do departamento é inválido.",
     );
@@ -151,6 +157,7 @@ function validateSetAdminDepartmentStatusInput(
 
   return {
     departmentId,
+
     isActive:
       input.isActive,
   };
@@ -170,6 +177,52 @@ function validateDeleteAdminDepartmentInput(
 
   return {
     departmentId,
+  };
+}
+
+function serializeAdminRole(
+  role: {
+    id: string;
+    code: string;
+    name: string;
+    description: string | null;
+    systemRole: boolean;
+    active: boolean;
+    permissions: {
+      module: string;
+      action: string;
+    }[];
+  },
+) {
+  return {
+    id:
+      role.id,
+
+    code:
+      role.code,
+
+    name:
+      role.name,
+
+    description:
+      role.description,
+
+    systemRole:
+      role.systemRole,
+
+    active:
+      role.active,
+
+    permissions:
+      role.permissions.map(
+        (permission) => ({
+          module:
+            permission.module,
+
+          action:
+            permission.action,
+        }),
+      ),
   };
 }
 
@@ -263,36 +316,28 @@ export const getAdminRoles =
       await listAdminRoles();
 
     return roles.map(
-      (role) => ({
-        id:
-          role.id,
+      serializeAdminRole,
+    );
+  });
 
-        code:
-          role.code,
+export const getAdminRolesForManagement =
+  createServerFn({
+    method: "GET",
+  }).handler(async () => {
+    const {
+      listAdminRoles,
+    } = await import(
+      "../services/auth/list-admin-roles.server"
+    );
 
-        name:
-          role.name,
+    const roles =
+      await listAdminRoles({
+        includeInactive:
+          true,
+      });
 
-        description:
-          role.description,
-
-        systemRole:
-          role.systemRole,
-
-        active:
-          role.active,
-
-        permissions:
-          role.permissions.map(
-            (permission) => ({
-              module:
-                permission.module,
-
-              action:
-                permission.action,
-            }),
-          ),
-      }),
+    return roles.map(
+      serializeAdminRole,
     );
   });
 
