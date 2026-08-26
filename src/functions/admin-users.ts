@@ -43,14 +43,6 @@ type CreateAdminRoleInput = {
   description?: string | null;
 };
 
-type UpdateAdminRoleInput = {
-  roleId: string;
-
-  name: string;
-
-  description?: string | null;
-};
-
 type UpdateAdminRolePermissionsInput = {
   roleId: string;
 
@@ -265,55 +257,6 @@ function validateCreateAdminRoleInput(
 
   return {
     code,
-    name,
-    description,
-  };
-}
-
-function validateUpdateAdminRoleInput(
-  input: UpdateAdminRoleInput,
-) {
-  const roleId =
-    input.roleId?.trim() ?? "";
-
-  const name =
-    input.name?.trim() ?? "";
-
-  const description =
-    input.description?.trim() ||
-    null;
-
-  if (!roleId) {
-    throw new Error(
-      "Papel administrativo inválido.",
-    );
-  }
-
-  if (!name) {
-    throw new Error(
-      "O nome do papel é obrigatório.",
-    );
-  }
-
-  if (
-    name.length > 160
-  ) {
-    throw new Error(
-      "O nome do papel é inválido.",
-    );
-  }
-
-  if (
-    description &&
-    description.length > 2000
-  ) {
-    throw new Error(
-      "A descrição do papel é inválida.",
-    );
-  }
-
-  return {
-    roleId,
     name,
     description,
   };
@@ -623,60 +566,6 @@ export const createAdminRoleAction =
               module: string;
               action: string;
             }[],
-        },
-      };
-    });
-
-export const updateAdminRoleAction =
-  createServerFn({
-    method: "POST",
-  })
-    .validator(
-      validateUpdateAdminRoleInput,
-    )
-    .handler(async ({
-      data,
-    }) => {
-      const {
-        updateAdminRole,
-      } = await import(
-        "../services/auth/update-admin-role.server"
-      );
-
-      const role =
-        await updateAdminRole({
-          roleId:
-            data.roleId,
-
-          name:
-            data.name,
-
-          description:
-            data.description,
-        });
-
-      return {
-        success:
-          true as const,
-
-        role: {
-          id:
-            role.id,
-
-          code:
-            role.code,
-
-          name:
-            role.name,
-
-          description:
-            role.description,
-
-          systemRole:
-            role.systemRole,
-
-          active:
-            role.active,
         },
       };
     });
