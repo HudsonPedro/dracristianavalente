@@ -16,6 +16,7 @@ import {
 } from "react";
 
 import {
+  deleteAdminRoleAction,
   getAdminRolesForManagement,
   setAdminRoleStatusAction,
 } from "../../../functions/admin-users";
@@ -129,6 +130,14 @@ function AdminRolesPage() {
       null,
     );
 
+  const [
+    deletingRoleId,
+    setDeletingRoleId,
+  ] =
+    useState<string | null>(
+      null,
+    );
+
   async function handleRoleStatusChange(
     roleId: string,
     active: boolean,
@@ -163,6 +172,54 @@ function AdminRolesPage() {
       );
     } finally {
       setChangingRoleId(
+        null,
+      );
+    }
+  }
+
+  async function handleRoleDelete(
+    roleId: string,
+    roleName: string,
+  ) {
+    if (
+      deletingRoleId ||
+      changingRoleId
+    ) {
+      return;
+    }
+
+    const confirmed =
+      window.confirm(
+        `Remover permanentemente o papel "${roleName}"? Esta ação não pode ser desfeita.`,
+      );
+
+    if (!confirmed) {
+      return;
+    }
+
+    setStatusError(null);
+    setDeletingRoleId(
+      roleId,
+    );
+
+    try {
+      await deleteAdminRoleAction({
+        data: {
+          roleId,
+        },
+      });
+
+      await router.invalidate();
+    } catch (
+      caughtError
+    ) {
+      setStatusError(
+        caughtError instanceof Error
+          ? caughtError.message
+          : "Não foi possível remover o papel administrativo.",
+      );
+    } finally {
+      setDeletingRoleId(
         null,
       );
     }
@@ -470,6 +527,46 @@ function AdminRolesPage() {
                             className="cursor-not-allowed rounded-xl border border-stone-200 bg-stone-50 px-4 py-2 text-xs font-semibold text-stone-400"
                           >
                             Desativar
+                          </button>
+                        )}
+
+                        {!role.systemRole &&
+                        !role.active ? (
+                          <button
+                            type="button"
+                            disabled={
+                              deletingRoleId !==
+                                null ||
+                              changingRoleId !==
+                                null
+                            }
+                            onClick={() =>
+                              void handleRoleDelete(
+                                role.id,
+                                role.name,
+                              )
+                            }
+                            className="rounded-xl border border-red-300 bg-red-50 px-4 py-2 text-xs font-semibold text-red-700 transition hover:border-red-400 hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            {
+                              deletingRoleId ===
+                              role.id
+                                ? "Removendo..."
+                                : "Remover"
+                            }
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            disabled
+                            title={
+                              role.systemRole
+                                ? "Papéis estruturais do sistema não podem ser removidos."
+                                : "Desative o papel antes de removê-lo."
+                            }
+                            className="cursor-not-allowed rounded-xl border border-stone-200 bg-stone-50 px-4 py-2 text-xs font-semibold text-stone-400"
+                          >
+                            Remover
                           </button>
                         )}
                       </div>
