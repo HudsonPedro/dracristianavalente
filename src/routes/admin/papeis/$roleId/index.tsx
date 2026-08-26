@@ -38,19 +38,12 @@ export const Route =
         );
       }
 
-      /*
-       * A proteção definitiva também existe
-       * no serviço server-side.
-       *
-       * Aqui impedimos que a própria interface
-       * de edição seja disponibilizada para
-       * papéis estruturais.
-       */
       if (
-        role.systemRole
+        role.code ===
+        "SUPER_ADMIN"
       ) {
         throw new Error(
-          "Papéis estruturais do sistema não podem ser editados.",
+          "O papel Super Administrador é estrutural e não pode ser editado.",
         );
       }
 
@@ -166,8 +159,9 @@ function AdminRoleEditPage() {
           </h1>
 
           <p className="mt-4 max-w-2xl text-sm leading-6 text-stone-600">
-            Atualize os dados cadastrais do papel
-            administrativo personalizado.
+            Atualize os dados cadastrais deste
+            papel administrativo sem alterar sua
+            identidade funcional.
           </p>
         </header>
 
@@ -190,7 +184,11 @@ function AdminRoleEditPage() {
             </p>
 
             <p className="mt-2 text-sm font-semibold text-stone-800">
-              Personalizado
+              {
+                role.systemRole
+                  ? "Sistema"
+                  : "Personalizado"
+              }
             </p>
           </article>
 
