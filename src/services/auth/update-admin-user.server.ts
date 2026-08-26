@@ -12,6 +12,10 @@ import {
 } from "../../db/schema/admin-access";
 
 import {
+  listAdminDepartments,
+} from "./list-admin-departments.server";
+
+import {
   requireAdmin,
 } from "./require-admin.server";
 
@@ -224,6 +228,40 @@ export async function updateAdminUser(
   }
 
   /*
+   * Integração com a camada real e já
+   * homologada de Departamentos.
+   *
+   * Não acessamos diretamente um schema
+   * de Departamentos aqui. O serviço
+   * existente é a fonte oficial.
+   */
+  const departments =
+    await listAdminDepartments();
+
+  const selectedDepartment =
+    departments.find(
+      (
+        department,
+      ) =>
+        department.code ===
+        data.department,
+    );
+
+  if (!selectedDepartment) {
+    throw new Error(
+      "Departamento administrativo não encontrado.",
+    );
+  }
+
+  if (
+    !selectedDepartment.isActive
+  ) {
+    throw new Error(
+      "Não é possível atribuir um departamento administrativo inativo.",
+    );
+  }
+
+  /*
    * O novo papel deve existir e
    * permanecer ativo.
    */
@@ -310,10 +348,10 @@ export async function updateAdminUser(
           data.name,
 
         department:
-          data.department,
+          selectedDepartment.code,
 
         roleId:
-          data.roleId,
+          selectedRole.id,
 
         updatedAt:
           new Date(),
