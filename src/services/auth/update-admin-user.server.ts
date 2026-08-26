@@ -26,19 +26,27 @@ export type UpdateAdminUserInput = {
 };
 
 export type UpdateAdminUserResult = {
-  id: string;
+  user: {
+    id: string;
 
-  name: string;
+    name: string;
 
-  email: string;
+    email: string;
 
-  department: string;
+    department: string;
 
-  status: string;
+    status: string;
 
-  roleId: string;
+    role: {
+      id: string;
 
-  updatedAt: Date;
+      code: string;
+
+      name: string;
+    };
+
+    updatedAt: Date;
+  };
 };
 
 function validateInput(
@@ -105,11 +113,12 @@ function validateInput(
 }
 
 /*
- * Mantemos duas assinaturas compatíveis.
+ * Compatibilidade com as chamadas já
+ * existentes no projeto.
  *
- * Isso preserva tanto chamadas com objeto
- * quanto chamadas posicionais existentes
- * em camadas anteriores do projeto.
+ * Aceita tanto objeto quanto argumentos
+ * posicionais sem obrigar alterações nas
+ * Server Functions já homologadas.
  */
 export function updateAdminUser(
   input: UpdateAdminUserInput,
@@ -134,8 +143,8 @@ export async function updateAdminUser(
   positionalRoleId?: string,
 ): Promise<UpdateAdminUserResult> {
   /*
-   * Toda edição de usuário exige
-   * sessão administrativa válida.
+   * A operação exige uma sessão
+   * administrativa válida.
    */
   const admin =
     await requireAdmin();
@@ -171,7 +180,8 @@ export async function updateAdminUser(
     getDb();
 
   /*
-   * Carrega o usuário real.
+   * Carrega o usuário real antes
+   * de qualquer alteração.
    */
   const [
     existingUser,
@@ -214,8 +224,8 @@ export async function updateAdminUser(
   }
 
   /*
-   * O papel escolhido precisa existir
-   * e estar ativo.
+   * O novo papel deve existir e
+   * permanecer ativo.
    */
   const [
     selectedRole,
@@ -227,6 +237,9 @@ export async function updateAdminUser(
 
         code:
           adminRolesTable.code,
+
+        name:
+          adminRolesTable.name,
 
         active:
           adminRolesTable.active,
@@ -257,11 +270,11 @@ export async function updateAdminUser(
   }
 
   /*
-   * Proteção crítica:
+   * Proteção do administrador raiz:
    *
-   * o próprio SUPER_ADMIN autenticado
-   * não pode remover de si mesmo o papel
-   * SUPER_ADMIN por esta operação.
+   * o SUPER_ADMIN autenticado não pode
+   * retirar de si mesmo o próprio papel
+   * SUPER_ADMIN através desta operação.
    */
   if (
     existingUser.id ===
@@ -276,6 +289,15 @@ export async function updateAdminUser(
     );
   }
 
+  /*
+   * Esta operação continua limitada
+   * aos campos já definidos para a
+   * edição administrativa do usuário.
+   *
+   * E-mail, estado, senha e demais
+   * controles de segurança não são
+   * modificados aqui.
+   */
   const [
     updatedUser,
   ] =
@@ -318,9 +340,6 @@ export async function updateAdminUser(
         status:
           adminUsersTable.status,
 
-        roleId:
-          adminUsersTable.roleId,
-
         updatedAt:
           adminUsersTable.updatedAt,
       });
@@ -331,5 +350,45 @@ export async function updateAdminUser(
     );
   }
 
-  return updatedUser;
+  /*
+   * IMPORTANTE:
+   *
+   * Este é o contrato esperado pela
+   * Server Function existente em
+   * src/functions/admin-auth.ts.
+   *
+   * Não retornar o usuário diretamente.
+   */
+  return {
+    user: {
+      id:
+        updatedUser.id,
+
+      name:
+        updatedUser.name,
+
+      email:
+        updatedUser.email,
+
+      department:
+        updatedUser.department,
+
+      status:
+        updatedUser.status,
+
+      role: {
+        id:
+          selectedRole.id,
+
+        code:
+          selectedRole.code,
+
+        name:
+          selectedRole.name,
+      },
+
+      updatedAt:
+        updatedUser.updatedAt,
+    },
+  };
 }
