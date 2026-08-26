@@ -19,6 +19,10 @@ type CreateAdminUserInput = {
   roleId: string;
 };
 
+type CreateAdminUserInvitationTokenInput = {
+  userId: string;
+};
+
 type CreateAdminDepartmentInput = {
   code: string;
 
@@ -162,6 +166,31 @@ function validateCreateAdminUserInput(
     email,
     department,
     roleId,
+  };
+}
+
+function validateCreateAdminUserInvitationTokenInput(
+  input: CreateAdminUserInvitationTokenInput,
+) {
+  const userId =
+    input.userId?.trim() ?? "";
+
+  if (!userId) {
+    throw new Error(
+      "Usuário administrativo inválido.",
+    );
+  }
+
+  if (
+    userId.length > 120
+  ) {
+    throw new Error(
+      "Usuário administrativo inválido.",
+    );
+  }
+
+  return {
+    userId,
   };
 }
 
@@ -636,6 +665,54 @@ export const createAdminUserAction =
           true as const,
 
         result,
+      };
+    });
+
+export const createAdminUserInvitationTokenAction =
+  createServerFn({
+    method: "POST",
+  })
+    .validator(
+      validateCreateAdminUserInvitationTokenInput,
+    )
+    .handler(async ({
+      data,
+    }) => {
+      const {
+        createAdminUserInvitationToken,
+      } = await import(
+        "../services/auth/create-admin-user-invitation-token.server"
+      );
+
+      const result =
+        await createAdminUserInvitationToken({
+          userId:
+            data.userId,
+        });
+
+      return {
+        success:
+          true as const,
+
+        user: {
+          id:
+            result.user.id,
+
+          name:
+            result.user.name,
+
+          email:
+            result.user.email,
+
+          status:
+            result.user.status,
+        },
+
+        token:
+          result.token,
+
+        expiresAt:
+          result.expiresAt.toISOString(),
       };
     });
 
