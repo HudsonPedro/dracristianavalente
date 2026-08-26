@@ -235,66 +235,76 @@ function AdminRolesPage() {
             roles.map(
               (
                 role,
-              ) => (
-                <article
-                  key={
-                    role.id
-                  }
-                  className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm"
-                >
-                  <div className="flex flex-col gap-5 border-b border-stone-200 px-6 py-6 lg:flex-row lg:items-start lg:justify-between md:px-8">
-                    <div className="min-w-0">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <h2 className="text-xl font-semibold text-stone-950">
-                          {
-                            role.name
-                          }
-                        </h2>
+              ) => {
+                const isSuperAdmin =
+                  role.code ===
+                  "SUPER_ADMIN";
 
-                        <span className="inline-flex rounded-full border border-stone-200 bg-stone-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-stone-500">
-                          {
-                            role.systemRole
-                              ? "Sistema"
-                              : "Personalizado"
-                          }
-                        </span>
+                return (
+                  <article
+                    key={
+                      role.id
+                    }
+                    className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm"
+                  >
+                    <div className="flex flex-col gap-5 border-b border-stone-200 px-6 py-6 lg:flex-row lg:items-start lg:justify-between md:px-8">
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <h2 className="text-xl font-semibold text-stone-950">
+                            {
+                              role.name
+                            }
+                          </h2>
 
-                        <span
-                          className={[
-                            "inline-flex rounded-full border px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em]",
+                          <span className="inline-flex rounded-full border border-stone-200 bg-stone-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-stone-500">
+                            {
+                              role.systemRole
+                                ? "Sistema"
+                                : "Personalizado"
+                            }
+                          </span>
 
-                            role.active
-                              ? "border-stone-200 bg-stone-50 text-stone-600"
-                              : "border-amber-200 bg-amber-50 text-amber-700",
-                          ].join(
-                            " ",
-                          )}
-                        >
+                          <span
+                            className={[
+                              "inline-flex rounded-full border px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em]",
+
+                              role.active
+                                ? "border-stone-200 bg-stone-50 text-stone-600"
+                                : "border-amber-200 bg-amber-50 text-amber-700",
+                            ].join(
+                              " ",
+                            )}
+                          >
+                            {
+                              role.active
+                                ? "Ativo"
+                                : "Inativo"
+                            }
+                          </span>
+
+                          {isSuperAdmin ? (
+                            <span className="inline-flex rounded-full border border-stone-900 bg-stone-950 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-white">
+                              Protegido
+                            </span>
+                          ) : null}
+                        </div>
+
+                        <p className="mt-2 font-mono text-xs font-semibold text-stone-500">
                           {
-                            role.active
-                              ? "Ativo"
-                              : "Inativo"
+                            role.code
                           }
-                        </span>
+                        </p>
+
+                        <p className="mt-4 max-w-3xl text-sm leading-6 text-stone-600">
+                          {
+                            role.description ??
+                            "Sem descrição administrativa."
+                          }
+                        </p>
                       </div>
 
-                      <p className="mt-2 font-mono text-xs font-semibold text-stone-500">
-                        {
-                          role.code
-                        }
-                      </p>
-
-                      <p className="mt-4 max-w-3xl text-sm leading-6 text-stone-600">
-                        {
-                          role.description ??
-                          "Sem descrição administrativa."
-                        }
-                      </p>
-                    </div>
-
-                    <div className="flex shrink-0 flex-wrap gap-2">
-                      {
-                        !role.systemRole ? (
+                      <div className="flex shrink-0 flex-wrap gap-2">
+                        {!isSuperAdmin ? (
                           <Link
                             to="/admin/papeis/$roleId"
                             params={{
@@ -309,16 +319,14 @@ function AdminRolesPage() {
                           <button
                             type="button"
                             disabled
-                            title="Papel estrutural protegido."
+                            title="O Super Administrador é o papel-raiz protegido do sistema."
                             className="cursor-not-allowed rounded-xl border border-stone-200 bg-stone-50 px-4 py-2 text-xs font-semibold text-stone-400"
                           >
                             Editar
                           </button>
-                        )
-                      }
+                        )}
 
-                      {
-                        !role.systemRole &&
+                        {!isSuperAdmin &&
                         role.active ? (
                           <Link
                             to="/admin/papeis/$roleId/permissoes"
@@ -335,140 +343,140 @@ function AdminRolesPage() {
                             type="button"
                             disabled
                             title={
-                              role.systemRole
-                                ? "Papel estrutural protegido."
+                              isSuperAdmin
+                                ? "As permissões do Super Administrador são protegidas."
                                 : "Ative o papel antes de alterar permissões."
                             }
                             className="cursor-not-allowed rounded-xl border border-stone-200 bg-stone-50 px-4 py-2 text-xs font-semibold text-stone-400"
                           >
                             Permissões
                           </button>
-                        )
-                      }
-                    </div>
-                  </div>
-
-                  <div className="px-6 py-6 md:px-8">
-                    <div className="mb-5">
-                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-400">
-                        Matriz de acesso
-                      </p>
-
-                      <p className="mt-1 text-sm text-stone-500">
-                        {
-                          role.permissions.length
-                        }{" "}
-                        permissões persistidas.
-                      </p>
+                        )}
+                      </div>
                     </div>
 
-                    <div className="overflow-x-auto rounded-2xl border border-stone-200">
-                      <table className="w-full min-w-[850px] text-left">
-                        <thead className="bg-stone-50">
-                          <tr>
-                            <th className="border-b border-stone-200 px-4 py-3 text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">
-                              Módulo
-                            </th>
+                    <div className="px-6 py-6 md:px-8">
+                      <div className="mb-5">
+                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-400">
+                          Matriz de acesso
+                        </p>
 
-                            {ADMIN_ACTIONS.map(
-                              (
-                                action,
-                              ) => (
-                                <th
-                                  key={
-                                    action
-                                  }
-                                  className="border-b border-stone-200 px-3 py-3 text-center text-[10px] font-bold uppercase tracking-[0.12em] text-stone-400"
-                                >
-                                  {
-                                    ACTION_LABELS[
+                        <p className="mt-1 text-sm text-stone-500">
+                          {
+                            role.permissions.length
+                          }{" "}
+                          permissões persistidas.
+                        </p>
+                      </div>
+
+                      <div className="overflow-x-auto rounded-2xl border border-stone-200">
+                        <table className="w-full min-w-[850px] text-left">
+                          <thead className="bg-stone-50">
+                            <tr>
+                              <th className="border-b border-stone-200 px-4 py-3 text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">
+                                Módulo
+                              </th>
+
+                              {ADMIN_ACTIONS.map(
+                                (
+                                  action,
+                                ) => (
+                                  <th
+                                    key={
                                       action
-                                    ]
-                                  }
-                                </th>
-                              ),
-                            )}
-                          </tr>
-                        </thead>
-
-                        <tbody>
-                          {ADMIN_MODULES.map(
-                            (
-                              module,
-                            ) => (
-                              <tr
-                                key={
-                                  module
-                                }
-                                className="border-b border-stone-100 last:border-b-0"
-                              >
-                                <td className="px-4 py-3">
-                                  <p className="text-sm font-semibold text-stone-800">
+                                    }
+                                    className="border-b border-stone-200 px-3 py-3 text-center text-[10px] font-bold uppercase tracking-[0.12em] text-stone-400"
+                                  >
                                     {
-                                      MODULE_LABELS[
-                                        module
+                                      ACTION_LABELS[
+                                        action
                                       ]
                                     }
-                                  </p>
+                                  </th>
+                                ),
+                              )}
+                            </tr>
+                          </thead>
 
-                                  <p className="mt-0.5 font-mono text-[10px] text-stone-400">
-                                    {
-                                      module
-                                    }
-                                  </p>
-                                </td>
+                          <tbody>
+                            {ADMIN_MODULES.map(
+                              (
+                                module,
+                              ) => (
+                                <tr
+                                  key={
+                                    module
+                                  }
+                                  className="border-b border-stone-100 last:border-b-0"
+                                >
+                                  <td className="px-4 py-3">
+                                    <p className="text-sm font-semibold text-stone-800">
+                                      {
+                                        MODULE_LABELS[
+                                          module
+                                        ]
+                                      }
+                                    </p>
 
-                                {ADMIN_ACTIONS.map(
-                                  (
-                                    action,
-                                  ) => {
-                                    const allowed =
-                                      hasPermission(
-                                        role.permissions,
-                                        module,
-                                        action,
-                                      );
+                                    <p className="mt-0.5 font-mono text-[10px] text-stone-400">
+                                      {
+                                        module
+                                      }
+                                    </p>
+                                  </td>
 
-                                    return (
-                                      <td
-                                        key={
-                                          `${module}:${action}`
-                                        }
-                                        className="px-3 py-3 text-center"
-                                      >
-                                        <span
-                                          title={
+                                  {ADMIN_ACTIONS.map(
+                                    (
+                                      action,
+                                    ) => {
+                                      const allowed =
+                                        hasPermission(
+                                          role.permissions,
+                                          module,
+                                          action,
+                                        );
+
+                                      return (
+                                        <td
+                                          key={
                                             `${module}:${action}`
                                           }
-                                          className={[
-                                            "inline-flex h-7 min-w-7 items-center justify-center rounded-lg border px-2 text-xs font-bold",
-
-                                            allowed
-                                              ? "border-stone-900 bg-stone-950 text-white"
-                                              : "border-stone-200 bg-stone-50 text-stone-300",
-                                          ].join(
-                                            " ",
-                                          )}
+                                          className="px-3 py-3 text-center"
                                         >
-                                          {
-                                            allowed
-                                              ? "✓"
-                                              : "—"
-                                          }
-                                        </span>
-                                      </td>
-                                    );
-                                  },
-                                )}
-                              </tr>
-                            ),
-                          )}
-                        </tbody>
-                      </table>
+                                          <span
+                                            title={
+                                              `${module}:${action}`
+                                            }
+                                            className={[
+                                              "inline-flex h-7 min-w-7 items-center justify-center rounded-lg border px-2 text-xs font-bold",
+
+                                              allowed
+                                                ? "border-stone-900 bg-stone-950 text-white"
+                                                : "border-stone-200 bg-stone-50 text-stone-300",
+                                            ].join(
+                                              " ",
+                                            )}
+                                          >
+                                            {
+                                              allowed
+                                                ? "✓"
+                                                : "—"
+                                            }
+                                          </span>
+                                        </td>
+                                      );
+                                    },
+                                  )}
+                                </tr>
+                              ),
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
-                  </div>
-                </article>
-              ),
+                  </article>
+                );
+              },
             )
           )}
         </section>
