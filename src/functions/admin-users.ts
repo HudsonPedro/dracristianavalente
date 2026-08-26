@@ -9,6 +9,16 @@ import {
   type AdminModule,
 } from "../domain/admin/access";
 
+type CreateAdminUserInput = {
+  name: string;
+
+  email: string;
+
+  department: string;
+
+  roleId: string;
+};
+
 type CreateAdminDepartmentInput = {
   code: string;
 
@@ -70,6 +80,90 @@ type UpdateAdminRolePermissionsInput = {
     action: AdminAction;
   }[];
 };
+
+function validateCreateAdminUserInput(
+  input: CreateAdminUserInput,
+) {
+  const name =
+    input.name?.trim() ?? "";
+
+  const email =
+    input.email
+      ?.trim()
+      .toLowerCase() ?? "";
+
+  const department =
+    input.department?.trim() ?? "";
+
+  const roleId =
+    input.roleId?.trim() ?? "";
+
+  if (!name) {
+    throw new Error(
+      "O nome do usuário é obrigatório.",
+    );
+  }
+
+  if (
+    name.length > 255
+  ) {
+    throw new Error(
+      "O nome do usuário é inválido.",
+    );
+  }
+
+  if (!email) {
+    throw new Error(
+      "O e-mail do usuário é obrigatório.",
+    );
+  }
+
+  if (
+    email.length > 255 ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+      email,
+    )
+  ) {
+    throw new Error(
+      "O e-mail do usuário é inválido.",
+    );
+  }
+
+  if (!department) {
+    throw new Error(
+      "O departamento é obrigatório.",
+    );
+  }
+
+  if (
+    department.length > 80
+  ) {
+    throw new Error(
+      "O departamento é inválido.",
+    );
+  }
+
+  if (!roleId) {
+    throw new Error(
+      "O papel administrativo é obrigatório.",
+    );
+  }
+
+  if (
+    roleId.length > 120
+  ) {
+    throw new Error(
+      "O papel administrativo é inválido.",
+    );
+  }
+
+  return {
+    name,
+    email,
+    department,
+    roleId,
+  };
+}
 
 function validateCreateAdminDepartmentInput(
   input: CreateAdminDepartmentInput,
@@ -505,6 +599,45 @@ function serializeAdminRole(
       ),
   };
 }
+
+export const createAdminUserAction =
+  createServerFn({
+    method: "POST",
+  })
+    .validator(
+      validateCreateAdminUserInput,
+    )
+    .handler(async ({
+      data,
+    }) => {
+      const {
+        createAdminUser,
+      } = await import(
+        "../services/auth/create-admin-user.server"
+      );
+
+      const result =
+        await createAdminUser({
+          name:
+            data.name,
+
+          email:
+            data.email,
+
+          department:
+            data.department,
+
+          roleId:
+            data.roleId,
+        });
+
+      return {
+        success:
+          true as const,
+
+        result,
+      };
+    });
 
 export const getAdminUsers =
   createServerFn({
