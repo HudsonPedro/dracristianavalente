@@ -47,10 +47,11 @@ export const Route =
       }
 
       if (
-        role.systemRole
+        role.code ===
+        "SUPER_ADMIN"
       ) {
         throw new Error(
-          "As permissões de papéis estruturais do sistema não podem ser alteradas por esta operação.",
+          "As permissões do Super Administrador são estruturais e não podem ser alteradas.",
         );
       }
 
@@ -460,7 +461,17 @@ function AdminRolePermissionsPage() {
             </p>
 
             <p className="mt-2 text-sm font-semibold text-stone-800">
-              Personalizado · Ativo
+              {
+                role.systemRole
+                  ? "Sistema"
+                  : "Personalizado"
+              }{" "}
+              ·{" "}
+              {
+                role.active
+                  ? "Ativo"
+                  : "Inativo"
+              }
             </p>
           </article>
         </section>
