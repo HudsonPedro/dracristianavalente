@@ -34,6 +34,12 @@ type UpdateAdminRoleInput = {
   description?: string | null;
 };
 
+type SetAdminRoleStatusInput = {
+  roleId: string;
+
+  active: boolean;
+};
+
 export type AdminRoleMutationResult = {
   id: string;
 
@@ -174,6 +180,35 @@ function validateUpdateInput(
     roleId,
     name,
     description,
+  };
+}
+
+function validateStatusInput(
+  input: SetAdminRoleStatusInput,
+) {
+  const roleId =
+    input.roleId?.trim() ?? "";
+
+  if (!roleId) {
+    throw new Error(
+      "Papel administrativo inválido.",
+    );
+  }
+
+  if (
+    typeof input.active !==
+    "boolean"
+  ) {
+    throw new Error(
+      "Estado do papel administrativo inválido.",
+    );
+  }
+
+  return {
+    roleId,
+
+    active:
+      input.active,
   };
 }
 
@@ -342,17 +377,6 @@ export async function updateAdminRole(
     );
   }
 
-  /*
-   * SUPER_ADMIN é o papel-raiz do painel.
-   *
-   * Nome, código e demais características
-   * estruturais permanecem protegidos para
-   * evitar descaracterização da autoridade
-   * administrativa principal.
-   *
-   * Os demais papéis estruturais podem ter
-   * nome e descrição administrados.
-   */
   if (
     existingRole.code ===
     "SUPER_ADMIN"
@@ -362,22 +386,6 @@ export async function updateAdminRole(
     );
   }
 
-  /*
-   * A identidade funcional permanece
-   * protegida em todos os papéis.
-   *
-   * Esta operação altera somente:
-   *
-   * - name
-   * - description
-   *
-   * Não modifica:
-   *
-   * - code
-   * - systemRole
-   * - active
-   * - permissions
-   */
   const [
     role,
   ] =
@@ -424,6 +432,136 @@ export async function updateAdminRole(
   if (!role) {
     throw new Error(
       "Não foi possível atualizar o papel administrativo.",
+    );
+  }
+
+  return role;
+}
+
+export async function setAdminRoleStatus(
+  input: SetAdminRoleStatusInput,
+): Promise<AdminRoleMutationResult> {
+  await requireSuperAdmin();
+
+  const data =
+    validateStatusInput(
+      input,
+    );
+
+  const db =
+    getDb();
+
+  const [
+    existingRole,
+  ] =
+    await db
+      .select({
+        id:
+          adminRolesTable.id,
+
+        code:
+          adminRolesTable.code,
+
+        name:
+          adminRolesTable.name,
+
+        description:
+          adminRolesTable.description,
+
+        systemRole:
+          adminRolesTable.systemRole,
+
+        active:
+          adminRolesTable.active,
+      })
+      .from(
+        adminRolesTable,
+      )
+      .where(
+        eq(
+          adminRolesTable.id,
+          data.roleId,
+        ),
+      )
+      .limit(1);
+
+  if (!existingRole) {
+    throw new Error(
+      "Papel administrativo não encontrado.",
+    );
+  }
+
+  /*
+   * SUPER_ADMIN é a autoridade raiz.
+   *
+   * Sua desativação poderia impedir a
+   * administração da própria plataforma.
+   */
+  if (
+    existingRole.code ===
+    "SUPER_ADMIN"
+  ) {
+    throw new Error(
+      "O papel Super Administrador não pode ser ativado ou desativado por esta operação.",
+    );
+  }
+
+  /*
+   * Operação idempotente.
+   *
+   * Se já estiver no estado solicitado,
+   * nenhuma escrita desnecessária é feita.
+   */
+  if (
+    existingRole.active ===
+    data.active
+  ) {
+    return existingRole;
+  }
+
+  const [
+    role,
+  ] =
+    await db
+      .update(
+        adminRolesTable,
+      )
+      .set({
+        active:
+          data.active,
+
+        updatedAt:
+          new Date(),
+      })
+      .where(
+        eq(
+          adminRolesTable.id,
+          data.roleId,
+        ),
+      )
+      .returning({
+        id:
+          adminRolesTable.id,
+
+        code:
+          adminRolesTable.code,
+
+        name:
+          adminRolesTable.name,
+
+        description:
+          adminRolesTable.description,
+
+        systemRole:
+          adminRolesTable.systemRole,
+
+        active:
+          adminRolesTable.active,
+      });
+
+  if (!role) {
+    throw new Error(
+      "Não foi possível alterar o estado do papel administrativo.",
     );
   }
 
