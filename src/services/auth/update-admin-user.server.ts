@@ -8,101 +8,159 @@ import {
 
 import {
   adminRolesTable,
+  adminUsersTable,
 } from "../../db/schema/admin-access";
 
 import {
   requireAdmin,
 } from "./require-admin.server";
 
-type UpdateAdminRoleInput = {
-  roleId: string;
+export type UpdateAdminUserInput = {
+  userId: string;
 
   name: string;
 
-  description?: string | null;
+  department: string;
+
+  roleId: string;
 };
 
-export type UpdateAdminRoleResult = {
+export type UpdateAdminUserResult = {
   id: string;
-
-  code: string;
 
   name: string;
 
-  description: string | null;
+  email: string;
 
-  systemRole: boolean;
+  department: string;
 
-  active: boolean;
+  status: string;
+
+  roleId: string;
+
+  updatedAt: Date;
 };
 
 function validateInput(
-  input: UpdateAdminRoleInput,
+  input: UpdateAdminUserInput,
 ) {
-  const roleId =
-    input.roleId?.trim() ?? "";
+  const userId =
+    input.userId?.trim() ?? "";
 
   const name =
     input.name?.trim() ?? "";
 
-  const description =
-    input.description?.trim() ||
-    null;
+  const department =
+    input.department?.trim() ?? "";
 
-  if (!roleId) {
+  const roleId =
+    input.roleId?.trim() ?? "";
+
+  if (!userId) {
     throw new Error(
-      "Papel administrativo inválido.",
+      "Usuário administrativo inválido.",
     );
   }
 
   if (!name) {
     throw new Error(
-      "O nome do papel é obrigatório.",
+      "O nome do usuário é obrigatório.",
     );
   }
 
   if (
-    name.length > 160
+    name.length > 255
   ) {
     throw new Error(
-      "O nome do papel deve possuir no máximo 160 caracteres.",
+      "O nome do usuário é inválido.",
+    );
+  }
+
+  if (!department) {
+    throw new Error(
+      "O departamento é obrigatório.",
     );
   }
 
   if (
-    description &&
-    description.length > 2000
+    department.length > 80
   ) {
     throw new Error(
-      "A descrição do papel deve possuir no máximo 2000 caracteres.",
+      "O departamento é inválido.",
+    );
+  }
+
+  if (!roleId) {
+    throw new Error(
+      "O papel administrativo é obrigatório.",
     );
   }
 
   return {
-    roleId,
+    userId,
     name,
-    description,
+    department,
+    roleId,
   };
 }
 
-export async function updateAdminRole(
-  input: UpdateAdminRoleInput,
-): Promise<UpdateAdminRoleResult> {
+/*
+ * Mantemos duas assinaturas compatíveis.
+ *
+ * Isso preserva tanto chamadas com objeto
+ * quanto chamadas posicionais existentes
+ * em camadas anteriores do projeto.
+ */
+export function updateAdminUser(
+  input: UpdateAdminUserInput,
+): Promise<UpdateAdminUserResult>;
+
+export function updateAdminUser(
+  userId: string,
+  name: string,
+  department: string,
+  roleId: string,
+): Promise<UpdateAdminUserResult>;
+
+export async function updateAdminUser(
+  inputOrUserId:
+    | UpdateAdminUserInput
+    | string,
+
+  positionalName?: string,
+
+  positionalDepartment?: string,
+
+  positionalRoleId?: string,
+): Promise<UpdateAdminUserResult> {
   /*
-   * Alteração de papel administrativo
-   * continua restrita ao SUPER_ADMIN.
+   * Toda edição de usuário exige
+   * sessão administrativa válida.
    */
   const admin =
     await requireAdmin();
 
-  if (
-    admin.role !==
-    "SUPER_ADMIN"
-  ) {
-    throw new Error(
-      "Apenas o Super Administrador pode editar papéis administrativos.",
-    );
-  }
+  const input:
+    UpdateAdminUserInput =
+      typeof inputOrUserId ===
+      "string"
+        ? {
+            userId:
+              inputOrUserId,
+
+            name:
+              positionalName ??
+              "",
+
+            department:
+              positionalDepartment ??
+              "",
+
+            roleId:
+              positionalRoleId ??
+              "",
+          }
+        : inputOrUserId;
 
   const data =
     validateInput(
@@ -112,8 +170,55 @@ export async function updateAdminRole(
   const db =
     getDb();
 
+  /*
+   * Carrega o usuário real.
+   */
   const [
-    existingRole,
+    existingUser,
+  ] =
+    await db
+      .select({
+        id:
+          adminUsersTable.id,
+
+        name:
+          adminUsersTable.name,
+
+        email:
+          adminUsersTable.email,
+
+        department:
+          adminUsersTable.department,
+
+        status:
+          adminUsersTable.status,
+
+        roleId:
+          adminUsersTable.roleId,
+      })
+      .from(
+        adminUsersTable,
+      )
+      .where(
+        eq(
+          adminUsersTable.id,
+          data.userId,
+        ),
+      )
+      .limit(1);
+
+  if (!existingUser) {
+    throw new Error(
+      "Usuário administrativo não encontrado.",
+    );
+  }
+
+  /*
+   * O papel escolhido precisa existir
+   * e estar ativo.
+   */
+  const [
+    selectedRole,
   ] =
     await db
       .select({
@@ -122,15 +227,6 @@ export async function updateAdminRole(
 
         code:
           adminRolesTable.code,
-
-        name:
-          adminRolesTable.name,
-
-        description:
-          adminRolesTable.description,
-
-        systemRole:
-          adminRolesTable.systemRole,
 
         active:
           adminRolesTable.active,
@@ -146,72 +242,94 @@ export async function updateAdminRole(
       )
       .limit(1);
 
-  if (!existingRole) {
+  if (!selectedRole) {
     throw new Error(
       "Papel administrativo não encontrado.",
     );
   }
 
-  /*
-   * Papéis estruturais não podem ser
-   * alterados por esta operação.
-   */
   if (
-    existingRole.systemRole
+    !selectedRole.active
   ) {
     throw new Error(
-      "Papéis estruturais do sistema não podem ser editados por esta operação.",
+      "Não é possível atribuir um papel administrativo inativo.",
+    );
+  }
+
+  /*
+   * Proteção crítica:
+   *
+   * o próprio SUPER_ADMIN autenticado
+   * não pode remover de si mesmo o papel
+   * SUPER_ADMIN por esta operação.
+   */
+  if (
+    existingUser.id ===
+      admin.userId &&
+    admin.role ===
+      "SUPER_ADMIN" &&
+    selectedRole.code !==
+      "SUPER_ADMIN"
+  ) {
+    throw new Error(
+      "O Super Administrador não pode remover de si próprio o papel SUPER_ADMIN.",
     );
   }
 
   const [
-    updatedRole,
+    updatedUser,
   ] =
     await db
       .update(
-        adminRolesTable,
+        adminUsersTable,
       )
       .set({
         name:
           data.name,
 
-        description:
-          data.description,
+        department:
+          data.department,
+
+        roleId:
+          data.roleId,
 
         updatedAt:
           new Date(),
       })
       .where(
         eq(
-          adminRolesTable.id,
-          data.roleId,
+          adminUsersTable.id,
+          data.userId,
         ),
       )
       .returning({
         id:
-          adminRolesTable.id,
-
-        code:
-          adminRolesTable.code,
+          adminUsersTable.id,
 
         name:
-          adminRolesTable.name,
+          adminUsersTable.name,
 
-        description:
-          adminRolesTable.description,
+        email:
+          adminUsersTable.email,
 
-        systemRole:
-          adminRolesTable.systemRole,
+        department:
+          adminUsersTable.department,
 
-        active:
-          adminRolesTable.active,
+        status:
+          adminUsersTable.status,
+
+        roleId:
+          adminUsersTable.roleId,
+
+        updatedAt:
+          adminUsersTable.updatedAt,
       });
 
-  if (!updatedRole) {
+  if (!updatedUser) {
     throw new Error(
-      "Não foi possível atualizar o papel administrativo.",
+      "Não foi possível atualizar o usuário administrativo.",
     );
   }
 
-  return updatedRole;
+  return updatedUser;
 }
