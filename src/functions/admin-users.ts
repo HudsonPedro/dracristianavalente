@@ -57,6 +57,10 @@ type SetAdminRoleStatusInput = {
   active: boolean;
 };
 
+type DeleteAdminRoleInput = {
+  roleId: string;
+};
+
 type UpdateAdminRolePermissionsInput = {
   roleId: string;
 
@@ -351,6 +355,23 @@ function validateSetAdminRoleStatusInput(
 
     active:
       input.active,
+  };
+}
+
+function validateDeleteAdminRoleInput(
+  input: DeleteAdminRoleInput,
+) {
+  const roleId =
+    input.roleId?.trim() ?? "";
+
+  if (!roleId) {
+    throw new Error(
+      "Papel administrativo inválido.",
+    );
+  }
+
+  return {
+    roleId,
   };
 }
 
@@ -764,6 +785,48 @@ export const setAdminRoleStatusAction =
           active:
             role.active,
         },
+      };
+    });
+
+export const deleteAdminRoleAction =
+  createServerFn({
+    method: "POST",
+  })
+    .validator(
+      validateDeleteAdminRoleInput,
+    )
+    .handler(async ({
+      data,
+    }) => {
+      const {
+        deleteAdminRole,
+      } = await import(
+        "../services/auth/create-admin-role.server"
+      );
+
+      const result =
+        await deleteAdminRole({
+          roleId:
+            data.roleId,
+        });
+
+      return {
+        success:
+          true as const,
+
+        role: {
+          id:
+            result.id,
+
+          code:
+            result.code,
+
+          name:
+            result.name,
+        },
+
+        deleted:
+          result.deleted,
       };
     });
 
