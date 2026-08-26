@@ -51,6 +51,12 @@ type UpdateAdminRoleInput = {
   description?: string | null;
 };
 
+type SetAdminRoleStatusInput = {
+  roleId: string;
+
+  active: boolean;
+};
+
 type UpdateAdminRolePermissionsInput = {
   roleId: string;
 
@@ -316,6 +322,35 @@ function validateUpdateAdminRoleInput(
     roleId,
     name,
     description,
+  };
+}
+
+function validateSetAdminRoleStatusInput(
+  input: SetAdminRoleStatusInput,
+) {
+  const roleId =
+    input.roleId?.trim() ?? "";
+
+  if (!roleId) {
+    throw new Error(
+      "Papel administrativo inválido.",
+    );
+  }
+
+  if (
+    typeof input.active !==
+    "boolean"
+  ) {
+    throw new Error(
+      "Estado do papel administrativo inválido.",
+    );
+  }
+
+  return {
+    roleId,
+
+    active:
+      input.active,
   };
 }
 
@@ -653,6 +688,57 @@ export const updateAdminRoleAction =
 
           description:
             data.description,
+        });
+
+      return {
+        success:
+          true as const,
+
+        role: {
+          id:
+            role.id,
+
+          code:
+            role.code,
+
+          name:
+            role.name,
+
+          description:
+            role.description,
+
+          systemRole:
+            role.systemRole,
+
+          active:
+            role.active,
+        },
+      };
+    });
+
+export const setAdminRoleStatusAction =
+  createServerFn({
+    method: "POST",
+  })
+    .validator(
+      validateSetAdminRoleStatusInput,
+    )
+    .handler(async ({
+      data,
+    }) => {
+      const {
+        setAdminRoleStatus,
+      } = await import(
+        "../services/auth/create-admin-role.server"
+      );
+
+      const role =
+        await setAdminRoleStatus({
+          roleId:
+            data.roleId,
+
+          active:
+            data.active,
         });
 
       return {
