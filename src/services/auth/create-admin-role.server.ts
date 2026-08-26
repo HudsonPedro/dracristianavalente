@@ -26,7 +26,15 @@ type CreateAdminRoleInput = {
   description?: string | null;
 };
 
-export type CreateAdminRoleResult = {
+type UpdateAdminRoleInput = {
+  roleId: string;
+
+  name: string;
+
+  description?: string | null;
+};
+
+export type AdminRoleMutationResult = {
   id: string;
 
   code: string;
@@ -61,7 +69,7 @@ function normalizeRoleCode(
     );
 }
 
-function validateInput(
+function validateCreateInput(
   input: CreateAdminRoleInput,
 ) {
   const code =
@@ -120,17 +128,56 @@ function validateInput(
   };
 }
 
-export async function createAdminRole(
-  input: CreateAdminRoleInput,
-): Promise<CreateAdminRoleResult> {
-  /*
-   * Governança de papéis é uma operação
-   * administrativa de alto privilégio.
-   *
-   * Enquanto o enforcement completo de RBAC
-   * ainda não está aplicado às mutações,
-   * somente SUPER_ADMIN pode criar papéis.
-   */
+function validateUpdateInput(
+  input: UpdateAdminRoleInput,
+) {
+  const roleId =
+    input.roleId?.trim() ?? "";
+
+  const name =
+    input.name?.trim() ?? "";
+
+  const description =
+    input.description?.trim() ||
+    null;
+
+  if (!roleId) {
+    throw new Error(
+      "Papel administrativo inválido.",
+    );
+  }
+
+  if (!name) {
+    throw new Error(
+      "O nome do papel é obrigatório.",
+    );
+  }
+
+  if (
+    name.length > 160
+  ) {
+    throw new Error(
+      "O nome do papel deve possuir no máximo 160 caracteres.",
+    );
+  }
+
+  if (
+    description &&
+    description.length > 2000
+  ) {
+    throw new Error(
+      "A descrição do papel deve possuir no máximo 2000 caracteres.",
+    );
+  }
+
+  return {
+    roleId,
+    name,
+    description,
+  };
+}
+
+async function requireSuperAdmin() {
   const admin =
     await requireAdmin();
 
@@ -139,22 +186,26 @@ export async function createAdminRole(
     "SUPER_ADMIN"
   ) {
     throw new Error(
-      "Apenas o Super Administrador pode criar papéis administrativos.",
+      "Apenas o Super Administrador pode administrar papéis.",
     );
   }
 
+  return admin;
+}
+
+export async function createAdminRole(
+  input: CreateAdminRoleInput,
+): Promise<AdminRoleMutationResult> {
+  await requireSuperAdmin();
+
   const data =
-    validateInput(
+    validateCreateInput(
       input,
     );
 
   const db =
     getDb();
 
-  /*
-   * O código é a identidade funcional
-   * do papel e não pode ser duplicado.
-   */
   const [
     existingRole,
   ] =
@@ -180,12 +231,6 @@ export async function createAdminRole(
     );
   }
 
-  /*
-   * Papéis criados pelo painel nunca são
-   * papéis estruturais do sistema.
-   *
-   * systemRole permanece false.
-   */
   const [
     role,
   ] =
@@ -238,6 +283,120 @@ export async function createAdminRole(
   if (!role) {
     throw new Error(
       "Não foi possível criar o papel administrativo.",
+    );
+  }
+
+  return role;
+}
+
+export async function updateAdminRole(
+  input: UpdateAdminRoleInput,
+): Promise<AdminRoleMutationResult> {
+  await requireSuperAdmin();
+
+  const data =
+    validateUpdateInput(
+      input,
+    );
+
+  const db =
+    getDb();
+
+  const [
+    existingRole,
+  ] =
+    await db
+      .select({
+        id:
+          adminRolesTable.id,
+
+        code:
+          adminRolesTable.code,
+
+        systemRole:
+          adminRolesTable.systemRole,
+      })
+      .from(
+        adminRolesTable,
+      )
+      .where(
+        eq(
+          adminRolesTable.id,
+          data.roleId,
+        ),
+      )
+      .limit(1);
+
+  if (!existingRole) {
+    throw new Error(
+      "Papel administrativo não encontrado.",
+    );
+  }
+
+  /*
+   * Os sete papéis estruturais permanecem
+   * protegidos contra edição cadastral.
+   */
+  if (
+    existingRole.systemRole
+  ) {
+    throw new Error(
+      "Papéis estruturais do sistema não podem ser editados.",
+    );
+  }
+
+  /*
+   * O código não participa do UPDATE.
+   *
+   * Assim a identidade funcional do papel
+   * permanece imutável.
+   */
+  const [
+    role,
+  ] =
+    await db
+      .update(
+        adminRolesTable,
+      )
+      .set({
+        name:
+          data.name,
+
+        description:
+          data.description,
+
+        updatedAt:
+          new Date(),
+      })
+      .where(
+        eq(
+          adminRolesTable.id,
+          data.roleId,
+        ),
+      )
+      .returning({
+        id:
+          adminRolesTable.id,
+
+        code:
+          adminRolesTable.code,
+
+        name:
+          adminRolesTable.name,
+
+        description:
+          adminRolesTable.description,
+
+        systemRole:
+          adminRolesTable.systemRole,
+
+        active:
+          adminRolesTable.active,
+      });
+
+  if (!role) {
+    throw new Error(
+      "Não foi possível atualizar o papel administrativo.",
     );
   }
 
