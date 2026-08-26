@@ -12,7 +12,12 @@ import {
 
 import {
   adminRolesTable,
+  adminUsersTable,
 } from "../../db/schema/admin-access";
+
+import {
+  adminUserInvitationsTable,
+} from "../../db/schema/admin-governance";
 
 import {
   requireAdmin,
@@ -40,6 +45,10 @@ type SetAdminRoleStatusInput = {
   active: boolean;
 };
 
+type DeleteAdminRoleInput = {
+  roleId: string;
+};
+
 export type AdminRoleMutationResult = {
   id: string;
 
@@ -52,6 +61,16 @@ export type AdminRoleMutationResult = {
   systemRole: boolean;
 
   active: boolean;
+};
+
+export type DeleteAdminRoleResult = {
+  id: string;
+
+  code: string;
+
+  name: string;
+
+  deleted: true;
 };
 
 function normalizeRoleCode(
@@ -209,6 +228,23 @@ function validateStatusInput(
 
     active:
       input.active,
+  };
+}
+
+function validateDeleteInput(
+  input: DeleteAdminRoleInput,
+) {
+  const roleId =
+    input.roleId?.trim() ?? "";
+
+  if (!roleId) {
+    throw new Error(
+      "Papel administrativo inválido.",
+    );
+  }
+
+  return {
+    roleId,
   };
 }
 
@@ -491,12 +527,6 @@ export async function setAdminRoleStatus(
     );
   }
 
-  /*
-   * SUPER_ADMIN é a autoridade raiz.
-   *
-   * Sua desativação poderia impedir a
-   * administração da própria plataforma.
-   */
   if (
     existingRole.code ===
     "SUPER_ADMIN"
@@ -506,12 +536,6 @@ export async function setAdminRoleStatus(
     );
   }
 
-  /*
-   * Operação idempotente.
-   *
-   * Se já estiver no estado solicitado,
-   * nenhuma escrita desnecessária é feita.
-   */
   if (
     existingRole.active ===
     data.active
@@ -566,4 +590,189 @@ export async function setAdminRoleStatus(
   }
 
   return role;
+}
+
+export async function deleteAdminRole(
+  input: DeleteAdminRoleInput,
+): Promise<DeleteAdminRoleResult> {
+  await requireSuperAdmin();
+
+  const data =
+    validateDeleteInput(
+      input,
+    );
+
+  const db =
+    getDb();
+
+  const [
+    existingRole,
+  ] =
+    await db
+      .select({
+        id:
+          adminRolesTable.id,
+
+        code:
+          adminRolesTable.code,
+
+        name:
+          adminRolesTable.name,
+
+        systemRole:
+          adminRolesTable.systemRole,
+
+        active:
+          adminRolesTable.active,
+      })
+      .from(
+        adminRolesTable,
+      )
+      .where(
+        eq(
+          adminRolesTable.id,
+          data.roleId,
+        ),
+      )
+      .limit(1);
+
+  if (!existingRole) {
+    throw new Error(
+      "Papel administrativo não encontrado.",
+    );
+  }
+
+  /*
+   * Nenhum papel estrutural do sistema
+   * pode ser removido fisicamente.
+   */
+  if (
+    existingRole.systemRole
+  ) {
+    throw new Error(
+      "Papéis estruturais do sistema não podem ser removidos.",
+    );
+  }
+
+  /*
+   * A remoção permanente exige que o
+   * papel tenha sido desativado antes.
+   */
+  if (
+    existingRole.active
+  ) {
+    throw new Error(
+      "Desative o papel administrativo antes de removê-lo permanentemente.",
+    );
+  }
+
+  /*
+   * Usuários mantêm FK RESTRICT para
+   * admin_roles. Fazemos a verificação
+   * também na aplicação para apresentar
+   * uma mensagem administrativa clara.
+   */
+  const [
+    linkedUser,
+  ] =
+    await db
+      .select({
+        id:
+          adminUsersTable.id,
+      })
+      .from(
+        adminUsersTable,
+      )
+      .where(
+        eq(
+          adminUsersTable.roleId,
+          data.roleId,
+        ),
+      )
+      .limit(1);
+
+  if (linkedUser) {
+    throw new Error(
+      "Não é possível remover este papel porque existem usuários vinculados a ele.",
+    );
+  }
+
+  /*
+   * Convites administrativos também
+   * referenciam admin_roles com RESTRICT.
+   */
+  const [
+    linkedInvitation,
+  ] =
+    await db
+      .select({
+        id:
+          adminUserInvitationsTable.id,
+      })
+      .from(
+        adminUserInvitationsTable,
+      )
+      .where(
+        eq(
+          adminUserInvitationsTable.roleId,
+          data.roleId,
+        ),
+      )
+      .limit(1);
+
+  if (linkedInvitation) {
+    throw new Error(
+      "Não é possível remover este papel porque existem convites administrativos vinculados a ele.",
+    );
+  }
+
+  const [
+    deletedRole,
+  ] =
+    await db
+      .delete(
+        adminRolesTable,
+      )
+      .where(
+        eq(
+          adminRolesTable.id,
+          data.roleId,
+        ),
+      )
+      .returning({
+        id:
+          adminRolesTable.id,
+
+        code:
+          adminRolesTable.code,
+
+        name:
+          adminRolesTable.name,
+      });
+
+  if (!deletedRole) {
+    throw new Error(
+      "Não foi possível remover o papel administrativo.",
+    );
+  }
+
+  /*
+   * admin_role_permissions possui
+   * ON DELETE CASCADE, portanto a matriz
+   * pertencente ao papel é removida pelo
+   * próprio PostgreSQL.
+   */
+  return {
+    id:
+      deletedRole.id,
+
+    code:
+      deletedRole.code,
+
+    name:
+      deletedRole.name,
+
+    deleted:
+      true,
+  };
 }
