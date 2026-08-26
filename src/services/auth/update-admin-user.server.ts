@@ -12,10 +12,6 @@ import {
 } from "../../db/schema/admin-access";
 
 import {
-  adminDepartmentsTable,
-} from "../../db/schema/admin-governance";
-
-import {
   requireAdmin,
 } from "./require-admin.server";
 
@@ -117,8 +113,12 @@ function validateInput(
 }
 
 /*
- * Preserva compatibilidade com as chamadas
- * já existentes no sistema.
+ * Compatibilidade com as chamadas já
+ * existentes no projeto.
+ *
+ * Aceita tanto objeto quanto argumentos
+ * posicionais sem obrigar alterações nas
+ * Server Functions já homologadas.
  */
 export function updateAdminUser(
   input: UpdateAdminUserInput,
@@ -143,8 +143,8 @@ export async function updateAdminUser(
   positionalRoleId?: string,
 ): Promise<UpdateAdminUserResult> {
   /*
-   * Toda alteração continua exigindo
-   * sessão administrativa válida.
+   * A operação exige uma sessão
+   * administrativa válida.
    */
   const admin =
     await requireAdmin();
@@ -180,7 +180,8 @@ export async function updateAdminUser(
     getDb();
 
   /*
-   * O usuário precisa existir.
+   * Carrega o usuário real antes
+   * de qualquer alteração.
    */
   const [
     existingUser,
@@ -223,57 +224,8 @@ export async function updateAdminUser(
   }
 
   /*
-   * O departamento deixa de ser aceito
-   * apenas como uma string arbitrária.
-   *
-   * Ele precisa existir no cadastro
-   * oficial e estar ativo.
-   */
-  const [
-    selectedDepartment,
-  ] =
-    await db
-      .select({
-        id:
-          adminDepartmentsTable.id,
-
-        code:
-          adminDepartmentsTable.code,
-
-        name:
-          adminDepartmentsTable.name,
-
-        isActive:
-          adminDepartmentsTable.isActive,
-      })
-      .from(
-        adminDepartmentsTable,
-      )
-      .where(
-        eq(
-          adminDepartmentsTable.code,
-          data.department,
-        ),
-      )
-      .limit(1);
-
-  if (!selectedDepartment) {
-    throw new Error(
-      "Departamento administrativo não encontrado.",
-    );
-  }
-
-  if (
-    !selectedDepartment.isActive
-  ) {
-    throw new Error(
-      "Não é possível atribuir um departamento administrativo inativo.",
-    );
-  }
-
-  /*
-   * O papel também precisa existir e
-   * estar ativo.
+   * O novo papel deve existir e
+   * permanecer ativo.
    */
   const [
     selectedRole,
@@ -318,10 +270,11 @@ export async function updateAdminUser(
   }
 
   /*
-   * Proteção crítica já existente:
+   * Proteção do administrador raiz:
    *
    * o SUPER_ADMIN autenticado não pode
-   * retirar de si próprio o papel-raiz.
+   * retirar de si mesmo o próprio papel
+   * SUPER_ADMIN através desta operação.
    */
   if (
     existingUser.id ===
@@ -337,15 +290,13 @@ export async function updateAdminUser(
   }
 
   /*
-   * A operação continua limitada a:
+   * Esta operação continua limitada
+   * aos campos já definidos para a
+   * edição administrativa do usuário.
    *
-   * - nome
-   * - departamento
-   * - papel
-   *
-   * E-mail, senha, estado, sessões e
-   * demais controles de segurança não
-   * são alterados neste serviço.
+   * E-mail, estado, senha e demais
+   * controles de segurança não são
+   * modificados aqui.
    */
   const [
     updatedUser,
@@ -359,10 +310,10 @@ export async function updateAdminUser(
           data.name,
 
         department:
-          selectedDepartment.code,
+          data.department,
 
         roleId:
-          selectedRole.id,
+          data.roleId,
 
         updatedAt:
           new Date(),
@@ -400,8 +351,13 @@ export async function updateAdminUser(
   }
 
   /*
-   * Preserva exatamente o contrato
-   * consumido por admin-auth.ts.
+   * IMPORTANTE:
+   *
+   * Este é o contrato esperado pela
+   * Server Function existente em
+   * src/functions/admin-auth.ts.
+   *
+   * Não retornar o usuário diretamente.
    */
   return {
     user: {
