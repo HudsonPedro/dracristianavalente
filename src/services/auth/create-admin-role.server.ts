@@ -313,8 +313,17 @@ export async function updateAdminRole(
         code:
           adminRolesTable.code,
 
+        name:
+          adminRolesTable.name,
+
+        description:
+          adminRolesTable.description,
+
         systemRole:
           adminRolesTable.systemRole,
+
+        active:
+          adminRolesTable.active,
       })
       .from(
         adminRolesTable,
@@ -334,22 +343,40 @@ export async function updateAdminRole(
   }
 
   /*
-   * Os sete papéis estruturais permanecem
-   * protegidos contra edição cadastral.
+   * SUPER_ADMIN é o papel-raiz do painel.
+   *
+   * Nome, código e demais características
+   * estruturais permanecem protegidos para
+   * evitar descaracterização da autoridade
+   * administrativa principal.
+   *
+   * Os demais papéis estruturais podem ter
+   * nome e descrição administrados.
    */
   if (
-    existingRole.systemRole
+    existingRole.code ===
+    "SUPER_ADMIN"
   ) {
     throw new Error(
-      "Papéis estruturais do sistema não podem ser editados.",
+      "O papel Super Administrador é estrutural e não pode ser editado.",
     );
   }
 
   /*
-   * O código não participa do UPDATE.
+   * A identidade funcional permanece
+   * protegida em todos os papéis.
    *
-   * Assim a identidade funcional do papel
-   * permanece imutável.
+   * Esta operação altera somente:
+   *
+   * - name
+   * - description
+   *
+   * Não modifica:
+   *
+   * - code
+   * - systemRole
+   * - active
+   * - permissions
    */
   const [
     role,
