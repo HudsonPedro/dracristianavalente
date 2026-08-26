@@ -1,6 +1,7 @@
 import {
   createFileRoute,
   Link,
+  useRouter,
 } from "@tanstack/react-router";
 
 import {
@@ -11,7 +12,12 @@ import {
 } from "../../../domain/admin/access";
 
 import {
+  useState,
+} from "react";
+
+import {
   getAdminRolesForManagement,
+  setAdminRoleStatusAction,
 } from "../../../functions/admin-users";
 
 export const Route =
@@ -103,6 +109,64 @@ function hasPermission(
 function AdminRolesPage() {
   const roles =
     Route.useLoaderData();
+
+  const router =
+    useRouter();
+
+  const [
+    changingRoleId,
+    setChangingRoleId,
+  ] =
+    useState<string | null>(
+      null,
+    );
+
+  const [
+    statusError,
+    setStatusError,
+  ] =
+    useState<string | null>(
+      null,
+    );
+
+  async function handleRoleStatusChange(
+    roleId: string,
+    active: boolean,
+  ) {
+    if (
+      changingRoleId
+    ) {
+      return;
+    }
+
+    setStatusError(null);
+    setChangingRoleId(
+      roleId,
+    );
+
+    try {
+      await setAdminRoleStatusAction({
+        data: {
+          roleId,
+          active,
+        },
+      });
+
+      await router.invalidate();
+    } catch (
+      caughtError
+    ) {
+      setStatusError(
+        caughtError instanceof Error
+          ? caughtError.message
+          : "Não foi possível alterar o estado do papel administrativo.",
+      );
+    } finally {
+      setChangingRoleId(
+        null,
+      );
+    }
+  }
 
   const activeRoles =
     roles.filter(
@@ -220,6 +284,19 @@ function AdminRolesPage() {
             <p className="text-sm font-semibold text-amber-800">
               Existem papéis administrativos
               inativos cadastrados.
+            </p>
+          </div>
+        ) : null}
+
+        {statusError ? (
+          <div
+            role="alert"
+            className="mt-6 rounded-2xl border border-red-200 bg-red-50 px-5 py-4"
+          >
+            <p className="text-sm font-semibold text-red-700">
+              {
+                statusError
+              }
             </p>
           </div>
         ) : null}
@@ -350,6 +427,49 @@ function AdminRolesPage() {
                             className="cursor-not-allowed rounded-xl border border-stone-200 bg-stone-50 px-4 py-2 text-xs font-semibold text-stone-400"
                           >
                             Permissões
+                          </button>
+                        )}
+
+                        {!isSuperAdmin ? (
+                          <button
+                            type="button"
+                            disabled={
+                              changingRoleId !==
+                              null
+                            }
+                            onClick={() =>
+                              void handleRoleStatusChange(
+                                role.id,
+                                !role.active,
+                              )
+                            }
+                            className={[
+                              "rounded-xl border px-4 py-2 text-xs font-semibold transition disabled:cursor-not-allowed disabled:opacity-50",
+
+                              role.active
+                                ? "border-amber-300 bg-amber-50 text-amber-800 hover:border-amber-400"
+                                : "border-emerald-300 bg-emerald-50 text-emerald-800 hover:border-emerald-400",
+                            ].join(
+                              " ",
+                            )}
+                          >
+                            {
+                              changingRoleId ===
+                              role.id
+                                ? "Salvando..."
+                                : role.active
+                                  ? "Desativar"
+                                  : "Ativar"
+                            }
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            disabled
+                            title="O Super Administrador não pode ser desativado."
+                            className="cursor-not-allowed rounded-xl border border-stone-200 bg-stone-50 px-4 py-2 text-xs font-semibold text-stone-400"
+                          >
+                            Desativar
                           </button>
                         )}
                       </div>
