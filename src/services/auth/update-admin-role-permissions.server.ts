@@ -126,8 +126,11 @@ export async function updateAdminRolePermissions(
     UpdateAdminRolePermissionsInput,
 ): Promise<UpdateAdminRolePermissionsResult> {
   /*
-   * Alterar permissões administrativas
-   * é uma operação crítica de governança.
+   * Alterar a matriz de autorização é
+   * uma operação crítica de governança.
+   *
+   * Neste estágio permanece restrita ao
+   * SUPER_ADMIN autenticado.
    */
   const admin =
     await requireAdmin();
@@ -169,8 +172,8 @@ export async function updateAdminRolePermissions(
     getDb();
 
   /*
-   * Valida o papel real antes de qualquer
-   * alteração na matriz de acesso.
+   * Carrega o papel real antes de qualquer
+   * alteração na matriz.
    */
   const [
     role,
@@ -207,17 +210,31 @@ export async function updateAdminRolePermissions(
   }
 
   /*
-   * Os papéis estruturais permanecem
-   * protegidos nesta frente.
+   * SUPER_ADMIN é a autoridade raiz.
+   *
+   * Sua matriz permanece protegida para
+   * evitar que a própria administração
+   * principal seja privada de permissões
+   * essenciais e provoque lockout.
+   *
+   * Os demais papéis, inclusive os
+   * estruturais, podem ter sua matriz
+   * administrada pelo SUPER_ADMIN.
    */
   if (
-    role.systemRole
+    role.code ===
+    "SUPER_ADMIN"
   ) {
     throw new Error(
-      "As permissões de papéis estruturais do sistema não podem ser alteradas por esta operação.",
+      "As permissões do Super Administrador são estruturais e não podem ser alteradas por esta operação.",
     );
   }
 
+  /*
+   * Papel inativo não recebe mudanças
+   * de autorização enquanto permanecer
+   * desativado.
+   */
   if (
     !role.active
   ) {
@@ -227,12 +244,12 @@ export async function updateAdminRolePermissions(
   }
 
   /*
-   * O projeto usa Neon HTTP.
+   * O projeto utiliza Neon HTTP.
    *
    * Não utilizamos db.transaction().
    *
-   * Para matriz vazia, um DELETE individual
-   * já representa a operação inteira.
+   * Para matriz vazia, o DELETE individual
+   * representa a operação inteira.
    */
   if (
     permissions.length ===
@@ -250,21 +267,21 @@ export async function updateAdminRolePermissions(
       );
   } else {
     /*
-     * IMPORTANTE:
+     * Sincronização convergente:
      *
-     * A sincronização agora funciona por
-     * convergência de estado:
+     * 1. Inserimos todas as permissões
+     *    desejadas.
      *
-     * 1. INSERT das permissões desejadas.
-     *    Permissões que já existem usam
-     *    ON CONFLICT DO NOTHING.
+     * 2. As que já existem são preservadas
+     *    por ON CONFLICT DO NOTHING.
      *
-     * 2. DELETE das permissões antigas que
-     *    NÃO pertencem mais à matriz desejada.
+     * 3. Removemos as permissões que não
+     *    fazem mais parte da matriz.
      *
-     * Tudo ocorre em UMA ÚNICA instrução SQL.
+     * INSERT + DELETE ficam dentro de uma
+     * única instrução PostgreSQL compatível
+     * com Neon HTTP.
      */
-
     const insertValues =
       permissions.map(
         (
@@ -346,8 +363,8 @@ export async function updateAdminRolePermissions(
   }
 
   /*
-   * Relê o estado realmente persistido
-   * depois da sincronização.
+   * O retorno reflete o estado realmente
+   * persistido no banco.
    */
   const persistedPermissions =
     await db
