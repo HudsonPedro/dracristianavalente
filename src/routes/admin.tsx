@@ -4,7 +4,10 @@ import { getAdminAuth, logoutAdmin } from "../functions/admin-auth";
 
 export const Route = createFileRoute("/admin")({
   beforeLoad: async ({ location }) => {
-    if (location.pathname === "/admin/login") {
+    if (
+      location.pathname === "/admin/login" ||
+      location.pathname === "/admin/primeiro-acesso"
+    ) {
       return {
         adminAuth: null,
       };
@@ -69,7 +72,10 @@ function AdminRouteLayout() {
 
   const { adminAuth } = Route.useRouteContext();
 
-  if (pathname === "/admin/login") {
+  if (
+    pathname === "/admin/login" ||
+    pathname === "/admin/primeiro-acesso"
+  ) {
     return <Outlet />;
   }
 
