@@ -88,13 +88,12 @@ function AdminUsersPage() {
             </p>
           </div>
 
-          <button
-            type="button"
-            disabled
-            className="inline-flex min-h-12 cursor-not-allowed items-center justify-center rounded-2xl bg-stone-300 px-6 text-sm font-semibold text-stone-500"
+          <Link
+            to="/admin/usuarios/novo"
+            className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-stone-950 px-6 text-sm font-semibold text-white transition hover:bg-stone-800"
           >
             + Convidar usuário
-          </button>
+          </Link>
         </header>
 
         <section className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
