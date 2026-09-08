@@ -1,18 +1,9 @@
-import {
-  asc,
-  eq,
-  isNull,
-} from "drizzle-orm";
+import { asc, eq, isNull } from "drizzle-orm";
 
 import { getDb } from "../../db";
-import {
-  adminRolesTable,
-  adminUsersTable,
-} from "../../db/schema/admin-access";
+import { adminRolesTable, adminUsersTable } from "../../db/schema/admin-access";
 
-import {
-  requireAdmin,
-} from "./require-admin.server";
+import { requireAdminPermission } from "./admin-effective-permissions.server";
 
 export type AdminUserListItem = {
   id: string;
@@ -50,9 +41,7 @@ export type AdminUserListItem = {
   updatedAt: Date;
 };
 
-export async function listAdminUsers(): Promise<
-  AdminUserListItem[]
-> {
+export async function listAdminUsers(): Promise<AdminUserListItem[]> {
   /*
    * Somente uma sessão administrativa
    * real e válida pode consultar a lista.
@@ -64,132 +53,82 @@ export async function listAdminUsers(): Promise<
    * - estado da conta;
    * - authVersion.
    */
-  await requireAdmin();
+  await requireAdminPermission("USERS", "VIEW");
 
-  const db =
-    getDb();
+  const db = getDb();
 
-  const rows =
-    await db
-      .select({
-        id:
-          adminUsersTable.id,
+  const rows = await db
+    .select({
+      id: adminUsersTable.id,
 
-        name:
-          adminUsersTable.name,
+      name: adminUsersTable.name,
 
-        email:
-          adminUsersTable.email,
+      email: adminUsersTable.email,
 
-        department:
-          adminUsersTable.department,
+      department: adminUsersTable.department,
 
-        status:
-          adminUsersTable.status,
+      status: adminUsersTable.status,
 
-        roleId:
-          adminRolesTable.id,
+      roleId: adminRolesTable.id,
 
-        roleCode:
-          adminRolesTable.code,
+      roleCode: adminRolesTable.code,
 
-        roleName:
-          adminRolesTable.name,
+      roleName: adminRolesTable.name,
 
-        failedLoginAttempts:
-          adminUsersTable.failedLoginAttempts,
+      failedLoginAttempts: adminUsersTable.failedLoginAttempts,
 
-        lockedUntil:
-          adminUsersTable.lockedUntil,
+      lockedUntil: adminUsersTable.lockedUntil,
 
-        lastLoginAt:
-          adminUsersTable.lastLoginAt,
+      lastLoginAt: adminUsersTable.lastLoginAt,
 
-        passwordChangedAt:
-          adminUsersTable.passwordChangedAt,
+      passwordChangedAt: adminUsersTable.passwordChangedAt,
 
-        mustChangePassword:
-          adminUsersTable.mustChangePassword,
+      mustChangePassword: adminUsersTable.mustChangePassword,
 
-        emailVerifiedAt:
-          adminUsersTable.emailVerifiedAt,
+      emailVerifiedAt: adminUsersTable.emailVerifiedAt,
 
-        createdAt:
-          adminUsersTable.createdAt,
+      createdAt: adminUsersTable.createdAt,
 
-        updatedAt:
-          adminUsersTable.updatedAt,
-      })
-      .from(adminUsersTable)
-      .innerJoin(
-        adminRolesTable,
-        eq(
-          adminUsersTable.roleId,
-          adminRolesTable.id,
-        ),
-      )
-      .where(
-        isNull(
-          adminUsersTable.deletedAt,
-        ),
-      )
-      .orderBy(
-        asc(
-          adminUsersTable.name,
-        ),
-      );
+      updatedAt: adminUsersTable.updatedAt,
+    })
+    .from(adminUsersTable)
+    .innerJoin(adminRolesTable, eq(adminUsersTable.roleId, adminRolesTable.id))
+    .where(isNull(adminUsersTable.deletedAt))
+    .orderBy(asc(adminUsersTable.name));
 
-  return rows.map(
-    (row): AdminUserListItem => ({
-      id:
-        row.id,
+  return rows.map((row): AdminUserListItem => ({
+    id: row.id,
 
-      name:
-        row.name,
+    name: row.name,
 
-      email:
-        row.email,
+    email: row.email,
 
-      department:
-        row.department,
+    department: row.department,
 
-      status:
-        row.status,
+    status: row.status,
 
-      role: {
-        id:
-          row.roleId,
+    role: {
+      id: row.roleId,
 
-        code:
-          row.roleCode,
+      code: row.roleCode,
 
-        name:
-          row.roleName,
-      },
+      name: row.roleName,
+    },
 
-      failedLoginAttempts:
-        row.failedLoginAttempts,
+    failedLoginAttempts: row.failedLoginAttempts,
 
-      lockedUntil:
-        row.lockedUntil,
+    lockedUntil: row.lockedUntil,
 
-      lastLoginAt:
-        row.lastLoginAt,
+    lastLoginAt: row.lastLoginAt,
 
-      passwordChangedAt:
-        row.passwordChangedAt,
+    passwordChangedAt: row.passwordChangedAt,
 
-      mustChangePassword:
-        row.mustChangePassword,
+    mustChangePassword: row.mustChangePassword,
 
-      emailVerifiedAt:
-        row.emailVerifiedAt,
+    emailVerifiedAt: row.emailVerifiedAt,
 
-      createdAt:
-        row.createdAt,
+    createdAt: row.createdAt,
 
-      updatedAt:
-        row.updatedAt,
-    }),
-  );
+    updatedAt: row.updatedAt,
+  }));
 }

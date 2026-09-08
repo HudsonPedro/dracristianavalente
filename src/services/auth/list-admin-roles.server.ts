@@ -1,20 +1,10 @@
-import {
-  asc,
-  eq,
-} from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 
-import {
-  getDb,
-} from "../../db";
+import { getDb } from "../../db";
 
-import {
-  adminRolePermissionsTable,
-  adminRolesTable,
-} from "../../db/schema/admin-access";
+import { adminRolePermissionsTable, adminRolesTable } from "../../db/schema/admin-access";
 
-import {
-  requireAdmin,
-} from "./require-admin.server";
+import { requireAdminPermission } from "./admin-effective-permissions.server";
 
 export type AdminRolePermissionListItem = {
   module: string;
@@ -44,17 +34,14 @@ type ListAdminRolesOptions = {
 
 export async function listAdminRoles(
   options: ListAdminRolesOptions = {},
-): Promise<
-  AdminRoleListItem[]
-> {
+): Promise<AdminRoleListItem[]> {
   /*
    * A consulta de papéis administrativos
    * exige sessão administrativa válida.
    */
-  await requireAdmin();
+  await requireAdminPermission("USERS", "VIEW");
 
-  const db =
-    getDb();
+  const db = getDb();
 
   /*
    * Por padrão mantemos somente papéis
@@ -64,156 +51,88 @@ export async function listAdminRoles(
    * A gestão administrativa poderá
    * solicitar também os inativos.
    */
-  const roles =
-    options.includeInactive
-      ? await db
-          .select({
-            id:
-              adminRolesTable.id,
+  const roles = options.includeInactive
+    ? await db
+        .select({
+          id: adminRolesTable.id,
 
-            code:
-              adminRolesTable.code,
+          code: adminRolesTable.code,
 
-            name:
-              adminRolesTable.name,
+          name: adminRolesTable.name,
 
-            description:
-              adminRolesTable.description,
+          description: adminRolesTable.description,
 
-            systemRole:
-              adminRolesTable.systemRole,
+          systemRole: adminRolesTable.systemRole,
 
-            active:
-              adminRolesTable.active,
-          })
-          .from(
-            adminRolesTable,
-          )
-          .orderBy(
-            asc(
-              adminRolesTable.name,
-            ),
-          )
-      : await db
-          .select({
-            id:
-              adminRolesTable.id,
+          active: adminRolesTable.active,
+        })
+        .from(adminRolesTable)
+        .orderBy(asc(adminRolesTable.name))
+    : await db
+        .select({
+          id: adminRolesTable.id,
 
-            code:
-              adminRolesTable.code,
+          code: adminRolesTable.code,
 
-            name:
-              adminRolesTable.name,
+          name: adminRolesTable.name,
 
-            description:
-              adminRolesTable.description,
+          description: adminRolesTable.description,
 
-            systemRole:
-              adminRolesTable.systemRole,
+          systemRole: adminRolesTable.systemRole,
 
-            active:
-              adminRolesTable.active,
-          })
-          .from(
-            adminRolesTable,
-          )
-          .where(
-            eq(
-              adminRolesTable.active,
-              true,
-            ),
-          )
-          .orderBy(
-            asc(
-              adminRolesTable.name,
-            ),
-          );
+          active: adminRolesTable.active,
+        })
+        .from(adminRolesTable)
+        .where(eq(adminRolesTable.active, true))
+        .orderBy(asc(adminRolesTable.name));
 
   /*
    * As permissões são carregadas
    * diretamente da tabela real
    * admin_role_permissions.
    */
-  const rolePermissions =
-    await db
-      .select({
-        roleId:
-          adminRolePermissionsTable.roleId,
+  const rolePermissions = await db
+    .select({
+      roleId: adminRolePermissionsTable.roleId,
 
-        module:
-          adminRolePermissionsTable.module,
+      module: adminRolePermissionsTable.module,
 
-        action:
-          adminRolePermissionsTable.action,
-      })
-      .from(
-        adminRolePermissionsTable,
-      )
-      .orderBy(
-        asc(
-          adminRolePermissionsTable.roleId,
-        ),
-        asc(
-          adminRolePermissionsTable.module,
-        ),
-        asc(
-          adminRolePermissionsTable.action,
-        ),
-      );
+      action: adminRolePermissionsTable.action,
+    })
+    .from(adminRolePermissionsTable)
+    .orderBy(
+      asc(adminRolePermissionsTable.roleId),
+      asc(adminRolePermissionsTable.module),
+      asc(adminRolePermissionsTable.action),
+    );
 
-  const permissionsByRole =
-    new Map<
-      string,
-      AdminRolePermissionListItem[]
-    >();
+  const permissionsByRole = new Map<string, AdminRolePermissionListItem[]>();
 
-  for (
-    const permission
-    of rolePermissions
-  ) {
-    const currentPermissions =
-      permissionsByRole.get(
-        permission.roleId,
-      ) ?? [];
+  for (const permission of rolePermissions) {
+    const currentPermissions = permissionsByRole.get(permission.roleId) ?? [];
 
     currentPermissions.push({
-      module:
-        permission.module,
+      module: permission.module,
 
-      action:
-        permission.action,
+      action: permission.action,
     });
 
-    permissionsByRole.set(
-      permission.roleId,
-      currentPermissions,
-    );
+    permissionsByRole.set(permission.roleId, currentPermissions);
   }
 
-  return roles.map(
-    (role) => ({
-      id:
-        role.id,
+  return roles.map((role) => ({
+    id: role.id,
 
-      code:
-        role.code,
+    code: role.code,
 
-      name:
-        role.name,
+    name: role.name,
 
-      description:
-        role.description,
+    description: role.description,
 
-      systemRole:
-        role.systemRole,
+    systemRole: role.systemRole,
 
-      active:
-        role.active,
+    active: role.active,
 
-      permissions:
-        permissionsByRole.get(
-          role.id,
-        ) ?? [],
-    }),
-  );
+    permissions: permissionsByRole.get(role.id) ?? [],
+  }));
 }

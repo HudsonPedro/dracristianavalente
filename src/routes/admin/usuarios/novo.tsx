@@ -1,12 +1,6 @@
-import {
-  createFileRoute,
-  Link,
-} from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
-import {
-  useMemo,
-  useState,
-} from "react";
+import { useMemo, useState } from "react";
 
 import {
   createAdminUserAction,
@@ -16,36 +10,17 @@ import {
   getAdminUsers,
 } from "../../../functions/admin-users";
 
-export const Route =
-  createFileRoute(
-    "/admin/usuarios/novo",
-  )({
-    loader: async () => {
-      const [
-        departments,
-        roles,
-      ] =
-        await Promise.all([
-          getAdminDepartments(),
-          getAdminRoles(),
-        ]);
+export const Route = createFileRoute("/admin/usuarios/novo")({
+  loader: async () => {
+    const [departments, roles] = await Promise.all([getAdminDepartments(), getAdminRoles()]);
 
-      return {
-        departments:
-          departments.filter(
-            (department) =>
-              department.isActive,
-          ),
-        roles:
-          roles.filter(
-            (role) =>
-              role.active &&
-              role.code !== "SUPER_ADMIN",
-          ),
-      };
-    },
-    component: AdminUserCreatePage,
-  });
+    return {
+      departments: departments.filter((department) => department.isActive),
+      roles: roles.filter((role) => role.active && role.code !== "SUPER_ADMIN"),
+    };
+  },
+  component: AdminUserCreatePage,
+});
 
 type FirstAccessResult = {
   user: {
@@ -54,100 +29,51 @@ type FirstAccessResult = {
     email: string;
     status: string;
   };
-  token: string;
+  sent: true;
   expiresAt: string;
 };
 
-function formatExpiration(
-  value: string,
-): string {
-  const date =
-    new Date(value);
+function formatExpiration(value: string): string {
+  const date = new Date(value);
 
-  if (
-    Number.isNaN(
-      date.getTime(),
-    )
-  ) {
+  if (Number.isNaN(date.getTime())) {
     return value;
   }
 
-  return new Intl.DateTimeFormat(
-    "pt-BR",
-    {
-      dateStyle: "short",
-      timeStyle: "short",
-    },
-  ).format(date);
+  return new Intl.DateTimeFormat("pt-BR", {
+    dateStyle: "short",
+    timeStyle: "short",
+  }).format(date);
 }
 
 function AdminUserCreatePage() {
-  const { departments, roles } =
-    Route.useLoaderData();
+  const { departments, roles } = Route.useLoaderData();
 
-  const [name, setName] =
-    useState("");
+  const [name, setName] = useState("");
 
-  const [email, setEmail] =
-    useState("");
+  const [email, setEmail] = useState("");
 
-  const [
-    department,
-    setDepartment,
-  ] =
-    useState("");
+  const [department, setDepartment] = useState("");
 
-  const [roleId, setRoleId] =
-    useState("");
+  const [roleId, setRoleId] = useState("");
 
-  const [
-    submitting,
-    setSubmitting,
-  ] =
-    useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const [error, setError] =
-    useState<string | null>(
-      null,
-    );
+  const [error, setError] = useState<string | null>(null);
 
-  const [
-    firstAccess,
-    setFirstAccess,
-  ] =
-    useState<FirstAccessResult | null>(
-      null,
-    );
+  const [firstAccess, setFirstAccess] = useState<FirstAccessResult | null>(null);
+  const canSubmit = useMemo(
+    () =>
+      name.trim().length > 0 &&
+      email.trim().length > 0 &&
+      department.length > 0 &&
+      roleId.length > 0 &&
+      !submitting &&
+      firstAccess === null,
+    [name, email, department, roleId, submitting, firstAccess],
+  );
 
-  const [
-    copied,
-    setCopied,
-  ] =
-    useState(false);
-
-  const canSubmit =
-    useMemo(
-      () =>
-        name.trim().length > 0 &&
-        email.trim().length > 0 &&
-        department.length > 0 &&
-        roleId.length > 0 &&
-        !submitting &&
-        firstAccess === null,
-      [
-        name,
-        email,
-        department,
-        roleId,
-        submitting,
-        firstAccess,
-      ],
-    );
-
-  async function handleSubmit(
-    event:
-      React.FormEvent<HTMLFormElement>,
-  ) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (!canSubmit) {
@@ -155,7 +81,6 @@ function AdminUserCreatePage() {
     }
 
     setError(null);
-    setCopied(false);
     setSubmitting(true);
 
     try {
@@ -183,22 +108,11 @@ function AdminUserCreatePage() {
        * criação. O e-mail administrativo é
        * único e funciona como identidade.
        */
-      const users =
-        await getAdminUsers();
+      const users = await getAdminUsers();
 
-      const normalizedEmail =
-        email
-          .trim()
-          .toLowerCase();
+      const normalizedEmail = email.trim().toLowerCase();
 
-      const createdUser =
-        users.find(
-          (user) =>
-            user.email
-              .trim()
-              .toLowerCase() ===
-            normalizedEmail,
-        );
+      const createdUser = users.find((user) => user.email.trim().toLowerCase() === normalizedEmail);
 
       if (!createdUser) {
         throw new Error(
@@ -211,34 +125,26 @@ function AdminUserCreatePage() {
        * acesso pela Server Function já
        * homologada no PASSO 13.2.5.2.
        */
-      const invitation =
-        await createAdminUserInvitationTokenAction({
-          data: {
-            userId:
-              createdUser.id,
-          },
-        });
+      const invitation = await createAdminUserInvitationTokenAction({
+        data: {
+          userId: createdUser.id,
+        },
+      });
 
       setFirstAccess({
         user: {
-          id:
-            invitation.user.id,
+          id: invitation.user.id,
 
-          name:
-            invitation.user.name,
+          name: invitation.user.name,
 
-          email:
-            invitation.user.email,
+          email: invitation.user.email,
 
-          status:
-            invitation.user.status,
+          status: invitation.user.status,
         },
 
-        token:
-          invitation.token,
+        sent: invitation.sent,
 
-        expiresAt:
-          invitation.expiresAt,
+        expiresAt: invitation.expiresAt,
       });
     } catch (caughtError) {
       setError(
@@ -248,22 +154,6 @@ function AdminUserCreatePage() {
       );
     } finally {
       setSubmitting(false);
-    }
-  }
-
-  async function handleCopyToken() {
-    if (!firstAccess) {
-      return;
-    }
-
-    try {
-      await navigator.clipboard.writeText(
-        firstAccess.token,
-      );
-
-      setCopied(true);
-    } catch {
-      setCopied(false);
     }
   }
 
@@ -288,28 +178,23 @@ function AdminUserCreatePage() {
             </h1>
 
             <p className="mt-4 max-w-2xl text-sm leading-6 text-stone-600">
-              O usuário foi cadastrado e o token de primeiro acesso foi emitido
-              com sucesso.
+              Usuário criado e convite enviado por e-mail com sucesso.
             </p>
           </header>
 
           <section className="mt-10 overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm">
             <div className="border-b border-stone-200 px-6 py-6 md:px-8">
               <div className="flex flex-wrap items-center gap-3">
-                <h2 className="text-lg font-semibold text-stone-950">
-                  Convite administrativo
-                </h2>
+                <h2 className="text-lg font-semibold text-stone-950">Convite administrativo</h2>
 
                 <span className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-amber-800">
-                  {
-                    firstAccess.user.status
-                  }
+                  {firstAccess.user.status}
                 </span>
               </div>
 
               <p className="mt-2 text-sm leading-6 text-stone-500">
-                O token abaixo é temporário e será utilizado pela próxima camada
-                do fluxo profissional de primeiro acesso.
+                O convite de primeiro acesso foi enviado para o e-mail cadastrado do fluxo
+                profissional de primeiro acesso.
               </p>
             </div>
 
@@ -321,9 +206,7 @@ function AdminUserCreatePage() {
                   </p>
 
                   <p className="mt-2 text-sm font-semibold text-stone-950">
-                    {
-                      firstAccess.user.name
-                    }
+                    {firstAccess.user.name}
                   </p>
                 </article>
 
@@ -333,62 +216,22 @@ function AdminUserCreatePage() {
                   </p>
 
                   <p className="mt-2 break-all text-sm font-semibold text-stone-950">
-                    {
-                      firstAccess.user.email
-                    }
+                    {firstAccess.user.email}
                   </p>
                 </article>
               </div>
 
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.14em] text-stone-500">
-                  Token de primeiro acesso
+              <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
+                <p className="text-sm font-semibold text-emerald-950">Convite enviado</p>
+
+                <p className="mt-2 text-sm leading-6 text-emerald-900">
+                  Enviamos para <strong>{firstAccess.user.email}</strong> o link seguro para criar a
+                  senha e ativar a conta.
                 </p>
 
-                <div className="mt-2 rounded-2xl border border-stone-300 bg-stone-950 p-5">
-                  <code className="block break-all font-mono text-sm leading-6 text-white">
-                    {
-                      firstAccess.token
-                    }
-                  </code>
-                </div>
-
-                <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <p className="text-xs leading-5 text-stone-500">
-                    Expira em{" "}
-                    <strong className="font-semibold text-stone-700">
-                      {
-                        formatExpiration(
-                          firstAccess.expiresAt,
-                        )
-                      }
-                    </strong>
-                  </p>
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      void handleCopyToken()
-                    }
-                    className="inline-flex min-h-10 items-center justify-center rounded-xl border border-stone-300 bg-white px-4 text-xs font-semibold text-stone-700 transition hover:border-stone-500 hover:text-stone-950"
-                  >
-                    {
-                      copied
-                        ? "Token copiado"
-                        : "Copiar token"
-                    }
-                  </button>
-                </div>
-              </div>
-
-              <div className="rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4">
-                <p className="text-sm font-semibold text-amber-900">
-                  O usuário ainda não possui acesso liberado.
-                </p>
-
-                <p className="mt-2 text-xs leading-5 text-amber-800">
-                  Neste estágio o cadastro permanece aguardando primeiro acesso.
-                  Não compartilhe o token fora do fluxo administrativo controlado.
+                <p className="mt-2 text-xs leading-5 text-emerald-800">
+                  O link é de uso único e expira em{" "}
+                  <strong>{formatExpiration(firstAccess.expiresAt)}</strong>.
                 </p>
               </div>
             </div>
@@ -427,8 +270,8 @@ function AdminUserCreatePage() {
           </h1>
 
           <p className="mt-4 max-w-2xl text-sm leading-6 text-stone-600">
-            Cadastre um usuário administrativo utilizando somente
-            Departamentos e Papéis ativos já governados pela plataforma.
+            Cadastre um usuário administrativo utilizando somente Departamentos e Papéis ativos já
+            governados pela plataforma.
           </p>
         </header>
 
@@ -437,9 +280,7 @@ function AdminUserCreatePage() {
           className="mt-10 overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm"
         >
           <div className="border-b border-stone-200 px-6 py-6 md:px-8">
-            <h2 className="text-lg font-semibold text-stone-950">
-              Dados do usuário
-            </h2>
+            <h2 className="text-lg font-semibold text-stone-950">Dados do usuário</h2>
             <p className="mt-2 text-sm leading-6 text-stone-500">
               O e-mail será a identidade administrativa do usuário e deve ser único.
             </p>
@@ -457,9 +298,7 @@ function AdminUserCreatePage() {
                 id="admin-user-name"
                 type="text"
                 value={name}
-                onChange={(event) =>
-                  setName(event.target.value)
-                }
+                onChange={(event) => setName(event.target.value)}
                 maxLength={255}
                 autoComplete="name"
                 required
@@ -479,9 +318,7 @@ function AdminUserCreatePage() {
                 id="admin-user-email"
                 type="email"
                 value={email}
-                onChange={(event) =>
-                  setEmail(event.target.value)
-                }
+                onChange={(event) => setEmail(event.target.value)}
                 maxLength={255}
                 autoComplete="email"
                 required
@@ -501,20 +338,13 @@ function AdminUserCreatePage() {
                 <select
                   id="admin-user-department"
                   value={department}
-                  onChange={(event) =>
-                    setDepartment(event.target.value)
-                  }
+                  onChange={(event) => setDepartment(event.target.value)}
                   required
                   className="mt-2 min-h-12 w-full rounded-2xl border border-stone-300 bg-white px-4 text-sm text-stone-950 outline-none transition focus:border-stone-950"
                 >
-                  <option value="">
-                    Selecione um departamento
-                  </option>
+                  <option value="">Selecione um departamento</option>
                   {departments.map((item) => (
-                    <option
-                      key={item.id}
-                      value={item.code}
-                    >
+                    <option key={item.id} value={item.code}>
                       {item.name}
                     </option>
                   ))}
@@ -534,20 +364,13 @@ function AdminUserCreatePage() {
                 <select
                   id="admin-user-role"
                   value={roleId}
-                  onChange={(event) =>
-                    setRoleId(event.target.value)
-                  }
+                  onChange={(event) => setRoleId(event.target.value)}
                   required
                   className="mt-2 min-h-12 w-full rounded-2xl border border-stone-300 bg-white px-4 text-sm text-stone-950 outline-none transition focus:border-stone-950"
                 >
-                  <option value="">
-                    Selecione um papel
-                  </option>
+                  <option value="">Selecione um papel</option>
                   {roles.map((role) => (
-                    <option
-                      key={role.id}
-                      value={role.id}
-                    >
+                    <option key={role.id} value={role.id}>
                       {role.name}
                     </option>
                   ))}
@@ -559,12 +382,10 @@ function AdminUserCreatePage() {
             </div>
 
             <div className="rounded-2xl border border-stone-200 bg-stone-50 px-5 py-4">
-              <p className="text-sm font-semibold text-stone-800">
-                Primeiro acesso protegido
-              </p>
+              <p className="text-sm font-semibold text-stone-800">Primeiro acesso protegido</p>
 
               <p className="mt-2 text-xs leading-5 text-stone-500">
-                Após criar o cadastro, a plataforma emitirá um token temporário
+                Após criar o cadastro, a plataforma enviará um convite de primeiro acesso por e-mail
                 de primeiro acesso para este usuário.
               </p>
             </div>
@@ -592,9 +413,7 @@ function AdminUserCreatePage() {
               disabled={!canSubmit}
               className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-stone-950 px-6 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {submitting
-                ? "Criando e gerando acesso..."
-                : "Criar usuário e gerar primeiro acesso"}
+              {submitting ? "Criando e gerando acesso..." : "Criar usuário e gerar primeiro acesso"}
             </button>
           </div>
         </form>

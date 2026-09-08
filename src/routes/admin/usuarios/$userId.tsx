@@ -1,95 +1,59 @@
-import {
-  createFileRoute,
-  Link,
-  useNavigate,
-} from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+
+import { useState } from "react";
 
 import {
-  useState,
-} from "react";
-
-import {
+  createAdminUserInvitationTokenAction,
   getAdminRoles,
   getAdminUsers,
 } from "../../../functions/admin-users";
 
-import {
-  updateAdminUserAction,
-} from "../../../functions/admin-auth";
+import { updateAdminUserAction } from "../../../functions/admin-auth";
 
-export const Route =
-  createFileRoute(
-    "/admin/usuarios/$userId",
-  )({
-    loader: async ({
-      params,
-    }) => {
-      /*
-       * Usuários e papéis são carregados
-       * diretamente das respectivas fontes
-       * administrativas protegidas.
-       *
-       * getAdminUsers()
-       *   → admin_users + papel atual
-       *
-       * getAdminRoles()
-       *   → todos os admin_roles ativos
-       */
-      const [
-        users,
-        roles,
-      ] =
-        await Promise.all([
-          getAdminUsers(),
-          getAdminRoles(),
-        ]);
+export const Route = createFileRoute("/admin/usuarios/$userId")({
+  loader: async ({ params }) => {
+    /*
+     * Usuários e papéis são carregados
+     * diretamente das respectivas fontes
+     * administrativas protegidas.
+     *
+     * getAdminUsers()
+     *   → admin_users + papel atual
+     *
+     * getAdminRoles()
+     *   → todos os admin_roles ativos
+     */
+    const [users, roles] = await Promise.all([getAdminUsers(), getAdminRoles()]);
 
-      const user =
-        users.find(
-          (item) =>
-            item.id ===
-            params.userId,
-        );
+    const user = users.find((item) => item.id === params.userId);
 
-      if (!user) {
-        throw new Error(
-          "Usuário administrativo não encontrado.",
-        );
-      }
+    if (!user) {
+      throw new Error("Usuário administrativo não encontrado.");
+    }
 
-      /*
-       * O papel atual do usuário deve existir
-       * na lista oficial de papéis ativos.
-       *
-       * Isso evita apresentar ao formulário
-       * um papel inexistente ou inativo.
-       */
-      const currentRoleExists =
-        roles.some(
-          (role) =>
-            role.id ===
-            user.role.id,
-        );
+    /*
+     * O papel atual do usuário deve existir
+     * na lista oficial de papéis ativos.
+     *
+     * Isso evita apresentar ao formulário
+     * um papel inexistente ou inativo.
+     */
+    const currentRoleExists = roles.some((role) => role.id === user.role.id);
 
-      if (!currentRoleExists) {
-        throw new Error(
-          "O papel atual do usuário está indisponível.",
-        );
-      }
+    if (!currentRoleExists) {
+      throw new Error("O papel atual do usuário está indisponível.");
+    }
 
-      return {
-        user,
-        roles,
-      };
-    },
+    return {
+      user,
+      roles,
+    };
+  },
 
-    component:
-      AdminUserEditPage,
-  });
+  component: AdminUserEditPage,
+});
 
-function formatStatus(
-  status: string,
-): string {
+function formatStatus(status: string): string {
   switch (status) {
     case "ACTIVE":
       return "Ativo";
@@ -109,57 +73,59 @@ function formatStatus(
 }
 
 function AdminUserEditPage() {
-  const {
-    user,
-    roles,
-  } =
-    Route.useLoaderData();
+  const { user, roles } = Route.useLoaderData();
 
-  const navigate =
-    useNavigate();
+  const navigate = useNavigate();
 
-  const [
-    name,
-    setName,
-  ] =
-    useState(
-      user.name,
-    );
+  const [name, setName] = useState(user.name);
 
-  const [
-    department,
-    setDepartment,
-  ] =
-    useState(
-      user.department,
-    );
+  const [department, setDepartment] = useState(user.department);
 
-  const [
-    roleId,
-    setRoleId,
-  ] =
-    useState(
-      user.role.id,
-    );
+  const [roleId, setRoleId] = useState(user.role.id);
 
-  const [
-    submitting,
-    setSubmitting,
-  ] =
-    useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const [
-    error,
-    setError,
-  ] =
-    useState<string | null>(
-      null,
-    );
+  const [error, setError] = useState<string | null>(null);
 
-  async function handleSubmit(
-    event:
-      React.FormEvent<HTMLFormElement>,
-  ) {
+  const [generatingFirstAccess, setGeneratingFirstAccess] = useState(false);
+
+  const [firstAccess, setFirstAccess] = useState<{
+    sent: true;
+    expiresAt: string;
+  } | null>(null);
+
+  const [firstAccessError, setFirstAccessError] = useState<string | null>(null);
+  async function handleGenerateFirstAccess() {
+    if (generatingFirstAccess || user.status !== "INVITED") {
+      return;
+    }
+
+    setFirstAccessError(null);
+    setGeneratingFirstAccess(true);
+
+    try {
+      const invitation = await createAdminUserInvitationTokenAction({
+        data: {
+          userId: user.id,
+        },
+      });
+
+      setFirstAccess({
+        sent: invitation.sent,
+        expiresAt: invitation.expiresAt,
+      });
+    } catch (caughtError) {
+      setFirstAccessError(
+        caughtError instanceof Error
+          ? caughtError.message
+          : "Não foi possível reenviar o convite de primeiro acesso.",
+      );
+    } finally {
+      setGeneratingFirstAccess(false);
+    }
+  }
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (submitting) {
@@ -172,8 +138,7 @@ function AdminUserEditPage() {
     try {
       await updateAdminUserAction({
         data: {
-          userId:
-            user.id,
+          userId: user.id,
 
           name,
 
@@ -184,12 +149,9 @@ function AdminUserEditPage() {
       });
 
       await navigate({
-        to:
-          "/admin/usuarios",
+        to: "/admin/usuarios",
       });
-    } catch (
-      caughtError
-    ) {
+    } catch (caughtError) {
       setError(
         caughtError instanceof Error
           ? caughtError.message
@@ -222,36 +184,25 @@ function AdminUserEditPage() {
           </h1>
 
           <p className="mt-4 max-w-2xl text-sm leading-6 text-stone-600">
-            Atualize as informações
-            administrativas permitidas para
-            este usuário.
+            Atualize as informações administrativas permitidas para este usuário.
           </p>
         </header>
 
         <form
-          onSubmit={
-            handleSubmit
-          }
+          onSubmit={handleSubmit}
           className="mt-10 overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm"
         >
           <div className="border-b border-stone-200 px-6 py-6 md:px-8">
-            <h2 className="text-lg font-semibold text-stone-950">
-              Dados do usuário
-            </h2>
+            <h2 className="text-lg font-semibold text-stone-950">Dados do usuário</h2>
 
             <p className="mt-1 text-sm text-stone-500">
-              E-mail e estado da conta não
-              podem ser alterados por este
-              formulário.
+              E-mail e estado da conta não podem ser alterados por este formulário.
             </p>
           </div>
 
           <div className="space-y-6 px-6 py-7 md:px-8">
             <div>
-              <label
-                htmlFor="admin-user-name"
-                className="text-sm font-semibold text-stone-800"
-              >
+              <label htmlFor="admin-user-name" className="text-sm font-semibold text-stone-800">
                 Nome
               </label>
 
@@ -261,23 +212,13 @@ function AdminUserEditPage() {
                 required
                 maxLength={255}
                 value={name}
-                onChange={(
-                  event,
-                ) =>
-                  setName(
-                    event.target
-                      .value,
-                  )
-                }
+                onChange={(event) => setName(event.target.value)}
                 className="mt-2 min-h-12 w-full rounded-2xl border border-stone-200 bg-white px-4 text-sm text-stone-950 outline-none transition focus:border-stone-500"
               />
             </div>
 
             <div>
-              <label
-                htmlFor="admin-user-email"
-                className="text-sm font-semibold text-stone-800"
-              >
+              <label htmlFor="admin-user-email" className="text-sm font-semibold text-stone-800">
                 E-mail
               </label>
 
@@ -285,9 +226,7 @@ function AdminUserEditPage() {
                 id="admin-user-email"
                 type="email"
                 disabled
-                value={
-                  user.email
-                }
+                value={user.email}
                 className="mt-2 min-h-12 w-full cursor-not-allowed rounded-2xl border border-stone-200 bg-stone-100 px-4 text-sm text-stone-500"
               />
             </div>
@@ -305,102 +244,113 @@ function AdminUserEditPage() {
                 type="text"
                 required
                 maxLength={80}
-                value={
-                  department
-                }
-                onChange={(
-                  event,
-                ) =>
-                  setDepartment(
-                    event.target
-                      .value,
-                  )
-                }
+                value={department}
+                onChange={(event) => setDepartment(event.target.value)}
                 className="mt-2 min-h-12 w-full rounded-2xl border border-stone-200 bg-white px-4 text-sm text-stone-950 outline-none transition focus:border-stone-500"
               />
 
               <p className="mt-2 text-xs leading-5 text-stone-400">
-                O departamento utiliza o campo
-                administrativo atualmente
-                existente no cadastro do usuário.
+                O departamento utiliza o campo administrativo atualmente existente no cadastro do
+                usuário.
               </p>
             </div>
 
             <div>
-              <label
-                htmlFor="admin-user-role"
-                className="text-sm font-semibold text-stone-800"
-              >
+              <label htmlFor="admin-user-role" className="text-sm font-semibold text-stone-800">
                 Papel
               </label>
 
               <select
                 id="admin-user-role"
                 required
-                value={
-                  roleId
-                }
-                onChange={(
-                  event,
-                ) =>
-                  setRoleId(
-                    event.target
-                      .value,
-                  )
-                }
+                value={roleId}
+                onChange={(event) => setRoleId(event.target.value)}
                 className="mt-2 min-h-12 w-full rounded-2xl border border-stone-200 bg-white px-4 text-sm text-stone-950 outline-none transition focus:border-stone-500"
               >
-                {roles.map(
-                  (role) => (
-                    <option
-                      key={
-                        role.id
-                      }
-                      value={
-                        role.id
-                      }
-                    >
-                      {
-                        role.name
-                      }
-                      {" — "}
-                      {
-                        role.code
-                      }
-                    </option>
-                  ),
-                )}
+                {roles.map((role) => (
+                  <option key={role.id} value={role.id}>
+                    {role.name}
+                    {" — "}
+                    {role.code}
+                  </option>
+                ))}
               </select>
 
               <p className="mt-2 text-xs leading-5 text-stone-400">
-                Os papéis acima são carregados
-                diretamente dos papéis ativos
-                cadastrados no banco de dados.
+                Os papéis acima são carregados diretamente dos papéis ativos cadastrados no banco de
+                dados.
               </p>
 
-              {user.role.code ===
-              "SUPER_ADMIN" ? (
+              {user.role.code === "SUPER_ADMIN" ? (
                 <p className="mt-2 text-xs font-semibold leading-5 text-amber-700">
-                  O próprio Super Administrador
-                  não pode remover de si o papel
-                  SUPER_ADMIN por esta operação.
+                  O próprio Super Administrador não pode remover de si o papel SUPER_ADMIN por esta
+                  operação.
                 </p>
               ) : null}
             </div>
 
             <div>
-              <p className="text-sm font-semibold text-stone-800">
-                Estado
-              </p>
+              <p className="text-sm font-semibold text-stone-800">Estado</p>
 
               <div className="mt-2 flex min-h-12 items-center rounded-2xl border border-stone-200 bg-stone-100 px-4">
                 <span className="text-sm font-semibold text-stone-600">
-                  {formatStatus(
-                    user.status,
-                  )}
+                  {formatStatus(user.status)}
                 </span>
               </div>
             </div>
+            {user.status === "INVITED" ? (
+              <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-stone-900">Primeiro acesso</p>
+
+                    <p className="mt-2 max-w-2xl text-xs leading-5 text-stone-600">
+                      Este usuário ainda está aguardando o primeiro acesso. Gere um novo token
+                      somente quando precisar iniciar ou reemitir o acesso. A emissão invalida
+                      tokens anteriores deste usuário.
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    disabled={generatingFirstAccess}
+                    onClick={handleGenerateFirstAccess}
+                    className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-2xl bg-stone-950 px-5 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:bg-stone-400"
+                  >
+                    {generatingFirstAccess
+                      ? "Gerando..."
+                      : firstAccess
+                        ? "Reenviar convite"
+                        : "Gerar primeiro acesso"}
+                  </button>
+                </div>
+
+                {firstAccessError ? (
+                  <div
+                    role="alert"
+                    className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+                  >
+                    {firstAccessError}
+                  </div>
+                ) : null}
+
+                {firstAccess ? (
+                  <div className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
+                    <p className="text-sm font-semibold text-emerald-950">Convite enviado</p>
+
+                    <p className="mt-2 text-sm leading-6 text-emerald-900">
+                      Um novo link de primeiro acesso foi enviado para <strong>{user.email}</strong>
+                      .
+                    </p>
+
+                    <p className="mt-2 text-xs leading-5 text-emerald-800">
+                      O link é de uso único e expira em{" "}
+                      <strong>{new Date(firstAccess.expiresAt).toLocaleString("pt-BR")}</strong>.
+                    </p>
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
 
             {error ? (
               <div
@@ -422,14 +372,10 @@ function AdminUserEditPage() {
 
             <button
               type="submit"
-              disabled={
-                submitting
-              }
+              disabled={submitting}
               className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-stone-950 px-6 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:bg-stone-400"
             >
-              {submitting
-                ? "Salvando..."
-                : "Salvar alterações"}
+              {submitting ? "Salvando..." : "Salvar alterações"}
             </button>
           </div>
         </form>
