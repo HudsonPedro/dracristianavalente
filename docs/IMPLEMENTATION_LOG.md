@@ -1,0 +1,92 @@
+# SITE DRA.CRIS VENDAS PRODUTOS DNA — IMPLEMENTATION LOG
+
+## Política
+Cada incremento deve registrar data, branch, commit, objetivo, área afetada, arquivos/camadas, migrations/seeds, validações, riscos, regressões, decisão relacionada e status de homologação. Não registrar secrets, tokens, senhas, `DATABASE_URL`, dados pessoais desnecessários ou valores de `.env`.
+
+## Histórico reconstruído
+
+### 2026-07-17 — Scaffold/site institucional
+- `68e753530ba1b93a878ec5f3e666b0cf471ff12e` — base React/TanStack/Vite/Nitro/TypeScript/Tailwind/Bun.
+- Evolução institucional com conteúdo, FAQ, galeria, privacidade e termos.
+
+### 2026-08-15 — Storefront
+- `cabbb7c` rota inicial;
+- `10f8c3a` Product type;
+- `22c8e55` Category type;
+- `0cf3a4c` catálogo estático;
+- `e6e66ad` categorias;
+- `b69a118` rota pública;
+- `349001c` layout;
+- `d21f2db` ProductCard.
+
+### 2026-08-16 — Produto e carrinho
+- `9c8ea3c`, `46a09e6`, `b71b27d` — detalhe por slug;
+- `08259ac` — CartContext/CartProvider;
+- `f2e1f5b` — `/carrinho`.
+Resultado: fluxo browser/localStorage, sem Order/Checkout/Payment.
+
+### 2026-08-16 — Admin Products estático
+- `e3dcf3953278637a1ff1984bd2cb972a3287912b` — `/admin/produtos`;
+- `aa584c16d360bbaf7b3573bc9087f2d024c67392` — detalhe administrativo.
+
+### 2026-08-16 a 18 — Commerce foundation
+Domínio: `eced302`, `f0af6f1`, `e49085f`, `5382772`, `0a63cad`, `f8aa82f`.
+Repositories: `22c32bb`, `25ef7a3`, `243f35d`.
+Services: `cf93de5`, `3961f00`, `75fb365`.
+
+### 2026-08-18 — Migration 0000
+- `820b41d1d530344cebc53f0a1523fdf7e7959f33`
+- `0000_awesome_freak.sql`
+Tabelas: Products, Inventory, Customers, Addresses, Orders, OrderItems, StoreSettings.
+
+### 2026-08-18 — Product persistence
+`22c32bb` → `cf93de5` → `bfb67c9` → `5321903` → `b3c5fa3` → `b0b04ad` → `7ecdb4d` → `fd65ffd` → `b83d414`/`4406018`/`6e35433`.
+
+### 2026-08-18/19 — Inventory persistence
+`25ef7a3` → `3961f00` → `354b889` → `8386d63` → `c4d1f94` → `5587d40` → `728e2c9` → `1ef4cf3` → `55104cb` → `d1bb9b9`.
+
+### 2026-08-19 — Fronteira comercial antes de Auth
+Admin Products: lista/detalhe persistidos e estoque visível; criar/editar desabilitados.
+- Último commit comercial: `13b7a06`, 14:23.
+
+### 2026-08-19 — Mudança para Auth/Governance
+- `c386fcf`, 14:35 — início da sessão administrativa.
+
+### 2026-08-19 a 23 — Identity/Access/Security
+Sessão, login, `requireAdmin`, schema/migration 0001, seed/bootstrap, auth persistida, scrypt, authVersion, revogação, troca de senha e foundation de reset/migration 0002.
+
+### 2026-08-24 a 26 — Governance
+Departments, roles, permissions, overrides, invitations estruturais, audit log, migration 0003, Users.
+Audit log e `admin_user_invitations` ficaram sem lifecycle operacional completo.
+
+### 2026-08-26 a 08/09 — First Access
+- `169ef0e` token;
+- `ff15c7c` action;
+- `c70ed5e` criação de usuário;
+- `99f0179` RBAC/Resend/first access;
+- `c9113ce` entry point;
+- `8d5a1f0` rota pública.
+
+## Homologações humanas
+- Papéis e Permissões — `#PASSO 10.14.4.12.12.23.4` — **HOMOLOGADO**
+- Usuários/Primeiro Acesso — `#PASSO 10.14.4.12.13.2.5.4` — **HOMOLOGADO**
+
+## Auditoria A–K — 2026-09-09
+Reconstruiu arquitetura, segurança, maturidade, cronologia e PRD × estado real.
+
+### I-C01
+Correção: a UI Admin comercial estática surgiu antes da persistência; banco/repositories/services foram acoplados depois.
+
+### J-E01
+Product CRUD segue como próxima feature comercial provável, mas antes vêm R1 documentação, R2 source of truth, R3 tests/CI e R4 Commercial RBAC.
+
+## RC-01
+`src/functions/store-inventory.ts`
+- CONGELADO
+- NÃO HOMOLOGADO
+- REFAZER POSTERIORMENTE NO GATE INVENTORY
+- Git object: `5190206904df1133fa6d535ffe03681f3aaf0b72`
+- SHA-256: `314FE53058D4C57189A735745020845F0D69ECF9011285D029149D23FA802846`
+
+## Regra futura
+IMPLEMENTAR → VALIDAR → DOCUMENTAR → COMMITAR → DEPLOY → HOMOLOGAR → ATUALIZAR STATUS.
