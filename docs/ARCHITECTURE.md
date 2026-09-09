@@ -38,8 +38,11 @@ Admin: Users, Roles, Permissions, Departments, tokens, overrides, invitations es
 - Admin/server: `store_products`.
 Resultado: duas fontes concorrentes de verdade.
 
+Decisão R2: `store_products` é a fonte canônica definitiva. `src/data/products.ts` passa a ser fonte temporária de migração, não autoridade futura de runtime. R2-B introduz um boundary público read-only isolado (`PublicProduct` → serviço público → server functions públicas), ainda sem cutover do storefront.
+
 ### Categories
 `src/data/categories.ts` é estático; IDs também são persistidos sem entidade/FK.
+Nesta etapa, permanece como contrato estático controlado.
 
 ### Cart
 Cart operacional = React Context + `localStorage`; não é autoridade de preço, flags, disponibilidade ou estoque. Existe cart domain paralelo desconectado.

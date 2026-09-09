@@ -8,8 +8,9 @@ Plataforma clínica/comercial premium de produtos capilares associada à Dra. Cr
 ## Baseline Git
 - Repositório: `C:\HudsonPedro\dracristianavalente`
 - Branch: `main`
-- HEAD: `8d5a1f03421af4e3e3ed6697438e5b5f276558b5`
-- `origin/main`: `8d5a1f03421af4e3e3ed6697438e5b5f276558b5`
+- Baseline R1 homologada: `b10dd136902fbdf93afe8740fd4f4942b49a63da`
+- HEAD antes de R2-B: `b10dd136902fbdf93afe8740fd4f4942b49a63da`
+- `origin/main` antes de R2-B: `b10dd136902fbdf93afe8740fd4f4942b49a63da`
 - Working tree preexistente: `M src/functions/store-inventory.ts`
 
 ## Homologações humanas conhecidas
@@ -37,10 +38,13 @@ Arquivo: `src/functions/store-inventory.ts`
 A frente comercial não chegou a Orders operacional, Checkout ou Payment.
 
 ## Principal blocker arquitetural
-Duas fontes concorrentes de verdade para Product:
-- `src/data/products.ts` — storefront, detalhe e carrinho;
-- `store_products` — Admin e serviços server-side.
-A fonte canônica permanece **NÃO DETERMINADA** até R2.
+A decisão de fonte canônica foi encerrada em R2: `store_products` é a fonte canônica definitiva de Product, `store_inventory` é a fonte canônica de estoque, `src/data/products.ts` é fonte temporária de migração e `src/data/categories.ts` permanece como contrato estático controlado nesta etapa.
+
+Enquanto o cutover não ocorre, permanecem pendentes:
+- paridade e reconciliação entre o catálogo estático e o persistido;
+- cutover do storefront para a fonte persistida;
+- política degradada em caso de indisponibilidade do banco;
+- precedência futura entre `availability` e Inventory.
 
 ## Maturidade
 | Área | Estado |
@@ -75,7 +79,7 @@ A fonte canônica permanece **NÃO DETERMINADA** até R2.
 | Performance | PARCIAL |
 | Tests | AUSENTE |
 | CI automático | AUSENTE |
-| Documentation | R1 EM EXECUÇÃO |
+| Documentation | R1 HOMOLOGADO |
 
 ## Blockers
 - duas fontes concorrentes de Product;
@@ -106,13 +110,14 @@ A fonte canônica permanece **NÃO DETERMINADA** até R2.
 Esta sequência não é a árvore oficial de `#PASSO`.
 
 ## Gate atual
-**R1 — Documentation baseline**
+**R2 — Source of truth**
 
-## Próxima ação após R1
-**R2 — Source of truth**: decidir qual é a fonte canônica de Product e como o storefront migrará de dados estáticos para persistidos.
+R2-A foi aceito. Em R2-B, o boundary público read-only foi implementado tecnicamente sem cutover do storefront e permanece **NÃO HOMOLOGADO**.
+
+Decisão de R2: `store_products` é a fonte canônica definitiva de Product; `src/data/products.ts` é fonte temporária de migração; Categories permanecem como contrato estático controlado nesta etapa.
 
 ## Decisões abertas
-Fonte canônica de Product; `static → persisted`; fallback de DB; reconciliação de modelos; status/availability; Categories; IDs/slugs; publicação; imagens; Product/Inventory; StoreSettings runtime; estoque/backorder; concorrência; auditoria; guest vs conta; delivery/pickup; frete; Orders; Payment.
+Paridade e reconciliação `static → persisted`; cutover do storefront; política degradada em indisponibilidade do banco; status/availability; IDs/slugs; publicação; imagens; Product/Inventory; StoreSettings runtime; estoque/backorder; concorrência; auditoria; guest vs conta; delivery/pickup; frete; Orders; Payment.
 
 ## Governança
 IMPLEMENTAR → VALIDAR → DOCUMENTAR → COMMITAR → DEPLOY → HOMOLOGAR → ATUALIZAR STATUS.

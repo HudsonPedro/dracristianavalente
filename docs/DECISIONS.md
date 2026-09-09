@@ -45,19 +45,23 @@ A numeração oficial posterior não é recuperável pelo repositório; nenhum p
 Git object: `5190206904df1133fa6d535ffe03681f3aaf0b72`
 SHA-256: `314FE53058D4C57189A735745020845F0D69ECF9011285D029149D23FA802846`
 
+## D-010 — Fonte canônica de Product
+**Status:** DECIDIDO — R2-A aceito em 2026-09-09
+`store_products` é a fonte canônica definitiva de Product. `store_inventory` é a fonte canônica de estoque. `src/data/products.ts` é fonte temporária de migração e não será autoridade futura de runtime. Categories permanecem como contrato estático controlado nesta etapa. O boundary público deve ser isolado da cadeia existente de `src/functions/store-products.ts`.
+
 # DECISÕES EM ABERTO
 
 ## O-001 — Fonte canônica de Product
-**Status:** EM ABERTO — R2
-Decidir fonte canônica, estratégia `static → persisted`, IDs/slugs, reconciliação de modelos, publicação, fallback de DB e prevenção de publicação incompleta.
+**Status:** SUPERSEDIDO POR D-010
+A fonte canônica e o papel temporário do catálogo estático estão decididos. Paridade de dados, cutover, fallback degradado e detalhes de publicação continuam como trabalho de R2.
 
 ## O-002 — Status/availability
 **Status:** EM ABERTO — R2
 Definir contrato entre status comercial, disponibilidade pública e Inventory; resolver `OUT_OF_STOCK` versus `ACTIVE`.
 
 ## O-003 — Categories
-**Status:** EM ABERTO — R2
-Decidir catálogo estático validado no servidor ou entidade persistida com CRUD/FK.
+**Status:** SUPERSEDIDO POR D-010 NESTA ETAPA
+Categories permanecem como contrato estático controlado. Persistência com CRUD/FK poderá ser reconsiderada em etapa futura.
 
 ## O-004 — Product/Inventory
 **Status:** EM ABERTO — R2/R7

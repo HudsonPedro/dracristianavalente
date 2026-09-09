@@ -38,6 +38,17 @@ Arquivo: `src/functions/store-inventory.ts`
 Git object: `5190206904df1133fa6d535ffe03681f3aaf0b72`
 SHA-256: `314FE53058D4C57189A735745020845F0D69ECF9011285D029149D23FA802846`
 
+## H-004 — R1 Documentation baseline
+- Baseline: `b10dd136902fbdf93afe8740fd4f4942b49a63da`
+- Estado: **HOMOLOGADO**
+- Aceite humano explícito em 2026-09-09.
+
+## R2 — Source of Truth
+- R2-A: diagnóstico **ACEITO** com correção R2-A-C01.
+- R2-B: boundary público read-only implementado tecnicamente, sem cutover.
+- Estado de R2-B: **NÃO HOMOLOGADO**.
+- Nenhuma alteração de banco, schema, migration, storefront ou Inventory.
+
 ## Código presente sem homologação humana conhecida
 Site institucional, catálogo, detalhe, carrinho, Admin Products read-only, Inventory read-only, Departments, password/security, persistência comercial, workflows e SEO/LGPD.
 

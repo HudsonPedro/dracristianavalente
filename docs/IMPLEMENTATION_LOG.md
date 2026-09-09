@@ -90,3 +90,15 @@ Product CRUD segue como próxima feature comercial provável, mas antes vêm R1 
 
 ## Regra futura
 IMPLEMENTAR → VALIDAR → DOCUMENTAR → COMMITAR → DEPLOY → HOMOLOGAR → ATUALIZAR STATUS.
+
+### 2026-09-09 — R1 Documentation baseline
+- Baseline: `b10dd136902fbdf93afe8740fd4f4942b49a63da`.
+- Estado: **HOMOLOGADO** por aceite humano explícito.
+
+### 2026-09-09 — R2-A/R2-B Source of Truth
+- R2-A: diagnóstico aceito com a correção R2-A-C01, que exige boundary público isolado.
+- Decisão: `store_products` é a fonte canônica definitiva de Product; `src/data/products.ts` é fonte temporária de migração; Categories permanecem estáticas nesta etapa.
+- R2-B: DTO, serviço e server functions públicas read-only implementados, sem cutover das rotas e sem acesso ou alteração de banco.
+- Validações técnicas: `git diff --check`, ESLint direcionado e build concluídos com sucesso.
+- Estado: **NÃO HOMOLOGADO**; commit ainda não criado.
+- RC-01 permaneceu congelado e fora do escopo.
