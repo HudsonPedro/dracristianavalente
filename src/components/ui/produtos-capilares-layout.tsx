@@ -3,14 +3,29 @@ import { useEffect, useRef, useState } from "react";
 import { CSS } from "../../routes/index";
 import logo from "../../assets/logo.png";
 import { productCategories } from "../../data/categories";
-import { products } from "../../data/products";
+import type {
+  PublicProduct,
+  PublicProductImage,
+} from "../../domain/store/public-product";
 import { ProductCard } from "./product-card";
 
 type ProdutosCapilaresLayoutProps = {
+  products: PublicProduct[];
   onConhecerProdutos?: () => void;
 };
 
+function selectProductImage(
+  images: PublicProductImage[],
+): PublicProductImage | undefined {
+  const byPosition = [...images].sort(
+    (left, right) => left.position - right.position,
+  );
+
+  return byPosition.find((image) => image.main) ?? byPosition[0];
+}
+
 export function ProdutosCapilaresLayout({
+  products,
   onConhecerProdutos,
 }: ProdutosCapilaresLayoutProps) {
   const categoriasAtivas = productCategories
@@ -38,28 +53,24 @@ export function ProdutosCapilaresLayout({
     lastTime: 0,
   });
 
-  const produtosAtivos = products.filter(
-    (product) => product.status === "ACTIVE"
-  );
-
   const produtosFiltrados =
     categoriaSelecionada === "todos"
-      ? produtosAtivos
-      : produtosAtivos.filter((product) =>
+      ? products
+      : products.filter((product) =>
           product.categoryIds.includes(categoriaSelecionada)
         );
 
   const heroLoopProducts = [
-    ...produtosAtivos,
-    ...produtosAtivos,
-    ...produtosAtivos,
+    ...products,
+    ...products,
+    ...products,
   ];
 
   useEffect(() => {
     const carousel = heroCarouselRef.current;
     const track = heroTrackRef.current;
 
-    if (!carousel || !track || produtosAtivos.length === 0) return;
+    if (!carousel || !track || products.length === 0) return;
 
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -126,7 +137,7 @@ export function ProdutosCapilaresLayout({
       heroRafRef.current = null;
       heroLastTimeRef.current = null;
     };
-  }, [produtosAtivos.length]);
+  }, [products.length]);
 
   const handleHeroPointerDown = (
     event: React.PointerEvent<HTMLDivElement>
@@ -632,7 +643,7 @@ export function ProdutosCapilaresLayout({
             </div>
           </div>
 
-          {produtosAtivos.length > 0 && (
+          {products.length > 0 && (
             <>
               <div
                 ref={heroCarouselRef}
@@ -652,42 +663,46 @@ export function ProdutosCapilaresLayout({
                   ref={heroTrackRef}
                   className="dna-hero-product-track"
                 >
-                  {heroLoopProducts.map((product, index) => (
-                    <div
-                      key={`${product.id}-${index}`}
-                      className="dna-hero-product-card"
-                      aria-hidden={
-                        index < produtosAtivos.length ||
-                        index >= produtosAtivos.length * 2
-                      }
-                    >
-                      <div className="dna-hero-product-image-wrap">
-                        {product.images[0] ? (
-                          <img
-                            src={product.images[0]}
-                            alt={
-                              index >= produtosAtivos.length &&
-                              index < produtosAtivos.length * 2
-                                ? product.name
-                                : ""
-                            }
-                            draggable={false}
-                            className="dna-hero-product-image"
-                          />
-                        ) : null}
-                      </div>
+                  {heroLoopProducts.map((product, index) => {
+                    const image = selectProductImage(product.images);
 
-                      <div className="dna-hero-product-caption">
-                        <div className="dna-hero-product-line">
-                          {product.line ?? product.brand}
+                    return (
+                      <div
+                        key={`${product.id}-${index}`}
+                        className="dna-hero-product-card"
+                        aria-hidden={
+                          index < products.length ||
+                          index >= products.length * 2
+                        }
+                      >
+                        <div className="dna-hero-product-image-wrap">
+                          {image ? (
+                            <img
+                              src={image.url}
+                              alt={
+                                index >= products.length &&
+                                index < products.length * 2
+                                  ? image.alt || product.name
+                                  : ""
+                              }
+                              draggable={false}
+                              className="dna-hero-product-image"
+                            />
+                          ) : null}
                         </div>
 
-                        <div className="dna-hero-product-name">
-                          {product.name}
+                        <div className="dna-hero-product-caption">
+                          <div className="dna-hero-product-line">
+                            {product.line ?? product.brand}
+                          </div>
+
+                          <div className="dna-hero-product-name">
+                            {product.name}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
 
@@ -958,7 +973,7 @@ export function ProdutosCapilaresLayout({
                           transitionDelay: `${(index % 3) * 110}ms`,
                         }}
                       >
-                        <ProductCard product={product} />
+                        <ProductCard mode="public" product={product} />
                       </div>
                     );
                   })}

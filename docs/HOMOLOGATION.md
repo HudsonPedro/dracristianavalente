@@ -45,9 +45,20 @@ SHA-256: `314FE53058D4C57189A735745020845F0D69ECF9011285D029149D23FA802846`
 
 ## R2 — Source of Truth
 - R2-A: diagnóstico **ACEITO** com correção R2-A-C01.
-- R2-B: boundary público read-only implementado tecnicamente, sem cutover.
-- Estado de R2-B: **NÃO HOMOLOGADO**.
-- Nenhuma alteração de banco, schema, migration, storefront ou Inventory.
+- R2-B: boundary público read-only **HOMOLOGADO**, commit `8aecfc5a35652cb5261a766077c320072593ea54`.
+- R2-C: **ACEITO**.
+- R2-D: **ACEITO**.
+- Nenhuma alteração de banco, schema, migration ou Inventory foi realizada por R2-D-W1.
+
+## R2-D-W1 — Public Catalog Wave 1
+- Data: 2026-09-10.
+- Escopo: somente `/produtos-capilares`.
+- Estado: **TECHNICALLY VALIDATED / AWAITING HUMAN HOMOLOGATION**.
+- Wave 1 homologated: **NO**.
+- Evidências: code review sem findings CRITICAL, HIGH, MEDIUM ou LOW; autoridade canônica comprovada; nenhum fallback estático; ramo público sem Cart; integridade de escopo e RC-01 comprovadas; typecheck e builds client, SSR e Nitro/Cloudflare aprovados.
+- ESLint normal: **FAIL**, somente pela issue preexistente `prettier/prettier`/CRLF; ESLint sem essa regra: **PASS**.
+- Pendência humana: renderização visual dos nove produtos, imagens, hero/animações, filtros, navegação hidratada, CTA e comportamento visual geral.
+- Não registrar como HOMOLOGATED, LOCKED, PRODUCTION VERIFIED ou DEPLOYED sem os respectivos gates e aceite humano.
 
 ## Código presente sem homologação humana conhecida
 Site institucional, catálogo, detalhe, carrinho, Admin Products read-only, Inventory read-only, Departments, password/security, persistência comercial, workflows e SEO/LGPD.

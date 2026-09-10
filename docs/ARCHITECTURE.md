@@ -34,11 +34,25 @@ Admin: Users, Roles, Permissions, Departments, tokens, overrides, invitations es
 ## Exceções arquiteturais
 
 ### Product
-- Público: `src/data/products.ts`.
+- Catálogo `/produtos-capilares`: `store_products` por boundary público persistido.
+- Detalhe, marquee e Cart: `src/data/products.ts` temporariamente.
 - Admin/server: `store_products`.
-Resultado: duas fontes concorrentes de verdade.
+Resultado: cutover público parcial; superfícies legadas ainda dependem da fonte temporária.
 
-Decisão R2: `store_products` é a fonte canônica definitiva. `src/data/products.ts` passa a ser fonte temporária de migração, não autoridade futura de runtime. R2-B introduz um boundary público read-only isolado (`PublicProduct` → serviço público → server functions públicas), ainda sem cutover do storefront.
+Decisão R2: `store_products` é a fonte canônica definitiva. `src/data/products.ts` passa a ser fonte temporária de migração, não autoridade futura de runtime. R2-B introduziu um boundary público read-only isolado e a Wave 1 fez o cutover somente de `/produtos-capilares`.
+
+### Public Catalog — Migrated
+`store_products` → ProductRepository → ProductService → PublicProductCatalogService → `public-store-products` → TanStack route loader → `PublicProduct[]` → ProdutosCapilaresLayout → ProductCard public.
+
+O ramo público não possui acesso ao CartContext e não há fallback automático para `src/data/products.ts`. Pending, error e catálogo vazio são tratados pela rota/layout. Nenhum acesso a Inventory foi introduzido.
+
+### Product Detail — Legacy Temporary
+`src/data/products.ts` → `$slug.tsx` → ProductDetailPage.
+
+### Cart — Legacy Temporary
+IDs e quantidades em `localStorage` → CartContext → reidratação por `src/data/products.ts` → renderização do carrinho.
+
+O `ProductCard` mantém compatibilidade transitória: `public` → `PublicProduct` → sem Cart; `legacy` → `Product` → Cart permitido conforme o comportamento anterior. Essa compatibilidade permanece até a Wave 3.
 
 ### Categories
 `src/data/categories.ts` é estático; IDs também são persistidos sem entidade/FK.
@@ -71,7 +85,8 @@ Toda mutation deve aplicar RBAC no servidor.
 Finding crítico aberto: `updateAdminUser` permite escalada para `SUPER_ADMIN` quando o ator possui sessão válida + `USERS:VIEW`. Pertence a R4.
 
 ## Fronteira comercial atual
-Público: Static Product → UI → CartContext/localStorage → WhatsApp/carrinho.
+Catálogo público principal: DB Product → boundary público → loader → UI sem Cart.
+Detalhe, marquee e carrinho: Static Product → UI → CartContext/localStorage → WhatsApp/carrinho.
 Admin: DB Product/Inventory → repositories → services → functions → Admin read-only.
 
 Não existem end-to-end: Product CRUD, Inventory homologado, StoreSettings runtime, Customer/Address commerce, Orders, Checkout, Payment, autorização individual por avaliação/protocolo e audit log operacional.

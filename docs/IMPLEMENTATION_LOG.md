@@ -89,7 +89,7 @@ Product CRUD segue como próxima feature comercial provável, mas antes vêm R1 
 - SHA-256: `314FE53058D4C57189A735745020845F0D69ECF9011285D029149D23FA802846`
 
 ## Regra futura
-IMPLEMENTAR → VALIDAR → DOCUMENTAR → COMMITAR → DEPLOY → HOMOLOGAR → ATUALIZAR STATUS.
+IMPLEMENTAR → VALIDAR → DOCUMENTAR → REVISAR → COMMITAR → PUSH/DEPLOY → HOMOLOGAR → ATUALIZAR STATUS.
 
 ### 2026-09-09 — R1 Documentation baseline
 - Baseline: `b10dd136902fbdf93afe8740fd4f4942b49a63da`.
@@ -100,5 +100,18 @@ IMPLEMENTAR → VALIDAR → DOCUMENTAR → COMMITAR → DEPLOY → HOMOLOGAR →
 - Decisão: `store_products` é a fonte canônica definitiva de Product; `src/data/products.ts` é fonte temporária de migração; Categories permanecem estáticas nesta etapa.
 - R2-B: DTO, serviço e server functions públicas read-only implementados, sem cutover das rotas e sem acesso ou alteração de banco.
 - Validações técnicas: `git diff --check`, ESLint direcionado e build concluídos com sucesso.
-- Estado: **NÃO HOMOLOGADO**; commit ainda não criado.
+- Estado de R2-B: **HOMOLOGADO**; commit `8aecfc5a35652cb5261a766077c320072593ea54` publicado.
 - RC-01 permaneceu congelado e fora do escopo.
+
+### 2026-09-10 — R2-D-W1 Public Catalog Wave 1
+- Etapa: `R2-D-W1`.
+- Baseline: `8aecfc5a35652cb5261a766077c320072593ea54`.
+- Objetivo: cutover somente do catálogo `/produtos-capilares` para a fonte persistida.
+- Arquivos técnicos alterados: `src/routes/produtos-capilares/index.tsx`, `src/components/ui/produtos-capilares-layout.tsx` e `src/components/ui/product-card.tsx`.
+- Implementação: loader persistido retornando `PublicProduct[]`; layout canônico; contrato discriminado public/legacy no `ProductCard`; ramo público estruturalmente sem Cart; estados pending/error; estado vazio preservado; nenhum fallback para `src/data/products.ts`.
+- Fluxo: `store_products` → ProductService → PublicProductCatalogService → `listPublicStoreProducts` → route loader → `PublicProduct[]` → ProdutosCapilaresLayout → ProductCard public.
+- Validações: `git diff --check` **PASS**; `npx tsc --noEmit` **PASS**; ESLint sem `prettier/prettier` **PASS**; ESLint normal **FAIL**, somente por `prettier/prettier`/política CRLF preexistente; `npm run build` **PASS**; client build **PASS**; SSR build **PASS**; Nitro/Cloudflare build **PASS**; code review **PASS** sem findings CRITICAL, HIGH, MEDIUM ou LOW.
+- Pendência: smoke visual completo e validação humana de renderização dos nove produtos, imagens, hero/animações, filtros, navegação hidratada, CTA e comportamento visual geral.
+- Não houve DB write, migration, seed, commit, push ou deploy nesta wave até este registro.
+- Estado: **IMPLEMENTED / TECHNICALLY VALIDATED / CODE REVIEW PASSED / AWAITING HUMAN HOMOLOGATION**.
+- `R2-D-W1-C01-I01`: **NON-BLOCKING PREEXISTING FORMAT POLICY ISSUE**.

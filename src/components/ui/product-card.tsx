@@ -4,20 +4,110 @@ import {
   canProductBeAddedToCart,
   useCart,
 } from "../../contexts/cart-context";
+import type {
+  PublicProduct,
+  PublicProductImage,
+} from "../../domain/store/public-product";
 import type { Product } from "../../types/product";
 
-type ProductCardProps = {
-  product: Product;
+type ProductCardProps =
+  | {
+      mode: "public";
+      product: PublicProduct;
+    }
+  | {
+      mode?: "legacy";
+      product: Product;
+    };
+
+type ProductCardContentProps = ProductCardProps & {
+  canAddToCart?: boolean;
+  cartFeedback?: string | null;
+  onAddToCart?: () => void;
 };
 
-export function ProductCard({ product }: ProductCardProps) {
+function selectPublicImage(
+  images: PublicProductImage[],
+): PublicProductImage | undefined {
+  const byPosition = [...images].sort(
+    (left, right) => left.position - right.position,
+  );
+
+  return byPosition.find((image) => image.main) ?? byPosition[0];
+}
+
+export function ProductCard(props: ProductCardProps) {
+  if (props.mode === "public") {
+    return (
+      <ProductCardContent
+        mode="public"
+        product={props.product}
+      />
+    );
+  }
+
+  return <LegacyProductCard product={props.product} />;
+}
+
+function LegacyProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
 
   const [cartFeedback, setCartFeedback] = useState<string | null>(
     null,
   );
 
+  const cartEligibility =
+    canProductBeAddedToCart(product);
+
+  const canAddToCart =
+    cartEligibility.success;
+
+  const handleAddToCart = () => {
+    setCartFeedback(null);
+
+    const result = addItem(product);
+
+    if (!result.success) {
+      setCartFeedback(result.reason);
+      return;
+    }
+
+    setCartFeedback("Produto adicionado ao carrinho.");
+  };
+
+  return (
+    <ProductCardContent
+      mode="legacy"
+      product={product}
+      canAddToCart={canAddToCart}
+      cartFeedback={cartFeedback}
+      onAddToCart={handleAddToCart}
+    />
+  );
+}
+
+function ProductCardContent(props: ProductCardContentProps) {
+  const { product } = props;
+  const isPublic = props.mode === "public";
   const productHref = `/produtos-capilares/${product.slug}`;
+  const publicImage = isPublic
+    ? selectPublicImage(props.product.images)
+    : undefined;
+  const mainImage = isPublic
+    ? publicImage
+      ? {
+          url: publicImage.url,
+          alt: publicImage.alt || product.name,
+        }
+      : undefined
+    : props.product.images[0]
+      ? {
+          url: props.product.images[0],
+          alt: product.name,
+        }
+      : undefined;
+  const canAddToCart = !isPublic && props.canAddToCart === true;
+  const cartFeedback = isPublic ? null : props.cartFeedback;
 
   const formatPrice = (value: number) =>
     new Intl.NumberFormat("pt-BR", {
@@ -107,25 +197,6 @@ export function ProductCard({ product }: ProductCardProps) {
     }
   };
 
-  const cartEligibility =
-    canProductBeAddedToCart(product);
-
-  const canAddToCart =
-    cartEligibility.success;
-
-  const handleAddToCart = () => {
-    setCartFeedback(null);
-
-    const result = addItem(product);
-
-    if (!result.success) {
-      setCartFeedback(result.reason);
-      return;
-    }
-
-    setCartFeedback("Produto adicionado ao carrinho.");
-  };
-
   return (
     <article className="card group flex h-full flex-col overflow-hidden">
       {/* =====================================================
@@ -136,10 +207,10 @@ export function ProductCard({ product }: ProductCardProps) {
         className="relative block aspect-[4/4.6] overflow-hidden bg-[#f1ece5]"
         aria-label={`Conhecer ${product.name}`}
       >
-        {product.images.length > 0 ? (
+        {mainImage ? (
           <img
-            src={product.images[0]}
-            alt={product.name}
+            src={mainImage.url}
+            alt={mainImage.alt}
             loading="lazy"
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
           />
@@ -269,8 +340,44 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* =====================================================
             ATIVOS PRINCIPAIS
             ===================================================== */}
-        {product.activeIngredients &&
-          product.activeIngredients.length > 0 && (
+        {isPublic && props.product.ingredients.length > 0 && (
+          <div className="mt-7">
+            <div className="hair mb-6" />
+
+            <div className="mb-4 text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+              Ativos principais
+            </div>
+
+            <div className="space-y-4">
+              {props.product.ingredients.map((ingredient, index) => (
+                <div
+                  key={ingredient.id}
+                  className="grid grid-cols-[28px_1fr] gap-3"
+                >
+                  <div className="serif rosetext text-lg">
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
+
+                  <div>
+                    <h4 className="text-sm font-semibold">
+                      {ingredient.name}
+                    </h4>
+
+                    {ingredient.description && (
+                      <p className="mt-1 text-xs leading-5 text-[color:var(--muted)]">
+                        {ingredient.description}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {!isPublic &&
+          props.product.activeIngredients &&
+          props.product.activeIngredients.length > 0 && (
             <div className="mt-7">
               <div className="hair mb-6" />
 
@@ -279,7 +386,7 @@ export function ProductCard({ product }: ProductCardProps) {
               </div>
 
               <div className="space-y-4">
-                {product.activeIngredients.map(
+                {props.product.activeIngredients.map(
                   (activeIngredient, index) => (
                     <div
                       key={`${product.id}-active-${index}`}
@@ -310,8 +417,38 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* =====================================================
             CARACTERÍSTICAS / BENEFÍCIOS
             ===================================================== */}
-        {product.benefits &&
-          product.benefits.length > 0 && (
+        {isPublic && props.product.benefits.length > 0 && (
+          <div className="mt-7">
+            <div className="hair mb-6" />
+
+            <div className="mb-4 text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--rose2)]">
+              Características
+            </div>
+
+            <div className="grid gap-3">
+              {props.product.benefits.map((benefit) => (
+                <div
+                  key={benefit.id}
+                  className="rounded-[14px] border border-[color:var(--line)] bg-white/55 p-4"
+                >
+                  <h4 className="text-sm font-semibold">
+                    {benefit.title}
+                  </h4>
+
+                  {benefit.description && (
+                    <p className="mt-2 text-xs leading-5 text-[color:var(--muted)]">
+                      {benefit.description}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {!isPublic &&
+          props.product.benefits &&
+          props.product.benefits.length > 0 && (
             <div className="mt-7">
               <div className="hair mb-6" />
 
@@ -320,7 +457,7 @@ export function ProductCard({ product }: ProductCardProps) {
               </div>
 
               <div className="grid gap-3">
-                {product.benefits.map((benefit, index) => (
+                {props.product.benefits.map((benefit, index) => (
                   <div
                     key={`${product.id}-benefit-${index}`}
                     className="rounded-[14px] border border-[color:var(--line)] bg-white/55 p-4"
@@ -395,7 +532,7 @@ export function ProductCard({ product }: ProductCardProps) {
           {canAddToCart ? (
             <button
               type="button"
-              onClick={handleAddToCart}
+              onClick={props.onAddToCart}
               className="btn btn-wa mt-6 w-full"
             >
               Adicionar ao carrinho →

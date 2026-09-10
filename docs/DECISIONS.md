@@ -28,7 +28,7 @@ A base existente de sessão, Users, Roles, Permissions, Departments e First Acce
 ## D-006 — Documentação como gate
 **Status:** DECIDIDO
 Nenhuma nova retomada comercial sem baseline documental.
-Fluxo: IMPLEMENTAR → VALIDAR → DOCUMENTAR → COMMITAR → DEPLOY → HOMOLOGAR → ATUALIZAR STATUS.
+Fluxo: IMPLEMENTAR → VALIDAR → DOCUMENTAR → REVISAR → COMMITAR → PUSH/DEPLOY → HOMOLOGAR → ATUALIZAR STATUS.
 
 ## D-007 — Sequência R1–R12
 **Status:** DECIDIDO
@@ -48,6 +48,22 @@ SHA-256: `314FE53058D4C57189A735745020845F0D69ECF9011285D029149D23FA802846`
 ## D-010 — Fonte canônica de Product
 **Status:** DECIDIDO — R2-A aceito em 2026-09-09
 `store_products` é a fonte canônica definitiva de Product. `store_inventory` é a fonte canônica de estoque. `src/data/products.ts` é fonte temporária de migração e não será autoridade futura de runtime. Categories permanecem como contrato estático controlado nesta etapa. O boundary público deve ser isolado da cadeia existente de `src/functions/store-products.ts`.
+
+## D-011 — Cutover incremental do storefront
+**Status:** DECIDIDO — R2-D-W1 em 2026-09-10
+O cutover será incremental, não big-bang. O catálogo `/produtos-capilares` pode migrar antes do Cart desde que o ramo público esteja estruturalmente isolado do CartContext legado. Não haverá fallback automático para `src/data/products.ts` em falha de infraestrutura.
+
+## D-012 — Compatibilidade transitória do ProductCard
+**Status:** DECIDIDO — R2-D-W1 em 2026-09-10
+O `ProductCard` usa temporariamente um contrato discriminado: o ramo `public` recebe `PublicProduct` e não acessa Cart; o ramo `legacy` recebe `Product` e preserva o `ProductMarquee`. A compatibilidade permanece até a Wave 3.
+
+## D-013 — Tratamento de indisponibilidade na Wave 1
+**Status:** DECIDIDO — R2-D-W1 em 2026-09-10
+HTTP 503 explícito permanece deferido. A Wave 1 adota `errorComponent` controlado, retry e pending state, sem expor erro bruto e sem fallback estático.
+
+## D-014 — Política CRLF/Prettier fora da Wave 1
+**Status:** DECIDIDO — R2-D-W1 em 2026-09-10
+A divergência preexistente de CRLF/Prettier é uma issue separada e não será corrigida nesta wave. Classificação: **NON-BLOCKING PREEXISTING FORMAT POLICY ISSUE**. ESLint normal permanece FAIL; ESLint sem `prettier/prettier` passa.
 
 # DECISÕES EM ABERTO
 

@@ -1,6 +1,6 @@
 # SITE DRA.CRIS VENDAS PRODUTOS DNA — PROJECT STATUS
 
-Última atualização: 2026-09-09
+Última atualização: 2026-09-10
 
 ## Identidade
 Plataforma clínica/comercial premium de produtos capilares associada à Dra. Cristiana Valente. Estratégia: catálogo + venda assistida → ativação comercial progressiva → e-commerce completo. Jornada pretendida: Avaliação → Indicação → Protocolo → Produto → Acompanhamento.
@@ -28,7 +28,7 @@ Arquivo: `src/functions/store-inventory.ts`
 
 ## Fronteira comercial
 - site institucional implementado;
-- catálogo público estático;
+- catálogo principal `/produtos-capilares` persistido; detalhe, ProductMarquee e carrinho temporariamente legados;
 - detalhe público de produto;
 - carrinho client-side com `localStorage`;
 - Product e Inventory persistidos;
@@ -40,9 +40,9 @@ A frente comercial não chegou a Orders operacional, Checkout ou Payment.
 ## Principal blocker arquitetural
 A decisão de fonte canônica foi encerrada em R2: `store_products` é a fonte canônica definitiva de Product, `store_inventory` é a fonte canônica de estoque, `src/data/products.ts` é fonte temporária de migração e `src/data/categories.ts` permanece como contrato estático controlado nesta etapa.
 
-Enquanto o cutover não ocorre, permanecem pendentes:
-- paridade e reconciliação entre o catálogo estático e o persistido;
-- cutover do storefront para a fonte persistida;
+Enquanto o cutover total não for concluído, permanecem pendentes:
+- paridade e reconciliação das superfícies ainda legadas com o catálogo persistido;
+- cutover do detalhe, Cart e consumidores legados, com retirada final do catálogo estático do runtime;
 - política degradada em caso de indisponibilidade do banco;
 - precedência futura entre `availability` e Inventory.
 
@@ -51,7 +51,7 @@ Enquanto o cutover não ocorre, permanecem pendentes:
 | --- | --- |
 | Site institucional | IMPLEMENTADO |
 | Avaliação | PARCIAL |
-| Catálogo | DIVERGENTE |
+| Catálogo | PARCIALMENTE MIGRADO |
 | Detalhe de produto | IMPLEMENTADO |
 | Categorias | PARCIAL |
 | Carrinho | PARCIAL |
@@ -82,7 +82,7 @@ Enquanto o cutover não ocorre, permanecem pendentes:
 | Documentation | R1 HOMOLOGADO |
 
 ## Blockers
-- duas fontes concorrentes de Product;
+- dependência temporária de `src/data/products.ts` para seed/migração e runtime das superfícies ainda não migradas; `store_products` permanece como fonte canônica;
 - G-01/F-01: escalada para `SUPER_ADMIN` condicionada a sessão válida + `USERS:VIEW`;
 - autorização server-side comercial incompleta;
 - ausência de testes e CI automático;
@@ -112,14 +112,24 @@ Esta sequência não é a árvore oficial de `#PASSO`.
 ## Gate atual
 **R2 — Source of truth**
 
-R2-A foi aceito. Em R2-B, o boundary público read-only foi implementado tecnicamente sem cutover do storefront e permanece **NÃO HOMOLOGADO**.
+- R2-A: **ACEITO** com R2-A-C01.
+- R2-B: **HOMOLOGADO**.
+- R2-C: **ACEITO**.
+- R2-D: **ACEITO**.
+- R2-D-W1: **IMPLEMENTED / TECHNICALLY VALIDATED / CODE REVIEW PASSED / AWAITING HUMAN HOMOLOGATION**.
 
-Decisão de R2: `store_products` é a fonte canônica definitiva de Product; `src/data/products.ts` é fonte temporária de migração; Categories permanecem como contrato estático controlado nesta etapa.
+A Wave 1 migrou somente `/produtos-capilares` para a fonte persistida, via loader SSR e `PublicProduct[]`. O layout não consulta mais `src/data/products.ts`, o ramo público do `ProductCard` está isolado do CartContext e não existe fallback estático. Categorias continuam em `src/data/categories.ts`.
+
+O catálogo público principal está parcialmente migrado. `/produtos-capilares/$slug`, `ProductDetailPage`, `ProductMarquee`, `CartContext` e `/carrinho` continuam temporariamente legados e ainda usam `src/data/products.ts`. Inventory, Checkout, Orders, Payment e StoreSettings não foram alterados pela Wave 1.
+
+O Source of Truth R2 ainda não está totalmente fechado: Wave 2 e Wave 3 permanecem pendentes. Não avançar R3.
+
+Decisão de R2: `store_products` é a fonte canônica definitiva de Product; `store_inventory` é a fonte canônica de estoque; `src/data/products.ts` é fonte temporária de migração; Categories permanecem como contrato estático controlado nesta etapa.
 
 ## Decisões abertas
-Paridade e reconciliação `static → persisted`; cutover do storefront; política degradada em indisponibilidade do banco; status/availability; IDs/slugs; publicação; imagens; Product/Inventory; StoreSettings runtime; estoque/backorder; concorrência; auditoria; guest vs conta; delivery/pickup; frete; Orders; Payment.
+Paridade e reconciliação `static → persisted` das superfícies restantes; cutover do detalhe, Cart e consumidores legados; retirada final de `src/data/products.ts` do runtime; política degradada em indisponibilidade do banco; status/availability; IDs/slugs; publicação; imagens; Product/Inventory; StoreSettings runtime; estoque/backorder; concorrência; auditoria; guest vs conta; delivery/pickup; frete; Orders; Payment.
 
 ## Governança
-IMPLEMENTAR → VALIDAR → DOCUMENTAR → COMMITAR → DEPLOY → HOMOLOGAR → ATUALIZAR STATUS.
+IMPLEMENTAR → VALIDAR → DOCUMENTAR → REVISAR → COMMITAR → PUSH/DEPLOY → HOMOLOGAR → ATUALIZAR STATUS.
 
 Deploy não significa homologação. Código presente não significa feature operacional. Nenhum item entra como HOMOLOGADO sem aceite humano explícito.
