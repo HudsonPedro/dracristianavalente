@@ -744,6 +744,11 @@ const IMG_FACE = faceImg;
 const IMG_MITOS = mitosImg;
 const IMG_AMBIENTE = ambienteImg;
 
+const STORE_PUBLIC_ENTRY_ENABLED = false;
+
+const STORE_MENU_LINK_HTML = STORE_PUBLIC_ENTRY_ENABLED ? "<a href=\"/produtos-capilares\" class=\"hover:text-[color:var(--ink)] transition\">Produtos Capilares</a>" : "";
+const STORE_HOME_SECTION_HTML = STORE_PUBLIC_ENTRY_ENABLED ? "<section id=\"produtos-capilares-home\" class=\"container py-24\"><div class=\"reveal card p-10 md:p-14\"><div class=\"kicker mb-6\">Cuidado capilar contínuo</div><h2 class=\"display text-5xl md:text-6xl\">Produtos capilares integrados ao seu protocolo.</h2><p class=\"text-[color:var(--muted)] mt-6 text-lg leading-relaxed max-w-3xl\">Conheça a seleção de produtos capilares para continuidade do cuidado em casa. A indicação depende das características de cada produto e, quando necessário, da avaliação profissional.</p><a href=\"/produtos-capilares\" class=\"btn btn-ghost mt-8\">Conhecer produtos capilares →</a></div></section>" : "";
+const STORE_FOOTER_LINK_HTML = STORE_PUBLIC_ENTRY_ENABLED ? "<li><a href=\"/produtos-capilares\" class=\"hover:text-[color:var(--ink)]\">Produtos Capilares</a></li>" : "";
 const BODY = `
 <div class="cine"><div class="l l1"></div><div class="l l2"></div></div>
 
@@ -752,6 +757,7 @@ const BODY = `
     <a href="#topo" class="flex items-center gap-3"><img src="${LOGO}" alt="Dra. Cristiana Valente Estética" class="mark"><span class="serif text-lg hidden sm:inline">Dra. Cristiana Valente</span></a>
     <div class="hidden md:flex items-center gap-7 text-sm text-[color:var(--muted)]">
       <a href="#protocolos" class="hover:text-[color:var(--ink)] transition">Protocolos</a>
+      ${STORE_MENU_LINK_HTML}
       <a href="#sobre" class="hover:text-[color:var(--ink)] transition">Sobre</a>
       <a href="#exclusivos" class="hover:text-[color:var(--ink)] transition">Exclusivos Dra. Cristiana Valente</a>
       <a href="#avaliacoes" class="hover:text-[color:var(--ink)] transition">Depoimentos</a>
@@ -984,6 +990,8 @@ const BODY = `
 
     </div>
   </section>
+
+  ${STORE_HOME_SECTION_HTML}
 
   <section id="exclusivos" class="container py-24">
     <div class="reveal card p-10 md:p-14" style="background:linear-gradient(135deg,#141414,#2a2320);color:#fff;border-color:#141414">
@@ -1554,6 +1562,7 @@ const BODY = `
         <p class="text-xs font-bold uppercase tracking-wider mb-4">Navegação</p>
         <ul class="space-y-2 text-sm text-[color:var(--muted)]">
           <li><a href="#protocolos" class="hover:text-[color:var(--ink)]">Protocolos</a></li>
+          ${STORE_FOOTER_LINK_HTML}
           <li><a href="#exclusivos" class="hover:text-[color:var(--ink)]">Exclusivos Dra. Cristiana Valente</a></li>
           <li><a href="#sobre" class="hover:text-[color:var(--ink)]">Sobre a Dra.</a></li>
           <li><a href="#avaliacoes" class="hover:text-[color:var(--ink)]">Depoimentos</a></li>

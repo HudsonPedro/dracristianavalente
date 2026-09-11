@@ -141,5 +141,22 @@ IMPLEMENTAR → VALIDAR → DOCUMENTAR → REVISAR → COMMITAR → PUSH/DEPLOY 
 - LOW L-02: três warnings `react-refresh/only-export-components`, restritos a Fast Refresh em desenvolvimento.
 - RC-01 preservado.
 - `R2-D-W3-D01`: documentação canônica consolidada.
-- Estado: **IMPLEMENTED / CODE REVIEW PASSED / NOT YET HUMAN HOMOLOGATED / NOT YET COMMITTED, PUSHED OR DEPLOYED**.
-- Próximos gates: commit → push → deploy → smoke → homologation.
+- Commit: `585bd39f5a639281d30a2ddcd376aab21e76f1c4`.
+- Push para `main`: **CONCLUÍDO**.
+- Deploy Vercel produção: **CONCLUÍDO / READY**.
+- Smoke humano: produto **OK**; carrinho **OK**; erro visível **NÃO**.
+- Estado final: **HUMAN HOMOLOGATED / CLOSED**.
+- R2 — Source of Truth: **CONCLUÍDA**.
+
+### 2026-09-11 — Public Store Entry Gate
+- Objetivo: preparar os pontos de entrada públicos da loja sem expô-los antes da autorização comercial.
+- Arquivo técnico: `src/routes/index.tsx`.
+- Feature flag: `STORE_PUBLIC_ENTRY_ENABLED`.
+- Integrações preparadas: link `Produtos Capilares` no menu principal; seção editorial/comercial na Home; link `Produtos Capilares` no footer.
+- Rota alvo: `/produtos-capilares`.
+- Teste local com flag `true`: menu **OK**; seção Home **OK**; footer **OK**; link **OK**; layout **OK**.
+- Após o teste, a flag foi revertida para `false`.
+- Estado atual: **IMPLEMENTADO / TESTADO LOCALMENTE / APROVADO / DESATIVADO**.
+- Regra de release: a exposição pública só pode ser ativada mediante autorização explícita do Hudson.
+- Nenhum commit, push ou deploy deste gate deve ocorrer com `STORE_PUBLIC_ENTRY_ENABLED = true`.
+- RC-01.1 permaneceu congelado e fora do escopo.

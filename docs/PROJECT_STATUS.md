@@ -112,21 +112,21 @@ Testes automatizados e CI automático de push/PR estão ausentes. Os GitHub Acti
 Esta sequência não é a árvore oficial de `#PASSO`.
 
 ## Gate atual
-**R2 — Source of truth**
+**Public Store Entry Gate — controle de exposição pública antes de R3**
 
 - R2-A: **ACEITO** com R2-A-C01.
 - R2-B: **HOMOLOGADO**.
 - R2-C: **ACEITO**.
 - R2-D: **ACEITO**.
 - R2-D-W1: **HUMAN HOMOLOGATED / CONCLUÍDA**.
-- R2-D-W2-P01: **APROVADO**.
-- R2-D-W2-I01: **ACEITO / TECHNICALLY IMPLEMENTED**.
-- R2-D-W2-C01: **CODE REVIEW PASS / ACEITO**.
 - R2-D-W2: **HUMAN HOMOLOGATED / CLOSED**.
-- R2-D-W3-P02: **APROVADO**.
-- R2-D-W3-I01: **IMPLEMENTED / TECHNICALLY VALIDATED**.
-- R2-D-W3-C01: **CODE REVIEW PASS / ACEITO**.
-- R2-D-W3: **IMPLEMENTED / CODE REVIEW PASSED / NOT YET HUMAN HOMOLOGATED / NOT YET COMMITTED, PUSHED OR DEPLOYED**.
+- R2-D-W3: **HUMAN HOMOLOGATED / CLOSED**.
+- R2-D-W3 commit: `585bd39f5a639281d30a2ddcd376aab21e76f1c4`.
+- R2 — Source of Truth: **CONCLUÍDA**.
+- Public Store Entry Gate: **IMPLEMENTADO / TESTADO LOCALMENTE / APROVADO / DESATIVADO**.
+- Feature flag: `STORE_PUBLIC_ENTRY_ENABLED = false`.
+- Menu, seção da Home e footer para `/produtos-capilares` estão preparados, mas não são exibidos publicamente enquanto a flag permanecer `false`.
+- Ativação pública somente mediante autorização explícita do Hudson.
 
 A Wave 1 migrou somente `/produtos-capilares` para a fonte persistida, via loader SSR e `PublicProduct[]`. O layout não consulta mais `src/data/products.ts`, o ramo público do `ProductCard` está isolado do CartContext e não existe fallback estático. Categorias continuam em `src/data/categories.ts`.
 
@@ -134,7 +134,7 @@ O detalhe `/produtos-capilares/$slug` foi migrado na Wave 2: usa `getPublicStore
 
 Na Wave 3, `CartContext` e `/carrinho` passaram a usar `PublicProduct`, resolvido em lote por IDs. Catálogo e detalhe restauraram a entrada de compra somente para produtos elegíveis. Os imports restantes de `products.ts` são o seed e o `ProductMarquee` DEAD/UNUSED; imports runtime ativos chegaram a zero. Inventory, Checkout, Orders, Payment e StoreSettings não foram alterados.
 
-O Source of Truth R2 ainda não está fechado: a Wave 3 requer documentação aprovada, commit, push, deploy, smoke humano e homologação final. Não avançar R3 antes desse fechamento.
+O Source of Truth R2 está encerrado após commit, push, deploy, smoke humano e homologação final da Wave 3. O gate de exposição pública de Produtos é um controle de release separado e deve permanecer desativado até autorização explícita.
 
 Decisão de R2: `store_products` é a fonte canônica definitiva de Product; `store_inventory` é a fonte canônica de estoque; `src/data/products.ts` é fonte temporária de migração; Categories permanecem como contrato estático controlado nesta etapa.
 

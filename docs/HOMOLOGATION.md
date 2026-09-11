@@ -75,14 +75,30 @@ SHA-256: `314FE53058D4C57189A735745020845F0D69ECF9011285D029149D23FA802846`
 - `R2-D-W3-P02`: **APPROVED**.
 - `R2-D-W3-I01`: **IMPLEMENTED / TECHNICALLY VALIDATED**.
 - `R2-D-W3-C01`: **CODE REVIEW PASS / ACCEPTED**.
-- Estado da Wave 3: **NOT YET HUMAN HOMOLOGATED / NOT YET COMMITTED, PUSHED OR DEPLOYED**.
+- Commit: `585bd39f5a639281d30a2ddcd376aab21e76f1c4`.
+- Push para `main`: **CONCLUÍDO**.
+- Deploy Vercel produção: **CONCLUÍDO / READY**.
+- Smoke humano: produto **OK**; carrinho **OK**; erro visível **NÃO**.
 - Evidências: boundary pública em lote; `CartContext` sobre `PublicProduct`; storage mínimo protegido contra falha; compra elegível no catálogo e detalhe; zero imports runtime ativos de `products.ts`; diff check, TypeScript e build aprovados.
 - Findings LOW: hidratação sem generation token/cancelamento e três warnings `react-refresh/only-export-components`. Sem evidência de perda de storage ou impacto funcional/produção.
-- Gates pendentes: documentação aprovada, commit, push, deploy, smoke humano e homologação final.
-- R2 permanece aberto até a homologação da W3.
+- Estado final da Wave 3: **HUMAN HOMOLOGATED / CLOSED**.
+- R2 — Source of Truth: **CONCLUÍDA**.
+
+## Public Store Entry Gate
+- Data: 2026-09-11.
+- Escopo: menu principal, seção de Produtos na Home e link de Produtos no footer.
+- Rota alvo: `/produtos-capilares`.
+- Feature flag: `STORE_PUBLIC_ENTRY_ENABLED`.
+- Teste local com flag `true`: menu **OK**; seção Home **OK**; footer **OK**; link **OK**; layout **OK**.
+- Após o teste, a flag foi revertida para `false`.
+- Estado: **IMPLEMENTADO / TESTADO LOCALMENTE / APROVADO / DESATIVADO**.
+- Não está homologado para ativação pública.
+- Ativação pública somente mediante autorização explícita do Hudson.
+- Nenhum commit, push ou deploy deste gate pode ocorrer com `STORE_PUBLIC_ENTRY_ENABLED = true` sem essa autorização.
+- RC-01.1 permaneceu congelado e fora do escopo.
 
 ## Código presente sem homologação humana conhecida
-Site institucional, carrinho da Wave 3, Admin Products read-only, Inventory read-only, Departments, password/security, persistência comercial, workflows e SEO/LGPD.
+Site institucional, Admin Products read-only, Inventory read-only, Departments, password/security, persistência comercial, workflows e SEO/LGPD.
 
 ## Ausente / não homologável no estado atual
 Product CRUD completo, Inventory management homologado, StoreSettings runtime, Orders operacional, Checkout, Payment e expansões futuras do PRD.

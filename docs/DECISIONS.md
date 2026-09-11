@@ -97,6 +97,25 @@ Os imports runtime ativos de `src/data/products.ts` chegam a zero. O arquivo per
 **Status:** DECIDIDO — R2-D-W3 em 2026-09-11
 R2 encerra a fonte canônica de Product, o carrinho canônico e a retirada da autoridade estática ativa. R8 não repetirá esse cutover: integrará a storefront comercial com StoreSettings, Inventory e regras operacionais futuras.
 
+## D-023 — Gate de exposição pública da loja
+**Status:** DECIDIDO — 2026-09-11
+Os pontos de entrada públicos para Produtos Capilares devem existir tecnicamente antes da liberação comercial, mas permanecer ocultos até autorização explícita do Hudson.
+
+O gate é controlado por uma única feature flag no site institucional: `STORE_PUBLIC_ENTRY_ENABLED`.
+
+Com a flag `true`, ficam disponíveis:
+- link `Produtos Capilares` no menu principal;
+- seção editorial/comercial de Produtos na Home;
+- link `Produtos Capilares` no footer.
+
+Com a flag `false`, esses pontos de entrada não são renderizados. As rotas técnicas já existentes, incluindo `/produtos-capilares`, não são removidas por esse gate.
+
+A implementação foi validada localmente com a flag temporariamente em `true` e aprovada para menu, seção da Home, footer, navegação e integridade visual. Após o teste, a flag foi obrigatoriamente revertida para `false`.
+
+Nenhum commit, push ou deploy deste gate pode ocorrer com `STORE_PUBLIC_ENTRY_ENABLED = true` sem autorização explícita do Hudson.
+
+Estado atual do gate: **IMPLEMENTADO / TESTADO LOCALMENTE / APROVADO / DESATIVADO**.
+
 # DECISÕES EM ABERTO
 
 ## O-001 — Fonte canônica de Product
