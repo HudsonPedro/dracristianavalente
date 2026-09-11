@@ -160,3 +160,11 @@ IMPLEMENTAR → VALIDAR → DOCUMENTAR → REVISAR → COMMITAR → PUSH/DEPLOY 
 - Regra de release: a exposição pública só pode ser ativada mediante autorização explícita do Hudson.
 - Nenhum commit, push ou deploy deste gate deve ocorrer com `STORE_PUBLIC_ENTRY_ENABLED = true`.
 - RC-01.1 permaneceu congelado e fora do escopo.
+
+### 2026-09-11 — R3 First Automated Test Slice
+- Estado do macro: **R3 — Tests + CI EM ANDAMENTO**; primeira fatia **IMPLEMENTADA / TECHNICALLY APPROVED**, ainda não homologada.
+- Toolchain: Vitest 5 em ambiente Node; scripts `typecheck` (`tsc --noEmit`) e `test` (`vitest run`). Sem jsdom, Testing Library, coverage obrigatório ou CI nesta fatia.
+- Cobertura: `ProductService` isolado por fake de `ProductRepository` tipado; `Public Product Catalog Boundary` isolado por fake/mock determinístico, sem carregar singleton Drizzle, Neon ou rede.
+- Resultado: 2 arquivos de teste, 20 testes **PASS**; typecheck **PASS**; build client/SSR/Nitro **PASS**; `git diff --check` **PASS**.
+- Produção: nenhum código de produção alterado; `src/data/products.ts` não voltou a ser autoridade runtime; CI foi deliberadamente mantido fora desta primeira fatia.
+- Finding não resolvido — imutabilidade de Product ID: `ProductService.update()` valida o estado combinado usando `current.id`, mas encaminha `changes` bruto a `repository.update`; portanto, um `id` presente em `changes` poderia alcançar a persistência. Os testes não cristalizam esse comportamento. O finding é preexistente, não foi criado nem corrigido por R3 e requer decisão/ajuste futuro separado.

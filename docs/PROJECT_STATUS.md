@@ -1,6 +1,6 @@
 # SITE DRA.CRIS VENDAS PRODUTOS DNA — PROJECT STATUS
 
-Última atualização: 2026-09-10
+Última atualização: 2026-09-11
 
 ## Identidade
 Plataforma clínica/comercial premium de produtos capilares associada à Dra. Cristiana Valente. Estratégia: catálogo + venda assistida → ativação comercial progressiva → e-commerce completo. Jornada pretendida: Avaliação → Indicação → Protocolo → Produto → Acompanhamento.
@@ -37,11 +37,10 @@ Arquivo: `src/functions/store-inventory.ts`
 - Auth/Governance mais madura que commerce.
 A frente comercial não chegou a Orders operacional, Checkout ou Payment.
 
-## Principal blocker arquitetural
+## Pendências arquiteturais após R2
 A decisão de fonte canônica foi encerrada em R2: `store_products` é a fonte canônica definitiva de Product, `store_inventory` é a fonte canônica de estoque, `src/data/products.ts` é fonte temporária de migração e `src/data/categories.ts` permanece como contrato estático controlado nesta etapa.
 
-Enquanto a Wave 3 não for publicada e homologada, permanecem pendentes:
-- commit, push, deploy e smoke humano do carrinho canônico;
+Com a Wave 3 publicada e homologada, permanecem pendentes:
 - limpeza futura do `ProductMarquee` dormente, sem autoridade runtime ativa;
 - política degradada em caso de indisponibilidade do banco;
 - precedência futura entre `availability` e Inventory.
@@ -51,10 +50,10 @@ Enquanto a Wave 3 não for publicada e homologada, permanecem pendentes:
 | --- | --- |
 | Site institucional | IMPLEMENTADO |
 | Avaliação | PARCIAL |
-| Catálogo | MIGRADO / W3 AWAITING HOMOLOGATION |
+| Catálogo | MIGRADO / HUMAN HOMOLOGATED |
 | Detalhe de produto | IMPLEMENTADO |
 | Categorias | PARCIAL |
-| Carrinho | IMPLEMENTADO / CODE REVIEW PASSED / AWAITING HOMOLOGATION |
+| Carrinho | CANÔNICO / HUMAN HOMOLOGATED |
 | Products persistence | IMPLEMENTADO |
 | Inventory | PARCIAL |
 | StoreSettings | FUNDAÇÃO |
@@ -77,17 +76,19 @@ Enquanto a Wave 3 não for publicada e homologada, permanecem pendentes:
 | Security | PARCIAL |
 | Accessibility | PARCIAL |
 | Performance | PARCIAL |
-| Tests | AUSENTE |
+| Tests | PARCIAL — R3 EM ANDAMENTO |
 | CI automático | AUSENTE |
 | Documentation | R1 HOMOLOGADO |
 
-Testes automatizados e CI automático de push/PR estão ausentes. Os GitHub Actions existentes são workflows operacionais manuais por `workflow_dispatch`; R3 continua responsável pelo framework de testes, testes unitários/de integração e validação automática de push/PR.
+R3 — Tests + CI está **EM ANDAMENTO**. A primeira fatia de infraestrutura mínima de testes está **IMPLEMENTADA / TECHNICALLY APPROVED**: Vitest 5 em ambiente Node; scripts `test` e `typecheck`; cobertura inicial de `ProductService` e `Public Product Catalog Boundary`; 2 arquivos e 20 testes; typecheck, testes e build em **PASS**. O CI automático de push/PR ainda não foi implementado e o macro R3 não está concluído.
+
+Próximos componentes previstos, ainda não implementados: cart eligibility/reconciliation; RBAC effective permissions e guards; regras de first-access/reset-token; quality gate de CI. W1, W2 e W3 permanecem encerradas e não serão reabertas por R3.
 
 ## Blockers
 - `src/data/products.ts` permanece para seed/migração/reconciliação e compatibilidade dormente, sem autoridade runtime ativa;
 - G-01/F-01: escalada para `SUPER_ADMIN` condicionada a sessão válida + `USERS:VIEW`;
 - autorização server-side comercial incompleta;
-- ausência de testes e CI automático;
+- cobertura automatizada ainda parcial e CI automático ausente;
 - Inventory sem gate completo de concorrência/atomicidade;
 - StoreSettings desconectado;
 - Orders sem implementação concreta;
@@ -139,7 +140,7 @@ O Source of Truth R2 está encerrado após commit, push, deploy, smoke humano e 
 Decisão de R2: `store_products` é a fonte canônica definitiva de Product; `store_inventory` é a fonte canônica de estoque; `src/data/products.ts` é fonte temporária de migração; Categories permanecem como contrato estático controlado nesta etapa.
 
 ## Decisões abertas
-Publicação e homologação da W3; limpeza do código dormente; política degradada futura; status/availability com Inventory; StoreSettings runtime; estoque/backorder; concorrência; auditoria; guest vs conta; delivery/pickup; frete; Orders; Checkout; Payment.
+Limpeza do código dormente; política degradada futura; status/availability com Inventory; StoreSettings runtime; estoque/backorder; concorrência; auditoria; guest vs conta; delivery/pickup; frete; Orders; Checkout; Payment.
 
 ## Governança
 IMPLEMENTAR → VALIDAR → DOCUMENTAR → REVISAR → COMMITAR → PUSH/DEPLOY → HOMOLOGAR → ATUALIZAR STATUS.

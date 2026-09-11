@@ -104,6 +104,9 @@ Admin: DB Product/Inventory → repositories → services → functions → Admi
 
 Não existem end-to-end: Product CRUD, Inventory homologado, StoreSettings runtime, Customer/Address commerce, Orders, Checkout, Payment, autorização individual por avaliação/protocolo e audit log operacional.
 
+## Testing e quality architecture
+R3 adota Vitest em ambiente Node. Testes unitários e de serviço preferem fakes ou mocks determinísticos e não acessam Neon real. Boundaries server que importam singletons de infraestrutura devem isolar esses módulos durante o teste. Migrations e seeds permanecem workflows operacionais e não pertencem ao quality gate comum. O CI automático será implementado em etapa posterior de R3.
+
 ## Arquitetura futura — alvo
 Product canônico persistido → StoreSettings → Inventory → storefront/cart autoritativos → Customers/Addresses → Orders → Checkout → Payment.
 
