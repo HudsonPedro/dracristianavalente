@@ -168,3 +168,12 @@ IMPLEMENTAR → VALIDAR → DOCUMENTAR → REVISAR → COMMITAR → PUSH/DEPLOY 
 - Resultado: 2 arquivos de teste, 20 testes **PASS**; typecheck **PASS**; build client/SSR/Nitro **PASS**; `git diff --check` **PASS**.
 - Produção: nenhum código de produção alterado; `src/data/products.ts` não voltou a ser autoridade runtime; CI foi deliberadamente mantido fora desta primeira fatia.
 - Finding não resolvido — imutabilidade de Product ID: `ProductService.update()` valida o estado combinado usando `current.id`, mas encaminha `changes` bruto a `repository.update`; portanto, um `id` presente em `changes` poderia alcançar a persistência. Os testes não cristalizam esse comportamento. O finding é preexistente, não foi criado nem corrigido por R3 e requer decisão/ajuste futuro separado.
+### 2026-09-11 — R3 Essential Tests + Automatic Quality Gate
+- Continuação da primeira fatia automatizada sem alteração de código de produção.
+- Cobertura adicionada: regras críticas de elegibilidade/preço do carrinho; permissões efetivas e `requireAdminPermission`; validação de sessão administrativa e `authVersion`.
+- Resultado consolidado: 5 arquivos de teste, 47 testes **PASS**; typecheck **PASS**; build client/SSR/Nitro **PASS**; `git diff --check` **PASS**.
+- CI: `.github/workflows/quality-gate.yml` criado para `pull_request` e `push` em `main`, com Node 22, pnpm 11, `pnpm install --frozen-lockfile`, typecheck, testes e build.
+- Workflows operacionais de migrations, seeds e bootstrap permanecem manuais e fora do quality gate comum.
+- Neon real, migrations, seeds e deploy não participam dos testes automatizados de R3.
+- RC-01.1 permaneceu congelado e fora do escopo, com SHA-256 preservado.
+- Estado: **TECHNICALLY COMPLETE / AGUARDANDO COMMIT, PUSH E QUALITY GATE REMOTO**.

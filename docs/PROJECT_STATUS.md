@@ -76,19 +76,19 @@ Com a Wave 3 publicada e homologada, permanecem pendentes:
 | Security | PARCIAL |
 | Accessibility | PARCIAL |
 | Performance | PARCIAL |
-| Tests | PARCIAL — R3 EM ANDAMENTO |
-| CI automático | AUSENTE |
+| Tests | R3 TECHNICALLY COMPLETE — 47 TESTS PASS |
+| CI automático | IMPLEMENTADO — QUALITY GATE PR/PUSH MAIN |
 | Documentation | R1 HOMOLOGADO |
 
-R3 — Tests + CI está **EM ANDAMENTO**. A primeira fatia de infraestrutura mínima de testes está **IMPLEMENTADA / TECHNICALLY APPROVED**: Vitest 5 em ambiente Node; scripts `test` e `typecheck`; cobertura inicial de `ProductService` e `Public Product Catalog Boundary`; 2 arquivos e 20 testes; typecheck, testes e build em **PASS**. O CI automático de push/PR ainda não foi implementado e o macro R3 não está concluído.
+R3 — Tests + CI está **TECHNICALLY COMPLETE / AGUARDANDO COMMIT, PUSH E EXECUÇÃO REMOTA DO QUALITY GATE**. Vitest 5 em ambiente Node cobre `ProductService`, `Public Product Catalog Boundary`, regras críticas do carrinho, permissões efetivas/RBAC e `requireAdmin`/`authVersion`; 5 arquivos e 47 testes em **PASS**. O quality gate automático executa em pull request e push para `main`, com instalação frozen, typecheck, testes e build.
 
-Próximos componentes previstos, ainda não implementados: cart eligibility/reconciliation; RBAC effective permissions e guards; regras de first-access/reset-token; quality gate de CI. W1, W2 e W3 permanecem encerradas e não serão reabertas por R3.
+O escopo essencial definido para R3 foi implementado. W1, W2 e W3 permanecem encerradas e não serão reabertas por R3. O encerramento final de R3 depende apenas do commit/push e da confirmação do quality gate remoto; depois disso a sequência avança para R4 — Commercial RBAC.
 
 ## Blockers
 - `src/data/products.ts` permanece para seed/migração/reconciliação e compatibilidade dormente, sem autoridade runtime ativa;
 - G-01/F-01: escalada para `SUPER_ADMIN` condicionada a sessão válida + `USERS:VIEW`;
 - autorização server-side comercial incompleta;
-- cobertura automatizada ainda parcial e CI automático ausente;
+- cobertura automatizada essencial de R3 implementada; expansão futura permanece incremental conforme novas áreas comerciais forem implementadas;
 - Inventory sem gate completo de concorrência/atomicidade;
 - StoreSettings desconectado;
 - Orders sem implementação concreta;
@@ -126,7 +126,7 @@ Esta sequência não é a árvore oficial de `#PASSO`.
 - R2 — Source of Truth: **CONCLUÍDA**.
 - Public Store Entry Gate: **IMPLEMENTADO / TESTADO LOCALMENTE / APROVADO / DESATIVADO**.
 - Feature flag: `STORE_PUBLIC_ENTRY_ENABLED = false`.
-- Menu, seção da Home e footer para `/produtos-capilares` estão preparados, mas não são exibidos publicamente enquanto a flag permanecer `false`.
+- Menu, seção da Home e footer para `/produtos-capilares` permanecem visíveis quando a flag está `false`, porém desabilitados e sem navegação; a flag `true` ativa os mesmos pontos de entrada.
 - Ativação pública somente mediante autorização explícita do Hudson.
 
 A Wave 1 migrou somente `/produtos-capilares` para a fonte persistida, via loader SSR e `PublicProduct[]`. O layout não consulta mais `src/data/products.ts`, o ramo público do `ProductCard` está isolado do CartContext e não existe fallback estático. Categorias continuam em `src/data/categories.ts`.
