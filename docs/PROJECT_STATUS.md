@@ -28,7 +28,7 @@ Arquivo: `src/functions/store-inventory.ts`
 
 ## Fronteira comercial
 - site institucional implementado;
-- catálogo principal `/produtos-capilares` persistido; detalhe, ProductMarquee e carrinho temporariamente legados;
+- catálogo principal `/produtos-capilares` e detalhe `/produtos-capilares/$slug` persistidos; ProductMarquee e carrinho temporariamente legados;
 - detalhe público de produto;
 - carrinho client-side com `localStorage`;
 - Product e Inventory persistidos;
@@ -42,7 +42,7 @@ A decisão de fonte canônica foi encerrada em R2: `store_products` é a fonte c
 
 Enquanto o cutover total não for concluído, permanecem pendentes:
 - paridade e reconciliação das superfícies ainda legadas com o catálogo persistido;
-- cutover do detalhe, Cart e consumidores legados, com retirada final do catálogo estático do runtime;
+- cutover do Cart e consumidores legados, com retirada final do catálogo estático do runtime;
 - política degradada em caso de indisponibilidade do banco;
 - precedência futura entre `availability` e Inventory.
 
@@ -116,18 +116,24 @@ Esta sequência não é a árvore oficial de `#PASSO`.
 - R2-B: **HOMOLOGADO**.
 - R2-C: **ACEITO**.
 - R2-D: **ACEITO**.
-- R2-D-W1: **IMPLEMENTED / TECHNICALLY VALIDATED / CODE REVIEW PASSED / AWAITING HUMAN HOMOLOGATION**.
+- R2-D-W1: **HUMAN HOMOLOGATED / CONCLUÍDA**.
+- R2-D-W2-P01: **APROVADO**.
+- R2-D-W2-I01: **ACEITO / TECHNICALLY IMPLEMENTED**.
+- R2-D-W2-C01: **CODE REVIEW PASS / ACEITO**.
+- R2-D-W2: **IMPLEMENTADA / CODE REVIEWED / DOCUMENTADA / AWAITING COMMIT, DEPLOY AND HUMAN SMOKE**.
 
 A Wave 1 migrou somente `/produtos-capilares` para a fonte persistida, via loader SSR e `PublicProduct[]`. O layout não consulta mais `src/data/products.ts`, o ramo público do `ProductCard` está isolado do CartContext e não existe fallback estático. Categorias continuam em `src/data/categories.ts`.
 
-O catálogo público principal está parcialmente migrado. `/produtos-capilares/$slug`, `ProductDetailPage`, `ProductMarquee`, `CartContext` e `/carrinho` continuam temporariamente legados e ainda usam `src/data/products.ts`. Inventory, Checkout, Orders, Payment e StoreSettings não foram alterados pela Wave 1.
+O detalhe `/produtos-capilares/$slug` também foi migrado na Wave 2: usa `getPublicStoreProductBySlug`, recebe `PublicProduct`, deriva SEO do mesmo loader e renderiza `ProductDetailPage` apresentacional, sem Cart e sem fallback estático. Produto inexistente, DRAFT ou INACTIVE resulta em `notFound()`; falha de infraestrutura segue para `errorComponent`. A semântica HTTP 404 real em produção permanece pendente de smoke após o deploy, e HTTP 503 explícito continua deferido.
 
-O Source of Truth R2 ainda não está totalmente fechado: Wave 2 e Wave 3 permanecem pendentes. Não avançar R3.
+O storefront permanece parcialmente migrado. `ProductMarquee`, `CartContext` e `/carrinho` continuam temporariamente legados e ainda usam `src/data/products.ts`; esse arquivo também continua como artefato temporário de seed/migração/reconciliação. Inventory, Checkout, Orders, Payment e StoreSettings não foram alterados pelas Waves 1 e 2. A Wave 3 **NÃO foi iniciada**.
+
+O Source of Truth R2 ainda não está totalmente fechado: a Wave 2 ainda requer commit, push, deploy de produção, smoke humano e prova de HTTP real para not-found; a Wave 3 permanece pendente. R2-D-W2 ainda **NÃO está HUMAN HOMOLOGATED**. Não avançar R3.
 
 Decisão de R2: `store_products` é a fonte canônica definitiva de Product; `store_inventory` é a fonte canônica de estoque; `src/data/products.ts` é fonte temporária de migração; Categories permanecem como contrato estático controlado nesta etapa.
 
 ## Decisões abertas
-Paridade e reconciliação `static → persisted` das superfícies restantes; cutover do detalhe, Cart e consumidores legados; retirada final de `src/data/products.ts` do runtime; política degradada em indisponibilidade do banco; status/availability; IDs/slugs; publicação; imagens; Product/Inventory; StoreSettings runtime; estoque/backorder; concorrência; auditoria; guest vs conta; delivery/pickup; frete; Orders; Payment.
+Paridade e reconciliação `static → persisted` das superfícies restantes; cutover do Cart e consumidores legados; retirada final de `src/data/products.ts` do runtime; comprovação do HTTP 404 real do detalhe em produção; política degradada em indisponibilidade do banco; status/availability; IDs/slugs; publicação; imagens; Product/Inventory; StoreSettings runtime; estoque/backorder; concorrência; auditoria; guest vs conta; delivery/pickup; frete; Orders; Payment.
 
 ## Governança
 IMPLEMENTAR → VALIDAR → DOCUMENTAR → REVISAR → COMMITAR → PUSH/DEPLOY → HOMOLOGAR → ATUALIZAR STATUS.

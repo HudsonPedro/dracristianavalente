@@ -1,24 +1,15 @@
-import {
-  useState,
-  type ReactNode,
-} from "react";
+import type { ReactNode } from "react";
 
-import {
-  canProductBeAddedToCart,
-  useCart,
-} from "../../contexts/cart-context";
+import type { PublicProductImage } from "../../domain/store/public-product";
 import { CSS } from "../../routes/index";
-import type { Product } from "../../types/product";
 import logo from "../../assets/logo.png";
 
 type ProductDetailPageProps = {
-  product: Product;
-
   eyebrow: string;
   name: string;
   shortDescription: string;
 
-  images: string[];
+  images: PublicProductImage[];
 
   indication?: string;
   characteristics?: string[];
@@ -48,8 +39,6 @@ const WA =
   "https://wa.me/5541991599558?text=Ol%C3%A1%20Dra.%20Cristiana%2C%20gostaria%20de%20receber%20orienta%C3%A7%C3%A3o%20sobre%20um%20produto%20capilar.";
 
 export function ProductDetailPage({
-  product,
-
   eyebrow,
   name,
   shortDescription,
@@ -76,50 +65,17 @@ export function ProductDetailPage({
 
   relatedProducts,
 }: ProductDetailPageProps) {
-  const { addItem } = useCart();
-
-  const [cartFeedback, setCartFeedback] =
-    useState<string | null>(null);
-
-  const mainImage = images[0];
-
-  const cartEligibility =
-    canProductBeAddedToCart(product);
-
-  const canAddToCart =
-    cartEligibility.success;
-
-  const handleAddToCart = () => {
-    setCartFeedback(null);
-
-    const result = addItem(product);
-
-    if (!result.success) {
-      setCartFeedback(result.reason);
-      return;
-    }
-
-    setCartFeedback(
-      "Produto adicionado ao carrinho.",
-    );
-  };
+  const orderedImages = [...images].sort(
+    (left, right) =>
+      Number(right.main) - Number(left.main) ||
+      left.position - right.position ||
+      left.id.localeCompare(right.id),
+  );
+  const mainImage = orderedImages[0];
 
   const renderPrimaryAction = (
     extraClassName = "",
-  ) => {
-    if (canAddToCart) {
-      return (
-        <button
-          type="button"
-          onClick={handleAddToCart}
-          className={`btn btn-wa ${extraClassName}`}
-        >
-          Adicionar ao carrinho →
-        </button>
-      );
-    }
-
-    return (
+  ) =>
       <a
         href={primaryHref}
         target={
@@ -135,9 +91,7 @@ export function ProductDetailPage({
         className={`btn btn-wa ${extraClassName}`}
       >
         {primaryLabel} →
-      </a>
-    );
-  };
+      </a>;
 
   return (
     <>
@@ -186,30 +140,14 @@ export function ProductDetailPage({
               </a>
             </div>
 
-            {cartFeedback && (
-              <div className="mt-5 max-w-md rounded-[14px] border border-[color:var(--line)] bg-white/70 p-4">
-                <p className="text-sm font-semibold text-[color:var(--ink)]">
-                  {cartFeedback}
-                </p>
-
-                {canAddToCart && (
-                  <a
-                    href="/carrinho"
-                    className="mt-2 inline-block text-xs font-bold text-[color:var(--rose2)] transition hover:text-[color:var(--ink)]"
-                  >
-                    Ver carrinho →
-                  </a>
-                )}
-              </div>
-            )}
           </div>
 
           <div>
             {mainImage ? (
               <div className="frame bg-white">
                 <img
-                  src={mainImage}
-                  alt={name}
+                  src={mainImage.url}
+                  alt={mainImage.alt || name}
                   className="aspect-[4/5] h-full w-full object-cover"
                 />
               </div>
@@ -224,21 +162,22 @@ export function ProductDetailPage({
         {/* =====================================================
             GALERIA
             ===================================================== */}
-        {images.length > 1 && (
+        {orderedImages.length > 1 && (
           <section className="container py-12">
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-              {images
+              {orderedImages
                 .slice(1)
                 .map((image, index) => (
                   <div
-                    key={`${image}-${index}`}
+                    key={image.id}
                     className="frame"
                   >
                     <img
-                      src={image}
-                      alt={`${name} - imagem ${
-                        index + 2
-                      }`}
+                      src={image.url}
+                      alt={
+                        image.alt ||
+                        `${name} - imagem ${index + 2}`
+                      }
                       loading="lazy"
                       className="aspect-square h-full w-full object-cover"
                     />
@@ -510,40 +449,20 @@ export function ProductDetailPage({
             }}
           >
             <div className="kicker mb-6 mx-auto">
-              {canAddToCart
-                ? "Compra online"
-                : "Orientação personalizada"}
+              Orientação personalizada
             </div>
 
             <h2 className="display text-4xl md:text-5xl">
-              {canAddToCart
-                ? "Pronto para continuar com este produto?"
-                : "Tem dúvida se este produto é indicado para você?"}
+              Tem dúvida se este produto é indicado para você?
             </h2>
 
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-[color:var(--muted)]">
-              {canAddToCart
-                ? "Adicione o produto ao carrinho e continue sua compra com segurança."
-                : "Fale com a equipe da Dra. Cristiana Valente ou agende uma avaliação capilar para receber uma orientação individualizada."}
+              Fale com a equipe da Dra. Cristiana Valente ou agende uma
+              avaliação capilar para receber uma orientação individualizada.
             </p>
 
             {renderPrimaryAction("mt-8")}
 
-            {cartFeedback &&
-              canAddToCart && (
-                <div className="mx-auto mt-5 max-w-md rounded-[14px] border border-[color:var(--line)] bg-white p-4">
-                  <p className="text-sm font-semibold">
-                    {cartFeedback}
-                  </p>
-
-                  <a
-                    href="/carrinho"
-                    className="mt-2 inline-block text-xs font-bold text-[color:var(--rose2)] transition hover:text-[color:var(--ink)]"
-                  >
-                    Ver carrinho →
-                  </a>
-                </div>
-              )}
           </div>
         </section>
 

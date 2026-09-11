@@ -35,19 +35,26 @@ Admin: Users, Roles, Permissions, Departments, tokens, overrides, invitations es
 
 ### Product
 - Catálogo `/produtos-capilares`: `store_products` por boundary público persistido.
-- Detalhe, marquee e Cart: `src/data/products.ts` temporariamente.
+- Detalhe `/produtos-capilares/$slug`: `store_products` por boundary público persistido.
+- Marquee e Cart: `src/data/products.ts` temporariamente.
 - Admin/server: `store_products`.
-Resultado: cutover público parcial; superfícies legadas ainda dependem da fonte temporária.
+Resultado: catálogo e detalhe públicos migrados; superfícies legadas de marquee e Cart ainda dependem da fonte temporária.
 
-Decisão R2: `store_products` é a fonte canônica definitiva. `src/data/products.ts` passa a ser fonte temporária de migração, não autoridade futura de runtime. R2-B introduziu um boundary público read-only isolado e a Wave 1 fez o cutover somente de `/produtos-capilares`.
+Decisão R2: `store_products` é a fonte canônica definitiva. `src/data/products.ts` passa a ser fonte temporária de migração, não autoridade futura de runtime. R2-B introduziu um boundary público read-only isolado, a Wave 1 fez o cutover de `/produtos-capilares` e a Wave 2 fez o cutover de `/produtos-capilares/$slug`.
 
 ### Public Catalog — Migrated
 `store_products` → ProductRepository → ProductService → PublicProductCatalogService → `public-store-products` → TanStack route loader → `PublicProduct[]` → ProdutosCapilaresLayout → ProductCard public.
 
 O ramo público não possui acesso ao CartContext e não há fallback automático para `src/data/products.ts`. Pending, error e catálogo vazio são tratados pela rota/layout. Nenhum acesso a Inventory foi introduzido.
 
-### Product Detail — Legacy Temporary
-`src/data/products.ts` → `$slug.tsx` → ProductDetailPage.
+### Product Detail — Migrated
+`store_products` → ProductRepository → ProductService → PublicProductCatalogService → `getPublicStoreProductBySlug` → `$slug.tsx` loader → `PublicProduct` → ProductDetailPage apresentacional.
+
+O boundary expõe somente produto `ACTIVE`; inexistente, `DRAFT` ou `INACTIVE` retorna `null` e a rota chama `notFound()`. Erros de infraestrutura são propagados para o `errorComponent`, com mensagem controlada e retry manual por `router.invalidate()`/`reset()`. Há `pendingComponent` local, sem fallback estático e sem exposição de stack ou erro interno. HTTP 503 explícito permanece deferido. O HTTP 404 real em produção ainda deve ser comprovado por smoke após deploy.
+
+`ProductDetailPage` consome diretamente `PublicProduct`, sem conversão para `Product`, `useCart`, `addItem`, `canProductBeAddedToCart` ou feedback comercial. O detalhe não adiciona itens ao carrinho até a Wave 3. As imagens usam `PublicProductImage[]` (`id`, `url`, `alt`, `main`, `position`), em cópia ordenada por `main` primeiro, `position` crescente e `id` como desempate, sem mutar o DTO e com fallback seguro para ausência de imagem.
+
+O SEO é derivado do mesmo `loaderData`, sem segundo fetch: `title`, `description`, canonical, Open Graph (`title`, `description`, `url`, `type`) e `robots`. Os fallbacks são `${product.name} | Dra. Cristiana Valente`, `product.shortDescription` e `https://www.dracristianavalente.com.br/produtos-capilares/${product.slug}`; `seo.noIndex === true` produz `noindex,nofollow`.
 
 ### Cart — Legacy Temporary
 IDs e quantidades em `localStorage` → CartContext → reidratação por `src/data/products.ts` → renderização do carrinho.
@@ -86,7 +93,8 @@ Finding crítico aberto: `updateAdminUser` permite escalada para `SUPER_ADMIN` q
 
 ## Fronteira comercial atual
 Catálogo público principal: DB Product → boundary público → loader → UI sem Cart.
-Detalhe, marquee e carrinho: Static Product → UI → CartContext/localStorage → WhatsApp/carrinho.
+Detalhe público: DB Product → boundary público → loader → `PublicProduct` → UI apresentacional sem Cart.
+Marquee e carrinho: Static Product → UI → CartContext/localStorage → WhatsApp/carrinho.
 Admin: DB Product/Inventory → repositories → services → functions → Admin read-only.
 
 Não existem end-to-end: Product CRUD, Inventory homologado, StoreSettings runtime, Customer/Address commerce, Orders, Checkout, Payment, autorização individual por avaliação/protocolo e audit log operacional.

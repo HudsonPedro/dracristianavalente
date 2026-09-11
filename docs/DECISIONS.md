@@ -65,6 +65,22 @@ HTTP 503 explícito permanece deferido. A Wave 1 adota `errorComponent` controla
 **Status:** DECIDIDO — R2-D-W1 em 2026-09-10
 A divergência preexistente de CRLF/Prettier é uma issue separada e não será corrigida nesta wave. Classificação: **NON-BLOCKING PREEXISTING FORMAT POLICY ISSUE**. ESLint normal permanece FAIL; ESLint sem `prettier/prettier` passa.
 
+## D-015 — Boundary do detalhe público
+**Status:** DECIDIDO — R2-D-W2 em 2026-09-10
+O detalhe público usa somente `PublicProduct`, obtido por `getPublicStoreProductBySlug`, sem conversão para o `Product` legado e sem fallback para `src/data/products.ts`. Imagens estruturadas persistidas são consumidas diretamente.
+
+## D-016 — Cart desconectado do detalhe até a Wave 3
+**Status:** DECIDIDO — R2-D-W2 em 2026-09-10
+O detalhe permanece apresentacional e sem ação de carrinho. `CartContext`, `ProductMarquee` e os demais consumidores estáticos só serão migrados na Wave 3, ainda não iniciada.
+
+## D-017 — SEO canônico do detalhe
+**Status:** DECIDIDO — R2-D-W2 em 2026-09-10
+Metadata e canonical derivam do mesmo loader canônico do detalhe, sem segundo fetch e sem uso de `src/data/products.ts` para SEO.
+
+## D-018 — Semântica pública de not-found e infraestrutura
+**Status:** DECIDIDO — R2-D-W2 em 2026-09-10
+Produto inexistente, `DRAFT` ou `INACTIVE` é indistinguível na superfície pública e resulta em `notFound()`. Falha de infraestrutura permanece distinta e segue para o `errorComponent`. HTTP 503 explícito continua deferido; o HTTP 404 real deve ser comprovado em produção antes da homologação humana da Wave 2.
+
 # DECISÕES EM ABERTO
 
 ## O-001 — Fonte canônica de Product

@@ -53,15 +53,26 @@ SHA-256: `314FE53058D4C57189A735745020845F0D69ECF9011285D029149D23FA802846`
 ## R2-D-W1 — Public Catalog Wave 1
 - Data: 2026-09-10.
 - Escopo: somente `/produtos-capilares`.
-- Estado: **TECHNICALLY VALIDATED / AWAITING HUMAN HOMOLOGATION**.
-- Wave 1 homologated: **NO**.
+- Estado: **HUMAN HOMOLOGATED / CONCLUÍDA**.
+- Wave 1 homologated: **YES**.
 - Evidências: code review sem findings CRITICAL, HIGH, MEDIUM ou LOW; autoridade canônica comprovada; nenhum fallback estático; ramo público sem Cart; integridade de escopo e RC-01 comprovadas; typecheck e builds client, SSR e Nitro/Cloudflare aprovados.
 - ESLint normal: **FAIL**, somente pela issue preexistente `prettier/prettier`/CRLF; ESLint sem essa regra: **PASS**.
-- Pendência humana: renderização visual dos nove produtos, imagens, hero/animações, filtros, navegação hidratada, CTA e comportamento visual geral.
-- Não registrar como HOMOLOGATED, LOCKED, PRODUCTION VERIFIED ou DEPLOYED sem os respectivos gates e aceite humano.
+- Homologação humana concluída após os gates de publicação e smoke da Wave 1.
+
+## R2-D-W2 — Public Product Detail Cutover
+- Data: 2026-09-10.
+- `R2-D-W2-P01`: **APPROVED**.
+- `R2-D-W2-I01`: **ACCEPTED / TECHNICALLY IMPLEMENTED**.
+- `R2-D-W2-C01`: **CODE REVIEW PASS / ACCEPTED**.
+- Estado da Wave 2: **NOT YET HUMAN HOMOLOGATED**.
+- Evidências técnicas: typecheck, diff check e builds client/SSR/Nitro aprovados; ESLint sem `prettier/prettier` aprovado; ESLint normal falhou somente pela política CRLF/Prettier preexistente; code review sem findings CRITICAL, HIGH, MEDIUM ou LOW.
+- Gate futuro: detalhe válido, conteúdo correto, imagem principal, galeria, composição, benefícios, componentes, observações profissionais, disponibilidade/aquisição, WhatsApp contextual, retorno ao catálogo, metadata dinâmica, canonical, ausência de ação de carrinho, slug inexistente, HTTP real da slug inexistente igual a 404 e ausência de erro visual/runtime.
+- A evidência anterior à publicação da Wave 2 era HTTP 200 vazio para slug inexistente. Portanto, HTTP 404 em produção **NÃO está comprovado** e é gate obrigatório após deploy.
+- HTTP 503 explícito permanece deferido e **NÃO foi implementado**.
+- Pendências: commit, push, deploy de produção, smoke humano e prova de HTTP real para not-found.
 
 ## Código presente sem homologação humana conhecida
-Site institucional, catálogo, detalhe, carrinho, Admin Products read-only, Inventory read-only, Departments, password/security, persistência comercial, workflows e SEO/LGPD.
+Site institucional, detalhe da Wave 2, carrinho, Admin Products read-only, Inventory read-only, Departments, password/security, persistência comercial, workflows e SEO/LGPD.
 
 ## Ausente / não homologável no estado atual
 Product CRUD completo, Inventory management homologado, StoreSettings runtime, Orders operacional, Checkout, Payment e expansões futuras do PRD.
