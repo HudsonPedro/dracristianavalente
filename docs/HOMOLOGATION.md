@@ -64,15 +64,25 @@ SHA-256: `314FE53058D4C57189A735745020845F0D69ECF9011285D029149D23FA802846`
 - `R2-D-W2-P01`: **APPROVED**.
 - `R2-D-W2-I01`: **ACCEPTED / TECHNICALLY IMPLEMENTED**.
 - `R2-D-W2-C01`: **CODE REVIEW PASS / ACCEPTED**.
-- Estado da Wave 2: **NOT YET HUMAN HOMOLOGATED**.
+- Estado da Wave 2: **HUMAN HOMOLOGATED / CLOSED**.
 - Evidências técnicas: typecheck, diff check e builds client/SSR/Nitro aprovados; ESLint sem `prettier/prettier` aprovado; ESLint normal falhou somente pela política CRLF/Prettier preexistente; code review sem findings CRITICAL, HIGH, MEDIUM ou LOW.
-- Gate futuro: detalhe válido, conteúdo correto, imagem principal, galeria, composição, benefícios, componentes, observações profissionais, disponibilidade/aquisição, WhatsApp contextual, retorno ao catálogo, metadata dinâmica, canonical, ausência de ação de carrinho, slug inexistente, HTTP real da slug inexistente igual a 404 e ausência de erro visual/runtime.
-- A evidência anterior à publicação da Wave 2 era HTTP 200 vazio para slug inexistente. Portanto, HTTP 404 em produção **NÃO está comprovado** e é gate obrigatório após deploy.
+- Produção verificada externamente: produto válido com HTTP 200, slug inexistente com HTTP 404 real e SEO/canonical dinâmicos corretos.
+- Aceite humano registrado; W2 encerrada.
 - HTTP 503 explícito permanece deferido e **NÃO foi implementado**.
-- Pendências: commit, push, deploy de produção, smoke humano e prova de HTTP real para not-found.
+
+## R2-D-W3 — Canonical Cart
+- Data: 2026-09-11.
+- `R2-D-W3-P02`: **APPROVED**.
+- `R2-D-W3-I01`: **IMPLEMENTED / TECHNICALLY VALIDATED**.
+- `R2-D-W3-C01`: **CODE REVIEW PASS / ACCEPTED**.
+- Estado da Wave 3: **NOT YET HUMAN HOMOLOGATED / NOT YET COMMITTED, PUSHED OR DEPLOYED**.
+- Evidências: boundary pública em lote; `CartContext` sobre `PublicProduct`; storage mínimo protegido contra falha; compra elegível no catálogo e detalhe; zero imports runtime ativos de `products.ts`; diff check, TypeScript e build aprovados.
+- Findings LOW: hidratação sem generation token/cancelamento e três warnings `react-refresh/only-export-components`. Sem evidência de perda de storage ou impacto funcional/produção.
+- Gates pendentes: documentação aprovada, commit, push, deploy, smoke humano e homologação final.
+- R2 permanece aberto até a homologação da W3.
 
 ## Código presente sem homologação humana conhecida
-Site institucional, detalhe da Wave 2, carrinho, Admin Products read-only, Inventory read-only, Departments, password/security, persistência comercial, workflows e SEO/LGPD.
+Site institucional, carrinho da Wave 3, Admin Products read-only, Inventory read-only, Departments, password/security, persistência comercial, workflows e SEO/LGPD.
 
 ## Ausente / não homologável no estado atual
 Product CRUD completo, Inventory management homologado, StoreSettings runtime, Orders operacional, Checkout, Payment e expansões futuras do PRD.

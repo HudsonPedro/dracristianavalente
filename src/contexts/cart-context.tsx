@@ -8,15 +8,15 @@ import {
   type ReactNode,
 } from "react";
 
-import { products } from "../data/products";
-import type { Product } from "../types/product";
+import type { PublicProduct } from "../domain/store/public-product";
+import { getPublicStoreProductsByIds } from "../functions/public-store-products";
 
 /* =========================================================
    TIPOS
    ========================================================= */
 
 export type CartItem = {
-  product: Product;
+  product: PublicProduct;
   quantity: number;
 };
 
@@ -34,16 +34,33 @@ type AddToCartResult =
       reason: string;
     };
 
+export type CartHydrationState =
+  | "initial"
+  | "loading"
+  | "ready"
+  | "error";
+
+type CartEligibleProduct = Pick<
+  PublicProduct,
+  | "saleEnabled"
+  | "priceVisibility"
+  | "price"
+  | "requiresEvaluation"
+  | "requiresProtocol"
+  | "availability"
+>;
+
 type CartContextValue = {
   items: CartItem[];
 
   totalItems: number;
   subtotal: number;
   isEmpty: boolean;
-  isHydrated: boolean;
+  hydrationState: CartHydrationState;
+  retryHydration: () => void;
 
   addItem: (
-    product: Product,
+    product: PublicProduct,
     quantity?: number,
   ) => AddToCartResult;
 
@@ -86,15 +103,8 @@ const CartContext =
    ========================================================= */
 
 export function canProductBeAddedToCart(
-  product: Product,
+  product: CartEligibleProduct,
 ): AddToCartResult {
-  if (product.status !== "ACTIVE") {
-    return {
-      success: false,
-      reason: "Produto indisponível.",
-    };
-  }
-
   if (!product.saleEnabled) {
     return {
       success: false,
@@ -153,7 +163,7 @@ export function canProductBeAddedToCart(
    ========================================================= */
 
 export function getProductSalePrice(
-  product: Product,
+  product: Pick<PublicProduct, "price" | "promotionalPrice">,
 ): number {
   if (
     typeof product.promotionalPrice === "number"
@@ -200,15 +210,17 @@ export function CartProvider({
     [],
   );
 
-  const [isHydrated, setIsHydrated] =
-    useState(false);
+  const [storedEntries, setStoredEntries] = useState<StoredCartItem[]>([]);
+  const [hydrationState, setHydrationState] =
+    useState<CartHydrationState>("initial");
 
   /* =======================================================
      CARREGAR CARRINHO
 
      Armazenamos apenas ID + quantidade.
 
-     O produto sempre é recuperado novamente do products.ts.
+     O produto sempre é recuperado novamente da boundary pública
+     canônica em lote.
 
      Assim:
      - alterações de preço são atualizadas;
@@ -218,78 +230,98 @@ export function CartProvider({
      - novos produtos continuam usando a mesma estrutura.
      ======================================================= */
 
-  useEffect(() => {
+  const hydrate = useCallback(async (entries: StoredCartItem[]) => {
+    setStoredEntries(entries);
+
+    if (entries.length === 0) {
+      setItems([]);
+      setHydrationState("ready");
+      return;
+    }
+
+    setHydrationState("loading");
+
     try {
-      const stored =
-        window.localStorage.getItem(
-          STORAGE_KEY,
-        );
+      const products = await getPublicStoreProductsByIds({
+        data: entries.map((entry) => entry.productId),
+      });
+      const productsById = new Map(
+        products.map((product) => [product.id, product] as const),
+      );
+      const restoredItems = entries.flatMap((entry): CartItem[] => {
+        const product = productsById.get(entry.productId);
 
-      if (!stored) {
-        setIsHydrated(true);
-        return;
-      }
+        if (!product || !canProductBeAddedToCart(product).success) {
+          return [];
+        }
 
-      const parsed = JSON.parse(
-        stored,
-      ) as StoredCartItem[];
-
-      if (!Array.isArray(parsed)) {
-        setIsHydrated(true);
-        return;
-      }
-
-      const restoredItems: CartItem[] =
-        parsed
-          .map((storedItem) => {
-            const product = products.find(
-              (item) =>
-                item.id ===
-                storedItem.productId,
-            );
-
-            if (!product) {
-              return null;
-            }
-
-            const eligibility =
-              canProductBeAddedToCart(
-                product,
-              );
-
-            if (!eligibility.success) {
-              return null;
-            }
-
-            return {
-              product,
-              quantity:
-                normalizeQuantity(
-                  storedItem.quantity,
-                ),
-            };
-          })
-          .filter(
-            (
-              item,
-            ): item is CartItem =>
-              item !== null,
-          );
+        return [
+          {
+            product,
+            quantity: normalizeQuantity(entry.quantity),
+          },
+        ];
+      });
 
       setItems(restoredItems);
+      setHydrationState("ready");
     } catch {
-      setItems([]);
-    } finally {
-      setIsHydrated(true);
+      setHydrationState("error");
     }
   }, []);
+
+  useEffect(() => {
+    let entries: StoredCartItem[] = [];
+
+    try {
+      const stored = window.localStorage.getItem(STORAGE_KEY);
+      const parsed: unknown = stored ? JSON.parse(stored) : [];
+
+      if (Array.isArray(parsed)) {
+        const entriesById = new Map<string, StoredCartItem>();
+
+        for (const value of parsed) {
+          if (
+            typeof value !== "object" ||
+            value === null ||
+            !("productId" in value) ||
+            !("quantity" in value) ||
+            typeof value.productId !== "string" ||
+            !value.productId.trim() ||
+            typeof value.quantity !== "number"
+          ) {
+            continue;
+          }
+
+          const productId = value.productId.trim();
+          const quantity = normalizeQuantity(value.quantity);
+          const existing = entriesById.get(productId);
+
+          entriesById.set(productId, {
+            productId,
+            quantity: (existing?.quantity ?? 0) + quantity,
+          });
+        }
+
+        entries = Array.from(entriesById.values());
+      }
+    } catch {
+      entries = [];
+    }
+
+    void hydrate(entries);
+  }, [hydrate]);
+
+  const retryHydration = useCallback(() => {
+    void hydrate(storedEntries);
+  }, [hydrate, storedEntries]);
 
   /* =======================================================
      SALVAR CARRINHO
      ======================================================= */
 
   useEffect(() => {
-    if (!isHydrated) {
+    if (hydrationState !== "ready") {
       return;
     }
 
@@ -304,11 +336,12 @@ export function CartProvider({
         STORAGE_KEY,
         JSON.stringify(data),
       );
+      setStoredEntries(data);
     } catch {
       // O carrinho continua funcionando em memória
       // caso o navegador bloqueie localStorage.
     }
-  }, [items, isHydrated]);
+  }, [items, hydrationState]);
 
   /* =======================================================
      ADICIONAR
@@ -316,9 +349,16 @@ export function CartProvider({
 
   const addItem = useCallback(
     (
-      product: Product,
+      product: PublicProduct,
       quantity = 1,
     ): AddToCartResult => {
+      if (hydrationState !== "ready") {
+        return {
+          success: false,
+          reason: "Aguarde o carrinho terminar de carregar.",
+        };
+      }
+
       const eligibility =
         canProductBeAddedToCart(product);
 
@@ -365,7 +405,7 @@ export function CartProvider({
         success: true,
       };
     },
-    [],
+    [hydrationState],
   );
 
   /* =======================================================
@@ -557,7 +597,8 @@ export function CartProvider({
         isEmpty:
           items.length === 0,
 
-        isHydrated,
+        hydrationState,
+        retryHydration,
 
         addItem,
         removeItem,
@@ -573,7 +614,8 @@ export function CartProvider({
         items,
         totalItems,
         subtotal,
-        isHydrated,
+        hydrationState,
+        retryHydration,
         addItem,
         removeItem,
         setQuantity,

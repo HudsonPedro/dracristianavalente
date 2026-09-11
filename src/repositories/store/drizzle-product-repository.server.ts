@@ -3,6 +3,7 @@ import {
   asc,
   eq,
   ilike,
+  inArray,
   or,
   type SQL,
 } from "drizzle-orm";
@@ -460,6 +461,12 @@ export class DrizzleProductRepository
     const db = getDb();
 
     const conditions: SQL[] = [];
+
+    if (filters.ids && filters.ids.length > 0) {
+      conditions.push(
+        inArray(productsTable.id, filters.ids),
+      );
+    }
 
     if (filters.search?.trim()) {
       const search =

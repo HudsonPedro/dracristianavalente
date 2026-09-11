@@ -29,3 +29,27 @@ export const getPublicStoreProductBySlug = createServerFn({
 
     return publicProductCatalogService.getPublicProductBySlug(data);
   });
+
+export const getPublicStoreProductsByIds = createServerFn({
+  method: "GET",
+})
+  .validator((productIds: string[]) => {
+    if (!Array.isArray(productIds)) {
+      throw new Error("A lista de produtos é inválida.");
+    }
+
+    return productIds.map((productId) => {
+      if (typeof productId !== "string" || !productId.trim()) {
+        throw new Error("ID de produto inválido.");
+      }
+
+      return productId.trim();
+    });
+  })
+  .handler(async ({ data }) => {
+    const { publicProductCatalogService } = await import(
+      "../services/store/public-product-catalog.server"
+    );
+
+    return publicProductCatalogService.getByIds(data);
+  });

@@ -109,6 +109,36 @@ export class PublicProductCatalogService {
 
     return projectPublicProduct(product);
   }
+
+  async getByIds(productIds: string[]): Promise<PublicProduct[]> {
+    const trimmedIds = productIds.map((id) => id.trim());
+
+    if (trimmedIds.some((id) => !id)) {
+      throw new Error("ID de produto inválido.");
+    }
+
+    const normalizedIds = Array.from(new Set(trimmedIds));
+
+    if (normalizedIds.length === 0) {
+      return [];
+    }
+
+    const products = await this.products.list({
+      ids: normalizedIds,
+      status: "ACTIVE",
+    });
+    const productsById = new Map(
+      products
+        .filter((product) => product.status === "ACTIVE")
+        .map((product) => [product.id, product] as const),
+    );
+
+    return normalizedIds.flatMap((id) => {
+      const product = productsById.get(id);
+
+      return product ? [projectPublicProduct(product)] : [];
+    });
+  }
 }
 
 export const publicProductCatalogService =

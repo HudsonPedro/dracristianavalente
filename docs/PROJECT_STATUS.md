@@ -28,9 +28,9 @@ Arquivo: `src/functions/store-inventory.ts`
 
 ## Fronteira comercial
 - site institucional implementado;
-- catálogo principal `/produtos-capilares` e detalhe `/produtos-capilares/$slug` persistidos; ProductMarquee e carrinho temporariamente legados;
+- catálogo principal, detalhe e carrinho usam produtos públicos persistidos; ProductMarquee permanece dormente com compatibilidade legada;
 - detalhe público de produto;
-- carrinho client-side com `localStorage`;
+- carrinho client-side com `localStorage` contendo somente `productId + quantity` e reidratação canônica em lote;
 - Product e Inventory persistidos;
 - Admin Products persistido, porém read-only;
 - leitura administrativa de estoque;
@@ -40,9 +40,9 @@ A frente comercial não chegou a Orders operacional, Checkout ou Payment.
 ## Principal blocker arquitetural
 A decisão de fonte canônica foi encerrada em R2: `store_products` é a fonte canônica definitiva de Product, `store_inventory` é a fonte canônica de estoque, `src/data/products.ts` é fonte temporária de migração e `src/data/categories.ts` permanece como contrato estático controlado nesta etapa.
 
-Enquanto o cutover total não for concluído, permanecem pendentes:
-- paridade e reconciliação das superfícies ainda legadas com o catálogo persistido;
-- cutover do Cart e consumidores legados, com retirada final do catálogo estático do runtime;
+Enquanto a Wave 3 não for publicada e homologada, permanecem pendentes:
+- commit, push, deploy e smoke humano do carrinho canônico;
+- limpeza futura do `ProductMarquee` dormente, sem autoridade runtime ativa;
 - política degradada em caso de indisponibilidade do banco;
 - precedência futura entre `availability` e Inventory.
 
@@ -51,10 +51,10 @@ Enquanto o cutover total não for concluído, permanecem pendentes:
 | --- | --- |
 | Site institucional | IMPLEMENTADO |
 | Avaliação | PARCIAL |
-| Catálogo | PARCIALMENTE MIGRADO |
+| Catálogo | MIGRADO / W3 AWAITING HOMOLOGATION |
 | Detalhe de produto | IMPLEMENTADO |
 | Categorias | PARCIAL |
-| Carrinho | PARCIAL |
+| Carrinho | IMPLEMENTADO / CODE REVIEW PASSED / AWAITING HOMOLOGATION |
 | Products persistence | IMPLEMENTADO |
 | Inventory | PARCIAL |
 | StoreSettings | FUNDAÇÃO |
@@ -81,8 +81,10 @@ Enquanto o cutover total não for concluído, permanecem pendentes:
 | CI automático | AUSENTE |
 | Documentation | R1 HOMOLOGADO |
 
+Testes automatizados e CI automático de push/PR estão ausentes. Os GitHub Actions existentes são workflows operacionais manuais por `workflow_dispatch`; R3 continua responsável pelo framework de testes, testes unitários/de integração e validação automática de push/PR.
+
 ## Blockers
-- dependência temporária de `src/data/products.ts` para seed/migração e runtime das superfícies ainda não migradas; `store_products` permanece como fonte canônica;
+- `src/data/products.ts` permanece para seed/migração/reconciliação e compatibilidade dormente, sem autoridade runtime ativa;
 - G-01/F-01: escalada para `SUPER_ADMIN` condicionada a sessão válida + `USERS:VIEW`;
 - autorização server-side comercial incompleta;
 - ausência de testes e CI automático;
@@ -101,7 +103,7 @@ Enquanto o cutover total não for concluído, permanecem pendentes:
 5. R5 — Product CRUD
 6. R6 — StoreSettings runtime
 7. R7 — Inventory
-8. R8 — Authoritative storefront/cart
+8. R8 — Commercial storefront integration with StoreSettings + Inventory
 9. R9 — Customers/Addresses/Orders
 10. R10 — Checkout
 11. R11 — Payment
@@ -120,20 +122,24 @@ Esta sequência não é a árvore oficial de `#PASSO`.
 - R2-D-W2-P01: **APROVADO**.
 - R2-D-W2-I01: **ACEITO / TECHNICALLY IMPLEMENTED**.
 - R2-D-W2-C01: **CODE REVIEW PASS / ACEITO**.
-- R2-D-W2: **IMPLEMENTADA / CODE REVIEWED / DOCUMENTADA / AWAITING COMMIT, DEPLOY AND HUMAN SMOKE**.
+- R2-D-W2: **HUMAN HOMOLOGATED / CLOSED**.
+- R2-D-W3-P02: **APROVADO**.
+- R2-D-W3-I01: **IMPLEMENTED / TECHNICALLY VALIDATED**.
+- R2-D-W3-C01: **CODE REVIEW PASS / ACEITO**.
+- R2-D-W3: **IMPLEMENTED / CODE REVIEW PASSED / NOT YET HUMAN HOMOLOGATED / NOT YET COMMITTED, PUSHED OR DEPLOYED**.
 
 A Wave 1 migrou somente `/produtos-capilares` para a fonte persistida, via loader SSR e `PublicProduct[]`. O layout não consulta mais `src/data/products.ts`, o ramo público do `ProductCard` está isolado do CartContext e não existe fallback estático. Categorias continuam em `src/data/categories.ts`.
 
-O detalhe `/produtos-capilares/$slug` também foi migrado na Wave 2: usa `getPublicStoreProductBySlug`, recebe `PublicProduct`, deriva SEO do mesmo loader e renderiza `ProductDetailPage` apresentacional, sem Cart e sem fallback estático. Produto inexistente, DRAFT ou INACTIVE resulta em `notFound()`; falha de infraestrutura segue para `errorComponent`. A semântica HTTP 404 real em produção permanece pendente de smoke após o deploy, e HTTP 503 explícito continua deferido.
+O detalhe `/produtos-capilares/$slug` foi migrado na Wave 2: usa `getPublicStoreProductBySlug`, recebe `PublicProduct`, deriva SEO do mesmo loader e não possui fallback estático. A produção foi verificada externamente: produto válido respondeu HTTP 200, slug inexistente respondeu HTTP 404 real, SEO/canonical dinâmicos foram verificados e o aceite humano encerrou a W2. HTTP 503 explícito continua deferido.
 
-O storefront permanece parcialmente migrado. `ProductMarquee`, `CartContext` e `/carrinho` continuam temporariamente legados e ainda usam `src/data/products.ts`; esse arquivo também continua como artefato temporário de seed/migração/reconciliação. Inventory, Checkout, Orders, Payment e StoreSettings não foram alterados pelas Waves 1 e 2. A Wave 3 **NÃO foi iniciada**.
+Na Wave 3, `CartContext` e `/carrinho` passaram a usar `PublicProduct`, resolvido em lote por IDs. Catálogo e detalhe restauraram a entrada de compra somente para produtos elegíveis. Os imports restantes de `products.ts` são o seed e o `ProductMarquee` DEAD/UNUSED; imports runtime ativos chegaram a zero. Inventory, Checkout, Orders, Payment e StoreSettings não foram alterados.
 
-O Source of Truth R2 ainda não está totalmente fechado: a Wave 2 ainda requer commit, push, deploy de produção, smoke humano e prova de HTTP real para not-found; a Wave 3 permanece pendente. R2-D-W2 ainda **NÃO está HUMAN HOMOLOGATED**. Não avançar R3.
+O Source of Truth R2 ainda não está fechado: a Wave 3 requer documentação aprovada, commit, push, deploy, smoke humano e homologação final. Não avançar R3 antes desse fechamento.
 
 Decisão de R2: `store_products` é a fonte canônica definitiva de Product; `store_inventory` é a fonte canônica de estoque; `src/data/products.ts` é fonte temporária de migração; Categories permanecem como contrato estático controlado nesta etapa.
 
 ## Decisões abertas
-Paridade e reconciliação `static → persisted` das superfícies restantes; cutover do Cart e consumidores legados; retirada final de `src/data/products.ts` do runtime; comprovação do HTTP 404 real do detalhe em produção; política degradada em indisponibilidade do banco; status/availability; IDs/slugs; publicação; imagens; Product/Inventory; StoreSettings runtime; estoque/backorder; concorrência; auditoria; guest vs conta; delivery/pickup; frete; Orders; Payment.
+Publicação e homologação da W3; limpeza do código dormente; política degradada futura; status/availability com Inventory; StoreSettings runtime; estoque/backorder; concorrência; auditoria; guest vs conta; delivery/pickup; frete; Orders; Checkout; Payment.
 
 ## Governança
 IMPLEMENTAR → VALIDAR → DOCUMENTAR → REVISAR → COMMITAR → PUSH/DEPLOY → HOMOLOGAR → ATUALIZAR STATUS.

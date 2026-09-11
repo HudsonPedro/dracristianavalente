@@ -126,6 +126,20 @@ IMPLEMENTAR → VALIDAR → DOCUMENTAR → REVISAR → COMMITAR → PUSH/DEPLOY 
 - Implementação: loader por `getPublicStoreProductBySlug`; `PublicProduct` sem conversão legada; detalhe apresentacional sem Cart; imagens estruturadas e ordenadas sem mutação; SEO dinâmico derivado do mesmo loader; estados pending/error; inexistente, DRAFT ou INACTIVE encaminhado a `notFound()`; falha de infraestrutura preservada como erro.
 - Validações: `git diff --check` **PASS**; `npx tsc --noEmit` **PASS**; ESLint direcionado **FAIL** somente por `prettier/prettier`/CRLF preexistente; ESLint sem `prettier/prettier` **PASS**; `npm run build` **PASS**; client **PASS — 284 módulos**; SSR **PASS — 237 módulos**; Nitro/Cloudflare **PASS — 419 módulos**.
 - Buscas negativas: import estático de products, `useCart`, `addItem`, `canProductBeAddedToCart`, `as Product`, novo `any` e import client direto de `.server` — **NOT FOUND**.
-- HTTP 503 explícito permanece deferido. A semântica HTTP 404 real de not-found em produção permanece pendente de smoke após deploy; antes da publicação da Wave 2, a auditoria encontrou slug inexistente respondendo HTTP 200 vazio.
-- Estado: **IMPLEMENTADA / CODE REVIEWED / DOCUMENTADA / AINDA NÃO HUMAN HOMOLOGATED**.
-- Próximos gates: commit → push → deploy de produção → smoke humano → prova de HTTP real para not-found.
+- HTTP 503 explícito permanece deferido. Após publicação, a produção foi verificada externamente com HTTP 200 para produto válido, HTTP 404 real para slug inexistente e SEO/canonical dinâmicos.
+- Estado: **HUMAN HOMOLOGATED / CLOSED**.
+
+### 2026-09-11 — R2-D-W3 Canonical Cart
+- `R2-D-W3-P02`: desenho corrigido **APROVADO**.
+- `R2-D-W3-I01`: implementação concluída em nove arquivos técnicos, sem arquivos novos.
+- Implementação: filtro `ids`; consulta única em lote; `getPublicStoreProductsByIds`; `CartContext` sobre `PublicProduct`; estados `initial/loading/ready/error`; guarda de persistência; retry; reconciliação comercial; compra no catálogo e detalhe; `/carrinho` com imagens e preços canônicos.
+- Persistência: somente `productId + quantity`; nenhum snapshot financeiro; falha temporária não apaga o storage.
+- Autoridade estática: zero imports runtime ativos de `products.ts`; seed permitido e `ProductMarquee` DEAD/UNUSED não alterado.
+- Validações: `git diff --check` **PASS**; TypeScript **PASS**; ESLint sem Prettier **0 errors / 3 warnings**; build **PASS**.
+- `R2-D-W3-C01`: **CODE REVIEW PASS**, sem findings CRITICAL, HIGH ou MEDIUM.
+- LOW L-01: hidratação assíncrona sem generation token/cancelamento; eventual request concorrente pode terminar fora de ordem, sem evidência de perda de storage ou adições.
+- LOW L-02: três warnings `react-refresh/only-export-components`, restritos a Fast Refresh em desenvolvimento.
+- RC-01 preservado.
+- `R2-D-W3-D01`: documentação canônica consolidada.
+- Estado: **IMPLEMENTED / CODE REVIEW PASSED / NOT YET HUMAN HOMOLOGATED / NOT YET COMMITTED, PUSHED OR DEPLOYED**.
+- Próximos gates: commit → push → deploy → smoke → homologation.

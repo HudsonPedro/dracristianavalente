@@ -36,37 +36,42 @@ Admin: Users, Roles, Permissions, Departments, tokens, overrides, invitations es
 ### Product
 - Catálogo `/produtos-capilares`: `store_products` por boundary público persistido.
 - Detalhe `/produtos-capilares/$slug`: `store_products` por boundary público persistido.
-- Marquee e Cart: `src/data/products.ts` temporariamente.
+- Cart: `store_products` via boundary pública canônica em lote.
+- ProductMarquee: DEAD/UNUSED, ainda com import legado de `src/data/products.ts`.
 - Admin/server: `store_products`.
-Resultado: catálogo e detalhe públicos migrados; superfícies legadas de marquee e Cart ainda dependem da fonte temporária.
+Resultado: catálogo, detalhe e carrinho usam produtos persistidos; não há autoridade runtime estática ativa.
 
 Decisão R2: `store_products` é a fonte canônica definitiva. `src/data/products.ts` passa a ser fonte temporária de migração, não autoridade futura de runtime. R2-B introduziu um boundary público read-only isolado, a Wave 1 fez o cutover de `/produtos-capilares` e a Wave 2 fez o cutover de `/produtos-capilares/$slug`.
 
 ### Public Catalog — Migrated
 `store_products` → ProductRepository → ProductService → PublicProductCatalogService → `public-store-products` → TanStack route loader → `PublicProduct[]` → ProdutosCapilaresLayout → ProductCard public.
 
-O ramo público não possui acesso ao CartContext e não há fallback automático para `src/data/products.ts`. Pending, error e catálogo vazio são tratados pela rota/layout. Nenhum acesso a Inventory foi introduzido.
+O ramo público usa `PublicProduct` e, desde a Wave 3, acessa o CartContext canônico somente para produtos comercialmente elegíveis. Não há fallback para `src/data/products.ts`. Pending, error e catálogo vazio são tratados pela rota/layout. Nenhum acesso a Inventory foi introduzido.
 
 ### Product Detail — Migrated
 `store_products` → ProductRepository → ProductService → PublicProductCatalogService → `getPublicStoreProductBySlug` → `$slug.tsx` loader → `PublicProduct` → ProductDetailPage apresentacional.
 
 O boundary expõe somente produto `ACTIVE`; inexistente, `DRAFT` ou `INACTIVE` retorna `null` e a rota chama `notFound()`. Erros de infraestrutura são propagados para o `errorComponent`, com mensagem controlada e retry manual por `router.invalidate()`/`reset()`. Há `pendingComponent` local, sem fallback estático e sem exposição de stack ou erro interno. HTTP 503 explícito permanece deferido. O HTTP 404 real em produção ainda deve ser comprovado por smoke após deploy.
 
-`ProductDetailPage` consome diretamente `PublicProduct`, sem conversão para `Product`, `useCart`, `addItem`, `canProductBeAddedToCart` ou feedback comercial. O detalhe não adiciona itens ao carrinho até a Wave 3. As imagens usam `PublicProductImage[]` (`id`, `url`, `alt`, `main`, `position`), em cópia ordenada por `main` primeiro, `position` crescente e `id` como desempate, sem mutar o DTO e com fallback seguro para ausência de imagem.
+`ProductDetailPage` consome diretamente `PublicProduct`, sem conversão para `Product`. Desde a Wave 3, usa a regra comercial compartilhada e adiciona ao carrinho somente produtos elegíveis; produtos restritos preservam CTAs de avaliação, consulta ou WhatsApp. As imagens usam `PublicProductImage[]` (`id`, `url`, `alt`, `main`, `position`), em cópia ordenada por `main` primeiro, `position` crescente e `id` como desempate, sem mutar o DTO e com fallback seguro para ausência de imagem.
 
 O SEO é derivado do mesmo `loaderData`, sem segundo fetch: `title`, `description`, canonical, Open Graph (`title`, `description`, `url`, `type`) e `robots`. Os fallbacks são `${product.name} | Dra. Cristiana Valente`, `product.shortDescription` e `https://www.dracristianavalente.com.br/produtos-capilares/${product.slug}`; `seo.noIndex === true` produz `noindex,nofollow`.
 
-### Cart — Legacy Temporary
-IDs e quantidades em `localStorage` → CartContext → reidratação por `src/data/products.ts` → renderização do carrinho.
+### Cart — Canonical Product Hydration
+`localStorage` → `StoredCartItem[]` (`productId`, `quantity`) → `getPublicStoreProductsByIds` → `PublicProductCatalogService.getByIds` → `ProductRepository.list({ ids, status: ACTIVE })` → `PublicProduct[]` → elegibilidade comercial → `CartItem[]` → `/carrinho`.
 
-O `ProductCard` mantém compatibilidade transitória: `public` → `PublicProduct` → sem Cart; `legacy` → `Product` → Cart permitido conforme o comportamento anterior. Essa compatibilidade permanece até a Wave 3.
+A consulta é única e em lote; IDs são normalizados e deduplicados, a ordem solicitada é restaurada, e desconhecidos/DRAFT/INACTIVE são omitidos. Erros de infraestrutura propagam, sem fallback estático e sem Drizzle no cliente.
+
+A hidratação possui estados `initial`, `loading`, `ready` e `error`. O storage só é atualizado em `ready`; falha temporária preserva as entradas e permite retry. Remoção por inexistência ou inelegibilidade só é persistida após resposta canônica bem-sucedida. Não existe snapshot financeiro: preço e preço promocional vêm do dado atual.
+
+O `ProductCard` mantém o ramo `legacy` somente para compatibilidade com o `ProductMarquee` dormente. O ramo `public` recebe `PublicProduct` e usa o carrinho canônico; o ramo legado não alimenta esse carrinho.
 
 ### Categories
 `src/data/categories.ts` é estático; IDs também são persistidos sem entidade/FK.
 Nesta etapa, permanece como contrato estático controlado.
 
 ### Cart
-Cart operacional = React Context + `localStorage`; não é autoridade de preço, flags, disponibilidade ou estoque. Existe cart domain paralelo desconectado.
+Cart atual = React Context + `localStorage` mínimo + reidratação canônica. `canProductBeAddedToCart` exige venda habilitada, preço visível e válido, ausência de restrição por avaliação/protocolo e disponibilidade `AVAILABLE`. Checkout permanece desabilitado. Inventory ainda não participa do runtime.
 
 ### StoreSettings
 Modelado/persistido, sem repository/service/runtime efetivo.
@@ -92,9 +97,9 @@ Toda mutation deve aplicar RBAC no servidor.
 Finding crítico aberto: `updateAdminUser` permite escalada para `SUPER_ADMIN` quando o ator possui sessão válida + `USERS:VIEW`. Pertence a R4.
 
 ## Fronteira comercial atual
-Catálogo público principal: DB Product → boundary público → loader → UI sem Cart.
-Detalhe público: DB Product → boundary público → loader → `PublicProduct` → UI apresentacional sem Cart.
-Marquee e carrinho: Static Product → UI → CartContext/localStorage → WhatsApp/carrinho.
+Catálogo e detalhe: DB Product → boundary público → loader → `PublicProduct` → UI → CartContext canônico quando elegível.
+Carrinho: IDs/quantidades locais → boundary pública em lote → regras comerciais → UI com dados canônicos.
+ProductMarquee: DEAD/UNUSED com compatibilidade estática residual, fora do grafo runtime ativo.
 Admin: DB Product/Inventory → repositories → services → functions → Admin read-only.
 
 Não existem end-to-end: Product CRUD, Inventory homologado, StoreSettings runtime, Customer/Address commerce, Orders, Checkout, Payment, autorização individual por avaliação/protocolo e audit log operacional.
@@ -105,6 +110,6 @@ Product canônico persistido → StoreSettings → Inventory → storefront/cart
 Princípios: fonte única, validação e autorização server-side, ativação gradual, idempotência, atomicidade, auditoria, privacidade, testes e CI.
 
 ## Sequência de recuperação
-R1 Documentation → R2 Source of Truth → R3 Tests/CI → R4 Commercial RBAC → R5 Product CRUD → R6 StoreSettings → R7 Inventory → R8 Authoritative Storefront/Cart → R9 Customers/Addresses/Orders → R10 Checkout → R11 Payment → R12 PRD Expansions.
+R1 Documentation → R2 Product Source of Truth + canonical cart/static retirement → R3 Tests/CI → R4 Commercial RBAC → R5 Product CRUD → R6 StoreSettings → R7 Inventory → R8 Commercial Storefront integration with StoreSettings/Inventory → R9 Customers/Addresses/Orders → R10 Checkout → R11 Payment → R12 PRD Expansions.
 
 Esta sequência não é a árvore oficial de `#PASSO`.

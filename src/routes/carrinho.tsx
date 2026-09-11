@@ -5,6 +5,7 @@ import {
   getProductSalePrice,
   useCart,
 } from "../contexts/cart-context";
+import type { PublicProductImage } from "../domain/store/public-product";
 
 export const Route = createFileRoute("/carrinho")({
   component: CarrinhoPage,
@@ -17,29 +18,78 @@ function formatPrice(value: number) {
   }).format(value);
 }
 
+function selectMainImage(
+  images: PublicProductImage[],
+): PublicProductImage | undefined {
+  return [...images].sort(
+    (left, right) =>
+      Number(right.main) - Number(left.main) ||
+      left.position - right.position ||
+      left.id.localeCompare(right.id),
+  )[0];
+}
+
 function CarrinhoPage() {
   const {
     items,
     totalItems,
     subtotal,
     isEmpty,
-    isHydrated,
+    hydrationState,
+    retryHydration,
     incrementItem,
     decrementItem,
     removeItem,
     clearCart,
   } = useCart();
 
-  if (!isHydrated) {
+  if (
+    hydrationState === "initial" ||
+    hydrationState === "loading"
+  ) {
     return (
       <>
         <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
         <main className="wrap min-h-screen">
           <section className="container flex min-h-[70vh] items-center justify-center py-20">
-            <p className="text-sm text-[color:var(--muted)]">
+            <p
+              aria-live="polite"
+              className="text-sm text-[color:var(--muted)]"
+            >
               Carregando carrinho...
             </p>
+          </section>
+        </main>
+      </>
+    );
+  }
+
+  if (hydrationState === "error") {
+    return (
+      <>
+        <style dangerouslySetInnerHTML={{ __html: CSS }} />
+
+        <main className="wrap min-h-screen">
+          <section className="container flex min-h-[70vh] items-center justify-center py-20">
+            <div className="card max-w-xl p-8 text-center md:p-10">
+              <h1 className="display text-3xl md:text-4xl">
+                Carrinho temporariamente indisponível
+              </h1>
+
+              <p className="mt-4 text-sm leading-6 text-[color:var(--muted)]">
+                Não foi possível atualizar os produtos salvos. Seu carrinho
+                foi preservado. Tente novamente em alguns instantes.
+              </p>
+
+              <button
+                type="button"
+                onClick={retryHydration}
+                className="btn btn-wa mt-8"
+              >
+                Tentar novamente
+              </button>
+            </div>
           </section>
         </main>
       </>
@@ -134,6 +184,7 @@ function CarrinhoPage() {
 
                 <div className="grid gap-5">
                   {items.map(({ product, quantity }) => {
+                    const mainImage = selectMainImage(product.images);
                     const unitPrice =
                       getProductSalePrice(product);
 
@@ -151,10 +202,10 @@ function CarrinhoPage() {
                             href={`/produtos-capilares/${product.slug}`}
                             className="block bg-[#f1ece5]"
                           >
-                            {product.images[0] ? (
+                            {mainImage ? (
                               <img
-                                src={product.images[0]}
-                                alt={product.name}
+                                src={mainImage.url}
+                                alt={mainImage.alt || product.name}
                                 className="aspect-square h-full w-full object-cover md:aspect-auto"
                               />
                             ) : (

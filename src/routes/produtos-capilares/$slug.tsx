@@ -114,6 +114,7 @@ function ProdutoCapilarPage() {
 
   return (
     <ProductDetailPage
+      product={product}
       eyebrow={eyebrow}
       name={product.name}
       shortDescription={product.shortDescription}

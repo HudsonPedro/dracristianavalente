@@ -32,7 +32,7 @@ Fluxo: IMPLEMENTAR → VALIDAR → DOCUMENTAR → REVISAR → COMMITAR → PUSH/
 
 ## D-007 — Sequência R1–R12
 **Status:** DECIDIDO
-R1 Documentation → R2 Source of Truth → R3 Tests/CI → R4 Commercial RBAC → R5 Product CRUD → R6 StoreSettings → R7 Inventory → R8 Authoritative Storefront/Cart → R9 Customers/Addresses/Orders → R10 Checkout → R11 Payment → R12 PRD Expansions.
+R1 Documentation → R2 Product Source of Truth + canonical cart/static retirement → R3 Tests/CI → R4 Commercial RBAC → R5 Product CRUD → R6 StoreSettings → R7 Inventory → R8 Commercial Storefront integration with StoreSettings/Inventory → R9 Customers/Addresses/Orders → R10 Checkout → R11 Payment → R12 PRD Expansions.
 R1–R12 não é `#PASSO`.
 
 ## D-008 — Não inventar próximo #PASSO
@@ -54,7 +54,7 @@ SHA-256: `314FE53058D4C57189A735745020845F0D69ECF9011285D029149D23FA802846`
 O cutover será incremental, não big-bang. O catálogo `/produtos-capilares` pode migrar antes do Cart desde que o ramo público esteja estruturalmente isolado do CartContext legado. Não haverá fallback automático para `src/data/products.ts` em falha de infraestrutura.
 
 ## D-012 — Compatibilidade transitória do ProductCard
-**Status:** DECIDIDO — R2-D-W1 em 2026-09-10
+**Status:** SUPERSEDIDO PARCIALMENTE POR D-019
 O `ProductCard` usa temporariamente um contrato discriminado: o ramo `public` recebe `PublicProduct` e não acessa Cart; o ramo `legacy` recebe `Product` e preserva o `ProductMarquee`. A compatibilidade permanece até a Wave 3.
 
 ## D-013 — Tratamento de indisponibilidade na Wave 1
@@ -70,7 +70,7 @@ A divergência preexistente de CRLF/Prettier é uma issue separada e não será 
 O detalhe público usa somente `PublicProduct`, obtido por `getPublicStoreProductBySlug`, sem conversão para o `Product` legado e sem fallback para `src/data/products.ts`. Imagens estruturadas persistidas são consumidas diretamente.
 
 ## D-016 — Cart desconectado do detalhe até a Wave 3
-**Status:** DECIDIDO — R2-D-W2 em 2026-09-10
+**Status:** SUPERSEDIDO POR D-019
 O detalhe permanece apresentacional e sem ação de carrinho. `CartContext`, `ProductMarquee` e os demais consumidores estáticos só serão migrados na Wave 3, ainda não iniciada.
 
 ## D-017 — SEO canônico do detalhe
@@ -79,7 +79,23 @@ Metadata e canonical derivam do mesmo loader canônico do detalhe, sem segundo f
 
 ## D-018 — Semântica pública de not-found e infraestrutura
 **Status:** DECIDIDO — R2-D-W2 em 2026-09-10
-Produto inexistente, `DRAFT` ou `INACTIVE` é indistinguível na superfície pública e resulta em `notFound()`. Falha de infraestrutura permanece distinta e segue para o `errorComponent`. HTTP 503 explícito continua deferido; o HTTP 404 real deve ser comprovado em produção antes da homologação humana da Wave 2.
+Produto inexistente, `DRAFT` ou `INACTIVE` é indistinguível na superfície pública e resulta em `notFound()`. Falha de infraestrutura permanece distinta e segue para o `errorComponent`. HTTP 503 explícito continua deferido. O HTTP 404 real foi posteriormente comprovado em produção e a Wave 2 foi homologada.
+
+## D-019 — Carrinho canônico sobre PublicProduct
+**Status:** DECIDIDO — R2-D-W3 em 2026-09-11
+Catálogo e detalhe podem adicionar ao carrinho somente `PublicProduct` elegível. O carrinho persiste apenas `productId + quantity` e reidrata por uma boundary pública em lote, sem conversão para `Product` legado.
+
+## D-020 — Segurança da persistência durante hidratação
+**Status:** DECIDIDO — R2-D-W3 em 2026-09-11
+`localStorage` só pode ser atualizado no estado `ready`. `initial`, `loading` e `error` não gravam. Falha de infraestrutura preserva as entradas persistidas e oferece retry; remoções por reconciliação só ocorrem após resposta canônica bem-sucedida.
+
+## D-021 — Autoridade estática retirada do runtime ativo
+**Status:** DECIDIDO — R2-D-W3 em 2026-09-11
+Os imports runtime ativos de `src/data/products.ts` chegam a zero. O arquivo permanece para seed/migração/reconciliação; o import do `ProductMarquee` é DEAD/UNUSED e constitui dívida de limpeza não bloqueante.
+
+## D-022 — Separação entre R2 e R8
+**Status:** DECIDIDO — R2-D-W3 em 2026-09-11
+R2 encerra a fonte canônica de Product, o carrinho canônico e a retirada da autoridade estática ativa. R8 não repetirá esse cutover: integrará a storefront comercial com StoreSettings, Inventory e regras operacionais futuras.
 
 # DECISÕES EM ABERTO
 

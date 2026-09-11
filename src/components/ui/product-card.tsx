@@ -38,18 +38,13 @@ function selectPublicImage(
 
 export function ProductCard(props: ProductCardProps) {
   if (props.mode === "public") {
-    return (
-      <ProductCardContent
-        mode="public"
-        product={props.product}
-      />
-    );
+    return <PublicProductCard product={props.product} />;
   }
 
   return <LegacyProductCard product={props.product} />;
 }
 
-function LegacyProductCard({ product }: { product: Product }) {
+function PublicProductCard({ product }: { product: PublicProduct }) {
   const { addItem } = useCart();
 
   const [cartFeedback, setCartFeedback] = useState<string | null>(
@@ -77,13 +72,17 @@ function LegacyProductCard({ product }: { product: Product }) {
 
   return (
     <ProductCardContent
-      mode="legacy"
+      mode="public"
       product={product}
       canAddToCart={canAddToCart}
       cartFeedback={cartFeedback}
       onAddToCart={handleAddToCart}
     />
   );
+}
+
+function LegacyProductCard({ product }: { product: Product }) {
+  return <ProductCardContent mode="legacy" product={product} />;
 }
 
 function ProductCardContent(props: ProductCardContentProps) {
@@ -106,8 +105,8 @@ function ProductCardContent(props: ProductCardContentProps) {
           alt: product.name,
         }
       : undefined;
-  const canAddToCart = !isPublic && props.canAddToCart === true;
-  const cartFeedback = isPublic ? null : props.cartFeedback;
+  const canAddToCart = props.canAddToCart === true;
+  const cartFeedback = props.cartFeedback;
 
   const formatPrice = (value: number) =>
     new Intl.NumberFormat("pt-BR", {

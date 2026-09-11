@@ -1,10 +1,18 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 
-import type { PublicProductImage } from "../../domain/store/public-product";
+import {
+  canProductBeAddedToCart,
+  useCart,
+} from "../../contexts/cart-context";
+import type {
+  PublicProduct,
+  PublicProductImage,
+} from "../../domain/store/public-product";
 import { CSS } from "../../routes/index";
 import logo from "../../assets/logo.png";
 
 type ProductDetailPageProps = {
+  product: PublicProduct;
   eyebrow: string;
   name: string;
   shortDescription: string;
@@ -39,6 +47,7 @@ const WA =
   "https://wa.me/5541991599558?text=Ol%C3%A1%20Dra.%20Cristiana%2C%20gostaria%20de%20receber%20orienta%C3%A7%C3%A3o%20sobre%20um%20produto%20capilar.";
 
 export function ProductDetailPage({
+  product,
   eyebrow,
   name,
   shortDescription,
@@ -65,6 +74,10 @@ export function ProductDetailPage({
 
   relatedProducts,
 }: ProductDetailPageProps) {
+  const { addItem } = useCart();
+  const [cartFeedback, setCartFeedback] = useState<string | null>(null);
+  const cartEligibility = canProductBeAddedToCart(product);
+  const canAddToCart = cartEligibility.success;
   const orderedImages = [...images].sort(
     (left, right) =>
       Number(right.main) - Number(left.main) ||
@@ -73,9 +86,27 @@ export function ProductDetailPage({
   );
   const mainImage = orderedImages[0];
 
+  const handleAddToCart = () => {
+    setCartFeedback(null);
+    const result = addItem(product);
+
+    setCartFeedback(
+      result.success ? "Produto adicionado ao carrinho." : result.reason,
+    );
+  };
+
   const renderPrimaryAction = (
     extraClassName = "",
   ) =>
+    canAddToCart ? (
+      <button
+        type="button"
+        onClick={handleAddToCart}
+        className={`btn btn-wa ${extraClassName}`}
+      >
+        Adicionar ao carrinho →
+      </button>
+    ) : (
       <a
         href={primaryHref}
         target={
@@ -91,7 +122,8 @@ export function ProductDetailPage({
         className={`btn btn-wa ${extraClassName}`}
       >
         {primaryLabel} →
-      </a>;
+      </a>
+    );
 
   return (
     <>
@@ -139,6 +171,23 @@ export function ProductDetailPage({
                 {secondaryLabel}
               </a>
             </div>
+
+            {cartFeedback && (
+              <div className="mt-5 max-w-md rounded-[14px] border border-[color:var(--line)] bg-white/70 p-4">
+                <p className="text-sm font-semibold text-[color:var(--ink)]">
+                  {cartFeedback}
+                </p>
+
+                {canAddToCart && (
+                  <a
+                    href="/carrinho"
+                    className="mt-2 inline-block text-xs font-bold text-[color:var(--rose2)] transition hover:text-[color:var(--ink)]"
+                  >
+                    Ver carrinho →
+                  </a>
+                )}
+              </div>
+            )}
 
           </div>
 
@@ -462,6 +511,19 @@ export function ProductDetailPage({
             </p>
 
             {renderPrimaryAction("mt-8")}
+
+            {cartFeedback && canAddToCart && (
+              <div className="mx-auto mt-5 max-w-md rounded-[14px] border border-[color:var(--line)] bg-white p-4">
+                <p className="text-sm font-semibold">{cartFeedback}</p>
+
+                <a
+                  href="/carrinho"
+                  className="mt-2 inline-block text-xs font-bold text-[color:var(--rose2)] transition hover:text-[color:var(--ink)]"
+                >
+                  Ver carrinho →
+                </a>
+              </div>
+            )}
 
           </div>
         </section>

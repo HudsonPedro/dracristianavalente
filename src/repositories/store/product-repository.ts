@@ -1,6 +1,8 @@
 import type { ProductStatus, StoreProduct } from "../../domain/store/product";
 
 export type ProductListFilters = {
+  ids?: string[];
+
   search?: string;
 
   status?: ProductStatus;
