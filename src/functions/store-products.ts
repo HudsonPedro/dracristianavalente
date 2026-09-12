@@ -11,6 +11,16 @@ export const listStoreProducts = createServerFn({
       input ?? {},
   )
   .handler(async ({ data }) => {
+    const { requireAdminPermission } =
+      await import(
+        "../services/auth/admin-effective-permissions.server"
+      );
+
+    await requireAdminPermission(
+      "CATALOG",
+      "VIEW",
+    );
+
     const { productService } =
       await import(
         "../services/store/product-service.server"
@@ -34,6 +44,16 @@ export const getStoreProductById = createServerFn({
     return value;
   })
   .handler(async ({ data }) => {
+    const { requireAdminPermission } =
+      await import(
+        "../services/auth/admin-effective-permissions.server"
+      );
+
+    await requireAdminPermission(
+      "CATALOG",
+      "VIEW",
+    );
+
     const { productService } =
       await import(
         "../services/store/product-service.server"
@@ -57,6 +77,16 @@ export const getStoreProductBySlug = createServerFn({
     return value;
   })
   .handler(async ({ data }) => {
+    const { requireAdminPermission } =
+      await import(
+        "../services/auth/admin-effective-permissions.server"
+      );
+
+    await requireAdminPermission(
+      "CATALOG",
+      "VIEW",
+    );
+
     const { productService } =
       await import(
         "../services/store/product-service.server"

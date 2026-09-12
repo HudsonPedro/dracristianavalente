@@ -16,8 +16,8 @@ import {
 } from "./list-admin-departments.server";
 
 import {
-  requireAdmin,
-} from "./require-admin.server";
+  requireAdminPermission,
+} from "./admin-effective-permissions.server";
 
 export type UpdateAdminUserInput = {
   userId: string;
@@ -52,6 +52,36 @@ export type UpdateAdminUserResult = {
     updatedAt: Date;
   };
 };
+
+type AdminUserRoleAssignmentPolicyInput = {
+  actorUserId: string;
+  actorRole: string;
+  targetUserId: string;
+  currentRoleCode: string;
+  selectedRoleCode: string;
+};
+
+/** Preserva o SUPER_ADMIN como autoridade raiz singular no servidor. */
+export function assertAdminUserRoleAssignmentAllowed(
+  input: AdminUserRoleAssignmentPolicyInput,
+) {
+  const targetIsSuperAdmin = input.currentRoleCode === "SUPER_ADMIN";
+  const assignsSuperAdmin = input.selectedRoleCode === "SUPER_ADMIN";
+  const actorIsTarget = input.actorUserId === input.targetUserId;
+  const actorIsSuperAdmin = input.actorRole === "SUPER_ADMIN";
+
+  if (assignsSuperAdmin && !targetIsSuperAdmin) {
+    throw new Error(
+      "O papel SUPER_ADMIN não pode ser atribuído pela edição comum de usuários.",
+    );
+  }
+
+  if (targetIsSuperAdmin && (!actorIsSuperAdmin || !actorIsTarget || !assignsSuperAdmin)) {
+    throw new Error(
+      "A conta do Super Administrador não pode ser alterada por esta operação.",
+    );
+  }
+}
 
 function validateInput(
   input: UpdateAdminUserInput,
@@ -150,8 +180,11 @@ export async function updateAdminUser(
    * A operação exige uma sessão
    * administrativa válida.
    */
-  const admin =
-    await requireAdmin();
+  const { admin } =
+    await requireAdminPermission(
+      "USERS",
+      "UPDATE",
+    );
 
   const input:
     UpdateAdminUserInput =
@@ -209,9 +242,19 @@ export async function updateAdminUser(
 
         roleId:
           adminUsersTable.roleId,
+
+        roleCode:
+          adminRolesTable.code,
       })
       .from(
         adminUsersTable,
+      )
+      .innerJoin(
+        adminRolesTable,
+        eq(
+          adminUsersTable.roleId,
+          adminRolesTable.id,
+        ),
       )
       .where(
         eq(
@@ -307,25 +350,13 @@ export async function updateAdminUser(
     );
   }
 
-  /*
-   * Proteção do administrador raiz:
-   *
-   * o SUPER_ADMIN autenticado não pode
-   * retirar de si mesmo o próprio papel
-   * SUPER_ADMIN através desta operação.
-   */
-  if (
-    existingUser.id ===
-      admin.userId &&
-    admin.role ===
-      "SUPER_ADMIN" &&
-    selectedRole.code !==
-      "SUPER_ADMIN"
-  ) {
-    throw new Error(
-      "O Super Administrador não pode remover de si próprio o papel SUPER_ADMIN.",
-    );
-  }
+  assertAdminUserRoleAssignmentAllowed({
+    actorUserId: admin.userId,
+    actorRole: admin.role,
+    targetUserId: existingUser.id,
+    currentRoleCode: existingUser.roleCode,
+    selectedRoleCode: selectedRole.code,
+  });
 
   /*
    * Esta operação continua limitada
