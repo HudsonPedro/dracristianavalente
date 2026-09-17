@@ -2066,7 +2066,7 @@ export function ProdutosCapilaresLayout({
                   Atendimento:
                 </strong>{" "}
                 mediante agendamento · Curitiba/PR
-                (Batel · Centro Cívico)
+                (Rebouças)
               </p>
             </div>
 
