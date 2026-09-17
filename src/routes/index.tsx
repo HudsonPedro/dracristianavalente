@@ -1554,7 +1554,7 @@ const BODY = `
     <div class="container py-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
       <div class="lg:col-span-2">
         <div class="flex items-center gap-3"><img src="${LOGO}" alt="Dra. Cristiana Valente Estética" class="mark"><span class="serif text-lg">Dra. Cristiana Valente</span></div>
-        <p class="text-sm text-[color:var(--muted)] mt-4 max-w-sm leading-relaxed">Estética facial, corporal e capilar com protocolos personalizados, tecnologia avançada e foco em resultados naturais. Saúde e autoestima começam pelo cuidado.</p>
+        <p class="text-sm text-[color:var(--muted)] mt-4 max-w-sm leading-relaxed">Estética capilar, facial e corporal com protocolos personalizados, tecnologia avançada e foco em resultados naturais. Saúde e autoestima começam pelo cuidado.</p>
         <p class="text-xs text-[color:var(--muted)] mt-4"><strong class="text-[color:var(--ink)]">COREN-PR 451.408</strong> · Enfermeira Esteta · Especialista em Saúde Pública e Estética Avançada</p>
         <p class="text-xs text-[color:var(--muted)] mt-2"><strong class="text-[color:var(--ink)]">Atendimento:</strong> mediante agendamento - Curitiba/PR (Rebouças)</p>
       </div>
@@ -1597,7 +1597,7 @@ export const Route = createFileRoute("/")({
       },
       
       { property: "og:title", content: "Dra. Cristiana Valente Estética - Capilar e Facial" },
-      { property: "og:description", content: "Estética facial, corporal e capilar com protocolos personalizados, tecnologia avançada e resultados naturais. Agende sua avaliação com a Dra. Cristiana Valente." },
+      { property: "og:description", content: "Estética capilar, facial e corporal com protocolos personalizados, tecnologia avançada e resultados naturais. Agende sua avaliação com a Dra. Cristiana Valente." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "msapplication-TileImage", content: "/assets/logo.png" }
