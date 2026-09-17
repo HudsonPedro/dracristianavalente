@@ -47,7 +47,7 @@ const CONTENT = `
       <p>Estes Termos de Uso regem o acesso e a utilização do site e dos serviços oferecidos pela <strong>Dra. Cristiana Valente Estética</strong>. Ao navegar, agendar ou solicitar informações, você declara que leu, compreendeu e concorda com as condições abaixo.</p>
 
       <h2>1. Natureza dos serviços</h2>
-      <p>A clínica oferece serviços de estética facial, corporal e capilar conduzidos por profissional qualificado, sob responsabilidade técnica da Dra. Cristiana Valente, enfermeira esteta e tricoterapeuta, inscrita no COREN-PR 451.408.</p>
+      <p>A clínica oferece serviços de estética capilar, facial e corporal, conduzidos por profissional qualificado, sob responsabilidade técnica da Dra. Cristiana Valente, enfermeira esteta e tricoterapeuta, inscrita no COREN-PR 451.408.</p>
       <p>Os protocolos são personalizados e realizados mediante avaliação prévia. Resultados podem variar de pessoa para pessoa, conforme fisiologia, idade, hábitos e adesão ao tratamento.</p>
 
       <h2>2. Agendamento e cancelamento</h2>
