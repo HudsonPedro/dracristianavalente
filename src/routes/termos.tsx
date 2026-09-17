@@ -52,7 +52,7 @@ const CONTENT = `
 
       <h2>2. Agendamento e cancelamento</h2>
       <ul>
-        <li>Os atendimentos são realizados <strong>mediante agendamento</strong> nas unidades LA BEAUTÉ (Batel) ou MAGMA CONSULTÓRIOS (Centro Cívico), em Curitiba – PR.</li>
+        <li>Os atendimentos são realizados <strong>mediante agendamento</strong> na unidade: Clínica Dra. Cristiana Valente, em Curitiba – PR.</li>
         <li>O agendamento pode ser feito pelo WhatsApp <a href="${WA}" target="_blank" rel="noreferrer">(41) 99159-9558</a> ou por e-mail.</li>
         <li>Cancelamentos ou remarcações devem ser comunicados com pelo menos 24 horas de antecedência.</li>
         <li>A clínica se reserva o direito de cobrar uma taxa ou não reservar novos horários para pacientes com histórico de faltas sem aviso prévio.</li>
