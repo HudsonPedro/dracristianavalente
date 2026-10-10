@@ -3,6 +3,13 @@ import { createServerFn } from "@tanstack/react-start";
 export const listStoreInventory = createServerFn({
   method: "GET",
 }).handler(async () => {
+  const { requireAdminPermission } =
+    await import(
+      "../services/auth/admin-effective-permissions.server"
+    );
+
+  await requireAdminPermission("INVENTORY", "VIEW");
+
   const { inventoryService } =
     await import(
       "../services/store/inventory-service.server"
@@ -27,6 +34,13 @@ export const getStoreInventoryByProductId =
       return value;
     })
     .handler(async ({ data }) => {
+      const { requireAdminPermission } =
+        await import(
+          "../services/auth/admin-effective-permissions.server"
+        );
+
+      await requireAdminPermission("INVENTORY", "VIEW");
+
       const { inventoryService } =
         await import(
           "../services/store/inventory-service.server"
@@ -53,6 +67,13 @@ export const getStoreInventoryAvailability =
       return value;
     })
     .handler(async ({ data }) => {
+      const { requireAdminPermission } =
+        await import(
+          "../services/auth/admin-effective-permissions.server"
+        );
+
+      await requireAdminPermission("INVENTORY", "VIEW");
+
       const { inventoryService } =
         await import(
           "../services/store/inventory-service.server"
@@ -100,13 +121,12 @@ export const updateStoreInventoryQuantity =
       },
     )
     .handler(async ({ data }) => {
-      const {
-        requireAdmin,
-      } = await import(
-        "../services/auth/require-admin.server"
-      );
+      const { requireAdminPermission } =
+        await import(
+          "../services/auth/admin-effective-permissions.server"
+        );
 
-      await requireAdmin();
+      await requireAdminPermission("INVENTORY", "UPDATE");
 
       const {
         inventoryService,

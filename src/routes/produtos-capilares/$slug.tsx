@@ -2,6 +2,7 @@ import {
   createFileRoute,
   notFound,
   useRouter,
+  type ErrorComponentProps,
 } from "@tanstack/react-router";
 
 import { ProductDetailPage } from "../../components/ui/product-detail-page";
@@ -161,12 +162,7 @@ function ProdutoCapilarPending() {
   );
 }
 
-function ProdutoCapilarError({
-  reset,
-}: {
-  error: Error;
-  reset: () => void;
-}) {
+function ProdutoCapilarError({ reset }: ErrorComponentProps) {
   const router = useRouter();
 
   const handleRetry = () => {

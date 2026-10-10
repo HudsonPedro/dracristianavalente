@@ -13,7 +13,7 @@ export const listPublicStoreProducts = createServerFn({
 export const getPublicStoreProductBySlug = createServerFn({
   method: "GET",
 })
-  .validator((slug: string) => {
+  .inputValidator((slug: string) => {
     const value = slug.trim();
 
     if (!value) {
