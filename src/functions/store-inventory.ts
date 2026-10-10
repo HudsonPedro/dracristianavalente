@@ -53,6 +53,13 @@ export const getStoreInventoryAvailability =
       return value;
     })
     .handler(async ({ data }) => {
+      const { requireAdminPermission } =
+        await import(
+          "../services/auth/admin-effective-permissions.server"
+        );
+
+      await requireAdminPermission("INVENTORY", "VIEW");
+
       const { inventoryService } =
         await import(
           "../services/store/inventory-service.server"
