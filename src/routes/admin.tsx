@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Outlet, redirect, useRouterState } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, redirect, useRouterState, type ErrorComponentProps } from "@tanstack/react-router";
 
 import { getAdminAuth, logoutAdmin } from "../functions/admin-auth";
 
@@ -30,9 +30,10 @@ export const Route = createFileRoute("/admin")({
   component: AdminRouteLayout,
 });
 
-function AdminErrorComponent({ error }: { error: Error }) {
+function AdminErrorComponent({ error }: ErrorComponentProps) {
+  const errorMessage = error instanceof Error ? error.message : String(error);
   const isPermissionDenied =
-    error.message === "Acesso administrativo sem permissão para esta operação.";
+    errorMessage === "Acesso administrativo sem permissão para esta operação.";
 
   if (!isPermissionDenied) {
     throw error;
