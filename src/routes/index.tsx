@@ -1556,8 +1556,9 @@ const BODY = `
         <div class="flex items-center gap-3"><img src="${LOGO}" alt="Dra. Cristiana Valente Estética" class="mark"><span class="serif text-lg">Dra. Cristiana Valente</span></div>
         <p class="text-sm text-[color:var(--muted)] mt-4 max-w-sm leading-relaxed">Estética capilar, facial e corporal com protocolos personalizados, tecnologia avançada e foco em resultados naturais. Saúde e autoestima começam pelo cuidado.</p>
         <p class="text-xs text-[color:var(--muted)] mt-4"><strong class="text-[color:var(--ink)]">COREN-PR 451.408</strong> · Enfermeira Esteta · Especialista em Saúde Pública e Estética Avançada.</p>
-        <p class="text-xs text-[color:var(--muted)] mt-2"><strong class="text-[color:var(--ink)]">Credenciada DNA Vital e ABRATTEC:</strong> Terapeuta Capilar e Tricologia.</p>
+        <p class="text-xs text-[color:var(--muted)] mt-2"><strong class="text-[color:var(--ink)]">Credenciada <a href="https://www.dnavital.com.br/" target="_blank" class="underline hover:opacity-80">DNA Vital</a> e <a href="https://abrattec.com.br/" target="_blank" class="underline hover:opacity-80">ABRATTEC</a>:</strong> Terapeuta Capilar e Tricologia.</p>
         <p class="text-xs text-[color:var(--muted)] mt-2"><strong class="text-[color:var(--ink)]">Atendimento:</strong> Mediante Agendamento - Rua Nunes Machado, 1128 Rebouças - Curitiba/PR.</p>
+        
       </div>
       <div>
         <p class="text-xs font-bold uppercase tracking-wider mb-4">Navegação</p>
