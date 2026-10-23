@@ -1577,7 +1577,7 @@ const BODY = `
           <li>📱 <a href="${WA}" class="hover:text-[color:var(--ink)]">(41) 99159-9558</a></li>
           <li>📧 <a href="mailto:contato@dracristianavalente.com.br" class="hover:text-[color:var(--ink)]">contato@dracristianavalente.com.br</a></li>
           <li>📷 <a href="https://instagram.com/cristianavalente.estetica" target="_blank" rel="noreferrer" class="hover:text-[color:var(--ink)]">@dra.cristianavalente.estetica</a></li>
-          <li>🌐 <a href="https://www.dracristianavalente.com.br" target="_blank" rel="noreferrer" class="hover:text-[color:var(--ink)]">dracristianavalente.com.br</a></li>
+          <li>🌐 <a href="https://www.dracristianavalente.com.br/produtos-capilares" target="_blank" rel="noreferrer" class="hover:text-[color:var(--ink)]">dracristianavalente.com.br/produtosdnavital</a></li>
         </ul>
       </div>
     </div>
