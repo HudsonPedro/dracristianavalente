@@ -99,7 +99,6 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild"
-    ],
-    "ignoredBuiltDependencies": []
+    ]
   }
 }
